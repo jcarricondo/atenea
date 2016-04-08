@@ -1,0 +1,115 @@
+ATENEA
+------
+Host: atenea.simumak.com
+
+Acceso al panel:
+Usuario: admin@atenea.simumak.com
+Password: Ate078943_%$
+
+FTP:
+Host: atenea.simumak.com
+User: atenea
+Pass: AteneaPr$erse00
+
+MySQL:
+User: atenea
+Pass: AteneaPrea07e0x
+Base de datos: atenea
+Base de datos desarrollo: atenea_dev
+
+ATENEA DEV
+------
+Host: ateneadev.simumak.com
+
+Acceso al panel:
+Usuario: admin@ateneadev.simumak.com
+Password: Ate078943_%$
+
+FTP:
+Host: ateneadev.simumak.com
+User: ateneadev
+Pass: AteneaPr$erse00
+
+MySQL:
+User: ateneadev
+Pass: AteneaPrea07e0x
+Base de datos: ateneadev
+
+
+ATENEA TORO
+------
+Host: atenea.simumak.com
+
+Acceso al panel:
+Usuario: admin@atenea.simumak.com
+Password: Ate078943_%$
+
+FTP:
+Host: atenea.simumak.com
+User: atenea
+Pass: AteneaPr$erse00
+
+MySQL:
+User: atenea_toro; 
+Pass: J_eq810x; 
+Base de datos: atenea_toro
+
+
+ATENEA TORODEV
+------
+Host: ateneadev.simumak.com
+
+Acceso al panel:
+Usuario: admin@ateneadev.simumak.com
+Password: Ate078943_%$
+
+FTP:
+Host: ateneadev.simumak.com
+User: ateneadev
+Pass: AteneaPr$erse00
+
+MySQL:
+User: torodev 
+Pass: AteneaPrea07e0x
+Base de datos: atenea_torodev 
+
+
+ATENEA BRASIL
+------
+Host: atenea.simumak.com
+
+Acceso al panel:
+Usuario: admin@atenea.simumak.com
+Password: Ate078943_%$
+
+FTP:
+Host: atenea.simumak.com
+User: atenea
+Pass: AteneaPr$erse00
+
+MySQL:
+User: atenea_brasil
+Pass: AteneaPrea07e0x
+Base de datos: atenea_brasil
+
+
+ATENEA BRASILDEV
+------
+Host: ateneadev.simumak.com
+
+Acceso al panel:
+Usuario: admin@ateneadev.simumak.com
+Password: Ate078943_%$
+
+FTP:
+Host: ateneadev.simumak.com
+User: ateneadev
+Pass: AteneaPr$erse00
+
+MySQL:
+User: brasildev 
+Pass: AteneaPrea07e0x
+Base de datos: atenea_brasildev 
+
+
+
