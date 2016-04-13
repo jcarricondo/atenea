@@ -414,7 +414,7 @@ $max_caracteres = 35;
 
                                     // Si se filtra por STOCK, se muestra sólo aquellos que tengan piezas
                                     $piezas_stock = $rs->damePiezasReferenciaStock($ref->id_referencia,$id_almacen_tabla);
-                                    $muestro_almacen = !($piezas_stock == NULL && $orden_produccion[0] == "0");
+                                    $muestro_almacen = !(($piezas_stock == NULL || $piezas_stock == "0") && $orden_produccion[0] == "0");
 
                                     if($muestro_almacen) { ?>
                                         <table style="border:0;">
