@@ -21,11 +21,11 @@
     <favorites_list name="atenea" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="listado_referencias_almacen.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.806452">
+            <state vertical-scroll-proportion="-0.7096774">
               <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
               <folding>
                 <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
@@ -34,11 +34,116 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="orden_produccion.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classes/orden_produccion/orden_produccion.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1460371203273" expanded="true" signature="1625:1678" placeholder="select * fro..orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="3246:3542" placeholder="insert into orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="4096:4250" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="4878:4937" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="5338:5467" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="5977:6106" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="6548:6609" placeholder="update produ..." />
+                <marker date="1460371203273" expanded="true" signature="6890:6942" placeholder="update produ..." />
+                <marker date="1460371203273" expanded="true" signature="7207:7266" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="7570:7630" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="8003:8063" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="8407:8462" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="8838:8898" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="9279:9338" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="9708:9771" placeholder="update produ..." />
+                <marker date="1460371203273" expanded="true" signature="10078:10215" placeholder="insert into orden_produccion_componentes..." />
+                <marker date="1460371203273" expanded="true" signature="10725:10974" placeholder="insert into orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="11639:11710" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="11998:12069" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="12659:12726" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="13107:13200" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="13634:13713" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="14033:14087" placeholder="select id_ti..componentes..." />
+                <marker date="1460371203273" expanded="true" signature="14550:14639" placeholder="select id_pr..productos..." />
+                <marker date="1460371203273" expanded="true" signature="14927:15016" placeholder="select id_pr..productos..." />
+                <marker date="1460371203273" expanded="true" signature="15335:15533" placeholder="select id_pr..orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="15918:16251" placeholder="select *, su..orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="16620:16729" placeholder="select id_or..orden_compra..." />
+                <marker date="1460371203273" expanded="true" signature="17042:17176" placeholder="select opr.i..orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="17469:17646" placeholder="select * fro..orden_produccion_componentes..." />
+                <marker date="1460371203273" expanded="true" signature="17929:18147" placeholder="select opc.i..orden_produccion_componentes..." />
+                <marker date="1460371203273" expanded="true" signature="18447:18567" placeholder="select opc.i..orden_produccion_componentes..." />
+                <marker date="1460371203273" expanded="true" signature="18883:19015" placeholder="select id_ti..orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="19344:19466" placeholder="select id_co..orden_produccion_componentes..." />
+                <marker date="1460371203273" expanded="true" signature="19756:19857" placeholder="select id_co..orden_produccion_componentes..." />
+                <marker date="1460371203273" expanded="true" signature="20169:20310" placeholder="select * fro..orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="20707:20868" placeholder="select id_re..orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="21297:21469" placeholder="select id_re..orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="21853:22009" placeholder="select * fro..orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="22763:22932" placeholder="select * fro..orden_compra_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="23232:23334" placeholder="select id_or..orden_compra..." />
+                <marker date="1460371203273" expanded="true" signature="24408:24478" placeholder="select id_pr..orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="24734:25047" placeholder="select sum(o..orden_compra..." />
+                <marker date="1460371203273" expanded="true" signature="25704:25804" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="26097:26167" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="26462:26530" placeholder="update orden..." />
+                <marker date="1460371203273" expanded="true" signature="26871:27110" placeholder="select *, su..orden_compra_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="28130:28224" placeholder="select id_pr..orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="28571:28723" placeholder="select id_pr..orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="29014:29142" placeholder="select id_in..componentes_interfaces..." />
+                <marker date="1460371203273" expanded="true" signature="29430:29535" placeholder="select id_ki..componentes_kits..." />
+                <marker date="1460371203273" expanded="true" signature="29852:29939" placeholder="select produ..productos..." />
+                <marker date="1460371203273" expanded="true" signature="30275:30468" placeholder="select id fr..orden_compra_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="30781:30847" placeholder="select id_pr..productos..." />
+                <marker date="1460371203273" expanded="true" signature="31203:31398" placeholder="select id_fa..orden_compra_facturas..." />
+                <marker date="1460371203273" expanded="true" signature="31807:31978" placeholder="select id_or..orden_compra..." />
+                <marker date="1460371203273" expanded="true" signature="32340:32404" placeholder="select nombr..componentes..." />
+                <marker date="1460371203273" expanded="true" signature="33371:33463" placeholder="select id_pr..orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="33831:33888" placeholder="select id_pr..orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="34116:34201" placeholder="select id_pr..orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="34584:34941" placeholder="select id_pr..orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="35483:35841" placeholder="select id_pr..orden_produccion..." />
+                <marker date="1460371203273" expanded="true" signature="36247:36453" placeholder="select disti..orden_produccion_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="38023:38181" placeholder="select * fro..orden_compra_referencias..." />
+                <marker date="1460371203273" expanded="true" signature="38463:38623" placeholder="select (max(..orden_produccion..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="almacen.class.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classes/almacen/almacen.class.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.7096774">
+              <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+              <folding>
+                <marker date="1460371200771" expanded="true" signature="306:349" placeholder="select * fro..almacenes..." />
+                <marker date="1460371200771" expanded="true" signature="719:757" placeholder="select * fro..almacenes..." />
+                <marker date="1460371200771" expanded="true" signature="993:1060" placeholder="select * fro..almacenes..." />
+                <marker date="1460371200771" expanded="true" signature="1329:1396" placeholder="select * fro..almacenes..." />
+                <marker date="1460371200771" expanded="true" signature="1651:1700" placeholder="select id_se..almacenes..." />
+                <marker date="1460371200771" expanded="true" signature="2528:2728" placeholder="select motiv..almacenes_albaranes_motivos..." />
+                <marker date="1460371200771" expanded="true" signature="3079:3294" placeholder="select disti..almacenes_albaranes_motivos..." />
+                <marker date="1460371200771" expanded="true" signature="3608:3657" placeholder="select id_se..almacenes..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ajuste_material.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-13.5161295">
+              <caret line="430" column="0" selection-start-line="430" selection-start-column="0" selection-end-line="430" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="listado_material.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.78967494">
-              <caret line="415" column="54" selection-start-line="415" selection-start-column="54" selection-end-line="415" selection-end-column="54" />
+            <state vertical-scroll-proportion="0.17824075">
+              <caret line="416" column="137" selection-start-line="416" selection-start-column="137" selection-end-line="416" selection-end-column="137" />
               <folding />
             </state>
           </provider>
@@ -49,17 +154,27 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/almacen/listado_material.php" />
+      </list>
+    </option>
+  </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" />
   <component name="JsBuildToolPackageJson" detection-done="true" />
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
   </component>
+  <component name="PhpServers">
+    <servers />
+  </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
-    <option name="width" value="1382" />
-    <option name="height" value="744" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -152,8 +267,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -179,6 +294,11 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -189,6 +309,9 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\Jacho\AppData\Roaming\Subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="e3fdbcb0-7918-4edf-a2df-9f54433cac12" name="Default" comment="" />
@@ -199,27 +322,35 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="1" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25416037" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2595949" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -231,7 +362,7 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.806452">
+        <state vertical-scroll-proportion="0.0">
           <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
           <folding>
             <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
@@ -241,8 +372,440 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.78967494">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/orden_produccion/orden_produccion.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1460371203273" expanded="true" signature="1625:1678" placeholder="select * fro..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="3246:3542" placeholder="insert into orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="4096:4250" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="4878:4937" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="5338:5467" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="5977:6106" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="6548:6609" placeholder="update produ..." />
+            <marker date="1460371203273" expanded="true" signature="6890:6942" placeholder="update produ..." />
+            <marker date="1460371203273" expanded="true" signature="7207:7266" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="7570:7630" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="8003:8063" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="8407:8462" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="8838:8898" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="9279:9338" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="9708:9771" placeholder="update produ..." />
+            <marker date="1460371203273" expanded="true" signature="10078:10215" placeholder="insert into orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="10725:10974" placeholder="insert into orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="11639:11710" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="11998:12069" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="12659:12726" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="13107:13200" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="13634:13713" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="14033:14087" placeholder="select id_ti..componentes..." />
+            <marker date="1460371203273" expanded="true" signature="14550:14639" placeholder="select id_pr..productos..." />
+            <marker date="1460371203273" expanded="true" signature="14927:15016" placeholder="select id_pr..productos..." />
+            <marker date="1460371203273" expanded="true" signature="15335:15533" placeholder="select id_pr..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="15918:16251" placeholder="select *, su..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="16620:16729" placeholder="select id_or..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="17042:17176" placeholder="select opr.i..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="17469:17646" placeholder="select * fro..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="17929:18147" placeholder="select opc.i..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="18447:18567" placeholder="select opc.i..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="18883:19015" placeholder="select id_ti..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="19344:19466" placeholder="select id_co..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="19756:19857" placeholder="select id_co..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="20169:20310" placeholder="select * fro..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="20707:20868" placeholder="select id_re..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="21297:21469" placeholder="select id_re..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="21853:22009" placeholder="select * fro..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="22763:22932" placeholder="select * fro..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="23232:23334" placeholder="select id_or..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="24408:24478" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="24734:25047" placeholder="select sum(o..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="25704:25804" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="26097:26167" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="26462:26530" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="26871:27110" placeholder="select *, su..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="28130:28224" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="28571:28723" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="29014:29142" placeholder="select id_in..componentes_interfaces..." />
+            <marker date="1460371203273" expanded="true" signature="29430:29535" placeholder="select id_ki..componentes_kits..." />
+            <marker date="1460371203273" expanded="true" signature="29852:29939" placeholder="select produ..productos..." />
+            <marker date="1460371203273" expanded="true" signature="30275:30468" placeholder="select id fr..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="30781:30847" placeholder="select id_pr..productos..." />
+            <marker date="1460371203273" expanded="true" signature="31203:31398" placeholder="select id_fa..orden_compra_facturas..." />
+            <marker date="1460371203273" expanded="true" signature="31807:31978" placeholder="select id_or..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="32340:32404" placeholder="select nombr..componentes..." />
+            <marker date="1460371203273" expanded="true" signature="33371:33463" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="33831:33888" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="34116:34201" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="34584:34941" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="35483:35841" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="36247:36453" placeholder="select disti..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="38023:38181" placeholder="select * fro..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="38463:38623" placeholder="select (max(..orden_produccion..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/almacen/almacen.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+          <folding>
+            <marker date="1460371200771" expanded="true" signature="306:349" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="719:757" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="993:1060" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="1329:1396" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="1651:1700" placeholder="select id_se..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="2528:2728" placeholder="select motiv..almacenes_albaranes_motivos..." />
+            <marker date="1460371200771" expanded="true" signature="3079:3294" placeholder="select disti..almacenes_albaranes_motivos..." />
+            <marker date="1460371200771" expanded="true" signature="3608:3657" placeholder="select id_se..almacenes..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="427" column="79" selection-start-line="427" selection-start-column="79" selection-end-line="427" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
+          <folding>
+            <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/orden_produccion/orden_produccion.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1460371203273" expanded="true" signature="1625:1678" placeholder="select * fro..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="3246:3542" placeholder="insert into orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="4096:4250" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="4878:4937" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="5338:5467" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="5977:6106" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="6548:6609" placeholder="update produ..." />
+            <marker date="1460371203273" expanded="true" signature="6890:6942" placeholder="update produ..." />
+            <marker date="1460371203273" expanded="true" signature="7207:7266" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="7570:7630" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="8003:8063" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="8407:8462" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="8838:8898" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="9279:9338" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="9708:9771" placeholder="update produ..." />
+            <marker date="1460371203273" expanded="true" signature="10078:10215" placeholder="insert into orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="10725:10974" placeholder="insert into orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="11639:11710" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="11998:12069" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="12659:12726" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="13107:13200" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="13634:13713" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="14033:14087" placeholder="select id_ti..componentes..." />
+            <marker date="1460371203273" expanded="true" signature="14550:14639" placeholder="select id_pr..productos..." />
+            <marker date="1460371203273" expanded="true" signature="14927:15016" placeholder="select id_pr..productos..." />
+            <marker date="1460371203273" expanded="true" signature="15335:15533" placeholder="select id_pr..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="15918:16251" placeholder="select *, su..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="16620:16729" placeholder="select id_or..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="17042:17176" placeholder="select opr.i..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="17469:17646" placeholder="select * fro..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="17929:18147" placeholder="select opc.i..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="18447:18567" placeholder="select opc.i..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="18883:19015" placeholder="select id_ti..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="19344:19466" placeholder="select id_co..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="19756:19857" placeholder="select id_co..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="20169:20310" placeholder="select * fro..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="20707:20868" placeholder="select id_re..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="21297:21469" placeholder="select id_re..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="21853:22009" placeholder="select * fro..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="22763:22932" placeholder="select * fro..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="23232:23334" placeholder="select id_or..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="24408:24478" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="24734:25047" placeholder="select sum(o..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="25704:25804" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="26097:26167" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="26462:26530" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="26871:27110" placeholder="select *, su..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="28130:28224" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="28571:28723" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="29014:29142" placeholder="select id_in..componentes_interfaces..." />
+            <marker date="1460371203273" expanded="true" signature="29430:29535" placeholder="select id_ki..componentes_kits..." />
+            <marker date="1460371203273" expanded="true" signature="29852:29939" placeholder="select produ..productos..." />
+            <marker date="1460371203273" expanded="true" signature="30275:30468" placeholder="select id fr..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="30781:30847" placeholder="select id_pr..productos..." />
+            <marker date="1460371203273" expanded="true" signature="31203:31398" placeholder="select id_fa..orden_compra_facturas..." />
+            <marker date="1460371203273" expanded="true" signature="31807:31978" placeholder="select id_or..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="32340:32404" placeholder="select nombr..componentes..." />
+            <marker date="1460371203273" expanded="true" signature="33371:33463" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="33831:33888" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="34116:34201" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="34584:34941" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="35483:35841" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="36247:36453" placeholder="select disti..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="38023:38181" placeholder="select * fro..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="38463:38623" placeholder="select (max(..orden_produccion..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/almacen/almacen.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+          <folding>
+            <marker date="1460371200771" expanded="true" signature="306:349" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="719:757" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="993:1060" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="1329:1396" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="1651:1700" placeholder="select id_se..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="2528:2728" placeholder="select motiv..almacenes_albaranes_motivos..." />
+            <marker date="1460371200771" expanded="true" signature="3079:3294" placeholder="select disti..almacenes_albaranes_motivos..." />
+            <marker date="1460371200771" expanded="true" signature="3608:3657" placeholder="select id_se..almacenes..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="427" column="79" selection-start-line="427" selection-start-column="79" selection-end-line="427" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
+          <folding>
+            <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="427" column="79" selection-start-line="427" selection-start-column="79" selection-end-line="427" selection-end-column="79" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
+          <folding>
+            <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="415" column="54" selection-start-line="415" selection-start-column="54" selection-end-line="415" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
+          <folding>
+            <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/orden_produccion/orden_produccion.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1460371203273" expanded="true" signature="1625:1678" placeholder="select * fro..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="3246:3542" placeholder="insert into orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="4096:4250" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="4878:4937" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="5338:5467" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="5977:6106" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="6548:6609" placeholder="update produ..." />
+            <marker date="1460371203273" expanded="true" signature="6890:6942" placeholder="update produ..." />
+            <marker date="1460371203273" expanded="true" signature="7207:7266" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="7570:7630" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="8003:8063" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="8407:8462" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="8838:8898" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="9279:9338" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="9708:9771" placeholder="update produ..." />
+            <marker date="1460371203273" expanded="true" signature="10078:10215" placeholder="insert into orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="10725:10974" placeholder="insert into orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="11639:11710" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="11998:12069" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="12659:12726" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="13107:13200" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="13634:13713" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="14033:14087" placeholder="select id_ti..componentes..." />
+            <marker date="1460371203273" expanded="true" signature="14550:14639" placeholder="select id_pr..productos..." />
+            <marker date="1460371203273" expanded="true" signature="14927:15016" placeholder="select id_pr..productos..." />
+            <marker date="1460371203273" expanded="true" signature="15335:15533" placeholder="select id_pr..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="15918:16251" placeholder="select *, su..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="16620:16729" placeholder="select id_or..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="17042:17176" placeholder="select opr.i..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="17469:17646" placeholder="select * fro..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="17929:18147" placeholder="select opc.i..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="18447:18567" placeholder="select opc.i..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="18883:19015" placeholder="select id_ti..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="19344:19466" placeholder="select id_co..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="19756:19857" placeholder="select id_co..orden_produccion_componentes..." />
+            <marker date="1460371203273" expanded="true" signature="20169:20310" placeholder="select * fro..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="20707:20868" placeholder="select id_re..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="21297:21469" placeholder="select id_re..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="21853:22009" placeholder="select * fro..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="22763:22932" placeholder="select * fro..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="23232:23334" placeholder="select id_or..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="24408:24478" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="24734:25047" placeholder="select sum(o..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="25704:25804" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="26097:26167" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="26462:26530" placeholder="update orden..." />
+            <marker date="1460371203273" expanded="true" signature="26871:27110" placeholder="select *, su..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="28130:28224" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="28571:28723" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="29014:29142" placeholder="select id_in..componentes_interfaces..." />
+            <marker date="1460371203273" expanded="true" signature="29430:29535" placeholder="select id_ki..componentes_kits..." />
+            <marker date="1460371203273" expanded="true" signature="29852:29939" placeholder="select produ..productos..." />
+            <marker date="1460371203273" expanded="true" signature="30275:30468" placeholder="select id fr..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="30781:30847" placeholder="select id_pr..productos..." />
+            <marker date="1460371203273" expanded="true" signature="31203:31398" placeholder="select id_fa..orden_compra_facturas..." />
+            <marker date="1460371203273" expanded="true" signature="31807:31978" placeholder="select id_or..orden_compra..." />
+            <marker date="1460371203273" expanded="true" signature="32340:32404" placeholder="select nombr..componentes..." />
+            <marker date="1460371203273" expanded="true" signature="33371:33463" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="33831:33888" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="34116:34201" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="34584:34941" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="35483:35841" placeholder="select id_pr..orden_produccion..." />
+            <marker date="1460371203273" expanded="true" signature="36247:36453" placeholder="select disti..orden_produccion_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="38023:38181" placeholder="select * fro..orden_compra_referencias..." />
+            <marker date="1460371203273" expanded="true" signature="38463:38623" placeholder="select (max(..orden_produccion..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/almacen/recepcion_material.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22916667">
+          <caret line="179" column="43" selection-start-line="179" selection-start-column="43" selection-end-line="179" selection-end-column="43" />
+          <folding>
+            <marker date="1460371200896" expanded="true" signature="959:1384" placeholder="select oc.id..orden_compra_referencias..." />
+            <marker date="1460371200896" expanded="true" signature="1830:2011" placeholder="select oc.nu..orden_compra_referencias..." />
+            <marker date="1460371200896" expanded="true" signature="2659:2726" placeholder="update orden..." />
+            <marker date="1460371200896" expanded="true" signature="2860:2927" placeholder="update orden..." />
+            <marker date="1460371200896" expanded="true" signature="3601:3668" placeholder="update orden..." />
+            <marker date="1460371200896" expanded="true" signature="3802:3869" placeholder="update orden..." />
+            <marker date="1460371200896" expanded="true" signature="4193:4275" placeholder="select id_re..stock_almacenes..." />
+            <marker date="1460371200896" expanded="true" signature="4495:4574" placeholder="insert into stock_almacenes..." />
+            <marker date="1460371200896" expanded="true" signature="5253:5335" placeholder="select id_re..stock_almacenes..." />
+            <marker date="1460371200896" expanded="true" signature="5600:5675" placeholder="select pieza..stock_almacenes..." />
+            <marker date="1460371200896" expanded="true" signature="6062:6139" placeholder="update stock..." />
+            <marker date="1460371200896" expanded="true" signature="6530:6605" placeholder="select pieza..stock_almacenes..." />
+            <marker date="1460371200896" expanded="true" signature="7718:7785" placeholder="update orden..." />
+            <marker date="1460371200896" expanded="true" signature="8218:8285" placeholder="update orden..." />
+            <marker date="1460371200896" expanded="true" signature="8692:8791" placeholder="update stock..." />
+            <marker date="1460371200896" expanded="true" signature="9186:9280" placeholder="insert into stock_almacenes..." />
+            <marker date="1460371200896" expanded="true" signature="9669:9745" placeholder="update stock..." />
+            <marker date="1460371200896" expanded="true" signature="10125:10224" placeholder="update stock..." />
+            <marker date="1460371200896" expanded="true" signature="10626:11075" placeholder="select pieza..orden_compra_referencias..." />
+            <marker date="1460371200896" expanded="true" signature="11570:12050" placeholder="select sum(p..orden_compra_referencias..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.7096774">
+          <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
+          <folding>
+            <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.5161295">
+          <caret line="430" column="0" selection-start-line="430" selection-start-column="0" selection-end-line="430" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/almacen/almacen.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.7096774">
+          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
+          <folding>
+            <marker date="1460371200771" expanded="true" signature="306:349" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="719:757" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="993:1060" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="1329:1396" placeholder="select * fro..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="1651:1700" placeholder="select id_se..almacenes..." />
+            <marker date="1460371200771" expanded="true" signature="2528:2728" placeholder="select motiv..almacenes_albaranes_motivos..." />
+            <marker date="1460371200771" expanded="true" signature="3079:3294" placeholder="select disti..almacenes_albaranes_motivos..." />
+            <marker date="1460371200771" expanded="true" signature="3608:3657" placeholder="select id_se..almacenes..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17824075">
+          <caret line="416" column="137" selection-start-line="416" selection-start-column="137" selection-end-line="416" selection-end-column="137" />
           <folding />
         </state>
       </provider>
