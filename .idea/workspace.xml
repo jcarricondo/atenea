@@ -25,7 +25,7 @@
       <file leaf-file-name="listado_referencias_almacen.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="-46.83871">
               <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
               <folding>
                 <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
@@ -132,8 +132,18 @@
       <file leaf-file-name="ajuste_material.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.876905">
+            <state vertical-scroll-proportion="1.5732708">
               <caret line="444" column="130" selection-start-line="444" selection-start-column="130" selection-end-line="444" selection-end-column="130" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -159,6 +169,7 @@
       <list>
         <option value="$PROJECT_DIR$/almacen/listado_material.php" />
         <option value="$PROJECT_DIR$/almacen/ajuste_material.php" />
+        <option value="$PROJECT_DIR$/classes/mysql.class.php" />
       </list>
     </option>
   </component>
@@ -361,16 +372,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
-          <folding>
-            <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/classes/orden_produccion/orden_produccion.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1355,7 +1356,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="-46.83871">
           <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
           <folding>
             <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
@@ -1388,9 +1389,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/mysql.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.7913249">
+          <caret line="69" column="68" selection-start-line="69" selection-start-column="68" selection-end-line="69" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.876905">
+        <state vertical-scroll-proportion="1.5732708">
           <caret line="444" column="130" selection-start-line="444" selection-start-column="130" selection-end-line="444" selection-end-column="130" />
           <folding />
         </state>
