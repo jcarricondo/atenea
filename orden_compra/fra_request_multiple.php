@@ -59,7 +59,7 @@ $listado_referencias_FR->setValoresFRA_REQ($ids_compra[$k],$proveedor);
 $listado_referencias_FR->realizarConsultaFRA_REQ();
 $resultados_referencias_fr = $listado_referencias_FR->referencias_OC_FR;
 $num_referencias_fr = count($resultados_referencias_fr);
-$euro = mb_convert_encoding('€', "HTML-ENTITIES", 'UTF-8');
+$euro = mb_convert_encoding('â‚¬', "HTML-ENTITIES", 'UTF-8');
 
 $datos_agencia_transporte ='AGENCIA DE TRANSPORTE: '.$agencia_transporte.'<br/>CUENTA DE IMPORTACI&Oacute;N: '.$cuenta_importacion;
 
