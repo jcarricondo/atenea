@@ -25,7 +25,7 @@
       <file leaf-file-name="listado_referencias_almacen.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-46.83871">
+            <state vertical-scroll-proportion="0.0">
               <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
               <folding>
                 <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
@@ -132,7 +132,7 @@
       <file leaf-file-name="ajuste_material.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.5732708">
+            <state vertical-scroll-proportion="1.0093787">
               <caret line="444" column="130" selection-start-line="444" selection-start-column="130" selection-end-line="444" selection-end-column="130" />
               <folding />
             </state>
@@ -142,7 +142,7 @@
       <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
+            <state vertical-scroll-proportion="0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -152,7 +152,7 @@
       <file leaf-file-name="listado_material.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.354838">
+            <state vertical-scroll-proportion="0.0">
               <caret line="416" column="137" selection-start-line="416" selection-start-column="36" selection-end-line="416" selection-end-column="137" />
               <folding />
             </state>
@@ -334,7 +334,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="2" width="1932" height="1045" extended-state="0" />
+    <frame x="-7" y="2" width="1932" height="1045" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2595949" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -372,6 +372,14 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="416" column="137" selection-start-line="416" selection-start-column="36" selection-end-line="416" selection-end-column="137" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/classes/orden_produccion/orden_produccion.class.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1356,11 +1364,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/classes/almacen/listado_referencias_almacen.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-46.83871">
+        <state vertical-scroll-proportion="0.0">
           <caret line="66" column="3" selection-start-line="66" selection-start-column="3" selection-end-line="66" selection-end-column="3" />
           <folding>
             <marker date="1460371200865" expanded="true" signature="5871:6180" placeholder="select refer..referencias$..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/mysql.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.7913249">
+          <caret line="69" column="68" selection-start-line="69" selection-start-column="68" selection-end-line="69" selection-end-column="68" />
         </state>
       </provider>
     </entry>
@@ -1381,10 +1396,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
+    <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.354838">
-          <caret line="416" column="137" selection-start-line="416" selection-start-column="36" selection-end-line="416" selection-end-column="137" />
+        <state vertical-scroll-proportion="1.0093787">
+          <caret line="444" column="130" selection-start-line="444" selection-start-column="130" selection-end-line="444" selection-end-column="130" />
           <folding />
         </state>
       </provider>
@@ -1397,18 +1412,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classes/mysql.class.php">
+    <entry file="file://$PROJECT_DIR$/almacen/listado_material.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.7913249">
-          <caret line="69" column="68" selection-start-line="69" selection-start-column="68" selection-end-line="69" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/almacen/ajuste_material.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5732708">
-          <caret line="444" column="130" selection-start-line="444" selection-start-column="130" selection-end-line="444" selection-end-column="130" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="416" column="137" selection-start-line="416" selection-start-column="36" selection-end-line="416" selection-end-column="137" />
           <folding />
         </state>
       </provider>
