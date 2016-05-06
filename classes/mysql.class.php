@@ -5,6 +5,10 @@ ini_set('display_errors', 1);
 date_default_timezone_set('Europe/Madrid');
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 ini_set('session.gc_maxlifetime', '3600');
+ini_set('max_execution_time', 3600);
+ini_set('display_errors', 1);
+date_default_timezone_set('Europe/Madrid');
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 class MySQL {
 
 	/* -----------------------------------------------------------------------------
