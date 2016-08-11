@@ -1,34 +1,41 @@
 <?php
-ini_set('session.gc_maxlifetime', '3600');
+ini_set('session.gc_maxlifetime', 3600);
+ini_set('max_execution_time', 3600);
+ini_set('display_errors', 1);
+date_default_timezone_set('Europe/Madrid');
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 class MySQL {
 
+	/* -----------------------------------------------------------------------------
 	// PRODUCCION
-	/*var $servidor = "localhost"; // Servidor de la base de datos
+	var $servidor = "localhost"; // Servidor de la base de datos
 	var $user = "atenea"; // Usuario de la base de datos
 	var $pass = "AteneaPrea07e0x"; // Contraseña del usuario
-	var $dbname = "atenea"; // Tabla de la base de datos*/
+	var $dbname = "atenea"; // Tabla de la base de datos
 
-    // PREPRODUCCION
-    var $servidor = "localhost"; // Servidor de la base de datos
-    var $user = "ateneapre"; // Usuario de la base de datos
-    var $pass = "jgO14j7!"; // Contraseña del usuario
-    var $dbname = "ateneapre"; // Tabla de la base de datos
-
-	/*
 	// DESARROLLO 
 	var $servidor = "localhost"; // Servidor de la base de datos
 	var $user = "ateneadev"; // Usuario de la base de datos
 	var $pass = "AteneaPrea07e0x"; // Contraseña del usuario
 	var $dbname = "ateneadev"; // Tabla de la base de datos
-	*/
 
-    /*
 	// Servidor Local Oficina ATENADESLOCAL
 	var $servidor = "192.168.1.40"; // Servidor de la base de datos
 	var $user = "atenea"; // Usuario de la base de datos
 	var $pass = "SmkAtenea087"; // Contraseña del usuario
 	var $dbname = "atenea"; // Tabla de la base de datos
-    */
+
+	// Servidor Local Casa
+	var $servidor = "127.0.0.1"; // Servidor de la base de datos
+	var $user = "root"; // Usuario de la base de datos
+	var $pass = ""; // Contraseña del usuario
+	var $dbname = "atenea"; // Tabla de la base de datos
+	------------------------------------------------------------------------------ */
+
+    var $servidor = "";
+    var $user = "";
+    var $pass = "";
+    var $dbname = "";
 
 	var $conexion = NULL; // Conexión
 	var $errorSql = ""; // Error
@@ -40,6 +47,36 @@ class MySQL {
 
 	/* Constructor */
 	function __construct() {
+
+        switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+            case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+                $this->servidor = "192.168.1.40";                   // Servidor de la base de datos
+                $this->user = "atenea";                             // Usuario de la base de datos
+                $this->pass = "SmkAtenea087";                       // Contraseña del usuario
+                $this->dbname = "atenea";                           // Tabla de la base de datos
+                break;
+            case '/var/www/vhosts/ateneadev.simumak.com/httpdocs':  // DESARROLLO
+                $this->servidor = "localhost";                      // Servidor de la base de datos
+                $this->user = "ateneadev";                          // Usuario de la base de datos
+                $this->pass = "AteneaPrea07e0x";                    // Contraseña del usuario
+                $this->dbname = "ateneadev";                        // Tabla de la base de datos
+                break;
+            case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
+                $this->servidor = "localhost";                      // Servidor de la base de datos
+                $this->user = "ateneapre";                          // Usuario de la base de datos
+                $this->pass = "jgO14j7!";                    		// Contraseña del usuario
+                $this->dbname = "ateneapre";                        // Tabla de la base de datos
+                break;
+            case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
+                $this->servidor = "localhost";                      // Servidor de la base de datos
+                $this->user = "atenea";                             // Usuario de la base de datos
+                $this->pass = "AteneaPrea07e0x";                    // Contraseña del usuario
+                $this->dbname = "atenea";                           // Tabla de la base de datos
+                break;
+            default:
+                break;
+        }
+
 		$this->conectar();
 	}
 

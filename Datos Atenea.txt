@@ -17,7 +17,19 @@ Pass: AteneaPrea07e0x
 Base de datos: atenea
 Base de datos desarrollo: atenea_dev
 
-ATENEA DEV
+ATENEA PRE
+
+FTP:
+Host: ateneapre.simumak.com
+User: ateneapre
+Pass: !t0Tl1e9
+
+MySQL: 
+User: ateneapre
+Pass: jgO14j7!
+Base de datos: ateneapre
+
+ATENEA DEV (Antiguo)
 ------
 Host: ateneadev.simumak.com
 
@@ -34,6 +46,15 @@ MySQL:
 User: ateneadev
 Pass: AteneaPrea07e0x
 Base de datos: ateneadev
+
+ATENEA LOCAL
+------
+Host: 192.168.1.40
+
+MySQL:
+User: atenea
+Pass: SmkAtenea087
+Base de datos: atenea
 
 
 ATENEA TORO

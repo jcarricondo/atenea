@@ -4,17 +4,17 @@ include("../../classes/mysql.class.php");
 include("../../classes/sede/sede.class.php");
 include("../../classes/basicos/plantilla_producto.class.php");
 include("../../classes/orden_produccion/orden_produccion.class.php");
-include("../../classes/taller/taller.class.php");
+include("../../classes/almacen/almacen.class.php");
 
 $db = new MySQL();
 $op = new Orden_Produccion();
-$taller = new Taller();
+$almacen = new Almacen();
 $sede = new Sede();
 $plant = new Plantilla_Producto();
 
 if(isset($_GET["comp"])){
 	switch($_GET["comp"]){
-		// CARGA LA REFERENCIA DESDE ENTRADA/SALIDA DE MATERIAL DE TALLER
+		// CARGA LA REFERENCIA DESDE ENTRADA/SALIDA DE MATERIAL DE ALMACEN
 		case "cargaAlias":
 			$id_sede = $_GET["id_sede"];
 			$res_alias = $sede->dameAliasOPSede($id_sede);
