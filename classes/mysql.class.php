@@ -1,5 +1,5 @@
 <?php
-ini_set('session.gc_maxlifetime', '3600');
+ini_set('session.gc_maxlifetime', 3600);
 ini_set('max_execution_time', 3600);
 ini_set('display_errors', 1);
 date_default_timezone_set('Europe/Madrid');
@@ -64,7 +64,7 @@ class MySQL {
             case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
                 $this->servidor = "localhost";                      // Servidor de la base de datos
                 $this->user = "ateneapre";                          // Usuario de la base de datos
-                $this->pass = "AteneaPrea07e0x";                    // Contraseña del usuario
+                $this->pass = "jgO14j7!";                    		// Contraseña del usuario
                 $this->dbname = "ateneapre";                        // Tabla de la base de datos
                 break;
             case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
