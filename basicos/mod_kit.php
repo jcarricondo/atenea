@@ -234,7 +234,7 @@ if(isset($_POST["guardandoKit"]) and $_POST["guardandoKit"] == 1) {
 							header("Location: kits.php?operacion_kit=actualizado");
 						}
 						else {
-							$mensaje_error = $interfaces->getErrorMessage($resultado);
+							$mensaje_error = $kt->getErrorMessage($resultado);
 						}
 					}
 					else {

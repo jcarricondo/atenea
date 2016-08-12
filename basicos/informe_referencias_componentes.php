@@ -58,13 +58,6 @@ for($i=0;$i<count($res_componentes);$i++){
 
     $array_componentes_final[] = $id_componente;
 
-    // Comprobamos si ese componente tiene interfaces asociadas
-    $interfaces_comp = $comp->dameInterfacesComponente($id_componente);
-    for($j=0;$j<count($interfaces_comp);$j++){
-        $id_interfaz = $interfaces_comp[$j]["id_interfaz"];
-        $array_componentes_final[] = $id_interfaz;
-    }
-
     // Comprobamos si ese componente tiene kits asociados
     $kits_comp = $comp->dameKitsComponente($id_componente);
     for($j=0;$j<count($kits_comp);$j++){

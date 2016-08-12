@@ -7,42 +7,23 @@ include("../classes/basicos/referencia_componente.class.php");
 $referencia = new Referencia();
 $ref = new Referencia_Componente();
 
-// Devuelve el tipo de componente: cabina, periferico, interfaz o kit
+// Devuelve el tipo de componente: cabina, periferico o kit
 $tipo = $_GET["tipo"]; 
 // Devuelve el id_componente
 $id	= $_GET["id"]; 
 
 // Tenemos que comprobar el tipo de componente. 
-// Si el componente es una interfaz o kit mostrara sus referencias. 
-// Si el componente es una cabina o periferico hay que comprobar si tiene interfaces o kits. 
+// Si el componente es kit mostrara sus referencias.
+// Si el componente es una cabina o periferico hay que comprobar si tiene kits.
 
 // Obtenemos las referencias del componente
 $ref->dameReferenciasPorIdComponente($id);
 $referencias_componente = $ref->referencias_componente;
 
-// Si el componente es una cabina o un periferico tendremos que comprobar si tienen interfaces y/o kits y añadir sus referencias a las referencias del componente
+// Si el componente es una cabina o un periferico tendremos que comprobar si tienen kits y añadir sus referencias a las referencias del componente
 if(($tipo == "cabina") or ($tipo == "periferico")){
 	// Creamos un array auxiliar de las referencias del componente
 	$referencias_aux = $referencias_componente;
-	
-	// Primero obtenemos las interfaces del componente
-	$ref->dameIdsInterfazComponente($_GET["id"]);
-	$ids_interfaces = $ref->ids_interfaces;
-	
-	for($i=0;$i<count($ids_interfaces);$i++){
-		// Obtenemos las referencias de esa interfaz 
-		$ref->dameReferenciasPorIdComponente($ids_interfaces[$i]["id_interfaz"]);
-		$referencias_interfaz = $ref->referencias_componente;
-		if($referencias_interfaz != NULL){
-			if($referencias_componente != NULL){
-				$referencias_componente = $ref->addReferenciasInterfazAlComponente($referencias_interfaz,$referencias_componente);		
-			}
-			else{
-				$referencias_componente = $referencias_interfaz;
-			}	
-		}
-		
-	}
 	
 	// Obtenemos ahora los kits del componente
 	$ref->dameIdsKitComponente($_GET["id"]);

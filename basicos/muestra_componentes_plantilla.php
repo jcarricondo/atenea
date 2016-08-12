@@ -45,13 +45,11 @@ $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
                         case '1':
                             // CABINA
                             $tipo_componente = 'CABINA';
-                            $res_interfaces = $comp->dameInterfacesComponente($id_componente);
                             $res_kits = $comp->dameKitsComponente($id_componente);
                             break;
                         case '2':
                             // PERIFERICO
                             $tipo_componente = 'PERIF&Eacute;RICO';
-                            $res_interfaces = $comp->dameInterfacesComponente($id_componente);
                             $res_kits = $comp->dameKitsComponente($id_componente);
                             break;
                         case '3':
@@ -72,22 +70,6 @@ $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
                     </tr>
 
                 <?php
-                    // Añadimos los interfaces del componente principal
-                    for($j=0;$j<count($res_interfaces);$j++){
-                        $id_componente = $res_interfaces[$j]["id_interfaz"];
-                        $tipo_componente = 'INTERFAZ';
-                        $comp->cargaDatosComponenteId($id_componente);
-                        $nombre_componente = $comp->nombre; ?>
-
-                        <tr>
-                            <td style="text-align: center;"><?php echo $id_componente; ?></td>
-                            <td><?php echo $nombre_componente; ?></td>
-                            <td><?php echo $tipo_componente; ?></td>
-                            <td style="text-align: center;"><?php echo $comp->version;?></td>
-                            <td style="text-align: center;"><?php echo $fecha_creado; ?></td>
-                        </tr>
-                <?php
-                    }
                     // Añadimos los kits del componente principal
                     for($j=0;$j<count($res_kits);$j++) {
                         $id_componente = $res_kits[$j]["id_kit"];
@@ -104,7 +86,6 @@ $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
                         </tr>
                 <?php
                     }
-                    unset($res_interfaces);
                     unset($res_kits);
                 }
             ?>
