@@ -149,47 +149,8 @@
         </div>
 
 	<?php
-		// Obtenemos los ids de las interfaces de la cabina 
-		$costeInterfacesCabina = 0;
 		$costeKitCabina = 0;
-		$orden_produccion->dameIdsInterfazComponente($id_cabina);
-		for ($i=0;$i<count($orden_produccion->ids_interfaces);$i++){
-			$interfaz->cargaDatosInterfazId($orden_produccion->ids_interfaces[$i]["id_interfaz"]);
-	?>
-			<div class="ContenedorCamposCreacionBasico">
-       			<div class="LabelCreacionBasico">Referencias Interfaz</div>
-            	<div class="tituloComponente">
-					<table id="tablaTituloPrototipo">
-              			<tr>
-              				<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php echo '<span class="tituloComp">'.$interfaz->interfaz.'</span>';?></td>
-                  		</tr>    
-                  	</table>
-   				</div>
-                <div class="CajaReferencias">
-					<div id="CapaTablaIframe">
-    					<table id="mitablaIntCab<?php echo $i;?>">
-    						<?php include ("../orden_produccion/muestra_referencias_interfaces_mod_op.php");?>
-    					</table>
-               		</div>
-                </div>
-          	</div>      
-        	<div class="ContenedorCamposCreacionBasico">
-        		<div class="LabelCreacionBasico">Coste Interfaz Cabina</div> 
-          		<div class="tituloComponente">
-					<table id="tablaTituloPrototipo">
-                		<tr>
-                			<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php echo '<span class="tituloComp">'.number_format($precio_interfaz, 2, ',', '.').'€'.'</span>';?></td>
-                		</tr>
-                	</table>    
-            	</div>    
-        	</div>
-	<?php
-		$costeInterfacesCabina = $costeInterfacesCabina + $precio_interfaz;
-		}
-	?>
-
-	<?php
-		// Obtenemos los ids de los kits de la cabina 
+		// Obtenemos los ids de los kits de la cabina
 		$orden_produccion->dameIdsKitComponente($id_cabina);
 		for ($i=0;$i<count($orden_produccion->ids_kit);$i++){
 			$Kit->cargaDatosKitId($orden_produccion->ids_kit[$i]["id_kit"]);
@@ -233,10 +194,9 @@
                 	<tr>
                 		<td id="precio_total_cabina" style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
    							<?php 
-								$precio_total_cabina = $precio_cabina + $costeInterfacesCabina + $costeKitsCabina;
+								$precio_total_cabina = $precio_cabina + $costeKitsCabina;
 								echo '<input type="hidden" id="coste_total_cabina" name="coste_total_cabina" value="'.$precio_total_cabina.'"/>'; 
-								echo '<input type="hidden" id="costeInterfacesCabina" name="costeInterfacesCabina" value="'.$costeInterfacesCabina.'"/>'; 
-								echo '<input type="hidden" id="costeKitsCabina" name="costeKitsCabina" value="'.$costeKitsCabina.'"/>'; 
+								echo '<input type="hidden" id="costeKitsCabina" name="costeKitsCabina" value="'.$costeKitsCabina.'"/>';
 								echo '<span class="tituloComp">'.number_format($precio_total_cabina, 2, ',', '.').'€'.'</span>'; 
 							?>
                     	</td>
@@ -255,7 +215,6 @@
         </div>
 <?php 
 	}
-
 	// Obtenemos el numero de perifericos para generar las tablas de referencias correspondientes a ese periferico
 	$precio_todos_perifericos = 0;
 	$es_periferico = true;
@@ -289,48 +248,11 @@
 		echo '<div class="tituloComponente"><input type="checkbox" id="eliminar_periferico-'.$i.'" name="eliminar_periferico-'.$i.'" value="1" /> <div class="label_check_precios">Eliminar periferico</div></div></div>';
 		echo '<div class="ContenedorCamposCreacionBasico"><div class="LabelCreacionBasico">Coste Periferico</div><div class="tituloComponente"><table id="tablaTituloPrototipo"><tr><td id="precio_periferico_'.$i.'"  style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><span class="tituloComp">'.number_format($precio_periferico, 2, ',', '.').'€'.'</span></td></tr></table></div></div>';
 
-		// Interfaces del Periferico
-		$orden_produccion->dameIdsInterfazComponente($ids_perifericos[$i]);
-		$costeInterfacesPeriferico = 0;
-		for($k=0;$k<count($orden_produccion->ids_interfaces);$k++){
-			$interfaz->cargaDatosInterfazId($orden_produccion->ids_interfaces[$k]["id_interfaz"]);
-		?>
-			<div class="ContenedorCamposCreacionBasico">
-        		<div class="LabelCreacionBasico">Referencias Interfaz</div>
-           		<div class="tituloComponente">
-					<table id="tablaTituloPrototipo">
-              			<tr>
-              				<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php echo '<span class="tituloComp">'.$interfaz->interfaz.'</span>';?></td>
-                		</tr>    
-                	</table>
-    			</div>
-            	<div class="CajaReferencias">
-					<div id="CapaTablaIframe">
-    					<table id="mitablaInt<?php echo $k;?>Per<?php echo $i;?>">
-							<?php include ("../orden_produccion/muestra_referencias_interfaces_mod_op.php");?>	
-						</table>
-                	</div>
-            	</div>
-        	</div>
-        	<div class="ContenedorCamposCreacionBasico">
-        		<div class="LabelCreacionBasico">Coste Interfaz Periferico</div> 
-        		<div class="tituloComponente">
-					<table id="tablaTituloPrototipo">
-            			<tr>
-            				<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php echo '<span class="tituloComp">'.number_format($precio_interfaz, 2, ',', '.').'€'.'</span>';?></td>
-                		</tr>
-                	</table>    
-            	</div>    
-        	</div>
-    <?php
-       		$costeInterfacesPeriferico = $costeInterfacesPeriferico + $precio_interfaz;
-		}
 		// Kits del Periferico			
 		$orden_produccion->dameIdsKitComponente($ids_perifericos[$i]);
 		$costeKitsPeriferico = 0;
 		for ($k=0;$k<count($orden_produccion->ids_kit);$k++){
-			$Kit->cargaDatosKitId($orden_produccion->ids_kit[$k]["id_kit"]);
-    ?>
+			$Kit->cargaDatosKitId($orden_produccion->ids_kit[$k]["id_kit"]); ?>
 			<div class="ContenedorCamposCreacionBasico">
        			<div class="LabelCreacionBasico">Referencias Kit</div>
       			<div class="tituloComponente">
@@ -370,13 +292,11 @@
                 		<tr>
                 			<td id="precio_total_periferico_<?php echo $i;?>"style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
    								<?php 
-									$precio_total_periferico = $precio_periferico + $costeInterfacesPeriferico +$costeKitsPeriferico;
+									$precio_total_periferico = $precio_periferico + + $costeKitsPeriferico;
 									$precio_todos_perifericos = $precio_todos_perifericos + $precio_total_periferico;
 									echo '<span class="tituloComp">'.number_format($precio_total_periferico, 2, ',', '.').'€'.'</span>'; 
-									echo '<input type="hidden" id="costeInterfacesPeriferico_'.$i.'" name="costeInterfacesPeriferico_'.$i.'" value="'.$costeInterfacesPeriferico.'"/>'; 
-									echo '<input type="hidden" id="costeKitsPeriferico_'.$i.'" name="costeKitsPeriferico_'.$i.'" value="'.$costeKitsPeriferico.'"/>'; 
+									echo '<input type="hidden" id="costeKitsPeriferico_'.$i.'" name="costeKitsPeriferico_'.$i.'" value="'.$costeKitsPeriferico.'"/>';
 									echo '<input type="hidden" id="precio_tot_periferico_'.$i.'" name="precio_tot_periferico_'.$i.'" value="'.$precio_total_periferico.'"/>'; 
-									$costeInterfacesPeriferico = 0;
 									$costeKitsPeriferico = 0;
 								?>
                     		</td>

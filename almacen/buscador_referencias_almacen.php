@@ -49,7 +49,7 @@ if(isset($_POST["realizandoBusqueda"]) and $_POST["realizandoBusqueda"] == 1) {
 		if (($ref_fabricante[$i] == '-') or ($ref_fabricante[$i] == ' ')) $ref_fabricante[$i] = '%'; 	
 	}
 		
-	// Se carga la clase para la base de datos y el listado de interfaces
+	// Se carga la clase para la base de datos
 	$db = new MySQL();
 	$referencias = new listadoReferencias();
 	// Se pasan los datos del buscador a la clase del listado y se realiza la consulta a la base de datos

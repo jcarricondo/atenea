@@ -16,7 +16,6 @@ class Cabina extends MySQL {
 	var $nombre_archivo;
 	var $ids_archivos;
 	var $nombres_archivos;
-	var $interfaces;
 	var $kits;
 
 	function cargarDatos($id_componente,$cabina,$referencia,$version,$descripcion,$id_tipo,$estado,$prototipo) {
@@ -132,7 +131,7 @@ class Cabina extends MySQL {
 
 
 	// Se hace la carga de datos  de una nueva cabina
-	function datosNuevoCabina($id_componente = NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,$id_tipo = 1,$nombre_archivo,$interfaces,$estado,$prototipo,$kits) {
+	function datosNuevoCabina($id_componente = NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,$id_tipo = 1,$nombre_archivo,$interfaces = NULL,$estado,$prototipo,$kits) {
 		$this->id_componente = $id_componente;
 		$this->nombre = $nombre;
 		$this->referencia = $referencia;
@@ -142,7 +141,6 @@ class Cabina extends MySQL {
 		$this->piezas = $piezas;
 		$this->id_tipo = $id_tipo;
 		$this->nombre_archivo = $nombre_archivo;
-		$this->interfaces = $interfaces;
 		$this->estado = $estado;
 		$this->prototipo = $prototipo;
 		$this->kits = $kits;
@@ -198,15 +196,6 @@ class Cabina extends MySQL {
 								$this->makeValue($this->piezas[$i], "float"),
 								$this->makeValue($this->total_paquetes, "int"),
 								$this->makeValue($this->precio_pack, "float"));
-							$this->setConsulta($consulta);
-							$this->ejecutarSoloConsulta($consulta);
-						}
-
-						// Insertamos las interfaces que tenga asociada la cabina
-						for($i=0;$i<count($this->interfaces);$i++){
-							$consulta = sprintf("insert into componentes_interfaces(id_tipo_componente,id_componente,id_interfaz,fecha_creado,activo) value(1,%s,%s,current_timestamp,1)",
-								$this->makeValue($this->id_componente, "int"),
-								$this->makeValue($this->interfaces[$i], "int"));
 							$this->setConsulta($consulta);
 							$this->ejecutarSoloConsulta($consulta);
 						}
@@ -305,21 +294,6 @@ class Cabina extends MySQL {
 						$this->setConsulta($consulta);
 						$this->ejecutarSoloConsulta($consulta);
 					}
-
-					// Eliminar las interfaces asociadas a esa componente
-					$consultaBorrarInterfaces = sprintf("update componentes_interfaces set activo=0 where componentes_interfaces.id_componente=%s ",
-							$this->makeValue($this->id_componente, "int"));
-						$this->setConsulta($consultaBorrarInterfaces);
-						$this->ejecutarSoloConsulta();
-
-					// Insertamos las interfaces que tenga asociada la cabina
-						for($i=0;$i<count($this->interfaces);$i++){
-							$consulta = sprintf("insert into componentes_interfaces(id_tipo_componente,id_componente,id_interfaz,fecha_creado,activo) value(1,%s,%s,current_timestamp,1)",
-								$this->makeValue($this->id_componente, "int"),
-								$this->makeValue($this->interfaces[$i], "int"));
-							$this->setConsulta($consulta);
-							$this->ejecutarSoloConsulta($consulta);
-						}
 
 					// Eliminar los kits asociados a ese componente
 					$consultaBorrar = sprintf("update componentes_kits set activo=0 where componentes_kits.id_componente=%s ",

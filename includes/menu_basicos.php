@@ -61,15 +61,6 @@
                 case 'mod_periferico':
                     if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/perifericos.php">Listado</a>';
                     break;
-                case 'interfaces':
-                    if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nueva_interfaz.php">Nueva</a>';
-                    break;
-                case 'new_interfaz':
-                    if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/interfaces.php">Listado</a>';
-                    break;
-                case 'mod_interfaz':
-                    if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/interfaces.php">Listado</a>';
-                    break;
                 case 'kits':
                     if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nuevo_kit.php">Nuevo</a>';
                     break;

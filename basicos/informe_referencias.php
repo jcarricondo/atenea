@@ -22,7 +22,7 @@ $salida = "";
 $ref->dameReferenciasPorIdComponente($id);
 $referencias_componente = $ref->referencias_componente;
 
-// Si el componente es una cabina o un periferico tendremos que comprobar si tienen interfaces y/o kits y añadir sus referencias a las referencias del componente
+// Si el componente es una cabina o un periferico tendremos que comprobar si tienen kits y añadir sus referencias a las referencias del componente
 if (($tipo == "cabina") or ($tipo == "periferico")){
 	// Creamos un array auxiliar de las referencias del componente
 	$referencias_aux = $referencias_componente;

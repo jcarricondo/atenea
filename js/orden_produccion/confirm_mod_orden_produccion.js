@@ -320,47 +320,24 @@ function validarFormulario() {
 	}
 }
 	
-// Devuelve el coste de las interfaces de la cabina
-function getCosteInterfacesCabina(){
-	coste_interfaces = document.getElementById("costeInterfacesCabina").value;
-	return coste_interfaces;
-}
-
 // Devuelve el coste de los kits de la cabina
 function getCosteKitsCabina(){
 	coste_kits = document.getElementById("costeKitsCabina").value;
 	return coste_kits;
 }
 	
-// Devuelve el coste de las interfaces del perifericos
-function getCosteInterfacesPerifericos(periferico){
-	coste_interfaces = document.getElementById('costeInterfacesPeriferico_' + periferico).value;
-	return coste_interfaces;
-}
-
 // Devuelve el coste de los kits del perifericos
 function getCosteKitsPerifericos(periferico){
 	coste_kits = document.getElementById('costeKitsPeriferico_' + periferico).value;
 	return coste_kits;
 }
 	
-// Obtiene los precios de la cabina mas el precio de sus interfaces y los suma
+// Obtiene los precios de la cabina mas el precio de sus kits y los suma
 function actualizarCosteTotalCabina(costeTotal){
 	try{
 		// Obtenemos el td donde esta guardado el input hidden
 		var precio_total_cabina = document.getElementById("precio_total_cabina");
 	
-		// Obtener el coste total de las interfaces de la cabina
-		coste_interfaces = getCosteInterfacesCabina();
-		if (coste_interfaces != ""){
-			coste_interfaces = parseFloat(coste_interfaces);
-			coste_interfaces = coste_interfaces * 100;
-			coste_interfaces = Math.round(coste_interfaces) / 100; 
-		}
-		else {
-			coste_interfaces = 0;	
-		}
-		
 		// Obtener el coste total de los kits de la cabina
 		coste_kits = getCosteKitsCabina();
 		if (coste_kits != ""){
@@ -372,10 +349,10 @@ function actualizarCosteTotalCabina(costeTotal){
 			coste_kits = 0;	
 		}
 
-		costeTotal = costeTotal + coste_interfaces + coste_kits;
+		costeTotal = costeTotal + coste_kits;
 		coste_total_cabina = costeTotal;
 		costeTotal = costeTotal.toFixed(2);
-		precio_total_cabina.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeInterfacesCabina" name="costeInterfacesCabina" value="' + coste_interfaces + '"/><input type="hidden" id="costeKitsCabina" name="costeKitsCabina" value="' + coste_kits + '"/><input type="hidden" id="coste_total_cabina" name="coste_total_cabina" value="' + coste_total_cabina + '"/>'; 
+		precio_total_cabina.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeKitsCabina" name="costeKitsCabina" value="' + coste_kits + '"/><input type="hidden" id="coste_total_cabina" name="coste_total_cabina" value="' + coste_total_cabina + '"/>';
 		actualizarCosteTotalProducto();
 	}
 	catch(e) {
@@ -388,18 +365,8 @@ function actualizarCosteTotalPeriferico(costeTotal,periferico){
 	try{
 		// Obtenemos el td donde esta guardado el input hidden
 		var precio_total_periferico = document.getElementById('precio_total_periferico_' + periferico);
-		// Obtener el coste total de las interfaces del periferico
-		coste_interfaces = getCosteInterfacesPerifericos(periferico);
-		if (coste_interfaces != ''){
-			coste_interfaces = parseFloat(coste_interfaces);
-			coste_interfaces = coste_interfaces * 100;
-			coste_interfaces = Math.round(coste_interfaces) / 100; 
-		}
-		else {
-			coste_interfaces = 0;	
-		}
-		
-		// Obtener el coste total de los kits del periferico
+
+		// Obtener el coste total de los kits del periférico
 		coste_kits = getCosteKitsPerifericos(periferico);
 		if (coste_kits != ''){
 			coste_kits = parseFloat(coste_kits);
@@ -410,10 +377,10 @@ function actualizarCosteTotalPeriferico(costeTotal,periferico){
 			coste_kits = 0;	
 		}
 			
-		costeTotal = costeTotal + coste_interfaces + coste_kits;
+		costeTotal = costeTotal + coste_kits;
 		costeTotal = costeTotal.toFixed(2);
 			
-		precio_total_periferico.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeInterfacesPeriferico_' + periferico + '" name="costeInterfacesPeriferico_' + periferico + '" value="' + coste_interfaces + '"/><input type="hidden" id="costeKitsPeriferico_' + periferico + '" name="costeKitsPeriferico_' + periferico + '" value="' + coste_kits + '"/><input type="hidden" id="precio_tot_periferico_' + periferico + '" name="precio_tot_periferico_' + periferico + '" value="' + costeTotal + '"/>';
+		precio_total_periferico.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeKitsPeriferico_' + periferico + '" name="costeKitsPeriferico_' + periferico + '" value="' + coste_kits + '"/><input type="hidden" id="precio_tot_periferico_' + periferico + '" name="precio_tot_periferico_' + periferico + '" value="' + costeTotal + '"/>';
 			
 		actualizarCosteTotalProducto();
 	}

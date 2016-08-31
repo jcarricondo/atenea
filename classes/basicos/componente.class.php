@@ -89,15 +89,6 @@ class Componente extends MySQL {
 		return $resultados["id_tipo"];
 	}
 
-    // Función que devuelve las interfaces asociadas al componente
-    function dameInterfacesComponente($id_componente){
-        $consulta = sprintf("select id_interfaz from componentes_interfaces where activo=1 and id_componente=%s order by fecha_creado",
-            $this->makeValue($id_componente,"int"));
-        $this->setConsulta($consulta);
-        $this->ejecutarConsulta();
-        return $this->getResultados();
-    }
-
     // Función que devuelve los kits asociados al componente
     function dameKitsComponente($id_componente){
         $consulta = sprintf("select id_kit from componentes_kits where activo=1 and id_componente=%s order by fecha_creado",
@@ -147,7 +138,7 @@ class Componente extends MySQL {
                 // Si no esta la referencia la insertamos al final
                 array_push($referencias_aux,$referencias_componente_secundario[$i]);
             }
-            // Modificamos el array de referencias del componente por el array modificado con las referencias de la interfaz o kit
+            // Modificamos el array de referencias del componente por el array modificado con las referencias del kit
             unset($referencias_componente_final);
             $referencias_componente_final = $referencias_aux;
         }

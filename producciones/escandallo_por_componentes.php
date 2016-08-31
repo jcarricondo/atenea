@@ -265,7 +265,7 @@ for($i=0;$i<count($id_componentes);$i++){
 		$id_componente_boxes[] = $id_componente;
 	}
 	else {
-		// Comprobamos que el componente no sea una interfaz o kit
+		// Comprobamos que el componente no sea un kit
 		$id_tipo_componente = $componente->dameTipoComponente($id_componente);  
 		$esComponentePrincipal = $componente->esComponentePrincipal($id_tipo_componente); 
 		if($esComponentePrincipal){

@@ -178,7 +178,7 @@ function Abrir_ventana(pagina) {
 	}
 
 	
-	// Funcion que calcula el coste total de las referencias de la tabla periferico (sin las interfaces)
+	// Funcion que calcula el coste total de las referencias de la tabla periferico
 	function calculaCoste(tableId){
 		try {
 			table = document.getElementById('mitabla');
@@ -200,7 +200,7 @@ function Abrir_ventana(pagina) {
 		}
 	}	
 
-	// Funcion que actualiza el coste total del componente mas el coste de las interfaces 
+	// Función que actualiza el coste total del componente mas el coste de los kits
 	function actualizarCoste(costeTotal){
 		try{
             // Coste del periferico
@@ -208,17 +208,12 @@ function Abrir_ventana(pagina) {
             // Actualizamos el precio del periferico
             document.getElementById('coste_periferico').setAttribute('value',costeTotal);
 
-            // Coste de las interfaces
-            var input_coste_interfaces = document.getElementById('costeInterfaces');
-            var coste_interfaces = input_coste_interfaces.value;
-            coste_interfaces = parseFloat(coste_interfaces);
-
             // Coste de los kits
             var input_coste_kits = document.getElementById('costeKits');
             var coste_kits = input_coste_kits.value;
             coste_kits = parseFloat(coste_kits);
 
-            var costeTotalPeriferico = costeTotal + coste_interfaces + coste_kits;
+            var costeTotalPeriferico = costeTotal + coste_kits;
             document.getElementById('coste_total').setAttribute('value',costeTotalPeriferico);
 
             costeTotalPeriferico = costeTotalPeriferico * 100;
@@ -231,166 +226,6 @@ function Abrir_ventana(pagina) {
 		}
 		catch(e) {
 			alert(e);
-		}
-	}
-
-	// Añadir interfaz a la segunda lista
-	function AddToSecondList(){
-		var fl = document.getElementById('interfaces_no_asignados[]');
-		var sl = document.getElementById('interfaz[]');
-        var contador_interfaces = sl.options.length;
-	
-		for (i = 0; i < fl.options.length; i++){
-			if(fl.options[i].selected){
-				// Añadimos la opcion a la lista 1
-				var option = document.createElement("option");
-				option.value = fl[i].value;
-				option.text = fl[i].text;
-				fl.add(option,i);
-				sl.add(fl.options[i],null);
-                // Deseleccionar campo origen
-                fl.options[i].selected = false;
-                var id_componente = option.value;
-
-                // Realizamos la petición al servidor para obtener los datos y referencias del componente
-                var respuesta = (function () {
-                    var respuesta = null;
-                    $.ajax({
-                        dataType: "json",
-                        url: "../ajax/basicos/nuevo_periferico.php?func=loadComp",
-                        data: "id=" + id_componente,
-                        type: "GET",
-                        async: false,
-                        success: function (data) {
-                            respuesta = data;
-                        }
-                    });
-                    return respuesta;
-                })();
-
-                // Obtenemos la capa contenedora para añadir las interfaces
-                var capa_contenedora = document.getElementById('capa_interfaces');
-                var id_capa_interfaz = 'interfaz-' + contador_interfaces;
-                var coste_input_interfaz = 'coste_interfaz-' + contador_interfaces;
-                var interfaz_repetida = document.getElementById(id_capa_interfaz) != null ;
-                var salida = '';
-
-                // Si ya se insertó esa interfaz le asignamos otro id
-                while(interfaz_repetida){
-                    contador_interfaces++;
-                    id_capa_interfaz = 'interfaz-' + contador_interfaces;
-                    interfaz_repetida = document.getElementById(id_capa_interfaz) != null ;
-                }
-
-                // Preparamos el HTML con las referencias
-                salida = '<div id="' + id_capa_interfaz + '" class="ContenedorCamposCreacionBasico" style="display: block;">';
-                salida += '<div class="LabelCreacionBasico">Referencias Interfaz</div>';
-                salida += '<div class="tituloComponente">' + respuesta.nombre + '</div>';
-                salida += '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitabla">';
-                salida += '<tr><th style="text-align:center;">ID REF</th><th>NOMBRE</th><th>PROVEEDOR</th><th>REF. PROVEEDOR</th><th>NOMBRE PIEZA</th><th style="text-align:center;">PIEZAS</th><th style="text-align:center;">PACK PRECIO</th><th style="text-align:center;">UDS/P</th><th style="text-align:center;">PRECIO UNIDAD</th><th style="text-align:center;">PRECIO</th></tr>';
-
-                var precio_interfaz = 0;
-                // Cargamos cada fila de la tabla correspondiente a una referencia
-                for(var j in respuesta.referencias){
-                    salida += '<tr>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].id_referencia + '</td>';
-                    salida += '<td>' + respuesta.referencias[j].nombre + '</td>';
-                    salida += '<td>' + respuesta.referencias[j].nombre_proveedor + '</td>';
-                    salida += '<td>' + respuesta.referencias[j].ref_proveedor + '</td>';
-                    salida += '<td>' + respuesta.referencias[j].nombre_pieza +'</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].piezas + '</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].pack_precio + '</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].uds_paquete + '</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].precio_unidad + '</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].precio + '</td>';
-                    salida += '</tr>';
-                    precio_interfaz = precio_interfaz + parseFloat(respuesta.referencias[j].precio);
-                }
-                precio_interfaz = precio_interfaz * 100;
-                precio_interfaz = Math.round(precio_interfaz) / 100;
-                var precio_interfaz_string = precio_interfaz.toFixed(2);
-                precio_interfaz_string = precio_interfaz_string.replace('.',',');
-
-                salida += '</table></div></div>';
-                salida += '<div class="LabelCreacionBasico" style="margin-top:5px;">Coste Interfaz</div>';
-                salida += '<div class="tituloComponente">';
-                salida += '<table id="tablaTituloPrototipo">';
-                salida += '<tr>';
-                salida += '<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">';
-                salida += '<span class="tituloComp">' + precio_interfaz_string + '€</span>';
-                salida += '</td></tr></table>';
-                salida += '<input type="hidden" id="' + coste_input_interfaz + '" value="' + precio_interfaz + '" />';
-                salida += '</div><br/></div>';
-
-                // Actualizamos el coste total de interfaces
-                var costeInterfaces = parseFloat(document.getElementById('costeInterfaces').value);
-                costeInterfaces = costeInterfaces + precio_interfaz;
-                document.getElementById('costeInterfaces').setAttribute('value',costeInterfaces);
-
-                // Mostramos la salida por pantalla
-                capa_contenedora.innerHTML = capa_contenedora.innerHTML + salida;
-                contador_interfaces++;
-                // Actualizamos el precio total del periferico
-                sumaPrecioComponentePeriferico(precio_interfaz);
-			}
-		}
-		return true;
-	}
-
-	// Eliminar interfaz de la lista
-	function DeleteSecondListItem(){
-		var sl = document.getElementById('interfaz[]');
-        var j=0;
-	
-		for(i=0;i<sl.options.length;i++){
-			if(sl.options[i].selected){
-                // Borramos el elemento del select multiple
-                sl.remove(sl.selectedIndex);
-                var num_total_interfaces = sl.options.length;
-
-                // Borramos la capa de la interfaz seleccionada
-                var id_capa_interfaz = 'interfaz-' + i;
-                var id_capa_interfaz_ant = id_capa_interfaz;
-                var id_input_coste_interfaz = 'coste_interfaz-' + i;
-                var id_input_coste_interfaz_ant = id_input_coste_interfaz;
-                var precio_interfaz = document.getElementById(id_input_coste_interfaz).value;
-                var capa_interfaz_remove = document.getElementById(id_capa_interfaz);
-                if(capa_interfaz_remove.parentNode){
-                    capa_interfaz_remove.parentNode.removeChild(capa_interfaz_remove);
-                }
-
-                // Modificamos los ids de las capas de las interfaces
-                for(j=i;j<num_total_interfaces;j++){
-                    var aux = j+1;
-                    id_capa_interfaz = 'interfaz-' + aux;
-                    id_input_coste_interfaz = 'coste_interfaz-' + aux;
-                    document.getElementById(id_capa_interfaz).setAttribute('id',id_capa_interfaz_ant);
-                    id_capa_interfaz_ant = 'interfaz-' + aux;
-                    document.getElementById(id_input_coste_interfaz).setAttribute('id',id_input_coste_interfaz_ant);
-                    id_input_coste_interfaz_ant = 'coste_interfaz-' + aux;
-                }
-
-                // Actualizamos el coste total de interfaces
-                var costeInterfaces = parseFloat(document.getElementById('costeInterfaces').value);
-                costeInterfaces = costeInterfaces - precio_interfaz;
-                if(costeInterfaces < 0) costeInterfaces = 0;
-                costeInterfaces = costeInterfaces * 100;
-                costeInterfaces = Math.round(costeInterfaces) / 100;
-                document.getElementById('costeInterfaces').setAttribute('value',costeInterfaces);
-
-                // Actualizamos el precio total del periferico
-                restaPrecioComponentePeriferico(precio_interfaz);
-                i--;
-			}
-		}
-		return true;
-	}
-
-	// Seleccionar interfaces para POST
-	function SeleccionarInterfaces(){
-		var lista = document.getElementById("interfaz[]");
-		for	(i = 0; i<lista.options.length; i++){				
-			lista[i].selected = "selected";
 		}
 	}
 
@@ -554,14 +389,13 @@ function Abrir_ventana(pagina) {
 		}
 	}
 
-	// Selecciona las interfaces y los kits del periferico
+	// Selecciona los kits del periferico
 	function SeleccionarComponentes() {
-		SeleccionarInterfaces();
 		SeleccionarKits();
 		return true;	
 	}	
 
-	// Funcion que quita la tabla de carga de referencias y añade un enlace para subir un archivo
+	// Función que quita la tabla de carga de referencias y añade un enlace para subir un archivo
 	function cargaArchivoImportacion(){
 		var capa_referencias = document.getElementById('capa_referencias');
 		var capa_opciones = document.getElementById('capa_opciones');
@@ -597,7 +431,7 @@ function Abrir_ventana(pagina) {
 		capa_boton_metodo.innerHTML = '<input type="button" id="importar_excel" name="importar_excel" class="BotonEliminar" value="IMPORTAR DESDE EXCEL" onclick="cargaArchivoImportacion();" /><input type="hidden" id="metodo" name="metodo" value="normal">';
 	}
 
-    // Funcion que suma el precio de una interfaz o kit al precio total del periferico
+    // Función que suma el precio de un kit al precio total del periférico
     function sumaPrecioComponentePeriferico(precio_componente){
         // Obtenemos el precio total del periferico
         var capa_coste_total = document.getElementById('CosteTotalComponente');
@@ -622,7 +456,7 @@ function Abrir_ventana(pagina) {
         capa_coste_total.innerHTML = '<span class="fuenteSimumakNegrita">' + coste_total_string + '€</span>';
     }
 
-    // Funcion que resta el precio de una interfaz o kit al precio total del periferico
+    // Función que resta el precio de un kit al precio total del periferico
     function restaPrecioComponentePeriferico(precio_componente){
         // Obtenemos el precio total del periferico
         var capa_coste_total = document.getElementById('CosteTotalComponente');

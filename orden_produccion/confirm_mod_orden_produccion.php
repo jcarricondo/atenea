@@ -5,7 +5,6 @@ set_time_limit(10000);
 include("../includes/sesion.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/interface.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/software.class.php");
 include("../classes/basicos/nombre_producto.class.php");
@@ -24,7 +23,6 @@ $orden_produccion = new Orden_Produccion();
 $producto = new Producto();
 $cabina = new Cabina();
 $periferico = new Periferico();
-$interfaz = new Interfaz();
 $Kit = new Kit();
 $soft = new Software();
 $referencia_componente = new Referencia_Componente();
@@ -200,14 +198,6 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 		$contador_componente = 1;
 		if($id_cabina != NULL and $id_cabina != 0 and $id_cabina != -1){
 			$ids_componentes[] = $id_cabina;
-			// Comprobamos si la cabina tiene interfaces
-			$orden_produccion->dameIdsInterfazComponente($id_cabina);
-			for($i=0;$i<count($orden_produccion->ids_interfaces);$i++){
-				$ids_interfaces[] = $orden_produccion->ids_interfaces[$i]["id_interfaz"];
-			}
-			if($ids_interfaces != NULL){
-				$ids_componentes = array_merge($ids_componentes,$ids_interfaces);
-			}
 			// Comprobamos si la cabina tiene kits
 			$orden_produccion->dameIdsKitComponente($id_cabina);
 			for($i=0;$i<count($orden_produccion->ids_kit);$i++){
@@ -217,20 +207,11 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 				$ids_componentes = array_merge($ids_componentes,$ids_kit);
 			}
 		}	
-		unset($ids_interfaces);
 		unset($ids_kit);
 		if($ids_perifericos != NULL){
 			for($i=0;$i<count($ids_perifericos);$i++){
 				$ids_componentes[] = $ids_perifericos[$i];
-				// Comprobamos si el periferico tiene interfaces
-				$orden_produccion->dameIdsInterfazComponente($ids_perifericos[$i]);
-				for($j=0;$j<count($orden_produccion->ids_interfaces);$j++){
-					$ids_interfaces[] = $orden_produccion->ids_interfaces[$j]["id_interfaz"];
-				}
-				if($ids_interfaces != NULL){
-					$ids_componentes = array_merge($ids_componentes,$ids_interfaces);
-				}
-				// Comprobamos si la cabina tiene kits
+				// Comprobamos si el periférico tiene kits
 				$orden_produccion->dameIdsKitComponente($ids_perifericos[$i]);
 				for($j=0;$j<count($orden_produccion->ids_kit);$j++){
 					$ids_kit[] = $orden_produccion->ids_kit[$j]["id_kit"];
@@ -238,8 +219,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 				if($ids_kit != NULL){
 					$ids_componentes = array_merge($ids_componentes,$ids_kit);
 				}
-				unset($ids_interfaces);
-				unset($ids_kit);	
+				unset($ids_kit);
 			}
 		}
 		if($ids_softwares != NULL){
@@ -277,9 +257,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 				break;
 				case '4':
 					// INTERFAZ
-					$interfaz->cargaDatosInterfazId($ids_componentes[$i]);
-					$num_serie_componente = $interfaz->referencia."_".$interfaz->version."_".$id_produccion."_".$contador_componente;
-					$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);			
+					// Dejan de existir en Agosto de 2016
 				break;
 				case '5':
 					// KIT

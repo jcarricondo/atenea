@@ -3,8 +3,7 @@
 class Funciones extends MySQL{
 	
 	var $validacion;
-	var $ids_interfaces;	
-		
+
 	// Funcion para validar que se introducen solo digitos
 	function verificarSoloDigitos($cadena){ 
   		return (ctype_digit($cadena) or ($cadena == "-"));

@@ -26,7 +26,6 @@ class Orden_Produccion extends MySQL {
 	var $ids_produccion;
 	var $id_tipo_componente;
 	var $ids_proveedores; 
-	var $ids_interfaces;
 	var $ids_kit;
 	var $fecha_inicio_construccion;
 	var $id_sede;
@@ -691,16 +690,6 @@ class Orden_Produccion extends MySQL {
 		$this->id_produccion = $this->getResultados();
 	}
 
-
-	// Devuelve los ids de las interfaces de un componente
-	function dameIdsInterfazComponente($id_componente) {
-		$consulta = sprintf("select id_interfaz from componentes_interfaces where componentes_interfaces.id_componente=%s and componentes_interfaces.activo=1 ",
-			$this->makeValue($id_componente, "int"));
-		$this->setConsulta($consulta);
-		$this->ejecutarConsulta();
-		$this->ids_interfaces = $this->getResultados();
-	}
-	
 	// Devuelve los ids de los kits de un componente
 	function dameIdsKitComponente($id_componente) {
 		$consulta = sprintf("select id_kit from componentes_kits where componentes_kits.id_componente=%s and componentes_kits.activo=1 ",

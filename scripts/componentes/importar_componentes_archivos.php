@@ -5,7 +5,6 @@ include("../../classes/mysql.class.php");
 include("../../classes/basicos/cabina.class.php");
 include("../../classes/basicos/periferico.class.php");
 include("../../classes/basicos/software.class.php");
-include("../../classes/basicos/interface.class.php");
 include("../../classes/basicos/kit.class.php");
 include("../../classes/funciones/log_unificacion.class.php");
 include("../../classes/kint/Kint.class.php");
@@ -14,7 +13,6 @@ $db = new MySql();
 $cab = new Cabina();
 $per = new Periferico();
 $sof = new Software();
-$int = new Interfaz();
 $kit = new Kit();
 $log = new Log_Unificacion();
 

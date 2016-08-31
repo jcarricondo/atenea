@@ -1,5 +1,5 @@
 <?php 
-// Este fichero sirve para descargar el archivo perteneciente al componente (CABINA, PERIFERICO o INTERFAZ)
+// Este fichero sirve para descargar el archivo perteneciente al componente (CABINA, PERIFERICO o KIT)
 $archivo = $_GET["id"];
 $ruta_completa = "mecanica/".$archivo;
 

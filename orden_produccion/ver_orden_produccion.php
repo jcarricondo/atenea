@@ -5,7 +5,6 @@ include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/software.class.php");
-include("../classes/basicos/interface.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/cliente.class.php");
 include("../classes/basicos/nombre_producto.class.php");
@@ -25,7 +24,6 @@ $producto = new Producto();
 $cabina = new Cabina();
 $periferico = new Periferico();
 $software = new Software();
-$interfaz = new Interfaz();
 $kit = new Kit();
 $referencia = new Referencia();
 $nombre_producto = new Nombre_Producto();
@@ -183,11 +181,8 @@ include ('../includes/header.php');
             break;    
             case '4':
                 // INTERFAZ
-                $interfaz->cargaDatosInterfazId($id_componente);
-                $nombre_componente = "Interfaz";
-                $titulo_componente = $interfaz->interfaz.'_v'.$interfaz->version;
-                $es_prototipo = ($interfaz->prototipo == 1);
-                break;
+                // Deja de existir en Agosto de 2016
+            break;
             case '5':
                 // KIT
                 $kit->cargaDatosKitId($id_componente);

@@ -4,7 +4,6 @@ include("../includes/sesion.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/interface.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/orden_produccion/orden_produccion.class.php");
 include("../classes/productos/producto.class.php");
@@ -25,14 +24,13 @@ $op = new Orden_Produccion();
 $producto = new Producto();
 $cabina = new Cabina();
 $periferico = new Periferico();
-$interfaz = new Interfaz();
 $kit = new Kit();
 
 $salida = "";
 $salida .= '<table>
 	<tr>
     	<th>Componente</th>
-    	<th>Interfaz - Kit</th>
+    	<th>Kit</th>
     	<th>ID Ref.</th>
 		<th>Nombre</th>
         <th>Referencia Proveedor</th>
@@ -100,9 +98,7 @@ for($i=0;$i<count($componentes_produccion);$i++){
         break;
         case '4':
             // INTERFAZ
-            $interfaz->cargaDatosInterfazId($id_componente);
-            $nombre_subcomponente = $interfaz->interfaz."_v".$interfaz->version;
-            $nombre_componente = $componente_principal;
+			// Deja de existir en Agosto de 2016
         break;
         case '5':
             // KIT
