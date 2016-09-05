@@ -70,7 +70,7 @@
                 case 'mod_kit':
                     if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/kits.php">Listado</a>';
                     break;
-                case 'softwares':
+                /* case 'softwares':
                     if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nuevo_software_simulacion.php">Nuevo</a>';
                     break;
                 case 'new_software':
@@ -78,7 +78,7 @@
                     break;
                 case 'mod_software':
                     if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/software_simulacion.php">Listado</a>';
-                    break;
+                    break; */
                 case 'fabricantes':
                     if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nuevo_fabricante.php">Nuevo</a>';
                     break;

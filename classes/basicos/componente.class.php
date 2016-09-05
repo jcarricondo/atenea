@@ -103,10 +103,12 @@ class Componente extends MySQL {
 		return $id_tipo_componente == 1 || $id_tipo_componente == 2;
 	}
 
-    // Función que determina si un componente es SOFTWARE
+    /*
+	// Función que determina si un componente es SOFTWARE
     function esComponenteSoftware($id_tipo_componente){
         return $id_tipo_componente == 3;
     }
+    */
 
     // Función que obtiene las referencias y las piezas de un componente
     function dameRefsYPiezasComponente($id_componente){

@@ -6,7 +6,7 @@ include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/software.class.php");
+// include("../classes/basicos/software.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/referencia.class.php");
@@ -25,7 +25,7 @@ permiso(9);
 $funciones = new Funciones();
 $cabina = new Cabina();
 $periferico = new Periferico();
-$soft = new Software();
+// $soft = new Software();
 $kit = new Kit();
 $proveedor = new Proveedor();
 $ref_modificada = new Referencia();
@@ -54,7 +54,7 @@ $unidades = $_POST["unidades"];
 $id_name_producto = $_POST["producto"];
 $id_cabina = $_POST["cabina"];
 $perifericos = $_POST["perifericos"];
-$software = $_POST["software"];
+// $software = $_POST["software"];
 $referencias_libres = $_POST["REFS"];
 $piezas = $_POST["piezas"];
 $fecha_inicio_construccion = $_POST["fecha_inicio_construccion"];
@@ -65,22 +65,24 @@ $id_plantilla = $_POST["select_plantilla"];
 if(!empty($id_plantilla)){
     unset($id_cabina);
     unset($perifericos);
-    unset($software);
+    // unset($software);
     unset($referencias_libres);
     unset($piezas);
 
     // Obtenemos los componentes de la plantilla
     $id_cabina = $plant->dameCabinaPlantillaProducto($id_plantilla);
     $res_perifericos = $plant->damePerifericosPlantillaProducto($id_plantilla);
-    $res_software = $plant->dameSoftwarePlantillaProducto($id_plantilla);
+    // $res_software = $plant->dameSoftwarePlantillaProducto($id_plantilla);
 
     for($i=0;$i<count($res_perifericos);$i++){
         $perifericos[] = $res_perifericos[$i]["id_componente"];
     }
 
+    /*
     for($i=0;$i<count($res_software);$i++){
         $software[] = $res_software[$i]["id_componente"];
     }
+    */
 }
 
 // Obtenemos la sede de la Orden de Produccion
@@ -123,7 +125,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 	$id_nombre_producto = $_POST["id_nombre_producto"];
 	$id_cabina = $_POST["id_cabina"];
 	$ids_perifericos = $_POST["IDS_PERS"];
-	$ids_softwares = $_POST["IDS_SOFT"];
+	// $ids_softwares = $_POST["IDS_SOFT"];
 	$ref_libres = $_POST["ref_libres"];
 
 	// Convertimos la fecha_inicio_construccion en formato MySql
@@ -175,10 +177,12 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 					    unset($ids_kit);
 					}
 				}
+				/*
 				if($ids_softwares != NULL){
 					if($ids_componentes != NULL) $ids_componentes = array_merge($ids_componentes,$ids_softwares);
 					else $ids_componentes = $ids_softwares;
 				}
+				*/
 
 				$i=0;
 				$error = false;
@@ -199,9 +203,12 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 						break;
 						case '3':
 							// SOFTWARE
+							/*
 							$soft->cargaDatosSoftwareId($ids_componentes[$i]);
 							$num_serie_componente = "-";
-							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);		
+							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);
+							*/
+							// Dejan de existir en Septiembre de 2016
 						break;
 						case '4':
 							// INTERFAZ
@@ -552,18 +559,22 @@ include ('../includes/header.php');
 			?>
             <textarea id="nombre_perifericos[]" name="nombre_perifericos[]" class="TextAreaOP" readonly="readonly" cols="1" rows="<?php echo count($perifericos);?>"><?php for($i=0;$i<count($nombres_per);$i++) echo $nombres_per[$i]."\n";?></textarea>
         </div>
-        <div class="ContenedorCamposCreacionBasico">
+        <!--
+		<div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Software</div>
             <?php
+				/*
 				$ids_softwares = $software;
 				for($i=0;$i<count($software);$i++){
 					echo '<input type="hidden" id="IDS_SOFT[]" name="IDS_SOFT[]" value="'.$ids_softwares[$i].'"/>';
 					$soft->cargaDatosSoftwareId($software[$i]);
 					$nombres_soft[] = $soft->software;
 				}
+				*/
 			?>
-            <textarea id="software[]" name="software[]" class="TextAreaOP" readonly="readonly" cols="1" rows="<?php echo count($software);?>"><?php for($i=0;$i<count($nombres_soft);$i++) echo $nombres_soft[$i]."\n";?></textarea>
+            <textarea id="software[]" name="software[]" class="TextAreaOP" readonly="readonly" cols="1" rows="<?php // echo count($software);?>"><?php // for($i=0;$i<count($nombres_soft);$i++) echo $nombres_soft[$i]."\n";?></textarea>
         </div>
+        -->
 
         <?php
 			if(($id_cabina != 0) and ($id_cabina != -1)) { ?>

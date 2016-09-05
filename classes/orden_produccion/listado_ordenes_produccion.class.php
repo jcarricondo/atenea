@@ -7,7 +7,7 @@ class listadoOrdenesProduccion extends MySQL {
 	var $periferico = "";
 	var $num_ordenadores = "";
 	var $ordenador = "";
-	var $software = "";
+	// var $software = "";
 	var $fecha_inicio = "";
 	var $fecha_entrega = "";
 	var $fecha_entrega_deseada = "";
@@ -34,7 +34,7 @@ class listadoOrdenesProduccion extends MySQL {
 		$this->periferico = $periferico;
 		$this->num_ordenadores = $num_ordenadores;
 		$this->ordenador = $ordenador;
-		$this->software = $software;
+		// $this->software = $software;
 		$this->fecha_inicio = $fecha_inicio;
 		$this->fecha_entrega = $fecha_entrega;
 		$this->fecha_entrega_deseada = $fecha_entrega_deseada;
@@ -101,9 +101,11 @@ class listadoOrdenesProduccion extends MySQL {
 		if($this->periferico != "") {
 			$condiciones .= " and orden_produccion.id_produccion in (select opc.id_produccion from orden_produccion_componentes as opc where opc.id_componente=".$this->periferico.")";
 		}
+		/*
 		if($this->software != "") {
 			$condiciones .= " and orden_produccion.id_produccion in (select opc.id_produccion from orden_produccion_componentes as opc where opc.id_componente=".$this->software.")";
 		}
+		*/
 		if($this->ref_libres != "") {
 			$condiciones .= " and orden_produccion.id_produccion in (select opr.id_produccion from orden_produccion_referencias as opr where opr.id_tipo_componente=0 and opr.id_referencia=".$this->ref_libres.")";
 		}	

@@ -5,12 +5,12 @@ set_time_limit(10000);
 include("../includes/sesion.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/software.class.php");
+// include("../classes/basicos/software.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/listado_cabinas.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
-include("../classes/basicos/listado_softwares.class.php");
+// include("../classes/basicos/listado_softwares.class.php");
 include("../classes/orden_produccion/orden_produccion.class.php");
 include("../classes/orden_produccion/incluir_referencia_libre.class.php");
 include("../classes/productos/producto.class.php");
@@ -28,7 +28,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 	$nombre_producto = $_POST["nombre_producto"];
 	$cabina = $_POST["cabina"];
 	$perifericos = $_POST["perifericos"];
-	$software = $_POST["software"];
+	// $software = $_POST["software"];
 	$ref_libres = $_POST["REFS"];
 	$cliente= $_POST["cliente"];
 	$id_produccion = $_GET["id_produccion"];
@@ -277,10 +277,12 @@ echo '<script type="text/javascript" src="../js/orden_produccion/mod_orden_produ
                 </table>       
         	</div>
         </div>
-        <div class="ContenedorCamposCreacionBasico">
+        <!--
+		<div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Software</div>
             <select multiple="multiple" id="software[]" name="software[]" class="SelectMultiple">
             	<?php 
+					/*
 					$bbdd = new MySQL;
 					$softs = new listadoSoftwares();
 					$softs->prepararConsulta();
@@ -301,9 +303,10 @@ echo '<script type="text/javascript" src="../js/orden_produccion/mod_orden_produ
 						for ($j=0;$j<count($ids_softwares);$j++)
 							if ($soft->id_componente == $ids_softwares[$j]) echo 'selected="selected"'; echo '>'.$soft->software.'</option>';
 					}
+					*/
 				?>
             </select> 
-        </div>        
+        </div> -->
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Referencias Libres </div>
            		<div class="CajaReferencias">

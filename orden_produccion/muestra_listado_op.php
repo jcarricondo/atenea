@@ -16,7 +16,7 @@
 		<th style="text-align:center">UDS</th>
 		<th style="text-align:center">PERIFS</th>
 		<th style="text-align:center">PCS</th>
-	    <th style="text-align:center">SOFT.</th>
+	    <!-- <th style="text-align:center">SOFT.</th> -->
         <th style="text-align:center">REF. LIBRES</th>
 		<th style="text-align:center">OC</th>       
 		<th style="text-align:center">RECEPCION</th>  
@@ -110,7 +110,7 @@
         <td style="text-align:center"><?php echo $orden_produccion->unidades; ?></td>
 		<td style="text-align:center"><a href="javascript:abrir('muestra_perifericos.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "PERIFS";?></a></td>
 		<td style="text-align:center"><a href="javascript:abrir('muestra_ordenadores.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "PCS";?></a></td>
-		<td style="text-align:center"><a href="javascript:abrir('muestra_softwares.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "SOFT";?></a></td>
+		<!-- <td style="text-align:center"><a href="javascript:abrir('muestra_softwares.php?producto=<?php // echo $nombre_producto->nombre;?>&id_produccion=<?php // echo $id_produccion;?>')"><?php // echo "SOFT";?></a></td> -->
 		<td style="text-align:center"><a href="javascript:abrir('muestra_referencias_libres.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "R. LIBRES";?></a></td>    
 		<td style="text-align:center">
 			<?php 

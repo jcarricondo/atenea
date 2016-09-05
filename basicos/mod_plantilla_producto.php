@@ -5,10 +5,10 @@ include("../classes/basicos/plantilla_producto.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/software.class.php");
+/* include("../classes/basicos/software.class.php"); */
 include("../classes/basicos/listado_cabinas.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
-include("../classes/basicos/listado_softwares.class.php");
+/* include("../classes/basicos/listado_softwares.class.php"); */
 include("../classes/basicos/listado_nombre_producto.class.php");
 permiso(34);
 
@@ -16,10 +16,10 @@ $plant = new Plantilla_Producto();
 $np = new Nombre_Producto();
 $cab = new Cabina();
 $per = new Periferico();
-$soft = new Software();
+/* $soft = new Software(); */
 $listado_cab = new listadoCabinas();
 $listado_per = new listadoPerifericos();
-$listado_soft = new listadoSoftwares();
+/* $listado_soft = new listadoSoftwares(); */
 $listado_np = new ListadoNombreProducto();
 
 // Comprobamos si el usuario puede modificar el basico
@@ -40,13 +40,13 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
     $id_nombre_producto = $_POST["sel_inp_nombre_producto"];
     $id_cabina = $_POST["cabina"];
     $ids_perifericos = $_POST["perifericos"];
-    $ids_software = $_POST["software"];
+    /* $ids_software = $_POST["software"]; */
 
     $no_hay_cabina = empty($id_cabina) || $id_cabina == -1;
     $no_hay_perifericos = empty($ids_perifericos);
-    $no_hay_software = empty($ids_software);
+    /* $no_hay_software = empty($ids_software); */
 
-    $plantilla_vacia = ($no_hay_cabina && $no_hay_perifericos && $no_hay_software);
+    $plantilla_vacia = ($no_hay_cabina && $no_hay_perifericos /* && $no_hay_software */);
 
     if(!$plantilla_vacia){
         // Guardamos la plantilla del producto
@@ -62,9 +62,11 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
                 for($i=0;$i<count($ids_perifericos);$i++) {
                     $ids_componentes[] = $ids_perifericos[$i];
                 }
+                /*
                 for($i=0;$i<count($ids_software);$i++) {
                     $ids_componentes[] = $ids_software[$i];
                 }
+                */
 
                 // Guardamos los nuevos componentes de la plantilla de producto
                 $i=0;
@@ -106,7 +108,7 @@ $version = $plant->version;
 $id_nombre_producto = $plant->id_nombre_producto;
 $id_cabina = $plant->dameCabinaPlantillaProducto($id_plantilla);
 $ids_perifericos = $plant->damePerifericosPlantillaProducto($id_plantilla);
-$ids_software = $plant->dameSoftwarePlantillaProducto($id_plantilla);
+/* $ids_software = $plant->dameSoftwarePlantillaProducto($id_plantilla); */
 
 $titulo_pagina = "Básicos > Modifica plantilla de producto";
 $pagina = "mod_plantilla_producto";
@@ -363,10 +365,12 @@ echo '<script type="text/javascript" src="../js/basicos/mod_plantilla_producto.j
         ?>
         <br/>
 
+        <!--
         <div class="ContenedorCamposCreacionBasico">
             <div class="LabelCreacionBasico">Software</div>
             <select multiple="multiple" id="software[]" name="software[]" class="SelectMultiple" <?php echo $solo_lectura; ?>>
                 <?php
+                    /*
                     $listado_soft->prepararConsulta();
                     $listado_soft->realizarConsulta();
                     $resultado_softwares = $listado_soft->softwares;
@@ -386,9 +390,10 @@ echo '<script type="text/javascript" src="../js/basicos/mod_plantilla_producto.j
                             }
                         }
                     }
+                    */
                 ?>
             </select>
-        </div>
+        </div> -->
         <br/>
         <br/>
 

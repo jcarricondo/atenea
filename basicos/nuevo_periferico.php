@@ -209,7 +209,7 @@ echo '<script type="text/javascript" src="../js/basicos/nuevo_periferico_adjunto
         </div>
         <div class="ContenedorCamposCreacionBasico">	
             <div class="LabelCreacionBasico">Kits </div>
-            <div class="CajaPerifericos">
+            <div class="contenedorComponentes">
             <table style="width:700px; height:208px; border:1px solid #fff;">
                 <tr>
                  	<td id= "listas_kits_no_asignados" style="width:250px; border:1px solid #fff; padding-left:10px;">

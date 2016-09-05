@@ -93,7 +93,7 @@
                         <li><a href="../basicos/cabinas.php">Cabinas</a></li>
                         <li><a href="../basicos/perifericos.php">Perif&eacute;ricos</a></li>
                         <li><a href="../basicos/kits.php">Kits</a></li>
-                        <li><a href="../basicos/software_simulacion.php">Software Simulaci&oacute;n</a>
+                        <!--<li><a href="../basicos/software_simulacion.php">Software Simulaci&oacute;n</a>-->
                         <li><a href="../basicos/fabricantes.php">Fabricantes</a></li>
                         <li><a href="../basicos/familias.php">Familias</a></li>
                         <li><a href="../basicos/clientes.php">Clientes</a></li>

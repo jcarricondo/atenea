@@ -6,11 +6,11 @@ include("../classes/control_usuario.class.php");
 include("../classes/sede/sede.class.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/software.class.php");
+// include("../classes/basicos/software.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/listado_cabinas.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
-include("../classes/basicos/listado_softwares.class.php");
+// include("../classes/basicos/listado_softwares.class.php");
 include("../classes/basicos/listado_nombre_producto.class.php");
 include("../classes/almacen/almacen.class.php");
 permiso(9);
@@ -22,12 +22,12 @@ $cab = new Cabina();
 $cab_t = new Cabina();
 $perif = new Periferico();
 $perif_t = new Periferico();
-$soft = new Software();
+// $soft = new Software();
 $cabs = new listadoCabinas();
 $todas_cabs = new listadoCabinas();
 $perifs = new listadoPerifericos();
 $todos_perifs = new listadoPerifericos();
-$softs = new listadoSoftwares();
+// $softs = new listadoSoftwares();
 $nom_prods = new listadoNombreProducto();
 $almacen = new Almacen();
 
@@ -46,7 +46,7 @@ if(isset($_POST["guardandoOP"]) and $_POST["guardandoOP"] == 1) {
 	$producto = $_POST["producto"];
 	$cabina = $_POST["cabina"];
 	$perifericos = $_POST["perifericos"];
-	$software = $_POST["software"];
+	// $software = $_POST["software"];
 	$ref_libres = $_POST["REFS"];
 	$piezas = $_POST["piezas"];
 	$fecha_inicio_construccion = $_POST["fecha_inicio_construccion"];
@@ -58,7 +58,7 @@ else {
 	$producto = "";
 	$cabina = "";
 	$perifericos = "";
-	$software = "";
+	// $software = "";
 	$ref_libres = "";
 	$fecha_inicio_construccion = "";
 	$sede = "";
@@ -209,7 +209,7 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
             </div>
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico"></div>
-                <div class="CajaPerifericos">
+                <div class="contenedorComponentes">
                     <table style="width:700px; height:208px; border:1px solid #fff;">
                     <tr>
                         <td id= "listas_no_asignados" style="width:250px; border:1px solid #fff; padding-left:10px;">
@@ -273,10 +273,12 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
                 </div>
             </div>
 
+            <!--
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico">Software</div>
                 <select multiple="multiple" id="software[]" name="software[]" class="SelectMultiple">
                     <?php
+                        /*
                         $softs->prepararConsulta();
                         $softs->realizarConsulta();
                         $resultado_softwares = $softs->softwares;
@@ -286,9 +288,10 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
                             $soft->cargaDatosSoftwareId($datoSoft["id_componente"]);
                             echo '<option value="'.$soft->id_componente.'">'.$soft->software.'</option>';
                         }
+                        */
                     ?>
                 </select>
-            </div>
+            </div> -->
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico">Referencias Libres </div>
                 <div class="CajaReferencias">

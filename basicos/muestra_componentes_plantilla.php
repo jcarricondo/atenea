@@ -54,7 +54,8 @@ $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
                             break;
                         case '3':
                             // SOFTWARE
-                            $tipo_componente = 'SOFTWARE';
+                            // $tipo_componente = 'SOFTWARE';
+                            // Se deja de utilizar en Septiembre de 2016
                             break;
                         default:
                             // ERROR

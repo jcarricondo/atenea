@@ -10,7 +10,7 @@ class Plantilla_Producto extends MySql{
 
     var $id_cabina;
     var $ids_perifericos;
-    var $ids_software;
+    // var $ids_software;
     var $ids_componentes;
 
 		
@@ -73,7 +73,8 @@ class Plantilla_Producto extends MySql{
         return $this->ids_perifericos;
     }
 
-    // Funcion que devuelve el software de la plantilla de producto
+    /*
+	// Funcion que devuelve el software de la plantilla de producto
     function dameSoftwarePlantillaProducto($id_plantilla){
         $consulta = sprintf("select id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=3 and id_plantilla=%s",
             $this->makeValue($id_plantilla, "int"));
@@ -82,6 +83,7 @@ class Plantilla_Producto extends MySql{
         $this->ids_software = $this->getResultados();
         return $this->ids_software;
     }
+    */
 
     // Funcion que devuelve todos los componentes de la plantilla de producto
     function dameComponentesPlantillaProducto($id_plantilla){

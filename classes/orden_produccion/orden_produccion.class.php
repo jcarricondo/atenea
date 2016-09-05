@@ -439,6 +439,7 @@ class Orden_Produccion extends MySQL {
 		return $this->getResultados();
 	}
 
+	/*
 	// Devuelve los ids de los softwares de la orden de produccion
 	function dameIdsSoftwares($id_produccion) {
 		$consultaId = sprintf("select opc.id_componente from orden_produccion_componentes as opc inner join componentes on (componentes.id_componente=opc.id_componente) where opc.id_produccion=%s and id_tipo=3 and opc.activo=1 group by id_componente ",
@@ -447,6 +448,7 @@ class Orden_Produccion extends MySQL {
 		$this->ejecutarConsulta();
 		return $this->getResultados();
 	}
+	*/
 
 	// Devuelve los id_produccion_componentes de la orden de produccion
 	function dameIdsProduccionComponente($id_produccion) {

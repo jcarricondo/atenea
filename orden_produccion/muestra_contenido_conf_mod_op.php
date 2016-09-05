@@ -79,22 +79,24 @@
 	?>
 </div>
 
+<!--
 <div class="ContenedorCamposCreacionBasico">
 	<div class="LabelCreacionBasico">Software</div>
-    <?php 
+    <?php
+		/*
 		for ($i=0;$i<count($ids_softwares);$i++){
 			echo '<input type="hidden" id="IDS_SOFT[]" name="IDS_SOFT[]" value="'.$ids_softwares[$i].'"/>';
 			$soft->cargaDatosSoftwareId($ids_softwares[$i]);
 			$nombres_soft[] = $soft->software;
 		}
 		if (count($ids_softwares) == 0) echo '<div class="tituloSinComponente">Sin Software</div>';
-		else {
+		else {*/
 	?>
-    		<textarea id="ids_softwares[]" name="ids_softwares[]" class="TextAreaOP" readonly="readonly" cols="1" rows="<?php echo count($ids_softwares);?>"><?php for($i=0;$i<count($nombres_soft);$i++) echo $nombres_soft[$i]."\n";?></textarea>
+    		<textarea id="ids_softwares[]" name="ids_softwares[]" class="TextAreaOP" readonly="readonly" cols="1" rows="<?php // echo count($ids_softwares);?>"><?php // for($i=0;$i<count($nombres_soft);$i++) echo $nombres_soft[$i]."\n";?></textarea>
     	<?php
-			}
+			// }
 		?>
-</div>    
+</div> -->
 <br/>
 
 <?php

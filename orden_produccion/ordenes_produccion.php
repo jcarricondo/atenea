@@ -7,11 +7,11 @@ include("../classes/sede/sede.class.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/software.class.php");
+/* include("../classes/basicos/software.class.php"); */
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/listado_cabinas.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
-include("../classes/basicos/listado_softwares.class.php");
+/* include("../classes/basicos/listado_softwares.class.php"); */
 include("../classes/orden_produccion/orden_produccion.class.php");
 include("../classes/orden_produccion/listado_ordenes_produccion.class.php");
 include("../classes/orden_produccion/incluir_referencia_libre.class.php");
@@ -25,8 +25,8 @@ $sede = new Sede();
 $funciones = new Funciones();
 $cab = new Cabina();
 $perif = new Periferico();
-$soft = new Software();
-$softs = new listadoSoftwares();
+/* $soft = new Software(); */
+/* $softs = new listadoSoftwares(); */
 $perifs = new listadoPerifericos();
 $cabs = new listadoCabinas();
 $op = new Orden_Produccion();
@@ -164,7 +164,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	$unidades = $_GET["unidades"]; // numero de unidades del producto
 	$cabina = $_GET["cabina"];	// id de la cabina 
 	$periferico = $_GET["periferico"]; // id del periferico
-	$software = $_GET["software"];  // id del software
+	/* $software = $_GET["software"];*/  // id del software
 	$fecha_inicio = $_GET["fecha_inicio"];
 	$fecha_entrega = $_GET["fecha_entrega"];
 	$fecha_entrega_deseada = $_GET["fecha_entrega_deseada"];
@@ -217,7 +217,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	$_SESSION["unidades_orden_produccion"] = $unidades;
 	$_SESSION["cabina_orden_produccion"] = $cabina;
 	$_SESSION["periferico_orden_produccion"] = $periferico;
-	$_SESSION["software_orden_produccion"] = $software;
+	/* $_SESSION["software_orden_produccion"] = $software; */
 	$_SESSION["fecha_inicio_orden_produccion"] = $fecha_inicio;
 	$_SESSION["fecha_entrega_orden_produccion"] = $fecha_entrega;
 	$_SESSION["fecha_entrega_deseada_orden_produccion"] = $fecha_entrega_deseada;
@@ -331,9 +331,27 @@ echo '<script type="text/javascript" src="../js/orden_produccion/ordenes_producc
             </select>
         </td>
         <td>
+			<div class="Label">Ref. Libres</div>
+			<select id="ref_libres" name="ref_libres" class="BuscadorInput">
+				<?php
+				$listadoRefLibres->prepararReferenciasLibres();
+				$listadoRefLibres->realizarConsultaReferenciasLibres();
+				$resultado_ref_libres = $listadoRefLibres->ref_libres;
+
+				for($i=-1;$i<count($resultado_ref_libres);$i++) {
+					$ref_libre->cargaDatosReferenciaLibreId($resultado_ref_libres[$i]["id_referencia"]);
+					echo '<option value="'.$ref_libre->id_referencia.'"';
+					if ($ref_libre->id_referencia == $_SESSION["ref_libres_orden_produccion"])
+						echo ' selected="selected"';
+					echo '>'.$ref_libre->referencia.'</option>';
+				}
+				?>
+			</select>
+			<!--
         	<div class="Label">Software Sim.</div>
            	<select id="software" name="software" class="BuscadorInput">
-            	<?php 
+            	<?php
+					/*
 					$softs->prepararConsulta();
 					$softs->realizarConsulta();
 					$resultado_softwares = $softs->softwares;
@@ -345,43 +363,32 @@ echo '<script type="text/javascript" src="../js/orden_produccion/ordenes_producc
 							if ($soft->id_componente == $_SESSION["software_orden_produccion"])
 								echo ' selected="selected"';
 						echo '>'.$soft->software.'</option>';
-					}
+					} */
 				?>
-            </select> 
+            </select>  -->
         </td>
     </tr>
     <tr style="border:0;">
        	<td>
-            <div class="Label">Ref. Libres</div>
-            <select id="ref_libres" name="ref_libres" class="BuscadorInput">
-            	<?php 
-					$listadoRefLibres->prepararReferenciasLibres();
-					$listadoRefLibres->realizarConsultaReferenciasLibres();
-					$resultado_ref_libres = $listadoRefLibres->ref_libres;
-
-					for($i=-1;$i<count($resultado_ref_libres);$i++) {
-						$ref_libre->cargaDatosReferenciaLibreId($resultado_ref_libres[$i]["id_referencia"]);
-						echo '<option value="'.$ref_libre->id_referencia.'"';
-							if ($ref_libre->id_referencia == $_SESSION["ref_libres_orden_produccion"])
-								echo ' selected="selected"';
-						echo '>'.$ref_libre->referencia.'</option>';
-					}
-				?>
-            </select>        
+			<div class="Label">Fecha Inicio</div>
+			<input type="text" name="fecha_inicio" id="datepicker_orden_produccion_inicio" class="fechaCal" value="<?php echo $_SESSION["fecha_inicio_orden_produccion"];?>"/>
         </td>
         <td>
-            <div class="Label">Fecha Inicio</div>
-            <input type="text" name="fecha_inicio" id="datepicker_orden_produccion_inicio" class="fechaCal" value="<?php echo $_SESSION["fecha_inicio_orden_produccion"];?>"/>        
+			<div class="Label">Fecha Entrega</div>
+			<input type="text" name="fecha_entrega" id="datepicker_orden_produccion_entrega" class="fechaCal" value="<?php echo $_SESSION["fecha_entrega_orden_produccion"];?>"/>
         </td>
         <td>
-        	<div class="Label">Fecha Entrega</div>
-			<input type="text" name="fecha_entrega" id="datepicker_orden_produccion_entrega" class="fechaCal" value="<?php echo $_SESSION["fecha_entrega_orden_produccion"];?>"/>				
-        </td>
-    </tr>
-    <tr style="border:0;">
-       	<td>
 			<div class="Label">Fecha Ent. Deseada</div>
-            <input type="text" name="fecha_entrega_deseada" id="datepicker_orden_produccion_deseada" class="fechaCal" value="<?php echo $_SESSION["fecha_entrega_deseada_orden_produccion"];?>"/>
+			<input type="text" name="fecha_entrega_deseada" id="datepicker_orden_produccion_deseada" class="fechaCal" value="<?php echo $_SESSION["fecha_entrega_deseada_orden_produccion"];?>"/>
+        </td>
+    </tr>
+    <tr style="border:0;">
+       	<td>
+			<div class="Label">Tipo</div>
+			<select id="tipo" name="tipo" class="BuscadorInput">
+				<option value="1" <?php if($_SESSION["tipo_orden_produccion"] == 1) echo 'selected="selected"';?>>ORDEN PRODUCCIÓN</option>
+				<option value="2" <?php if($_SESSION["tipo_orden_produccion"] == 2) echo 'selected="selected"';?>>MANTENIMIENTO</option>
+			</select>
         </td>
         <td>
 			<div class="Label">Fecha desde</div>
@@ -394,35 +401,31 @@ echo '<script type="text/javascript" src="../js/orden_produccion/ordenes_producc
     </tr>
 	<tr style="border:0;">
     	<td>
-        	<div class="Label">Tipo</div>
-			<select id="tipo" name="tipo" class="BuscadorInput">
-				<option value="1" <?php if($_SESSION["tipo_orden_produccion"] == 1) echo 'selected="selected"';?>>ORDEN PRODUCCIÓN</option>
-				<option value="2" <?php if($_SESSION["tipo_orden_produccion"] == 2) echo 'selected="selected"';?>>MANTENIMIENTO</option>
-            </select>
-        </td>
-        <td>
-        <?php 
-        	if($esAdminGlobal || $esUsuarioGes){
-        		$res_sedes = $sede->dameSedesFabrica(); ?>
-        		<div class="Label">Sede</div>
-        		<select id="sedes" name="sedes" class="BuscadorInput" onchange="cargaAlias(this.value);">
-        		    <option value="0"></option>
-                    <?php
-                        for($i=0;$i<count($res_sedes);$i++){
-                            $id_sede_bus = $res_sedes[$i]["id_sede"];
-                            $nombre_sede = $res_sedes[$i]["sede"];
+			<?php
+			if($esAdminGlobal || $esUsuarioGes){
+				$res_sedes = $sede->dameSedesFabrica(); ?>
+				<div class="Label">Sede</div>
+				<select id="sedes" name="sedes" class="BuscadorInput" onchange="cargaAlias(this.value);">
+					<option value="0"></option>
+					<?php
+					for($i=0;$i<count($res_sedes);$i++){
+						$id_sede_bus = $res_sedes[$i]["id_sede"];
+						$nombre_sede = $res_sedes[$i]["sede"];
 
-                            echo '<option value='.$id_sede_bus;
-                            if($id_sede_bus == $_SESSION["id_sede_orden_produccion"]){
-                                echo ' selected="selected"';
-                            }
-                            echo '>'.$nombre_sede.'</option>';
-                        }
-                    ?>
-        	    </select>
-        <?php
-        	}
-        ?>	
+						echo '<option value='.$id_sede_bus;
+						if($id_sede_bus == $_SESSION["id_sede_orden_produccion"]){
+							echo ' selected="selected"';
+						}
+						echo '>'.$nombre_sede.'</option>';
+					}
+					?>
+				</select>
+				<?php
+			}
+			?>
+		</td>
+        <td>
+
         </td>
         <td></td>
     </tr>

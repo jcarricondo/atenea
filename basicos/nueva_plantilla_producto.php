@@ -6,10 +6,10 @@ include("../classes/basicos/plantilla_producto.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/software.class.php");
+/* include("../classes/basicos/software.class.php"); */
 include("../classes/basicos/listado_cabinas.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
-include("../classes/basicos/listado_softwares.class.php");
+/* include("../classes/basicos/listado_softwares.class.php"); */
 include("../classes/basicos/listado_nombre_producto.class.php");
 permiso(2);
 
@@ -17,10 +17,10 @@ $plant = new Plantilla_Producto();
 $np = new Nombre_Producto();
 $cab = new Cabina();
 $per = new Periferico();
-$soft = new Software();
+/* $soft = new Software(); */
 $listado_cab = new listadoCabinas();
 $listado_per = new listadoPerifericos();
-$listado_soft = new listadoSoftwares();
+/* $listado_soft = new listadoSoftwares(); */
 $listado_np = new ListadoNombreProducto();
 
 if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
@@ -30,13 +30,13 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
     $id_nombre_producto = $_POST["select_nombre_producto"];
     $id_cabina = $_POST["cabina"];
     $ids_perifericos = $_POST["perifericos"];
-    $ids_software = $_POST["software"];
+    /* $ids_software = $_POST["software"]; */
 
     $no_hay_cabina = empty($id_cabina) || $id_cabina == -1;
     $no_hay_perifericos = empty($ids_perifericos);
-    $no_hay_software = empty($ids_software);
+    /* $no_hay_software = empty($ids_software); */
 
-    $plantilla_vacia = ($no_hay_cabina && $no_hay_perifericos && $no_hay_software);
+    $plantilla_vacia = ($no_hay_cabina && $no_hay_perifericos /* && $no_hay_software */);
 
     // Comprobamos que la plantilla no este vacia
     if(!$plantilla_vacia) {
@@ -53,9 +53,11 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
             for($i=0;$i<count($ids_perifericos);$i++) {
                 $ids_componentes[] = $ids_perifericos[$i];
             }
+            /*
             for($i=0;$i<count($ids_software);$i++) {
                 $ids_componentes[] = $ids_software[$i];
             }
+            */
 
             // Guardamos los componentes de la plantilla de producto
             $i=0;
@@ -201,7 +203,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_plantilla_producto
         </div>
         <div class="ContenedorCamposCreacionBasico">
             <div class="LabelCreacionBasico"></div>
-            <div class="CajaPerifericos">
+            <div class="contenedorComponentes">
                 <table style="width:700px; height:208px; border:1px solid #fff;">
                     <tr>
                         <td id= "listas_no_asignados" style="width:250px; border:1px solid #fff; padding-left:10px;">
@@ -266,10 +268,11 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_plantilla_producto
         </div>
         <br/>
 
-        <div class="ContenedorCamposCreacionBasico">
+        <!-- <div class="ContenedorCamposCreacionBasico">
             <div class="LabelCreacionBasico">Software</div>
             <select multiple="multiple" id="software[]" name="software[]" class="SelectMultiple">
                 <?php
+                    /*
                     $listado_soft->prepararConsulta();
                     $listado_soft->realizarConsulta();
                     $resultado_softwares = $listado_soft->softwares;
@@ -279,9 +282,10 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_plantilla_producto
                         $soft->cargaDatosSoftwareId($datoSoft["id_componente"]);
                         echo '<option value="'.$soft->id_componente.'">'.$soft->software.'</option>';
                     }
+                    */
                 ?>
             </select>
-        </div>
+        </div> -->
         <br/>
         <br/>
 

@@ -358,8 +358,8 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
 			?>
         </div>
         <div class="ContenedorCamposCreacionBasico">
-        	<div class="LabelCreacionBasico">Kit</div>
-            <div class="CajaKits">
+        	<div class="LabelCreacionBasico">Kits</div>
+            <div class="contenedorComponentes">
             	<table style="width:700px; height:208px; border:1px solid #fff; margin:5px 10px 0px 12px;">
                 <tr>
                    	<td id= "listas_kits_no_asignados" style="width:250px; border:1px solid #fff;">

@@ -6,7 +6,7 @@ include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
-include("../classes/basicos/software.class.php");
+// include("../classes/basicos/software.class.php");
 include("../classes/basicos/cliente.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/referencia_componente.class.php");  
@@ -21,7 +21,7 @@ $producto = new Producto();
 $nombre_producto = new Nombre_Producto();
 $Cabina = new Cabina();
 $Periferico = new Periferico();
-$software = new Software();
+// $software = new Software();
 $Cliente = new Cliente();
 $funciones = new Funciones();
 $kit = new Kit();
@@ -294,9 +294,10 @@ include ('../includes/header.php');
 		        }
 		    }    
 	    // Mostramos los SOFTWARE
-		$ids_softwares = $orden_produccion->dameIdsSoftwares($id_produccion);
+		// $ids_softwares = $orden_produccion->dameIdsSoftwares($id_produccion);
 	?>
-	    <div class="ContenedorCamposCreacionBasico">
+	    <!--
+		<div class="ContenedorCamposCreacionBasico">
 	        <div class="LabelCreacionBasico">Softwares</div>
 	        <div class="CajaReferencias">
 	            <div id="CapaTablaIframe">
@@ -308,24 +309,26 @@ include ('../includes/header.php');
 	                        <th>DESCRIPCION</th>
 	                    </tr>
 	                    <?php
+							/*
 	                        for($j=0;$j<count($ids_softwares);$j++) {
 	                            // Se cargan los datos de los softwares según su identificador
 	                            $software->cargaDatosSoftwareId($ids_softwares[$j]["id_componente"]);
+							*/
 	                    ?>
 	                    <tr>
-	                        <td><?php echo $software->software;?></td>
-	                        <td><?php echo $software->referencia;?></td>
-	                        <td style="text-align:center"><?php echo $software->version;?></td>
-	                        <td><?php echo $software->descripcion;?></td>
+	                        <td><?php // echo $software->software;?></td>
+	                        <td><?php // echo $software->referencia;?></td>
+	                        <td style="text-align:center"><?php // echo $software->version;?></td>
+	                        <td><?php // echo $software->descripcion;?></td>
 	                    </tr>
 	                    <?php
-	                        }
+	                        // }
 	                    ?>
 	                </table>
 	            </div>
 	        </div> 
 	    </div>
-	    <br />
+	    <br /> -->
 	<?php
 	    // Cargamos las referencias libres
 	    // Cargamos los datos de orden_produccion_referencias

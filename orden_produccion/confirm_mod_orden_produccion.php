@@ -6,7 +6,7 @@ include("../includes/sesion.php");
 include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
-include("../classes/basicos/software.class.php");
+// include("../classes/basicos/software.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/referencia.class.php");
@@ -24,7 +24,7 @@ $producto = new Producto();
 $cabina = new Cabina();
 $periferico = new Periferico();
 $Kit = new Kit();
-$soft = new Software();
+// $soft = new Software();
 $referencia_componente = new Referencia_Componente();
 $ref_comp = new Referencia_Componente();
 $proveedor = new Proveedor();
@@ -45,7 +45,7 @@ $unidades = $_POST["unidades"];
 $nombre_producto = $_POST["producto"];
 $id_cabina = $_POST["cabina"]; 
 $ids_perifericos = $_POST["perifericos"];
-$ids_softwares = $_POST["software"];
+// $ids_softwares = $_POST["software"];
 $referencias_libres = $_POST["REFS"];  
 $id_nombre_producto = $_POST["id_nombre_producto"]; 
 $id_produccion = $_GET["id_produccion"];
@@ -63,7 +63,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 	// Obtenemos los datos
 	$id_cabina = $_POST["id_cabina"]; 
 	$ids_perifericos = $_POST["IDS_PERS"];
-	$ids_softwares = $_POST["IDS_SOFT"];
+	// $ids_softwares = $_POST["IDS_SOFT"];
 	$ids_clientes = $_POST["ids_clientes"];
 	$ref_libres = $_POST["ref_libres"];
 
@@ -222,6 +222,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 				unset($ids_kit);
 			}
 		}
+		/*
 		if($ids_softwares != NULL){
 			if($ids_componentes != NULL){
 				$ids_componentes = array_merge($ids_componentes,$ids_softwares);
@@ -230,6 +231,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 				$ids_componentes = $ids_softwares;	
 			}
 		}
+		*/
 
 		$i=0;
 		$error = false;
@@ -251,9 +253,12 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 				break;
 				case '3':
 					// SOFTWARE
+					/*
 					$soft->cargaDatosSoftwareId($ids_componentes[$i]);
 					$num_serie_componente = "-";
 					$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);		
+					*/
+					// Dejan de ezistir en Septiembre de 2016
 				break;
 				case '4':
 					// INTERFAZ

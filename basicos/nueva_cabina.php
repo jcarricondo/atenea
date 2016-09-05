@@ -208,12 +208,12 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_cabina_adjuntos.js
         </div>
         <div class="ContenedorCamposCreacionBasico">	
             <div class="LabelCreacionBasico">Kits </div>
-            	<div class="CajaPerifericos">
+            	<div class="contenedorComponentes">
                	<table style="width:700px; height:208px; border:1px solid #fff;">
                 <tr>
                  	<td id= "listas_kits_no_asignados" style="width:250px; border:1px solid #fff; padding-left:10px;">
             	        <select multiple="multiple" id="kits_no_asignados[]" name="kits_no_asignados[]" class="SelectMultiplePerOrigen">
-                        <?php 
+                        <?php
 							$listado_kits->prepararConsulta();
 							$listado_kits->realizarConsulta();
 							$resultado_kits = $listado_kits->kits;
@@ -239,7 +239,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_cabina_adjuntos.js
                         </tr>
                         </table>
                     </td>
-                    <td id="lista" style="width:250px; border:1px solid #fff;"><select multiple="multiple" id="kit[]" name="kit[]" class="SelectMultiplePerDestino"></select></td>                        
+                    <td id="lista" style="width:250px; border:1px solid #fff;"><select multiple="multiple" id="kit[]" name="kit[]" class="SelectMultiplePerDestino"></select></td>
                 </tr>
                 </table>
             </div>
