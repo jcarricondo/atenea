@@ -133,7 +133,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 					}
 				}
 
-				$producto->datosNuevoProducto($id_producto,$id_produccion,-1,$id_cliente,$num_serie,$num_ordenadores,$estado_producto,$fecha_entrega,$fecha_entrega_prevista,$ids_ordenadores,$ordenador,$id_cabina,$ids_perifericos,$perifericos,$ids_softwares,$software,$ref_cabina,$uds_paquete_cabina,$piezas_cabina,$total_paquetes_cabina,$ref_perifericos,$uds_paquete_perifericos,$piezas_perifericos,$total_paquetes_perifericos,$ref_libres,$uds_paquete,$Piezas,$tot_paquetes,$contador_productos,$contador_componentes);
+				$producto->datosNuevoProducto($id_producto,$id_produccion,-1,$id_cliente,$num_serie,$num_ordenadores,$estado_producto,$fecha_entrega,$fecha_entrega_prevista,$ids_ordenadores,NULL,NULL,$ids_perifericos,$perifericos,$ids_softwares,$software,$ref_cabina,$uds_paquete_cabina,$piezas_cabina,$total_paquetes_cabina,$ref_perifericos,$uds_paquete_perifericos,$piezas_perifericos,$total_paquetes_perifericos,$ref_libres,$uds_paquete,$Piezas,$tot_paquetes,$contador_productos,$contador_componentes);
 				$resultado = $producto->guardarCambios();
 		
 				// Si se ha guardado el "producto de mantenimiento" correctamente, entonces generamos las ordenes de compra 

@@ -66,32 +66,10 @@ for($k=0;$k<$num_boxes_por_tecnico;$k++){
 	//$id_componente = $resultados_box[0]["id_componente"]; (Antiguo)
 	$unidades_fabrican = $unidades_finales[$contador_componente_reposicion];
 
-	// Obtenemos las referencias del componente y las referencias de sus interfaces y kits
+	// Obtenemos las referencias del componente y las referencias de sus kits
 	// Si hay referencias repetidas suma las piezas y las agrupamos por referencia
 	$referencias_componente = $op->dameIdReferenciaPiezasPorIdComponente($id_produccion,$id_componente);	
 	$referencias_componente_total = $referencias_componente;
-
-	// Comprobamos si el componente tiene interfaces. 
-	$op->dameIdsInterfazComponente($id_componente);
-
-	for($l=0;$l<count($op->ids_interfaces);$l++){
-		$id_interfaz = $op->ids_interfaces[$l]["id_interfaz"];
-		// Obtenemos las referencias de las interfaces 
-		$referencias_componente = $op->dameIdReferenciaPiezasPorIdComponente($id_produccion,$id_interfaz);
-
-		// Agrupamos las referencias de la interfaz con las referencias totales.
-		if($referencias_componente != NULL){
-			if($referencias_componente_total != NULL){
-				$referencias_componente_total = $op->agruparReferenciasComponentes($referencias_componente,$referencias_componente_total);
-			}
-			else{
-				$referencias_componente_total = $referencias_componente;					
-			}	
-		}
-		else{
-			$referencias_componente_total = $referencias_componente;				
-		}
-	}
 
 	// Comprobamos si el componente tiene kits
 	$op->dameIdsKitComponente($id_componente);

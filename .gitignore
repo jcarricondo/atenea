@@ -3,6 +3,8 @@ almacen/ajuste_material_BACKUP_11772.php
 almacen/ajuste_material_BASE_11772.php
 almacen/ajuste_material_LOCAL_11772.php
 almacen/ajuste_material_REMOTE_11772.php
+<<<<<<< HEAD
+=======
 basicos/uploads/BCR-V004-GEN001-DWG001.pdf
 basicos/uploads/9974_2DOF-150-17-LEVI-02.dwg
 basicos/uploads/9974_CD-INJOY-30-PAPE-01.dwg
@@ -4916,3 +4918,4 @@ basicos/mecanica/30736807_SMK-XXXSMC-04-PEDALS-05-ENS18.pdf
 basicos/mecanica/30801454_SIL-026-KIT_MET.csv
 basicos/mecanica/30862499_BRZ-CON-04-MET08.pdf
 basicos/mecanica/30898460_BRZ-CON-04-PANELES-ENS07.pdf
+>>>>>>> develop

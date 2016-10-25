@@ -69,7 +69,7 @@ function validarHayCaracter() {
 	}
 }
 	
-// Funcion que calcula el coste total de las referencias de la tabla cabina (sin las interfaces)
+// Función que calcula el coste total de las referencias de la tabla cabina
 function calculaCosteTotal(precio_tasas){
 	try {
 		var precio = document.getElementById('precio').value;

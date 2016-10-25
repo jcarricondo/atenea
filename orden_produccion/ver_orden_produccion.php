@@ -2,10 +2,9 @@
 // Este fichero muestra información sobre la Orden de Producción
 include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/software.class.php");
-include("../classes/basicos/interface.class.php");
+// include("../classes/basicos/software.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/cliente.class.php");
 include("../classes/basicos/nombre_producto.class.php");
@@ -22,10 +21,9 @@ permiso(8);
 
 $orden_produccion = new Orden_Produccion();
 $producto = new Producto();
-$cabina = new Cabina();
+// $cabina = new Cabina();
 $periferico = new Periferico();
-$software = new Software();
-$interfaz = new Interfaz();
+// $software = new Software();
 $kit = new Kit();
 $referencia = new Referencia();
 $nombre_producto = new Nombre_Producto();
@@ -54,11 +52,13 @@ $producto->cargaDatosProductoId($id_producto);
 $id_nombre_producto = $producto->id_nombre_producto;
 $id_sede = $orden_produccion->id_sede;
 
+/*
 $ids_softwares = $orden_produccion->dameIdsSoftwares($id_produccion);
 for($i=0;$i<count($ids_softwares);$i++){
     $id_software = $ids_softwares[$i]["id_componente"];
     $ids_softwares[$i] = $id_software; 
 }
+*/
 
 $id_tipo_usuario = $_SESSION["AT_id_tipo_usuario"];
 $esAdminGlobal = $control_usuario->esAdministradorGlobal($id_tipo_usuario);
@@ -161,12 +161,15 @@ include ('../includes/header.php');
         switch ($id_tipo) {
             case '1':
                 // CABINA
+                /*
                 $cabina->cargaDatosCabinaId($id_componente);
                 $nombre_componente = "Cabina";
                 $nombre_componente_principal = "Cabina";
                 $titulo_componente = $cabina->cabina.'_v'.$cabina->version;
                 $es_prototipo = ($cabina->prototipo == 1);
                 $coste_total_componente = 0;
+                */
+                // Deja de existir en Septiembre de 2016
                 break;
             case '2':
                 // PERIFERICO
@@ -180,14 +183,12 @@ include ('../includes/header.php');
             case '3':
                 // SOFTWARE
                 // Los mostramos despues de los componentes
+                // Deja de existir en Septiembre de 2016
             break;    
             case '4':
                 // INTERFAZ
-                $interfaz->cargaDatosInterfazId($id_componente);
-                $nombre_componente = "Interfaz";
-                $titulo_componente = $interfaz->interfaz.'_v'.$interfaz->version;
-                $es_prototipo = ($interfaz->prototipo == 1);
-                break;
+                // Deja de existir en Agosto de 2016
+            break;
             case '5':
                 // KIT
                 $kit->cargaDatosKitId($id_componente);
@@ -203,8 +204,7 @@ include ('../includes/header.php');
         // Cargamos los datos de orden_produccion_referencias
         $resultados = $orden_produccion->cargaDatosPorProduccionComponente($id_produccion,$id_produccion_componente);
 
-        if($id_tipo != 3){    
-?>
+        if($id_tipo != 3){ ?>
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico">Referencias <?php echo $nombre_componente;?></div> 
                 <div class="tituloComponente">
@@ -347,7 +347,7 @@ include ('../includes/header.php');
    
     // Mostramos los SOFTWARE
 ?>
-    <div class="ContenedorCamposCreacionBasico">
+    <!--<div class="ContenedorCamposCreacionBasico">
         <div class="LabelCreacionBasico">Softwares</div>
         <div class="CajaReferencias">
             <div id="CapaTablaIframe">
@@ -359,24 +359,27 @@ include ('../includes/header.php');
                         <th>DESCRIPCION</th>
                     </tr>
                     <?php
+                        /*
                         for($j=0;$j<count($ids_softwares);$j++) {
                             // Se cargan los datos de los softwares según su identificador
                             $software->cargaDatosSoftwareId($ids_softwares[$j]);
+                        */
                     ?>
                     <tr>
-                        <td><?php echo $software->software;?></td>
-                        <td><?php echo $software->referencia;?></td>
-                        <td style="text-align:center"><?php echo $software->version;?></td>
-                        <td><?php echo $software->descripcion;?></td>
+                        <td><?php // echo $software->software;?></td>
+                        <td><?php // echo $software->referencia;?></td>
+                        <td style="text-align:center"><?php // echo $software->version;?></td>
+                        <td><?php // echo $software->descripcion;?></td>
                     </tr>
                     <?php
-                        }
+                        // }
                     ?>
                 </table>
             </div>
         </div> 
     </div>
     <br />
+    -->
 <?php
     // Cargamos las referencias libres
     // Cargamos los datos de orden_produccion_referencias
@@ -575,7 +578,7 @@ include ('../includes/header.php');
             <tr>
               	<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
    		       		<?php 
-						$precio_total_producto = $precio_total_cabina + $precio_todos_perifericos + $precio_refs_libres;
+						$precio_total_producto = /*$precio_total_cabina +*/ $precio_todos_perifericos + $precio_refs_libres;
 						// echo '<span class="tituloComp">'.number_format($coste_producto, 2, ',', '.').'€'.'</span>'; 
                         echo '<span class="tituloComp">'.number_format($coste_total_producto, 2, ',', '.').'€'.'</span>'; 
 					?>

@@ -42,7 +42,7 @@ class Componente extends MySQL {
 		);
 	}
 
-	// Se hace la carga de datos  de una nueva cabina
+	// Se hace la carga de datos  de un nuevo componente
 	function datosComponente($id_componente,$nombre,$referencia,$version,$descripcion,$estado,$prototipo,$id_tipo) {
 		$this->id_componente = $id_componente;
 		$this->nombre = $nombre;
@@ -89,15 +89,6 @@ class Componente extends MySQL {
 		return $resultados["id_tipo"];
 	}
 
-    // Función que devuelve las interfaces asociadas al componente
-    function dameInterfacesComponente($id_componente){
-        $consulta = sprintf("select id_interfaz from componentes_interfaces where activo=1 and id_componente=%s order by fecha_creado",
-            $this->makeValue($id_componente,"int"));
-        $this->setConsulta($consulta);
-        $this->ejecutarConsulta();
-        return $this->getResultados();
-    }
-
     // Función que devuelve los kits asociados al componente
     function dameKitsComponente($id_componente){
         $consulta = sprintf("select id_kit from componentes_kits where activo=1 and id_componente=%s order by fecha_creado",
@@ -112,10 +103,12 @@ class Componente extends MySQL {
 		return $id_tipo_componente == 1 || $id_tipo_componente == 2;
 	}
 
-    // Función que determina si un componente es SOFTWARE
+    /*
+	// Función que determina si un componente es SOFTWARE
     function esComponenteSoftware($id_tipo_componente){
         return $id_tipo_componente == 3;
     }
+    */
 
     // Función que obtiene las referencias y las piezas de un componente
     function dameRefsYPiezasComponente($id_componente){
@@ -147,7 +140,7 @@ class Componente extends MySQL {
                 // Si no esta la referencia la insertamos al final
                 array_push($referencias_aux,$referencias_componente_secundario[$i]);
             }
-            // Modificamos el array de referencias del componente por el array modificado con las referencias de la interfaz o kit
+            // Modificamos el array de referencias del componente por el array modificado con las referencias del kit
             unset($referencias_componente_final);
             $referencias_componente_final = $referencias_aux;
         }

@@ -4,10 +4,9 @@ set_time_limit(10000);
 // Carga de clases y funciones JavaScript
 include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/software.class.php");
-include("../classes/basicos/interface.class.php");
+// include("../classes/basicos/software.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/referencia.class.php");
@@ -24,20 +23,17 @@ include("../classes/kint/Kint.class.php");
 permiso(9);
 
 $funciones = new Funciones();
-$cabina = new Cabina();
+// $cabina = new Cabina();
 $periferico = new Periferico();
-$soft = new Software();
-$interfaz = new Interfaz();
+// $soft = new Software();
 $kit = new Kit();
 $proveedor = new Proveedor();
 $ref_modificada = new Referencia();
 $nombre_producto = new Nombre_Producto();
 $plant = new Plantilla_Producto();
 $ref_comp = new Referencia_Componente();
-$ref_int = new Referencia_Componente();
 $ref_kit = new Referencia_Componente();
 $ref_componente = new listadoReferenciasComponentes();
-$ref_interfaces = new listadoReferenciasComponentes();
 $ref_kits = new listadoReferenciasComponentes();
 $orden_produccion = new Orden_Produccion();
 $ref = new Referencia_Libre();
@@ -56,9 +52,9 @@ $esAdminGes = $control_usuario->esAdministradorGes($id_tipo_usuario);
 $alias_op = $_POST["alias_op"];
 $unidades = $_POST["unidades"];
 $id_name_producto = $_POST["producto"];
-$id_cabina = $_POST["cabina"];
+// $id_cabina = $_POST["cabina"];
 $perifericos = $_POST["perifericos"];
-$software = $_POST["software"];
+// $software = $_POST["software"];
 $referencias_libres = $_POST["REFS"];
 $piezas = $_POST["piezas"];
 $fecha_inicio_construccion = $_POST["fecha_inicio_construccion"];
@@ -67,24 +63,26 @@ $sede = $_POST["sede"];
 // Comprobamos si se escogió una plantilla
 $id_plantilla = $_POST["select_plantilla"];
 if(!empty($id_plantilla)){
-    unset($id_cabina);
+    // unset($id_cabina);
     unset($perifericos);
-    unset($software);
+    // unset($software);
     unset($referencias_libres);
     unset($piezas);
 
     // Obtenemos los componentes de la plantilla
-    $id_cabina = $plant->dameCabinaPlantillaProducto($id_plantilla);
+    // $id_cabina = $plant->dameCabinaPlantillaProducto($id_plantilla);
     $res_perifericos = $plant->damePerifericosPlantillaProducto($id_plantilla);
-    $res_software = $plant->dameSoftwarePlantillaProducto($id_plantilla);
+    // $res_software = $plant->dameSoftwarePlantillaProducto($id_plantilla);
 
     for($i=0;$i<count($res_perifericos);$i++){
         $perifericos[] = $res_perifericos[$i]["id_componente"];
     }
 
+    /*
     for($i=0;$i<count($res_software);$i++){
         $software[] = $res_software[$i]["id_componente"];
     }
+    */
 }
 
 // Obtenemos la sede de la Orden de Produccion
@@ -125,9 +123,9 @@ if(count($perifericos)!=0) sort($perifericos);
 if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccion"] == 1) {
 	// Guardar Nueva Orden Producción
 	$id_nombre_producto = $_POST["id_nombre_producto"];
-	$id_cabina = $_POST["id_cabina"];
+	// $id_cabina = $_POST["id_cabina"];
 	$ids_perifericos = $_POST["IDS_PERS"];
-	$ids_softwares = $_POST["IDS_SOFT"];
+	// $ids_softwares = $_POST["IDS_SOFT"];
 	$ref_libres = $_POST["ref_libres"];
 
 	// Convertimos la fecha_inicio_construccion en formato MySql
@@ -156,15 +154,9 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 			if($resultado == 1) {
 				// Guardamos los componentes que forman un producto en la Orden de Produccion				
 				$contador_componente = 1;
-				
-				if($id_cabina != NULL and $id_cabina != 0 and $id_cabina != -1){
+				/*
+				 * if($id_cabina != NULL and $id_cabina != 0 and $id_cabina != -1){
 					$ids_componentes[] = $id_cabina;
-					// Comprobamos si la cabina tiene interfaces
-					$orden_produccion->dameIdsInterfazComponente($id_cabina);
-					for($i=0;$i<count($orden_produccion->ids_interfaces);$i++){
-						$ids_interfaces[] = $orden_produccion->ids_interfaces[$i]["id_interfaz"];
-					}
-					if($ids_interfaces != NULL) $ids_componentes = array_merge($ids_componentes,$ids_interfaces);
 					// Comprobamos si la cabina tiene kits
 					$orden_produccion->dameIdsKitComponente($id_cabina);
 					for($i=0;$i<count($orden_produccion->ids_kit);$i++){
@@ -172,31 +164,26 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 					}
 					if($ids_kit != NULL) $ids_componentes = array_merge($ids_componentes,$ids_kit);
 				}
-				unset($ids_interfaces);
+				*/
 				unset($ids_kit);
 				if($ids_perifericos != NULL){
 					for($i=0;$i<count($ids_perifericos);$i++){
 						$ids_componentes[] = $ids_perifericos[$i];
-						// Comprobamos si el periferico tiene interfaces
-						$orden_produccion->dameIdsInterfazComponente($ids_perifericos[$i]);
-						for($j=0;$j<count($orden_produccion->ids_interfaces);$j++){
-							$ids_interfaces[] = $orden_produccion->ids_interfaces[$j]["id_interfaz"];
-						}
-						if($ids_interfaces != NULL)	$ids_componentes = array_merge($ids_componentes,$ids_interfaces);
 						// Comprobamos si la cabina tiene kits
 						$orden_produccion->dameIdsKitComponente($ids_perifericos[$i]);
 						for($j=0;$j<count($orden_produccion->ids_kit);$j++){
 							$ids_kit[] = $orden_produccion->ids_kit[$j]["id_kit"];
 						}
 						if($ids_kit != NULL) $ids_componentes = array_merge($ids_componentes,$ids_kit);
-					    unset($ids_interfaces);
 					    unset($ids_kit);
 					}
 				}
+				/*
 				if($ids_softwares != NULL){
 					if($ids_componentes != NULL) $ids_componentes = array_merge($ids_componentes,$ids_softwares);
 					else $ids_componentes = $ids_softwares;
 				}
+				*/
 
 				$i=0;
 				$error = false;
@@ -204,10 +191,13 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 					$id_tipo = $orden_produccion->dameTipoComponente($ids_componentes[$i]);
 					switch ($id_tipo["id_tipo"]) {
 						case '1':
+							/*
 							// CABINA
 							$cabina->cargaDatosCabinaId($ids_componentes[$i]);
 							$num_serie_componente = $cabina->referencia."_".$cabina->version."_".$id_produccion."_".$contador_componente;
 							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);		
+							*/
+							// Dejan de existir en Septiembre de 2016
 						break;
 						case '2':
 							// PERIFERICO
@@ -217,15 +207,16 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 						break;
 						case '3':
 							// SOFTWARE
+							/*
 							$soft->cargaDatosSoftwareId($ids_componentes[$i]);
 							$num_serie_componente = "-";
-							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);		
+							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);
+							*/
+							// Dejan de existir en Septiembre de 2016
 						break;
 						case '4':
 							// INTERFAZ
-							$interfaz->cargaDatosInterfazId($ids_componentes[$i]);
-							$num_serie_componente = $interfaz->referencia."_".$interfaz->version."_".$id_produccion."_".$contador_componente;
-							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);			
+							// Dejan de existir en Agosto de 2016
 						break;
 						case '5':
 							// KIT
@@ -554,12 +545,13 @@ include ('../includes/header.php');
             }
         ?>
 
-        <div class="ContenedorCamposCreacionBasico">
+        <!--<div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Cabina</div>
-            <?php $cabina->cargaDatosCabinaId($id_cabina); ?>
-            <input type="text" id="nombre_cabina" name="nombre_cabina" class="CreacionBasicoInput" readonly="readonly" value="<?php if (($id_cabina != 0) and ($id_cabina != -1)) echo $cabina->cabina.'_v'.$cabina->version;?>" />
-            <input type="hidden" id="id_cabina" name="id_cabina" value="<?php echo $id_cabina;?>"/>
-        </div>
+            <?php // $cabina->cargaDatosCabinaId($id_cabina); ?>
+            <input type="text" id="nombre_cabina" name="nombre_cabina" class="CreacionBasicoInput" readonly="readonly" value="<?php // if (($id_cabina != 0) and ($id_cabina != -1)) echo $cabina->cabina.'_v'.$cabina->version;?>" />
+            <input type="hidden" id="id_cabina" name="id_cabina" value="<?php // echo $id_cabina;?>"/>
+        </div>-->
+
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Perifericos</div>
           	<?php
@@ -572,20 +564,25 @@ include ('../includes/header.php');
 			?>
             <textarea id="nombre_perifericos[]" name="nombre_perifericos[]" class="TextAreaOP" readonly="readonly" cols="1" rows="<?php echo count($perifericos);?>"><?php for($i=0;$i<count($nombres_per);$i++) echo $nombres_per[$i]."\n";?></textarea>
         </div>
-        <div class="ContenedorCamposCreacionBasico">
+        <!--
+		<div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Software</div>
             <?php
+				/*
 				$ids_softwares = $software;
 				for($i=0;$i<count($software);$i++){
 					echo '<input type="hidden" id="IDS_SOFT[]" name="IDS_SOFT[]" value="'.$ids_softwares[$i].'"/>';
 					$soft->cargaDatosSoftwareId($software[$i]);
 					$nombres_soft[] = $soft->software;
 				}
+				*/
 			?>
-            <textarea id="software[]" name="software[]" class="TextAreaOP" readonly="readonly" cols="1" rows="<?php echo count($software);?>"><?php for($i=0;$i<count($nombres_soft);$i++) echo $nombres_soft[$i]."\n";?></textarea>
+            <textarea id="software[]" name="software[]" class="TextAreaOP" readonly="readonly" cols="1" rows="<?php // echo count($software);?>"><?php // for($i=0;$i<count($nombres_soft);$i++) echo $nombres_soft[$i]."\n";?></textarea>
         </div>
+        -->
 
         <?php
+			/*
 			if(($id_cabina != 0) and ($id_cabina != -1)) { ?>
                 <div class="ContenedorCamposCreacionBasico">
                     <div class="LabelCreacionBasico">Referencias Cabina</div>
@@ -624,104 +621,6 @@ include ('../includes/header.php');
                     </div>
                 </div>
 
-                <?php
-                    $orden_produccion->dameIdsInterfazComponente($id_cabina);
-                    for($i=0;$i<count($orden_produccion->ids_interfaces);$i++){
-                        $interfaz->cargaDatosInterfazId($orden_produccion->ids_interfaces[$i]["id_interfaz"]); ?>
-                        <div class="ContenedorCamposCreacionBasico">
-                            <div class="LabelCreacionBasico">Referencias Interfaz</div>
-                            <div class="tituloComponente">
-                                <table id="tablaTituloPrototipo">
-                                <tr>
-                                    <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php echo '<span class="tituloComp">'.$interfaz->interfaz.'</span>';?></td>
-                                </tr>
-                                </table>
-                            </div>
-                            <div class="CajaReferencias">
-                                <div id="CapaTablaIframe">
-                                <table id="mitablaIntCab<?php echo $i;?>">
-                                <?php
-                                    $ref_interfaces->setValores($orden_produccion->ids_interfaces[$i]["id_interfaz"]);
-                                    $ref_interfaces->realizarConsulta();
-                                    $resultadosReferenciasInterfaz = $ref_interfaces->referencias_componentes; ?>
-                                <tr>
-                                    <th style="text-align:center">ID_REF</th>
-                                    <th>NOMBRE</th>
-                                    <th>PROVEEDOR</th>
-                                    <th>REF PROV</th>
-                                    <th>NOMBRE PIEZA</th>
-                                    <th style="text-align:center">PIEZAS</th>
-                                    <th style="text-align:center">PACK PRECIO</th>
-                                    <th style="text-align:center">UDS/P</th>
-                                    <th style="text-align:center">TOTAL PAQS</th>
-                                    <th style="text-align:center">PRECIO UNIDAD</th>
-                                    <th style="text-align:center">PRECIO</th>
-                                </tr>
-                                <?php
-                                    $precio_interfaz = 0;
-                                    for($j=0;$j<count($resultadosReferenciasInterfaz);$j++) {
-                                        $datoRef_Interfaz = $resultadosReferenciasInterfaz[$j];
-                                        $ref_int->cargaDatosReferenciaComponenteId($datoRef_Interfaz["id"]);
-                                        $ref_modificada->cargaDatosReferenciaId($ref_int->id_referencia);
-
-                                        if($ref_modificada->pack_precio <> 0 and $ref_modificada->unidades <> 0){
-                                            $precio_unidad = ($ref_modificada->pack_precio / $ref_modificada->unidades);
-                                        }
-                                        else $precio_unidad = 00;
-
-                                        $ref_modificada->calculaTotalPaquetes($ref_modificada->unidades,$ref_int->piezas);
-                                        $total_paquetes = $ref_modificada->total_paquetes;
-                                        $precio_referencia = $ref_int->piezas * $precio_unidad;
-                                        echo '<tr>
-                                                <td style="text-align:center;">'.$ref_int->id_referencia.'</td>
-                                                <td id="enlaceComposites">
-                                                    <a href="../basicos/mod_referencia.php?id='.$ref_int->id_referencia.'"/>';
-                                                        if (strlen($ref_modificada->referencia) > $max_caracteres_ref) {
-                                                            echo substr($ref_modificada->referencia,0,$max_caracteres_ref).'...';
-                                                        }
-                                                        else {
-                                                            echo $ref_modificada->referencia;
-                                                        }
-                                                    '</a>
-                                                </td>';
-                                        echo '<td>';
-                                                    if (strlen($ref_modificada->nombre_proveedor) > $max_caracteres){
-                                                        echo substr($ref_modificada->nombre_proveedor,0,$max_caracteres).'...';
-                                                    }
-                                                    else echo $ref_modificada->nombre_proveedor;
-                                            '</td>';
-                                        echo '<td>';
-                                                $ref_modificada->vincularReferenciaProveedor();
-                                        echo '</td><td>';
-                                                    if (strlen($ref_modificada->part_nombre) > $max_caracteres){
-                                                        echo substr($ref_modificada->part_nombre,0,$max_caracteres).'...';
-                                                    }
-                                                    else echo $ref_modificada->part_nombre;
-                                            '</td>';
-                                        echo '</td><td style="text-align:center">'.number_format($ref_int->piezas, 2, ',', '.').'</td><td style="text-align:center">'.number_format($ref_modificada->pack_precio, 2, ',', '.').'</td><td style="text-align:center">'.$ref_modificada->unidades.'</td><td style="text-align:center">'.$total_paquetes.'</td><td style="text-align:center">'.number_format($precio_unidad, 2, ',', '.').'</td><td style="text-align:center">'.number_format($precio_referencia, 2, ',', '.').'</td></tr>';
-                                        echo '</tr>';
-
-                                        $precio_interfaz = $precio_interfaz + $precio_referencia;
-                                        $costeInterfaces = $costeInterfaces + $precio_referencia;
-                                    }
-                                ?>
-                                </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ContenedorCamposCreacionBasico">
-                            <div class="LabelCreacionBasico">Coste Interfaz Cabina</div>
-                            <div class="tituloComponente">
-                                <table id="tablaTituloPrototipo">
-                                <tr>
-                                    <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php echo '<span class="tituloComp">'.number_format($precio_interfaz, 2, ',', '.').'€'.'</span>';?></td>
-                                </tr>
-                                </table>
-                            </div>
-                        </div>
-                <?php
-                    }
-                ?>
                 <!-- Kits de la cabina -->
                 <?php
                     $orden_produccion->dameIdsKitComponente($id_cabina);
@@ -826,7 +725,7 @@ include ('../includes/header.php');
                     <div class="tituloComponente">
                         <table id="tablaTituloPrototipo">
                         <tr>
-                            <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php $precio_total_cabina = $precio_cabina + $costeInterfaces + $costeKits; echo '<span class="tituloComp">'.number_format($precio_total_cabina, 2, ',', '.').'€'.'</span>';?></td>
+                            <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php $precio_total_cabina = $precio_cabina + $costeKits; echo '<span class="tituloComp">'.number_format($precio_total_cabina, 2, ',', '.').'€'.'</span>';?></td>
                         </tr>
                         </table>
                     </div>
@@ -841,6 +740,7 @@ include ('../includes/header.php');
                 </div>
         <?php
 		    }
+			*/
             // Obtener el numero de perifericos para generar las tablas de referencias correspondientes a ese periferico
             $precio_todos_perifericos = 0;
             for($i=0;$i<count($perifericos);$i++){
@@ -864,107 +764,6 @@ include ('../includes/header.php');
                 echo '</table></div></div></div>';
                 echo '<div class="ContenedorCamposCreacionBasico"><div class="LabelCreacionBasico">Coste Periferico</div><div class="tituloComponente"><table id="tablaTituloPrototipo"><tr><td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><span class="tituloComp">'.number_format($precio_periferico, 2, ',', '.').'€'.'</span></td></tr></table></div></div>';
 
-                // Interfaces del Periferico
-                $orden_produccion->dameIdsInterfazComponente($ids_perifericos[$i]);
-                $costeInterfaces = 0;
-                for($k=0;$k<count($orden_produccion->ids_interfaces);$k++){
-                    $interfaz->cargaDatosInterfazId($orden_produccion->ids_interfaces[$k]["id_interfaz"]); ?>
-                    <div class="ContenedorCamposCreacionBasico">
-                        <div class="LabelCreacionBasico">Referencias Interfaz</div>
-                        <div class="tituloComponente">
-                            <table id="tablaTituloPrototipo">
-                            <tr>
-                                <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php echo '<span class="tituloComp">'.$interfaz->interfaz.'</span>'; ?></td>
-                            </tr>
-                            </table>
-                        </div>
-                        <div class="CajaReferencias">
-                            <div id="CapaTablaIframe">
-                                <table id="mitablaInt<?php echo $k;?>Per<?php echo $i;?>">
-                                <?php
-                                    $ref_interfaces->setValores($orden_produccion->ids_interfaces[$k]["id_interfaz"]);
-                                    $ref_interfaces->realizarConsulta();
-                                    $resultadosReferenciasInterfaz = $ref_interfaces->referencias_componentes;
-                                ?>
-                                <tr>
-                                    <th style="text-align:center">ID</th>
-                                    <th>NOMBRE</th>
-                                    <th>PROVEEDOR</th>
-                                    <th>REF PROV</th>
-                                    <th>NOMBRE PIEZA</th>
-                                    <th style="text-align:center">PIEZAS</th>
-                                    <th style="text-align:center">PACK PRECIO</th>
-                                    <th style="text-align:center">UDS/P</th>
-                                    <th style="text-align:center">TOTAL PAQS</th>
-                                    <th style="text-align:center">PRECIO UNIDAD</th>
-                                    <th style="text-align:center">PRECIO</th>
-                                </tr>
-                                <?php
-                                    $precio_interfaz = 0;
-                                    for($j=0;$j<count($resultadosReferenciasInterfaz);$j++) {
-                                        $datoRef_Interfaz = $resultadosReferenciasInterfaz[$j];
-                                        $ref_int->cargaDatosReferenciaComponenteId($datoRef_Interfaz["id"]);
-                                        $ref_modificada->cargaDatosReferenciaId($ref_int->id_referencia);
-
-                                        if ($ref_modificada->pack_precio <> 0 and $ref_modificada->unidades <> 0){
-                                            $precio_unidad = ($ref_modificada->pack_precio / $ref_modificada->unidades);
-                                        }
-                                        else {
-                                            $precio_unidad = 00;
-                                        }
-                                        $ref_modificada->calculaTotalPaquetes($ref_modificada->unidades,$ref_int->piezas);
-                                        $total_paquetes = $ref_modificada->total_paquetes;
-                                        $precio_referencia = $ref_int->piezas * $precio_unidad;
-                                        echo '<tr>
-                                                <td style="text-align:center;">'.$ref_int->id_referencia.'</td>
-                                                <td id="enlaceComposites">
-                                                    <a href="../basicos/mod_referencia.php?id='.$ref_int->id_referencia.'"/>';
-                                                        if (strlen($ref_modificada->referencia) > $max_caracteres_ref) {
-                                                            echo substr($ref_modificada->referencia,0,$max_caracteres_ref).'...';
-                                                        }
-                                                        else {
-                                                            echo $ref_modificada->referencia;
-                                                        }
-                                                    '</a>
-                                                </td>';
-                                        echo '<td>';
-                                                    if (strlen($ref_modificada->nombre_proveedor) > $max_caracteres){
-                                                        echo substr($ref_modificada->nombre_proveedor,0,$max_caracteres).'...';
-                                                    }
-                                                    else echo $ref_modificada->nombre_proveedor;
-                                            '</td>';
-                                        echo '<td>';
-                                                $ref_modificada->vincularReferenciaProveedor();
-                                        echo '</td><td>';
-                                                    if (strlen($ref_modificada->part_nombre) > $max_caracteres){
-                                                        echo substr($ref_modificada->part_nombre,0,$max_caracteres).'...';
-                                                    }
-                                                    else echo $ref_modificada->part_nombre;
-                                            '</td>';
-                                        echo '</td><td style="text-align:center">'.number_format($ref_int->piezas, 2, ',', '.').'</td><td style="text-align:center">'.number_format($ref_modificada->pack_precio, 2, ',', '.').'</td><td style="text-align:center">'.$ref_modificada->unidades.'</td><td style="text-align:center">'.$total_paquetes.'</td><td style="text-align:center">'.number_format($precio_unidad, 2, ',', '.').'</td><td style="text-align:center">'.number_format($precio_referencia, 2, ',', '.').'</td></tr>';
-                                        echo '</tr>';
-
-                                        $precio_interfaz = $precio_interfaz + $precio_referencia;
-                                        $costeInterfaces = $costeInterfaces + $precio_referencia;
-                                    }
-                                ?>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="ContenedorCamposCreacionBasico">
-                        <div class="LabelCreacionBasico">Coste Interfaz Periferico</div>
-                        <div class="tituloComponente">
-                            <table id="tablaTituloPrototipo">
-                            <tr>
-                                <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><?php echo '<span class="tituloComp">'.number_format($precio_interfaz, 2, ',', '.').'€'.'</span>'; ?></td>
-                            </tr>
-                            </table>
-                        </div>
-                    </div>
-            <?php
-                }
                 // Kits del Periferico
                 $orden_produccion->dameIdsKitComponente($ids_perifericos[$i]);
                 $costeKits = 0;
@@ -1073,7 +872,7 @@ include ('../includes/header.php');
                         <tr>
                             <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
                                 <?php
-                                    $precio_total_periferico = $precio_periferico + $costeInterfaces + $costeKits;
+                                    $precio_total_periferico = $precio_periferico + $costeKits;
                                     echo '<span class="tituloComp">'.number_format($precio_total_periferico, 2, ',', '.').'€'.'</span>';
                                     $precio_todos_perifericos = $precio_todos_perifericos + $precio_total_periferico;
                                 ?>
@@ -1194,7 +993,7 @@ include ('../includes/header.php');
                 	<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
    						<?php
 							$precio_total_producto = 0;
-							$precio_total_producto = $precio_total_cabina + $precio_todos_perifericos + $precio_refs_libres;
+							$precio_total_producto = /*$precio_total_cabina +*/ $precio_todos_perifericos + $precio_refs_libres;
 							echo '<span class="tituloComp">'.number_format($precio_total_producto, 2, ',', '.').'€'.'</span>';
 						?>
                     </td>

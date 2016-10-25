@@ -3,13 +3,11 @@ set_time_limit(10000);
 // Este fichero crea un nuevo periferico de basicos
 include("../includes/sesion.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/interface.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/referencia_componente.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/fabricante.class.php");
-include("../classes/basicos/listado_interfaces.class.php");
 include("../classes/basicos/listado_kits.class.php");
 include("../classes/basicos/listado_referencias_componentes.class.php");
 include("../classes/basicos/log_importacion_referencias_componente.class.php");
@@ -18,11 +16,8 @@ permiso(2);
 
 $ref = new Referencia();
 $perifericos = new Periferico();
-$interf = new Interfaz();
 $kt = new Kit();
-$interfs = new listadoInterfaces();
 $listado_kits = new listadoKits();
-$ref_interfs = new listadoReferenciasComponentes();
 $ref_kits = new listadoReferenciasComponentes();
 $ref_componente = new Referencia_Componente();
 $funciones = new Funciones();
@@ -38,7 +33,6 @@ if(isset($_POST["guardandoPeriferico"]) && $_POST["guardandoPeriferico"] == 1) {
 	$version = $_POST["version"];
 	$referencias = $_POST["REFS"];
 	$piezas = $_POST["piezas"];
-	$interfaces = $_POST["interfaz"];
 	$prototipo = $_POST["prototipo"];
 	$kit = $_POST["kit"];	
 	$estado = $_POST["estado"];
@@ -132,7 +126,7 @@ if(isset($_POST["guardandoPeriferico"]) && $_POST["guardandoPeriferico"] == 1) {
 					$piezas = $refs_piezas["piezas"];
 				}
 				
-				$perifericos->datosNuevoPeriferico(NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,2,$nombre_archivo,$interfaces,$estado,$prototipo,$kit);
+				$perifericos->datosNuevoPeriferico(NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,2,$nombre_archivo,NULL,$estado,$prototipo,$kit);
 				$resultado = $perifericos->guardarCambios();
 				if($resultado == 1) {
 					// Guardamos un log en caso de importacion masiva
@@ -161,7 +155,6 @@ else {
 	$descripcion = "";
 	$version = "";
 	$referencias = "";
-	$interfaces = "";
 }
 
 $componente = "periferico";
@@ -215,46 +208,8 @@ echo '<script type="text/javascript" src="../js/basicos/nuevo_periferico_adjunto
           	<input type="checkbox" id="prototipo" name="prototipo" class="BotonEliminar" style="margin: 5px 0px 5px 0px;" value="1" />
         </div>
         <div class="ContenedorCamposCreacionBasico">	
-            <div class="LabelCreacionBasico">Interfaz </div>
-           	<div class="CajaPerifericos">
-               	<table style="width:700px; height:208px; border:1px solid #fff;">
-                <tr>
-                 	<td id= "listas_no_asignados" style="width:250px; border:1px solid #fff; padding-left:10px;">
-            	        <select multiple="multiple" id="interfaces_no_asignados[]" name="interfaces_no_asignados[]" class="SelectMultiplePerOrigen">
-                        <?php 
-							$interfs->prepararConsulta();
-							$interfs->realizarConsulta();
-							$resultado_interfaces = $interfs->interfaces;
-
-							for($i=0;$i<count($resultado_interfaces);$i++) {
-								$datoInterfaz = $resultado_interfaces[$i];
-								$interf->cargaDatosInterfazId($datoInterfaz["id_componente"]);
-								echo '<option value="'.$interf->id_componente.'">'.$interf->interfaz.'_v'.$interf->version.'</option>';
-							}
-						?>
-            			</select>
-                    </td>
-                    <td style="border:1px solid #fff; vertical-align:middle">
-						<table style="width:100%; border:1px solid #fff;">
-                       	<tr>
-                           	<td style="border:1px solid #fff;"><input type="button" id="añadirInterfaz" name="añadirInterfaz" class="BotonEliminar" onclick="AddToSecondList()" value="AÑADIR" /></td>
-                        </tr>
-                        <tr>
-                          	<td style="border:1px solid #fff;"></td>
-                        </tr>
-                        <tr>
-                          	<td style="border:1px solid #fff;"><input type="button" id="quitarInterfaz" name="quitarInterfaz" class="BotonEliminar" onclick="DeleteSecondListItem()" value="QUITAR" /></td>
-                        </tr>
-                        </table>
-                    </td>
-                    <td id="lista" style="width:250px; border:1px solid #fff;"><select multiple="multiple" id="interfaz[]" name="interfaz[]" class="SelectMultiplePerDestino"></select></td>                        
-                </tr>
-                </table>
-            </div>
-        </div>
-        <div class="ContenedorCamposCreacionBasico">	
             <div class="LabelCreacionBasico">Kits </div>
-            <div class="CajaPerifericos">
+            <div class="contenedorComponentes">
             <table style="width:700px; height:208px; border:1px solid #fff;">
                 <tr>
                  	<td id= "listas_kits_no_asignados" style="width:250px; border:1px solid #fff; padding-left:10px;">
@@ -349,9 +304,6 @@ echo '<script type="text/javascript" src="../js/basicos/nuevo_periferico_adjunto
         </div>
         <br/>
         <div id="capa_interfaces_kits" style="display: block;">
-            <div id="capa_interfaces" style="display: block;">
-                <?php echo '<input type="hidden" id="costeInterfaces" name="costeInterfaces" value="'; if(empty($costeInterfaces)) $costeInterfaces=0; echo $costeInterfaces.'"/>'; ?>
-            </div>
             <div id="capa_kits" style="display: block;">
                 <?php echo '<input type="hidden" id="costeKits" name="costeKits" value="'; if(empty($costeKits)) $costeKits=0; echo $costeKits.'"/>'; ?>
             </div>

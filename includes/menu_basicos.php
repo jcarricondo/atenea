@@ -4,7 +4,7 @@
             if(permisoMenu(1)) { ?>
                 <a class="BotonMenu" href="../basicos/proveedores.php">Proveedores</a>
                 <a class="BotonMenu" href="../basicos/referencias.php">Referencias</a>
-                <a class="BotonMenu" href="../basicos/cabinas.php">Cabinas</a>
+                <!--<a class="BotonMenu" href="../basicos/cabinas.php">Cabinas</a>-->
                 <a class="BotonMenu" href="../basicos/perifericos.php">Perifericos</a>
                 <a class="BotonMenu" href="../basicos/kits.php">Kits</a>
                 <a class="BotonMenu" href="../basicos/fabricantes.php">Fabricantes</a>
@@ -43,7 +43,7 @@
                 case 'mod_nombre_producto':
                     if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/nombres_de_productos.php">Listado</a>';
                     break;
-                case 'cabinas':
+                /* case 'cabinas':
                     if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nueva_cabina.php">Nueva</a>';
                     break;
                 case 'new_cabina':
@@ -51,7 +51,7 @@
                     break;
                 case 'mod_cabina':
                     if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/cabinas.php">Listado</a>';
-                    break;
+                    break; */
                 case 'perifericos':
                     if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nuevo_periferico.php">Nuevo</a>';
                     break;
@@ -60,15 +60,6 @@
                     break;
                 case 'mod_periferico':
                     if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/perifericos.php">Listado</a>';
-                    break;
-                case 'interfaces':
-                    if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nueva_interfaz.php">Nueva</a>';
-                    break;
-                case 'new_interfaz':
-                    if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/interfaces.php">Listado</a>';
-                    break;
-                case 'mod_interfaz':
-                    if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/interfaces.php">Listado</a>';
                     break;
                 case 'kits':
                     if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nuevo_kit.php">Nuevo</a>';
@@ -79,7 +70,7 @@
                 case 'mod_kit':
                     if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/kits.php">Listado</a>';
                     break;
-                case 'softwares':
+                /* case 'softwares':
                     if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nuevo_software_simulacion.php">Nuevo</a>';
                     break;
                 case 'new_software':
@@ -87,7 +78,7 @@
                     break;
                 case 'mod_software':
                     if(permisoMenu(1)) echo '<a class="BotonMenuActual" href="../basicos/software_simulacion.php">Listado</a>';
-                    break;
+                    break; */
                 case 'fabricantes':
                     if(permisoMenu(2)) echo '<a class="BotonMenuActual" href="../basicos/nuevo_fabricante.php">Nuevo</a>';
                     break;

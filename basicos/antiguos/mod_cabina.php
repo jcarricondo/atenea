@@ -3,13 +3,11 @@ set_time_limit(10000);
 // Este fichero modifica la cabina de basicos
 include("../includes/sesion.php");
 include("../classes/basicos/cabina.class.php");
-include("../classes/basicos/interface.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/referencia_componente.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/fabricante.class.php");
-include("../classes/basicos/listado_interfaces.class.php");
 include("../classes/basicos/listado_kits.class.php");
 include("../classes/basicos/listado_referencias_componentes.class.php");
 include("../classes/basicos/log_importacion_referencias_componente.class.php");
@@ -27,17 +25,13 @@ else {
 }
 
 $cabinas = new Cabina();
-$interfs = new listadoInterfaces();
 $listado_kits = new listadoKits();
 $ref_cabinas = new listadoReferenciasComponentes();
-$ref_interfaces = new listadoReferenciasComponentes();
 $ref_kits = new listadoReferenciasComponentes();
 $ref_componente = new Referencia_Componente();
-$ref_int = new Referencia_Componente();
 $ref_kit = new Referencia_Componente();
 $ref = new Referencia();
 $ref_modificada = new Referencia();
-$Interfaz = new Interfaz();
 $Kit = new Kit();
 $funciones = new Funciones();
 $proveedor = new Proveedor();
@@ -57,7 +51,6 @@ if(isset($_POST["guardandoCabina"]) and $_POST["guardandoCabina"] == 1) {
 	$id_componente = $_GET["id"];
 	$archivos_tabla = $_POST["archivos_tabla"];
 	$duplicado = $_POST["duplicar_cabina"];
-	$interfaces = $_POST["interfaz"];
 	$kits = $_POST["kit"];
 	$act_version = $_POST["act_version"];
 	$metodo = $_POST["metodo"]; 
@@ -155,7 +148,7 @@ if(isset($_POST["guardandoCabina"]) and $_POST["guardandoCabina"] == 1) {
 					}
 				}
 				
-				$cabinas->datosNuevoCabina($id_componente,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,1,$nombre_archivo,$interfaces,$estado,$prototipo,$kits);
+				$cabinas->datosNuevoCabina($id_componente,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,1,$nombre_archivo,NULL,$estado,$prototipo,$kits);
 				$resultado = $cabinas->guardarCambios();
 				if($resultado == 1) {
 					// Guardamos un log en caso de importacion masiva
@@ -195,7 +188,7 @@ if(isset($_POST["guardandoCabina"]) and $_POST["guardandoCabina"] == 1) {
 							copy($uploaddir.$nombre_archivos[$j],$uploadfile);
 						}
 
-						$cabinas->datosNuevoCabina(NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,1,$nombre_archivo,$interfaces,$estado,$prototipo,$kits);
+						$cabinas->datosNuevoCabina(NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,1,$nombre_archivo,NULL,$estado,$prototipo,$kits);
 						$resultado = $cabinas->guardarCambios();
 						if($resultado == 1) {
 							header("Location: cabinas.php?cab=duplicado");
@@ -241,7 +234,7 @@ if(isset($_POST["guardandoCabina"]) and $_POST["guardandoCabina"] == 1) {
 
 						// El componente con la versión actualizada está en estado BORRADOR
 						$estado = "BORRADOR";
-						$cabinas->datosNuevoCabina(NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,1,$nombre_archivo,$interfaces,$estado,$prototipo,$kits);
+						$cabinas->datosNuevoCabina(NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,1,$nombre_archivo,NULL,$estado,$prototipo,$kits);
 						$resultado = $cabinas->guardarCambios();
 						if($resultado == 1) {
 							header("Location: cabinas.php?cab=actualizado");
@@ -370,77 +363,8 @@ echo '<script type="text/javascript" src="../js/basicos/mod_cabina_adjuntos.js">
 			?>
         </div>
         <div class="ContenedorCamposCreacionBasico">
-        	<div class="LabelCreacionBasico">Interfaz</div>
-            <div class="CajaInterfaces">
-            	<table style="width:700px; height:208px; border:1px solid #fff; margin:5px 10px 0px 12px;">
-                <tr>
-                   	<td id= "listas_no_asignados" style="width:250px; border:1px solid #fff;">
-            			<select multiple="multiple" id="interfaces_no_asignados[]" name="interfaces_no_asignados[]" class="SelectMultipleIntOrigen" >
-            			<?php
-							$interfs->prepararConsulta();
-							$interfs->realizarConsulta();
-							$resultado_interfaces = $interfs->interfaces;
-
-							for($i=0;$i<count($resultado_interfaces);$i++) {
-								$datoInterfaz = $resultado_interfaces[$i];
-								$Interfaz->cargaDatosInterfazId($datoInterfaz["id_componente"]);
-								echo '<option value="'.$Interfaz->id_componente.'">'.$Interfaz->interfaz.'_v'.$Interfaz->version.'</option>';
-							}
-						?>
-            			</select>
-                    </td>
-                    <td style="border:1px solid #fff; vertical-align:middle">
-						<table style="width:100%; border:1px solid #fff;">
-                        <tr>
-                        	<td style="border:1px solid #fff;">
-                        		<?php if($modificar) { ?>
-                        			<input type="button" id="añadirInterfaz" name="añadirInterfaz" class="BotonEliminar" onclick="AddToSecondList()" value="AÑADIR" />
-                       			<?php } ?>
-                       		</td>
-                        </tr>
-                        <tr>
-                          	<td style="border:1px solid #fff;"></td>
-                        </tr>
-                        <tr>
-                        	<td style="border:1px solid #fff;">
-                        		<?php if($modificar) { ?>
-                        			<input type="button" id="quitarInterfaz" name="quitarInterfaz" class="BotonEliminar" onclick="DeleteSecondListItem()" value="QUITAR" />
-                        		<?php } ?>	
-                        	</td>
-                        </tr>
-                        </table>
-                    </td>
-                    <td id="lista" style="width:250px; border:1px solid #fff;">
-	                	<select multiple="multiple" id="interfaz[]" name="interfaz[]" class="SelectMultipleIntDestino">
-                        	<?php
-								$Interfaz->dameIdsInterfaces($id_componente);
-								for($j=0;$j<count($Interfaz->ids_interfaces);$j++){
-									$Interfaz->cargaDatosInterfazId($Interfaz->ids_interfaces[$j]["id_interfaz"]);
-									echo '<option value="'.$Interfaz->id_componente.'">'.$Interfaz->interfaz.'_v'.$Interfaz->version.'</option>';
-								}
-							?>
-                        </select>
-                    </td>
-                    <td style="border:1px solid #fff; vertical-align:middle">
-						<table style="width:100%; border:1px solid #fff;">
-                        <tr>
-                        	<td style="border:1px solid #fff;"></td>
-                        </tr>
-                        <tr>
-                          	<td style="border:1px solid #fff;"><input type="button" id="mas" name="mas" class="BotonInterfaz"  value="VER" onclick="javascript:AbrirVentanasInterfaces();"/></td>
-                        </tr>
-                        <tr>
-                        	<td style="border:1px solid #fff;"></td>
-                        </tr>
-                        </table>
-                    </td>
-                </tr>
-                </table>
-        	</div>
-        </div>
-        <div class="ContenedorCamposCreacionBasico">
-        	<div class="LabelCreacionBasico">Kit</div>
-            <div class="CajaKits">
+        	<div class="LabelCreacionBasico">Kits</div>
+            <div class="contenedorComponentes">
             	<table style="width:700px; height:208px; border:1px solid #fff; margin:5px 10px 0px 12px;">
                 <tr>
                    	<td id= "listas_kits_no_asignados" style="width:250px; border:1px solid #fff;">
@@ -639,65 +563,6 @@ echo '<script type="text/javascript" src="../js/basicos/mod_cabina_adjuntos.js">
         </div>
         <br/>
         <div id="capa_interfaces_kits" style="display: block;">
-            <div id="capa_interfaces" style="display: block;">
-            <?php
-                // Si hay interfaces añadimos sus tablas de referencias
-                $Interfaz->dameIdsInterfaces($id_componente);
-                $costeInterfaces = 0;
-                if(count($Interfaz->ids_interfaces) != 0){
-                    for($i=0;$i<count($Interfaz->ids_interfaces);$i++){
-                        $id_capa_interfaz = 'interfaz-'.$i;
-                        $id_interfaz = $Interfaz->ids_interfaces[$i]["id_interfaz"];
-                        echo '<div id="'.$id_capa_interfaz.'" class="ContenedorCamposCreacionBasico"><div class="LabelCreacionBasico">Referencias Interfaz</div>';
-                        $Interfaz->cargaDatosInterfazId($id_interfaz);
-                        echo '<div class="tituloComponente">'.$Interfaz->interfaz.'_v'.$Interfaz->version.'</div>';
-                        echo '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitablainterfaz'.$i.'">';
-                        echo '<tr><th style="text-align:center">ID REF</th><th>NOMBRE</th><th>PROVEEDOR</th><th>REF PROV</th><th>NOMBRE PIEZA</th><th style="text-align:center">PIEZAS</th><th style="text-align:center">PACK PRECIO</th><th style="text-align:center">UDS/P</th><th style="text-align:center">PRECIO UNIDAD</th><th style="text-align:center">PRECIO</th></tr>';
-
-                        $ref_interfaces->setValores($id_interfaz);
-                        $ref_interfaces->realizarConsulta();
-                        $resultadosReferenciasInterfaz = $ref_interfaces->referencias_componentes;
-                        $costerinterfaz = 0;
-                        for($j=0;$j<count($resultadosReferenciasInterfaz);$j++) {
-                            $datoRef_Interfaz = $resultadosReferenciasInterfaz[$j];
-                            $ref_int->cargaDatosReferenciaComponenteId($datoRef_Interfaz["id"]);
-                            $ref_modificada->cargaDatosReferenciaId($ref_int->id_referencia);
-
-                            if ($ref_modificada->pack_precio <> 0 and $ref_modificada->unidades <> 0){
-                                $precio_unidad = ($ref_modificada->pack_precio / $ref_modificada->unidades);
-                            }
-                            else {
-                                $precio_unidad = 00;
-                            }
-                            $precio_referencia = $ref_int->piezas * $precio_unidad;
-                            $costerinterfaz = $costerinterfaz + $precio_referencia;
-                            echo '<tr><td style="text-align:center">'.$ref_int->id_referencia.'</td><td id="enlaceComposites"><a href="../basicos/mod_referencia.php?id='.$ref_int->id_referencia.'"/>'.$ref_modificada->referencia.'</a></td><td>'.$ref_modificada->nombre_proveedor.'</td>';
-                            echo '<td>';
-                                $ref_modificada->vincularReferenciaProveedor();
-                            echo '</td></td><td>'.$ref_modificada->part_nombre.'</td><td style="text-align:center">'.number_format($ref_int->piezas, 2, '.', '').'</td><td style="text-align:center">'.number_format($ref_modificada->pack_precio, 2, '.', '').'</td><td style="text-align:center">'.$ref_modificada->unidades.'</td><td style="text-align:center">'.number_format($precio_unidad, 2, '.', '').'</td><td style="text-align:center">'.number_format($precio_referencia, 2, '.', '').'</td></tr>';
-                            $costeInterfaces = $costeInterfaces + $precio_referencia;
-                        }
-                        echo '</table></div></div>
-                            <div class="LabelCreacionBasico" style="margin-top:5px;">Coste Interfaz</div>
-                            <div class="tituloComponente">
-                                <table id="tablaTituloPrototipo">
-                                <tr>
-                                    <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
-                                        <span class="tituloComp">'.number_format($costerinterfaz, 2, ',', '.').'€'.'</span>'.'
-                                    </td>
-                                </tr>
-                                </table>
-                                <input type="hidden" id="coste_interfaz-'.$i.'" value="'.$costerinterfaz.'" />
-                            </div>
-                            <br />
-                        </div>';
-                    }
-                }
-                echo '<input type="hidden" id="costeInterfaces" name="costeInterfaces" value="'.$costeInterfaces.'"/>';
-                $precio_total = $precio_total + $costeInterfaces;
-            ?>
-            </div>
-
             <div id="capa_kits" style="display: block;">
             <?php
                 // Si hay kits añadimos sus tablas de referencias

@@ -187,7 +187,6 @@ include ("../includes/header.php");
             	<th style="text-align:center">VERSION</th>
                 <th style="text-align:center">REFERENCIAS</th>
                 <th>DESCRIPCION</th>
-                <th style="text-align:center">INTERFACES</th>
                 <th style="text-align:center">KITS</th>
                 <th>ESTADO</th>
                 <th style="text-align:center">PROTOTIPO</th>
@@ -219,11 +218,6 @@ include ("../includes/header.php");
 							<a href="../basicos/informe_referencias.php?tipo=cabina&id=<?php echo $cab->id_componente;?>">XLS</a>
                         </td>
                         <td><?php echo $cab->descripcion;?></td>
-                        <td style="text-align:center">
-                        	<a href="javascript:abrir('muestra_interfaces.php?nombre=<?php echo $cab->cabina;?>&id=<?php echo $cab->id_componente;?>')">
-                            	INTERFACES
-                            </a>
-                        </td>
                         <td style="text-align:center">
                         	<a href="javascript:abrir('muestra_kits.php?nombre=<?php echo $cab->cabina;?>&id=<?php echo $cab->id_componente;?>')">
                             	KITS

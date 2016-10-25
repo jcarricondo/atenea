@@ -97,7 +97,7 @@ var div = document.getElementById('CapaTablaIframe');
 		}
 	}
 	
-	// Funcion que calcula el coste total de las referencias de la tabla cabina (sin las interfaces)
+	// Función que calcula el coste total de las referencias de la tabla del componente
 	function calculaCoste(tableId){
 		try {
 			table = document.getElementById('mitabla');
@@ -119,7 +119,7 @@ var div = document.getElementById('CapaTablaIframe');
 		}
 	}
 	
-	// Funcion que actualiza el coste total del componente mas el coste de las interfaces 
+	// Función que actualiza el coste total del componente mas el coste de los kits
 	function actualizarCoste(costeTotal){
 		try{
 			costeTotal = parseFloat(costeTotal);

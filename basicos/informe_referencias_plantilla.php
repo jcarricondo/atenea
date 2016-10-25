@@ -25,8 +25,13 @@ $salida = '<table>
             <th>Nombre</th>
             <th>Referencia Proveedor</th>
             <th>Proveedor</th>
-            <th>Precio</th>
-            <th>Total Paquetes</th>
+            <th>Unidades por paquete</th>
+            <th>Unidades por simulador</th>
+            <th>Paquetes por simulador</th>
+            <th>Precio por paquete</th>
+            <th>Precio por unidad</th>
+            <th>Precio por simulador (en base unidades)</th>
+		    <th>Precio por simulador (en base paquetes)</th>
             <th>Tipo Pieza</th>
             <th>Nombre Pieza</th>
             <th>Fabricante</th>
@@ -42,27 +47,25 @@ $salida = '<table>
             <th>Valor 4</th>
             <th>Nombre 5</th>
             <th>Valor 5</th>
-            <th>Precio Pack</th>
-            <th>Unidades Paquete</th>
-            <th>Piezas</th>
             <th>Comentarios</th>
         </tr>';
 
+        /*
+        <th>Precio</th>
+        <th>Total Paquetes</th>
+        <th>Precio Pack</th>
+        <th>Unidades Paquete</th>
+        <th>Piezas</th>
+        */
+
 // Obtenemos los componentes principales de la plantilla
 $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
-// Guardamos en un array los componentes con sus interfaces y kits asociados
+// Guardamos en un array los componentes con sus kits asociados
 for($i=0;$i<count($res_componentes);$i++){
     $id_componente = $res_componentes[$i]["id_componente"];
     $id_tipo_componente = $res_componentes[$i]["id_tipo_componente"];
 
     $array_componentes_final[] = $id_componente;
-
-    // Comprobamos si ese componente tiene interfaces asociadas
-    $interfaces_comp = $comp->dameInterfacesComponente($id_componente);
-    for($j=0;$j<count($interfaces_comp);$j++){
-        $id_interfaz = $interfaces_comp[$j]["id_interfaz"];
-        $array_componentes_final[] = $id_interfaz;
-    }
 
     // Comprobamos si ese componente tiene kits asociados
     $kits_comp = $comp->dameKitsComponente($id_componente);
@@ -101,19 +104,39 @@ for($i=0;$i<count($referencias_componente_final);$i++){
     $id_referencia = $referencias_componente_final[$i]["id_referencia"];
     $piezas = $referencias_componente_final[$i]["piezas"];
     $ref->cargaDatosReferenciaId($id_referencia);
+    $unidades_por_paquete = $ref->unidades;
+    $unidades_por_simulador = $piezas;
+    $precio_por_paquete = $ref->pack_precio;
+    if($unidades_por_paquete != 0) {
+        $paquetes_por_simulador = ceil($unidades_por_simulador / $unidades_por_paquete);
+        $precio_por_unidad = round($precio_por_paquete / $unidades_por_paquete, 2, PHP_ROUND_HALF_UP);
+    }
+    else {
+        $paquetes_por_simulador = 0;
+        $precio_por_unidad = 0;
+    }
+    $precio_por_simulador_unidades = $unidades_por_simulador * $precio_por_unidad;
+    $precio_por_simulador_paquetes = $paquetes_por_simulador * $precio_por_paquete;
 
+    /*
     // Calculamos el numero total de paquetes en funcion de las piezas
     $ref->calculaTotalPaquetes($ref->unidades,$piezas);
     $ref->calculaCosteReferencia();
-    $ref->prepararCodificacionReferencia();
+    */
 
+    $ref->prepararCodificacionReferencia();
     $salida .= '<tr>
                 <td style="text-align: center;">'.$id_referencia.'</td>
                 <td>'.$ref->referencia.'</td>
                 <td>'.$ref->part_proveedor_referencia.'</td>
                 <td>'.$ref->nombre_proveedor.'</td>
-                <td style="text-align: right;">'.number_format(round($ref->coste,2),2,',','.').'</td>
-                <td style="text-align: right;">'.$ref->total_paquetes.'</td>
+                <td style="text-align: right;">'.$unidades_por_paquete.'</td>
+                <td style="text-align: right;">'.$unidades_por_simulador.'</td>
+                <td style="text-align: right;">'.$paquetes_por_simulador.'</td>
+			    <td style="text-align: right;">'.number_format($precio_por_paquete,2,',','.').'</td>
+			    <td style="text-align: right;">'.number_format($precio_por_unidad,2,',','.').'</td>
+			    <td style="text-align: right;">'.number_format($precio_por_simulador_unidades,2,',','.').'</td>
+			    <td style="text-align: right;">'.number_format($precio_por_simulador_paquetes,2,',','.').'</td>
                 <td>'.$ref->part_tipo.'</td>
                 <td>'.$ref->part_nombre.'</td>
                 <td>'.$ref->nombre_fabricante.'</td>
@@ -129,11 +152,15 @@ for($i=0;$i<count($referencias_componente_final);$i++){
                 <td>'.$ref->part_valor_cantidad_4.'</td>
                 <td>'.$ref->part_valor_nombre_5.'</td>
                 <td>'.$ref->part_valor_cantidad_5.'</td>
-                <td style="text-align: right;">'.number_format(round($ref->pack_precio,2),2,',','.').'</td>
-                <td style="text-align: right;">'.$ref->unidades.'</td>
-                <td style="text-align: right;">'.number_format(round($piezas,2),2,',','.').'</td>
                 <td>'.$ref->comentarios.'</td>
-             </tr>';
+            </tr>';
+
+            /*
+            <td style="text-align: right;">'.number_format(round($ref->coste,2),2,',','.').'</td>
+            <td style="text-align: right;">'.$ref->total_paquetes.'</td>
+            <td style="text-align: right;">'.number_format(round($ref->pack_precio,2),2,',','.').'</td>
+            <td style="text-align: right;">'.number_format(round($piezas,2),2,',','.').'</td>
+            */
 }
 $salida .= '</table>';
 header("Content-type: application/vnd.ms-excel");

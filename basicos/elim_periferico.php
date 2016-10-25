@@ -12,8 +12,8 @@ $nombre = $perifericos->periferico;
 $referencia = $perifericos->referencia;
 $descripcion = $perifericos->descripcion;
 $version = $perifericos->version;
-$estado = $cabina->estado;
-$prototipo = $cabina->prototipo;
+$estado = $perifericos->estado;
+$prototipo = $perifericos->prototipo;
 $referencias = $perifericos->referencias;
 	
 $perifericos->datosNuevoPeriferico($id_componente,$nombre,$referencia,$descripcion,$version,$referencias,"",$id_tipo,"",NULL,$estado,$prototipo,NULL);	

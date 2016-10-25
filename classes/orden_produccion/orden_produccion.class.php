@@ -26,7 +26,6 @@ class Orden_Produccion extends MySQL {
 	var $ids_produccion;
 	var $id_tipo_componente;
 	var $ids_proveedores; 
-	var $ids_interfaces;
 	var $ids_kit;
 	var $fecha_inicio_construccion;
 	var $id_sede;
@@ -421,6 +420,7 @@ class Orden_Produccion extends MySQL {
 		return $this->getResultados();
 	}
 
+	/*
 	// Devuelve el id de la cabina de la orden de produccion
 	function dameIdCabina($id_produccion){
 		$consultaId = sprintf("select opr.id_componente from orden_produccion_referencias as opr where opr.id_produccion=%s and id_tipo_componente=1 and opr.activo=1 ",
@@ -429,6 +429,7 @@ class Orden_Produccion extends MySQL {
 		$this->ejecutarConsulta();
 		return $this->getPrimerResultado();
 	}
+	*/
 
 	// Devuelve los ids de los periféricos de la orden de produccion
 	function dameIdsPerifericos($id_produccion) {
@@ -440,6 +441,7 @@ class Orden_Produccion extends MySQL {
 		return $this->getResultados();
 	}
 
+	/*
 	// Devuelve los ids de los softwares de la orden de produccion
 	function dameIdsSoftwares($id_produccion) {
 		$consultaId = sprintf("select opc.id_componente from orden_produccion_componentes as opc inner join componentes on (componentes.id_componente=opc.id_componente) where opc.id_produccion=%s and id_tipo=3 and opc.activo=1 group by id_componente ",
@@ -448,6 +450,7 @@ class Orden_Produccion extends MySQL {
 		$this->ejecutarConsulta();
 		return $this->getResultados();
 	}
+	*/
 
 	// Devuelve los id_produccion_componentes de la orden de produccion
 	function dameIdsProduccionComponente($id_produccion) {
@@ -691,16 +694,6 @@ class Orden_Produccion extends MySQL {
 		$this->id_produccion = $this->getResultados();
 	}
 
-
-	// Devuelve los ids de las interfaces de un componente
-	function dameIdsInterfazComponente($id_componente) {
-		$consulta = sprintf("select id_interfaz from componentes_interfaces where componentes_interfaces.id_componente=%s and componentes_interfaces.activo=1 ",
-			$this->makeValue($id_componente, "int"));
-		$this->setConsulta($consulta);
-		$this->ejecutarConsulta();
-		$this->ids_interfaces = $this->getResultados();
-	}
-	
 	// Devuelve los ids de los kits de un componente
 	function dameIdsKitComponente($id_componente) {
 		$consulta = sprintf("select id_kit from componentes_kits where componentes_kits.id_componente=%s and componentes_kits.activo=1 ",

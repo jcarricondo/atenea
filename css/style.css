@@ -2944,3 +2944,13 @@ table td .botonAsignacion {
 	color: #2998cc;
 }
 
+.contenedorComponentes{
+	background: #fff none repeat scroll 0 0;
+	border: 0 solid #fff;
+	color: #000;
+	font: 12px Helvetica,Verdana,Arial;
+	min-height: 208px;
+	max-height: 300px;
+	float: none;
+}
+

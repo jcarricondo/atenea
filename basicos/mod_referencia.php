@@ -4,9 +4,8 @@ include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/referencia.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/interface.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/fabricante.class.php");
 include("../classes/basicos/listado_proveedores.class.php");
@@ -27,9 +26,8 @@ else {
 $error = false;
 $bbdd = new MySQL;
 $referencias = new Referencia();
-$cabina = new Cabina();
+// $cabina = new Cabina();
 $periferico = new Periferico();
-$interfaz = new Interfaz();
 $kit = new Kit();
 $fab = new Fabricante();
 $prov = new Proveedor();
@@ -470,14 +468,9 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
                                     }
                                     else {
                                         // Obtenemos los componentes principales a los que pertenezca ese componente
-                                        $es_interfaz = $id_tipo == "4";
                                         $es_kit = $id_tipo == "5";
 
-                                        if($es_interfaz) {
-                                            // Buscamos los componentes "padre" de esa interfaz
-                                            $res_padres = $interfaz->dameComponentesConInterfaz($id_componente);
-                                        }
-                                        else if($es_kit) {
+                                        if($es_kit) {
                                             // Buscamos los componentes "padre" de ese kit
                                             $res_padres = $kit->dameComponentesConKit($id_componente);
                                         }

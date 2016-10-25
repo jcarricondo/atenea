@@ -5,7 +5,7 @@ class listadoProductos extends MySQL {
 	var $num_serie = "";
 	var $codigo_op = "";
 	var $nombre_producto = "";
-	var $cabina = "";
+	// var $cabina = "";
 	var $orden_produccion = "";
 	var $estado = "";
 	var $fecha_desde = "";
@@ -22,7 +22,7 @@ class listadoProductos extends MySQL {
 		$this->num_serie = $num_serie;
 		$this->codigo_op = $codigo_op;
 		$this->nombre_producto = $nombre_producto;
-		$this->cabina = $cabina;
+		// $this->cabina = $cabina;
 		$this->orden_produccion = $orden_produccion;
 		$this->estado = $estado;
 		$this->fecha_desde = $fecha_desde;
@@ -43,6 +43,7 @@ class listadoProductos extends MySQL {
 						 and orden_produccion.activo=1 ";			
 		}
 
+		$condiciones = "";
 		if($this->num_serie != "") {
 			$condiciones .= " and productos.num_serie like '%".$this->num_serie."%'";
 		}
@@ -52,9 +53,11 @@ class listadoProductos extends MySQL {
 		if($this->nombre_producto != "") {
 			$condiciones .= " and productos.id_nombre_producto=".$this->nombre_producto;
 		}
+		/*
 		if($this->cabina != "") {
 			$condiciones .= " and orden_produccion_componentes.id_componente=".$this->cabina;
 		}
+		*/
 		if($this->orden_produccion != "") {
 			$condiciones .= " and productos.id_produccion=".$this->orden_produccion;
 		}

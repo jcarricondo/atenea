@@ -21,7 +21,7 @@ $nombre_producto = strtoupper($np->nombre);
 $salida = '<table>
                 <tr>
                     <th>Componente</th>
-                    <th>Interfaz - Kit</th>
+                    <th>Kit</th>
                     <th style="text-align: center;">ID Ref.</th>
                     <th>Nombre</th>
                     <th>Referencia Proveedor</th>
@@ -51,19 +51,12 @@ $salida = '<table>
 
 // Obtenemos los componentes principales de la plantilla
 $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
-// Guardamos en un array los componentes con sus interfaces y kits asociados
+// Guardamos en un array los componentes con sus kits asociados
 for($i=0;$i<count($res_componentes);$i++){
     $id_componente = $res_componentes[$i]["id_componente"];
     $id_tipo_componente = $res_componentes[$i]["id_tipo_componente"];
 
     $array_componentes_final[] = $id_componente;
-
-    // Comprobamos si ese componente tiene interfaces asociadas
-    $interfaces_comp = $comp->dameInterfacesComponente($id_componente);
-    for($j=0;$j<count($interfaces_comp);$j++){
-        $id_interfaz = $interfaces_comp[$j]["id_interfaz"];
-        $array_componentes_final[] = $id_interfaz;
-    }
 
     // Comprobamos si ese componente tiene kits asociados
     $kits_comp = $comp->dameKitsComponente($id_componente);

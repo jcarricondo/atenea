@@ -45,7 +45,7 @@ if(isset($_POST["realizandoBusqueda"]) and $_POST["realizandoBusqueda"] == 1) {
 		if (($ref_fabricante[$i] == '-') or ($ref_fabricante[$i] == ' ')) $ref_fabricante[$i] = '%'; 	
 	}
 		
-	// Se carga la clase para la base de datos y el listado de interfaces
+	// Se carga la clase para la base de datos
 	$db = new MySQL();
 	$referencias = new listadoReferencias();
 	// Se pasan los datos del buscador a la clase del listado y se realiza la consulta a la base de datos
@@ -382,7 +382,8 @@ function soloNumeros (e) {
                             <input type="hidden" name="cantidad-<?php echo $ref->id_referencia;?>" id="cantidad-<?php echo $ref->id_referencia;?>" value="<?php echo $ref->cantidad;?>" />                            
                         </td>
                         <td style="text-align:center">
-                            <form name="BuscadorReferenciaComponente" id="BuscadorReferenciaComponente" action="nuevainterfaz.php?nombreref=<?php echo $ref->referencia;?>&id=<?php echo $ref->id_referencia;?>" method="post">                           		<input type="button" onclick="javascript:add_referencia(<?php echo $ref->id_referencia;?>);" value="+" />
+                            <form name="BuscadorReferenciaComponente" id="BuscadorReferenciaComponente" action="#" method="post">
+								<input type="button" onclick="javascript:add_referencia(<?php echo $ref->id_referencia;?>);" value="+" />
                                 <input type="hidden" id="guardandoReferenciaComponente" name="guardandoReferenciaComponente" />
                             </form>
                         </td>                        

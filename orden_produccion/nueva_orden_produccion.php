@@ -4,13 +4,13 @@
 include("../includes/sesion.php");
 include("../classes/control_usuario.class.php");
 include("../classes/sede/sede.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-include("../classes/basicos/software.class.php");
+// include("../classes/basicos/software.class.php");
 include("../classes/basicos/nombre_producto.class.php");
-include("../classes/basicos/listado_cabinas.class.php");
+// include("../classes/basicos/listado_cabinas.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
-include("../classes/basicos/listado_softwares.class.php");
+// include("../classes/basicos/listado_softwares.class.php");
 include("../classes/basicos/listado_nombre_producto.class.php");
 include("../classes/almacen/almacen.class.php");
 permiso(9);
@@ -18,16 +18,16 @@ permiso(9);
 $control_usuario = new Control_Usuario();
 $sede_class = new Sede();
 $nombre_prod = new Nombre_Producto();
-$cab = new Cabina();
-$cab_t = new Cabina();
+// $cab = new Cabina();
+// $cab_t = new Cabina();
 $perif = new Periferico();
 $perif_t = new Periferico();
-$soft = new Software();
-$cabs = new listadoCabinas();
-$todas_cabs = new listadoCabinas();
+// $soft = new Software();
+// $cabs = new listadoCabinas();
+// $todas_cabs = new listadoCabinas();
 $perifs = new listadoPerifericos();
 $todos_perifs = new listadoPerifericos();
-$softs = new listadoSoftwares();
+// $softs = new listadoSoftwares();
 $nom_prods = new listadoNombreProducto();
 $almacen = new Almacen();
 
@@ -44,9 +44,9 @@ if(isset($_POST["guardandoOP"]) and $_POST["guardandoOP"] == 1) {
 	$alias_op = $_POST["alias_op"];
 	$unidades = $_POST["unidades"];
 	$producto = $_POST["producto"];
-	$cabina = $_POST["cabina"];
+	// $cabina = $_POST["cabina"];
 	$perifericos = $_POST["perifericos"];
-	$software = $_POST["software"];
+	// $software = $_POST["software"];
 	$ref_libres = $_POST["REFS"];
 	$piezas = $_POST["piezas"];
 	$fecha_inicio_construccion = $_POST["fecha_inicio_construccion"];
@@ -56,9 +56,9 @@ else {
 	$alias_op = "";
 	$unidades = "";
 	$producto = "";
-	$cabina = "";
+	// $cabina = "";
 	$perifericos = "";
-	$software = "";
+	// $software = "";
 	$ref_libres = "";
 	$fecha_inicio_construccion = "";
 	$sede = "";
@@ -145,6 +145,7 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
             </div>
         </div>
         <div id="CapaContenedorComponentes" style="display: block;">
+            <!--
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico">Cabina</div>
                 <div id="CapaBotonesCabOP">
@@ -153,13 +154,14 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
                 </div>
             </div>
 
-            <!-- Lista de las cabinas -->
+            <!-- Lista de las cabinas ->
             <div class="ContenedorCamposCreacionBasico">
                 <div id="lista_cabinas">
                     <div class="LabelCreacionBasico"></div>
                     <select id="cabina" name="cabina" class="CreacionBasicoInput">
                         <option value="0">Selecciona..</option>
                         <?php
+                            /*
                             $cabs->prepararConsultaProduccion();
                             $cabs->realizarConsulta();
                             $resultado_cabinas = $cabs->cabinas;
@@ -169,10 +171,12 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
                                 $cab->cargaDatosCabinaId($datoCab["id_componente"]);
                                 echo '<option value="'.$cab->id_componente.'">'.$cab->cabina.'_v'.$cab->version.'</option>';
                             }
+                            */
                         ?>
                     </select>
 
                     <?php
+                        /*
                         // Se guarda en un input hidden los id de las cabinas de produccion
                         // Se guarda en un input hidden los nombres de las cabinas de produccion
                         $cabs->prepararConsultaProduccion();
@@ -198,9 +202,11 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
                             echo '<input type="hidden" id="id_todas_cabinas[]" name="id_todas_cabinas[]" value="'.$cab_t->id_componente.'"/>';
                             echo '<input type="hidden" id="nombre_todas_cabinas[]" name="nombre_todas_cabinas[]" value="'.$cab_t->cabina.'_v'.$cab_t->version.'"/>';
                         }
+                        */
                     ?>
                </div>
-            </div>
+            </div>-->
+
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico">Periféricos</div>
                 <div id="CapaBotonesPerOP">
@@ -209,7 +215,7 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
             </div>
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico"></div>
-                <div class="CajaPerifericos">
+                <div class="contenedorComponentes">
                     <table style="width:700px; height:208px; border:1px solid #fff;">
                     <tr>
                         <td id= "listas_no_asignados" style="width:250px; border:1px solid #fff; padding-left:10px;">
@@ -273,10 +279,12 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
                 </div>
             </div>
 
+            <!--
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico">Software</div>
                 <select multiple="multiple" id="software[]" name="software[]" class="SelectMultiple">
                     <?php
+                        /*
                         $softs->prepararConsulta();
                         $softs->realizarConsulta();
                         $resultado_softwares = $softs->softwares;
@@ -286,9 +294,10 @@ echo '<script type="text/javascript" src="../js/orden_produccion/nueva_orden_pro
                             $soft->cargaDatosSoftwareId($datoSoft["id_componente"]);
                             echo '<option value="'.$soft->id_componente.'">'.$soft->software.'</option>';
                         }
+                        */
                     ?>
                 </select>
-            </div>
+            </div> -->
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico">Referencias Libres </div>
                 <div class="CajaReferencias">

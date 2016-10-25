@@ -57,10 +57,12 @@ function addRow(tableId,id_referencia){
 		
 	// Calculamos el coste de todas las referencias que haya en la tabla
 	costeTotal = calculaCoste(table);
-	// Actualiza el coste de la cabina (sin las interfaces)
+	// Actualiza el coste de la cabina
 	actualizarCoste(costeTotal);
-	// Actualiza el coste de la cabina sumando sus interfaces
-	actualizarCosteTotalCabina(costeTotal);
+	/*
+	// Actualiza el coste de la cabina sumando sus kits
+	// actualizarCosteTotalCabina(costeTotal);
+	*/
 }
 	
 // Funcion para eliminar referencias de la cabina
@@ -82,10 +84,12 @@ function removeRow(tableID) {
 			}
 		}
 		costeTotal = calculaCoste(table);
-		// Actualiza el coste de la cabina (sin las interfaces)
+		// Actualiza el coste de la cabina
 		actualizarCoste(costeTotal);
-		// Actualiza el coste de la cabina sumando sus interfaces
+		/*
+		// Actualiza el coste de la cabina sumando sus kits
 		actualizarCosteTotalCabina(costeTotal);
+		*/
 	}catch(e) {
 		alert(e);
 	}
@@ -120,9 +124,9 @@ function validarPiezasCorrectas(fila) {
 	if (!error){
 		modificaPrecioReferencia(num_piezas,fila);
 		costeTotal = calculaCoste(table);
-		// Actualiza el coste de la cabina (sin las interfaces)
+		// Actualiza el coste de la cabina
 		actualizarCoste(costeTotal);
-		// Actualiza el coste de la cabina sumando sus interfaces
+		// Actualiza el coste de la cabina sumando sus kits
 		actualizarCosteTotalCabina(costeTotal);
 	}
 	else {

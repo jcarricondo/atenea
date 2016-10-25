@@ -75,15 +75,15 @@ class Referencia_Componente extends MySQL {
 	
 
 	function calculaTotalPaquetes($uds_paquete,$num_pieza){
-		$resto = fmod($num_pieza,$uds_paquete);
-		if ($uds_paquete != 0) {
-			$tot_paquetes = floor($num_pieza/$uds_paquete);
+		if ($num_pieza<$uds_paquete) {
+			$this->total_paquetes = 1;	
 		}
 		else {
-			$tot_paquetes = 0;
+			$resto = fmod($num_pieza,$uds_paquete);
+			$tot_paquetes = floor($num_pieza/$uds_paquete);
+			if ($resto == 0) $this->total_paquetes = $tot_paquetes;
+			else $this->total_paquetes = $tot_paquetes + 1;
 		}
-		if ($resto == 0) $this->total_paquetes = $tot_paquetes;
-		else $this->total_paquetes = $tot_paquetes + 1;
 	}
 
 	// Devuelve los ids de los kits que pertenecen a un componente
@@ -95,6 +95,81 @@ class Referencia_Componente extends MySQL {
 		$this->ids_kits = $this->getResultados();
 	}
 	
+	function dameIdsReferenciasXlsBasicos($ids,$es_interfaz,$es_kit){
+		$consulta = "select * from componentes_referencias where (";
+		if ($es_interfaz){
+			// Si es interfaz solo hay un componente
+			$consulta .= sprintf ("id_componente=%s)",
+				$this->makeValue($ids, "int"));
+		}
+		else if ($es_kit){
+			// Si es kit solo hay un componente
+			$consulta .= sprintf ("id_componente=%s)",
+				$this->makeValue($ids, "int"));
+		}
+		else {
+			// Si es una cabina o un periferico
+			for($i=0;$i<count($ids);$i++){
+				// Si solo hay un id
+				if (count($ids) == 1){
+					$consulta .= sprintf ("id_componente=%s)",
+						$this->makeValue($ids[$i], "int"));
+				}
+				// Para el ultimo id_componente
+				else if ($i == count($ids)-1 ) {
+					$consulta .= sprintf ("id_componente=%s) ",
+						$this->makeValue($ids[$i], "int"));
+				}
+				else {
+					$consulta .= sprintf ("id_componente=%s or ",
+						$this->makeValue($ids[$i], "int"));
+				}
+			}
+		}
+		$consulta .= (" and componentes_referencias.activo=1 group by id_referencia");
+		$this->setConsulta($consulta);
+		$this->ejecutarConsulta();
+		$this->ids_referencias_xls = $this->getResultados();
+	}
+
+	function dameDatosYTotalPiezasReferencia($ids,$es_interfaz,$es_kit,$id_referencia){
+		$consulta = "select *, sum(piezas) as total_piezas from componentes_referencias where (";
+		if ($es_interfaz){
+			// Si es interfaz solo hay un componente
+			$consulta .= sprintf ("id_componente=%s)", 	
+				$this->makeValue($ids, "int"));
+		}
+		else if ($es_kit){
+			// Si es kit solo hay un componente
+			$consulta .= sprintf ("id_componente=%s)", 	
+				$this->makeValue($ids, "int"));
+		}
+		else {
+			for($i=0;$i<count($ids);$i++){
+			// Si solo hay un id
+				if (count($ids) == 1){
+					$consulta .= sprintf ("id_componente=%s)", 	
+						$this->makeValue($ids[$i], "int"));
+				}
+				// Para el ultimo id_componente
+				else if ($i == count($ids)-1 ) {
+					$consulta .= sprintf ("id_componente=%s) ", 	
+						$this->makeValue($ids[$i], "int"));
+				}
+				else {
+					$consulta .= sprintf ("id_componente=%s or ", 
+						$this->makeValue($ids[$i], "int"));
+				}
+			}
+		}
+		$consulta .= sprintf(" and id_referencia=%s", 
+			$this->makeValue($id_referencia, "int"));
+		$consulta .= (" and componentes_referencias.activo=1");
+		$this->setConsulta($consulta);
+		$this->ejecutarConsulta();
+		$this->referencias_xls = $this->getResultados();
+	}
+		
 	// Devuelve las referencias de un id_componente
 	function dameReferenciasPorIdComponente($id_componente) {
 		$consultaSql = sprintf ("select * from componentes_referencias where componentes_referencias.id_componente=%s and activo=1 ",

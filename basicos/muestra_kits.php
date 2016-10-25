@@ -1,5 +1,5 @@
 ﻿<?php
-// Este fichero muestra las interfaces de un componente
+// Este fichero muestra los kits de un componente
 include("../classes/mysql.class.php");
 include("../classes/basicos/kit.class.php");
 

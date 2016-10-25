@@ -269,7 +269,8 @@ function SeleccionarPerifericos(){
 		lista[i].selected = "selected";
 	}
 }
-	
+
+/*
 // Funcion que muestra todas las cabinas creadas 
 function MostrarTodasCabinas(){
 	// Obtenemos el boton de todas las cabinas y lo eliminamos
@@ -353,6 +354,7 @@ function MostrarCabProduccion(){
 		selectCabinas.add(opcion_cabina,null);
 	}
 }
+*/
 	
 // Funcion que muestra todos los perifericos creados 
 function MostrarTodosPerifericos(){

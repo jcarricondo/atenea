@@ -256,12 +256,13 @@ function validarHayCaracter(i,a) {
 // Funcion para validar que el campo PIEZAS de todas las referencias de todos los componentes
 // y las referencias libre sean correctos
 function validarFormulario() {
-	var piezas_cabina = document.getElementsByName("piezas_cabina[]");
-	var no_hay_piezas_cabina = false;
+	// var piezas_cabina = document.getElementsByName("piezas_cabina[]");
+	// var no_hay_piezas_cabina = false;
 	var no_hay_piezas_periferico = false;
 	var no_es_numero = false;
 	var pieza = 0;
 		
+	/*
 	if (piezas_cabina.length != 0) {
 		var i = 0;
 		while ((i < piezas_cabina.length) && (!no_hay_piezas_cabina) && (!no_es_numero)){
@@ -276,7 +277,8 @@ function validarFormulario() {
 		alert ("Rellene el campo PIEZAS de todas las referencias de la cabina");	
 		return false;
 	}
-	else if (no_es_numero) {
+	*/
+	if (no_es_numero) {
 		alert("El campo PIEZAS tiene que ser un valor entero o un decimal con punto");
 		return false;	
 	}
@@ -319,48 +321,28 @@ function validarFormulario() {
 		}
 	}
 }
-	
-// Devuelve el coste de las interfaces de la cabina
-function getCosteInterfacesCabina(){
-	coste_interfaces = document.getElementById("costeInterfacesCabina").value;
-	return coste_interfaces;
-}
 
+/*
 // Devuelve el coste de los kits de la cabina
 function getCosteKitsCabina(){
 	coste_kits = document.getElementById("costeKitsCabina").value;
 	return coste_kits;
 }
+*/
 	
-// Devuelve el coste de las interfaces del perifericos
-function getCosteInterfacesPerifericos(periferico){
-	coste_interfaces = document.getElementById('costeInterfacesPeriferico_' + periferico).value;
-	return coste_interfaces;
-}
-
 // Devuelve el coste de los kits del perifericos
 function getCosteKitsPerifericos(periferico){
 	coste_kits = document.getElementById('costeKitsPeriferico_' + periferico).value;
 	return coste_kits;
 }
-	
-// Obtiene los precios de la cabina mas el precio de sus interfaces y los suma
+
+/*
+// Obtiene los precios de la cabina mas el precio de sus kits y los suma
 function actualizarCosteTotalCabina(costeTotal){
 	try{
 		// Obtenemos el td donde esta guardado el input hidden
 		var precio_total_cabina = document.getElementById("precio_total_cabina");
 	
-		// Obtener el coste total de las interfaces de la cabina
-		coste_interfaces = getCosteInterfacesCabina();
-		if (coste_interfaces != ""){
-			coste_interfaces = parseFloat(coste_interfaces);
-			coste_interfaces = coste_interfaces * 100;
-			coste_interfaces = Math.round(coste_interfaces) / 100; 
-		}
-		else {
-			coste_interfaces = 0;	
-		}
-		
 		// Obtener el coste total de los kits de la cabina
 		coste_kits = getCosteKitsCabina();
 		if (coste_kits != ""){
@@ -372,34 +354,25 @@ function actualizarCosteTotalCabina(costeTotal){
 			coste_kits = 0;	
 		}
 
-		costeTotal = costeTotal + coste_interfaces + coste_kits;
+		costeTotal = costeTotal + coste_kits;
 		coste_total_cabina = costeTotal;
 		costeTotal = costeTotal.toFixed(2);
-		precio_total_cabina.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeInterfacesCabina" name="costeInterfacesCabina" value="' + coste_interfaces + '"/><input type="hidden" id="costeKitsCabina" name="costeKitsCabina" value="' + coste_kits + '"/><input type="hidden" id="coste_total_cabina" name="coste_total_cabina" value="' + coste_total_cabina + '"/>'; 
+		precio_total_cabina.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeKitsCabina" name="costeKitsCabina" value="' + coste_kits + '"/><input type="hidden" id="coste_total_cabina" name="coste_total_cabina" value="' + coste_total_cabina + '"/>';
 		actualizarCosteTotalProducto();
 	}
 	catch(e) {
 		alert(e);
 	}
 }
+*/
 	
 // Obtiene el coste total del periferico, actualiza el coste de todos los perifericos y el del producto.
 function actualizarCosteTotalPeriferico(costeTotal,periferico){
 	try{
 		// Obtenemos el td donde esta guardado el input hidden
 		var precio_total_periferico = document.getElementById('precio_total_periferico_' + periferico);
-		// Obtener el coste total de las interfaces del periferico
-		coste_interfaces = getCosteInterfacesPerifericos(periferico);
-		if (coste_interfaces != ''){
-			coste_interfaces = parseFloat(coste_interfaces);
-			coste_interfaces = coste_interfaces * 100;
-			coste_interfaces = Math.round(coste_interfaces) / 100; 
-		}
-		else {
-			coste_interfaces = 0;	
-		}
-		
-		// Obtener el coste total de los kits del periferico
+
+		// Obtener el coste total de los kits del periférico
 		coste_kits = getCosteKitsPerifericos(periferico);
 		if (coste_kits != ''){
 			coste_kits = parseFloat(coste_kits);
@@ -410,10 +383,10 @@ function actualizarCosteTotalPeriferico(costeTotal,periferico){
 			coste_kits = 0;	
 		}
 			
-		costeTotal = costeTotal + coste_interfaces + coste_kits;
+		costeTotal = costeTotal + coste_kits;
 		costeTotal = costeTotal.toFixed(2);
 			
-		precio_total_periferico.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeInterfacesPeriferico_' + periferico + '" name="costeInterfacesPeriferico_' + periferico + '" value="' + coste_interfaces + '"/><input type="hidden" id="costeKitsPeriferico_' + periferico + '" name="costeKitsPeriferico_' + periferico + '" value="' + coste_kits + '"/><input type="hidden" id="precio_tot_periferico_' + periferico + '" name="precio_tot_periferico_' + periferico + '" value="' + costeTotal + '"/>';
+		precio_total_periferico.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeKitsPeriferico_' + periferico + '" name="costeKitsPeriferico_' + periferico + '" value="' + coste_kits + '"/><input type="hidden" id="precio_tot_periferico_' + periferico + '" name="precio_tot_periferico_' + periferico + '" value="' + costeTotal + '"/>';
 			
 		actualizarCosteTotalProducto();
 	}
@@ -421,7 +394,8 @@ function actualizarCosteTotalPeriferico(costeTotal,periferico){
 		alert(e);
 	}
 }
-	
+
+/*
 // Devuelve el coste de la cabina
 function dameCosteTotalCabina(){
 	try{	
@@ -440,6 +414,7 @@ function dameCosteTotalCabina(){
 		alert(e);
 	}
 }
+*/
 	
 // Calcula el coste total de todos los perifericos cuando se ha producido alguna modificacion en alguno de ellos
 // Añadir referencia, eliminar referencia o cambiar numero de piezas
@@ -523,11 +498,11 @@ function actualizarCosteRefLibres(costeTotal){
 // Actualiza el coste total del producto cuando se produce alguna modificacion en alguno de sus componentes
 function actualizarCosteTotalProducto(){
 	// Obntenemos el coste final de la cabina 
-	precio_final_cabina = dameCosteTotalCabina();
+	// precio_final_cabina = dameCosteTotalCabina();
 	precio_final_todos_perifericos = dameCosteTotalPerifericos();
 	precio_final_refs_libres = dameCosteTotalRefsLibres();
 
-	precio_producto = precio_final_cabina + precio_final_todos_perifericos + precio_final_refs_libres;
+	precio_producto = /*precio_final_cabina +*/ precio_final_todos_perifericos + precio_final_refs_libres;
 	precio_producto_string = precio_producto.toFixed(2);
 				
 	// Obtenemos la celda de total producto

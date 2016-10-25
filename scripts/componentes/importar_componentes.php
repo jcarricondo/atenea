@@ -4,7 +4,7 @@ set_time_limit(10000);
 include("../../classes/mysql.class.php");
 include("../../classes/basicos/cabina.class.php");
 include("../../classes/basicos/periferico.class.php");
-include("../../classes/basicos/software.class.php");
+// include("../../classes/basicos/software.class.php");
 include("../../classes/basicos/interface.class.php");
 include("../../classes/basicos/kit.class.php");
 include("../../classes/funciones/log_unificacion.class.php");
@@ -13,7 +13,7 @@ include("../../classes/kint/Kint.class.php");
 $db = new MySql();
 $cab = new Cabina();
 $per = new Periferico();
-$sof = new Software();
+// $sof = new Software();
 $int = new Interfaz();
 $kit = new Kit();
 $log = new Log_Unificacion();
@@ -81,6 +81,7 @@ for($i=0;$i<count($res_toro);$i++){
 		break;
 		case '3':
 			// SOFTWARE
+			/*
 			$sof->datosNuevoSoftware(NULL,$nombre,$referencia,$descripcion,$version,3);
 			if(!$sof->comprobarSoftwareDuplicado()){
 				// Guardamos el software
@@ -98,9 +99,11 @@ for($i=0;$i<count($res_toro);$i++){
 				else {
 					echo $sof->getErrorMessage($res);
 				}
-			}	
+			}
+			*/
 		break;
 		case '4':
+			/*
 			// INTERFACES
 			$int->datosNuevoInterfaz(NULL,$nombre,$referencia,$descripcion,$version,NULL,NULL,4,NULL,$estado,$prototipo);
 			if(!$int->comprobarInterfazDuplicada()){
@@ -119,7 +122,8 @@ for($i=0;$i<count($res_toro);$i++){
 				else {
 					echo $int->getErrorMessage($res);
 				}
-			}	
+			}
+			*/
 		break;
 		case '5':
 			// KIT 

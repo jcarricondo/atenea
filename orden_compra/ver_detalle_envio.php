@@ -1,6 +1,6 @@
 ﻿<?php
 session_start();
-// Este fichero muestra un popup con las referencias del componente, conteniendo tambien las referencias de los kits e interfaces si tuviese.
+// Este fichero muestra un popup con las referencias del componente, conteniendo tambien las referencias de los kits.
 //include("../includes/sesion.php");
 include_once("../classes/mysql.class.php");
 ?>

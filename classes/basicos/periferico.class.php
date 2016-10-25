@@ -16,7 +16,6 @@ class Periferico extends MySQL{
 	var $nombre_archivo;
 	var $ids_archivos;
 	var $nombres_archivos;
-	var $interfaces;
 	var $kits;
 
 	function cargarDatos($id_componente,$periferico,$referencia,$version,$descripcion,$id_tipo,$estado,$prototipo) {
@@ -131,7 +130,7 @@ class Periferico extends MySQL{
 	}
 
 	// Se hace la carga de datos  del nuevo periferico
-	function datosNuevoPeriferico($id_componente = NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,$id_tipo = 2,$nombre_archivo,$interfaces,$estado,$prototipo,$kits) {
+	function datosNuevoPeriferico($id_componente = NULL,$nombre,$referencia,$descripcion,$version,$referencias,$piezas,$id_tipo = 2,$nombre_archivo,$interfaces = NULL,$estado,$prototipo,$kits) {
 		$this->id_componente = $id_componente;
 		$this->nombre = $nombre;
 		$this->referencia = $referencia;
@@ -141,7 +140,6 @@ class Periferico extends MySQL{
 		$this->id_tipo = $id_tipo;
 		$this->piezas = $piezas;
 		$this->nombre_archivo = $nombre_archivo;
-		$this->interfaces = $interfaces;
 		$this->estado = $estado;
 		$this->prototipo = $prototipo;
 		$this->kits = $kits;
@@ -199,15 +197,6 @@ class Periferico extends MySQL{
 								$this->makeValue($this->precio_pack,"float"));
 							$this->setConsulta($consulta);
 							$this->ejecutarSoloConsulta();
-						}
-
-						// Insertamos las interfaces que tenga asociado el periferico
-						for($i=0;$i<count($this->interfaces);$i++){
-							$consulta = sprintf("insert into componentes_interfaces(id_tipo_componente,id_componente,id_interfaz,fecha_creado,activo) value(2,%s,%s,current_timestamp,1)",
-								$this->makeValue($this->id_componente, "int"),
-								$this->makeValue($this->interfaces[$i], "int"));
-							$this->setConsulta($consulta);
-							$this->ejecutarSoloConsulta($consulta);
 						}
 
 						// Insertamos los kits que tenga asociado el periferico
@@ -296,21 +285,6 @@ class Periferico extends MySQL{
 							$this->makeValue($this->piezas[$i], "float"),
 							$this->makeValue($this->total_paquetes, "int"),
 							$this->makeValue($this->precio_pack, "float"));
-						$this->setConsulta($consulta);
-						$this->ejecutarSoloConsulta($consulta);
-					}
-
-					// Eliminar las interfaces asociadas a esa componente
-					$consultaBorrarInterfaces = sprintf("update componentes_interfaces set activo=0 where componentes_interfaces.id_componente=%s ",
-							$this->makeValue($this->id_componente, "int"));
-						$this->setConsulta($consultaBorrarInterfaces);
-						$this->ejecutarSoloConsulta();
-
-					// Insertamos las interfaces que tenga asociada el periferico
-					for($i=0;$i<count($this->interfaces);$i++){
-						$consulta = sprintf("insert into componentes_interfaces(id_tipo_componente,id_componente,id_interfaz,fecha_creado,activo) value(2,%s,%s,current_timestamp,1)",
-							$this->makeValue($this->id_componente, "int"),
-							$this->makeValue($this->interfaces[$i], "int"));
 						$this->setConsulta($consulta);
 						$this->ejecutarSoloConsulta($consulta);
 					}

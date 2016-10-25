@@ -16,7 +16,7 @@
 		<th style="text-align:center">UDS</th>
 		<th style="text-align:center">PERIFS</th>
 		<th style="text-align:center">PCS</th>
-	    <th style="text-align:center">SOFT.</th>
+	    <!-- <th style="text-align:center">SOFT.</th> -->
         <th style="text-align:center">REF. LIBRES</th>
 		<th style="text-align:center">OC</th>       
 		<th style="text-align:center">RECEPCION</th>  
@@ -47,11 +47,11 @@
 		$nombre_producto = new Nombre_Producto();
 		$nombre_producto->cargaDatosNombreProductoId($id_nombre_producto);
 				
-		$id_cabina = $orden_produccion->dameIdCabina($id_produccion);
+		/*$id_cabina = $orden_produccion->dameIdCabina($id_produccion);
 		$id_cabina = $id_cabina["id_componente"];
 					
 		$cabina = new Cabina();
-		$cabina->cargaDatosCabinaId($id_cabina);
+		$cabina->cargaDatosCabinaId($id_cabina);*/
 					
 		$orden_produccion->fecha_inicio = $orden_produccion->cFechaNormal($orden_produccion->fecha_inicio);
 		$orden_produccion->fecha_entrega = $orden_produccion->cFechaNormal($orden_produccion->fecha_entrega);
@@ -104,13 +104,17 @@
 		<td style="text-align:center"><?php echo $orden_produccion->fecha_entrega_deseada;?></td>
 		<td style="text-align:center">
         	<a href="../orden_produccion/informe_referencias_op.php?id=<?php echo $id_produccion;?>">XLS</a>
-            	- 
-            <a href="../orden_produccion/informe_referencias_op_componentes.php?id=<?php echo $id_produccion;?>">XLS COM.</a>
-        </td>                        
+            <?php
+				/*
+				-
+            	<a href="../orden_produccion/informe_referencias_op_componentes.php?id=<?php echo $id_produccion;?>">XLS COM.</a>
+        		*/
+			?>
+		</td>
         <td style="text-align:center"><?php echo $orden_produccion->unidades; ?></td>
 		<td style="text-align:center"><a href="javascript:abrir('muestra_perifericos.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "PERIFS";?></a></td>
 		<td style="text-align:center"><a href="javascript:abrir('muestra_ordenadores.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "PCS";?></a></td>
-		<td style="text-align:center"><a href="javascript:abrir('muestra_softwares.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "SOFT";?></a></td>
+		<!-- <td style="text-align:center"><a href="javascript:abrir('muestra_softwares.php?producto=<?php // echo $nombre_producto->nombre;?>&id_produccion=<?php // echo $id_produccion;?>')"><?php // echo "SOFT";?></a></td> -->
 		<td style="text-align:center"><a href="javascript:abrir('muestra_referencias_libres.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "R. LIBRES";?></a></td>    
 		<td style="text-align:center">
 			<?php 
