@@ -185,7 +185,16 @@ echo '<script type="text/javascript" src="../js/almacen/almacen.js"></script>';
                                 // Mostramos sólo los almacenes de su sede
                                 $res_sede = $almacen->dameSedeAlmacen($id_almacen_usuario);
                                 $id_sede = $res_sede["id_sede"];
-                                $res_almacenes = $sede->dameAlmacenesSede($id_sede);
+                                if($esAdminFab){
+                                    $res_almacenes = $sede->dameAlmacenesFabricaSede($id_sede);
+                                }
+                                else if($esAdminMan){
+                                    $res_almacenes = $sede->dameAlmacenesMantenimientoSede($id_sede);
+                                }
+                                else {
+                                    $res_almacenes = $sede->dameAlmacenesSede($id_sede);
+                                }
+
                                 for($i=0;$i<count($res_almacenes);$i++) {
                                     $id_almacen = $res_almacenes[$i]["id_almacen"];
                                     $almacen->cargaDatosAlmacenId($id_almacen);

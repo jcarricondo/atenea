@@ -43,6 +43,8 @@ $_SESSION["id_almacen_almacen_material"] = $id_almacen_usuario;
 $esAdminGlobal = $control_usuario->esAdministradorGlobal($id_tipo_usuario);
 $esUsuarioGes = $control_usuario->esUsuarioGes($id_tipo_usuario);
 $esUsuarioDis = $control_usuario->esUsuarioDis($id_tipo_usuario);
+$esUsuarioFab = $control_usuario->esUsuarioFab($id_tipo_usuario);
+$esUsuarioMan = $control_usuario->esUsuarioMan($id_tipo_usuario);
 $filtroSede = $esAdminGlobal || $esUsuarioGes || $esUsuarioDis;
 
 // Predeterminado si el usuario sin sede asignada no escogió ninguna
@@ -162,8 +164,19 @@ $max_caracteres = 35;
                 <select id="almacenes" name="almacenes" class="BuscadorInputAlmacen" onchange="resetearCamposFormulario();">
                     <option value="">Seleccionar</option>
                     <?php
-                        // Obtenemos los almacenes de esa sede
-                        $res_almacenes = $sede->dameAlmacenesSede($id_sede);
+                        if($esUsuarioFab){
+                            // Obtenemos los almacenes de fabrica de esa sede
+                            $res_almacenes = $sede->dameAlmacenesFabricaSede($id_sede);
+                        }
+                        else if($esUsuarioMan){
+                            // Obtenemos los almacenes de mantenimiento de esa sede
+                            $res_almacenes = $sede->dameAlmacenesMantenimientoSede($id_sede);
+                        }
+                        else{
+                            // Obtenemos los almacenes de esa sede
+                            $res_almacenes = $sede->dameAlmacenesSede($id_sede);
+                        }
+
                         for($i=0;$i<count($res_almacenes);$i++){
                             $id_almacen_bus = $res_almacenes[$i]["id_almacen"];
                             $nombre = $res_almacenes[$i]["almacen"]; ?>
