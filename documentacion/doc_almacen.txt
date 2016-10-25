@@ -1,0 +1,95 @@
+*********************************************
+DOCUMENTACION DE PROCESOS (MODULO ALMACEN)
+*********************************************
+
+Creado por: Javier Ignacio Carricondo B�denas
+Fecha de creaci�n: 21/10/2015
+Actualizado por: Javier Ignacio Carricondo B�denas
+Fecha de actualizaci�n: 21/10/2015
+
+---------------------------------------------
+ENTRADA MATERIAL
+---------------------------------------------
+
+Usuario de fabrica (Hay Ordenes de Producci�n)
+
+1� Se recepciona primero en la MAS ANTIGUA.
+2� Si se recepcion� la m�s antigua y siguen sobrando piezas, se recepciona sobre la siguiente OP m�s antigua.
+3� Si todas las OP fueron recepcionadas y siguen sobrando piezas, se recepciona sobre STOCK
+
+
+Usuario de mantenimiento (NO hay Ordenes de Producci�n, s�lo STOCK) 
+
+1� Se recepciona directamente sobre STOCK
+
+
+---------------------------------------------
+SALIDA DE MATERIAL
+---------------------------------------------
+
+Usuario de fabrica (Hay Ordenes de Producci�n)
+
+1� Se desrecepciona primero de STOCK.
+2� Si el STOCK est� vac�o se desrecepciona sobre la OP MAS MODERNA.
+3� Si tambien est� vac�a se desrecepciona sobre las siguientes OP MAS MODERNAS de forma descendente.
+
+
+Usuario de mantenimiento (NO hay Ordenes de Producci�n, s�lo STOCK) 
+
+1� Se desrecepciona directamente sobre STOCK
+
+
+---------------------------------------------
+AJUSTE DE MATERIAL
+---------------------------------------------
+
+Cantidad positiva (RECEPCION)
+
+
+Usuario de fabrica (Hay Ordenes de Producci�n)
+
+SOBRE STOCK
+
+1� Se recepciona la cantidad SOLO sobre STOCK
+
+SOBRE UNA OP
+
+1� Se recepciona primero sobre la OP SELECCIONADA
+2� Si sobran piezas, se recepciona en la MAS ANTIGUA.
+3� Si se recepcion� la m�s antigua y siguen sobrando piezas, se recepciona sobre la siguiente OP m�s antigua.
+4� Si todas las OP fueron recepcionadas y siguen sobrando piezas, se recepciona sobre STOCK 
+
+
+Usuario de mantenimiento (NO hay Ordenes de Producci�n, s�lo STOCK)
+
+SOBRE STOCK
+
+1� Se recepciona la cantidad SOLO sobre STOCK
+
+
+
+Cantidad negativa (DESRECEPCION)
+
+Usuario de fabrica (Hay Ordenes de Producci�n)
+
+SOBRE STOCK
+
+1� Se desrecepciona la cantidad SOLO sobre STOCK.
+2� Si hay m�s unidades a desrecepcionar que las existentes en STOCK se genera un mensaje de error.
+
+SOBRE UNA OP
+
+1� Se desrecepciona SOLO sobre la OP seleccionada.
+2� Si hay m�s unidades a desrecepcionar que las existentes en la OP se genera un mensaje de error.
+
+
+Usuario de mantenimiento (NO hay Ordenes de Producci�n, s�lo STOCK)
+
+SOBRE STOCK
+
+1� Se desrecepciona la cantidad SOLO sobre STOCK
+
+
+
+
+
