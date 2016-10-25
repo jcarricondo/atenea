@@ -3,7 +3,7 @@
 include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/referencia.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
 // include("../classes/basicos/software.class.php");
@@ -19,7 +19,7 @@ permiso(16);
 $orden_produccion = new Orden_Produccion();
 $producto = new Producto();
 $nombre_producto = new Nombre_Producto();
-$Cabina = new Cabina();
+// $Cabina = new Cabina();
 $Periferico = new Periferico();
 // $software = new Software();
 $Cliente = new Cliente();
@@ -119,6 +119,7 @@ include ('../includes/header.php');
 
         		switch ($id_tipo) {
 		            case '1':
+						/*
 		                // CABINA
 		                $Cabina->cargaDatosCabinaId($id_componente);
 		                $nombre_componente = "Cabina";
@@ -126,6 +127,8 @@ include ('../includes/header.php');
 		                $titulo_componente = $Cabina->cabina.'_v'.$Cabina->version;
 		                $es_prototipo = ($Cabina->prototipo == 1);
 		                $coste_total_componente = 0;
+		                */
+						// Deja de existir en Septiembre de 2016
 		                break;
 		            case '2':
 		                // PERIFERICO
@@ -436,7 +439,7 @@ include ('../includes/header.php');
 		            <tr>
 		              	<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
 		   		       		<?php 
-								$precio_total_producto = $precio_total_cabina + $precio_todos_perifericos + $precio_refs_libres;
+								$precio_total_producto = /*$precio_total_cabina +*/ $precio_todos_perifericos + $precio_refs_libres;
 								echo '<span class="tituloComp">'.number_format($coste_producto, 2, ',', '.').'€'.'</span>'; 
 							?>
 		                </td>

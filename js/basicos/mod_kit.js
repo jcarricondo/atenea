@@ -97,7 +97,7 @@ var div = document.getElementById('CapaTablaIframe');
 		}
 	}
 	
-	// Función que calcula el coste total de las referencias de la tabla cabina
+	// Función que calcula el coste total de las referencias de la tabla del componente
 	function calculaCoste(tableId){
 		try {
 			table = document.getElementById('mitabla');

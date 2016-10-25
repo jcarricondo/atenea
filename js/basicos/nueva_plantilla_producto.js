@@ -2,6 +2,7 @@
  * Created by Jacho on 30/06/2015.
  */
 
+/*
 // Funcion que muestra todas las cabinas creadas
 function MostrarTodasCabinas(){
     // Obtenemos el boton de todas las cabinas y lo eliminamos
@@ -85,6 +86,7 @@ function MostrarCabProduccion(){
         selectCabinas.add(opcion_cabina,null);
     }
 }
+*/
 
 // Funcion que muestra todos los perifericos creados
 function MostrarTodosPerifericos(){

@@ -74,14 +74,14 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	if($fecha_hasta != "") $fecha_hasta = $funciones->cFechaMy($fecha_hasta);
 
 	// Se carga la clase para la base de datos y el listado de proveedores
-	$listado_productos->setValores($num_serie,$codigo_op,$nombre_producto,$cabina_bus,$orden_produccion,$estado,$fecha_desde,$fecha_hasta,$id_sede,'');
+	$listado_productos->setValores($num_serie,$codigo_op,$nombre_producto,NULL /*$cabina_bus*/,$orden_produccion,$estado,$fecha_desde,$fecha_hasta,$id_sede,'');
 	$listado_productos->realizarConsulta();
 	$resultadosBusqueda = $listado_productos->productos;
 	$num_resultados = count($resultadosBusqueda); 
 	
 	// Se realiza la consulta con paginacion 
 	$pg_totalPaginas = ceil(count($resultadosBusqueda) / $pg_registros);
-	$listado_productos->setValores($num_serie,$codigo_op,$nombre_producto,$cabina_bus,$orden_produccion,$estado,$fecha_desde,$fecha_hasta,$id_sede,$paginacion);
+	$listado_productos->setValores($num_serie,$codigo_op,$nombre_producto,NULL /*$cabina_bus*/,$orden_produccion,$estado,$fecha_desde,$fecha_hasta,$id_sede,$paginacion);
 	$listado_productos->realizarConsulta();
 	$resultadosBusqueda = $listado_productos->productos;	 
 

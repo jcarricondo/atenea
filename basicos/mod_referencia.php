@@ -4,7 +4,7 @@ include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/referencia.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/fabricante.class.php");
@@ -26,7 +26,7 @@ else {
 $error = false;
 $bbdd = new MySQL;
 $referencias = new Referencia();
-$cabina = new Cabina();
+// $cabina = new Cabina();
 $periferico = new Periferico();
 $kit = new Kit();
 $fab = new Fabricante();

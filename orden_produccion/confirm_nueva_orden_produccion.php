@@ -4,7 +4,7 @@ set_time_limit(10000);
 // Carga de clases y funciones JavaScript
 include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 // include("../classes/basicos/software.class.php");
 include("../classes/basicos/kit.class.php");
@@ -23,7 +23,7 @@ include("../classes/kint/Kint.class.php");
 permiso(9);
 
 $funciones = new Funciones();
-$cabina = new Cabina();
+// $cabina = new Cabina();
 $periferico = new Periferico();
 // $soft = new Software();
 $kit = new Kit();
@@ -52,7 +52,7 @@ $esAdminGes = $control_usuario->esAdministradorGes($id_tipo_usuario);
 $alias_op = $_POST["alias_op"];
 $unidades = $_POST["unidades"];
 $id_name_producto = $_POST["producto"];
-$id_cabina = $_POST["cabina"];
+// $id_cabina = $_POST["cabina"];
 $perifericos = $_POST["perifericos"];
 // $software = $_POST["software"];
 $referencias_libres = $_POST["REFS"];
@@ -63,14 +63,14 @@ $sede = $_POST["sede"];
 // Comprobamos si se escogió una plantilla
 $id_plantilla = $_POST["select_plantilla"];
 if(!empty($id_plantilla)){
-    unset($id_cabina);
+    // unset($id_cabina);
     unset($perifericos);
     // unset($software);
     unset($referencias_libres);
     unset($piezas);
 
     // Obtenemos los componentes de la plantilla
-    $id_cabina = $plant->dameCabinaPlantillaProducto($id_plantilla);
+    // $id_cabina = $plant->dameCabinaPlantillaProducto($id_plantilla);
     $res_perifericos = $plant->damePerifericosPlantillaProducto($id_plantilla);
     // $res_software = $plant->dameSoftwarePlantillaProducto($id_plantilla);
 
@@ -123,7 +123,7 @@ if(count($perifericos)!=0) sort($perifericos);
 if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccion"] == 1) {
 	// Guardar Nueva Orden Producción
 	$id_nombre_producto = $_POST["id_nombre_producto"];
-	$id_cabina = $_POST["id_cabina"];
+	// $id_cabina = $_POST["id_cabina"];
 	$ids_perifericos = $_POST["IDS_PERS"];
 	// $ids_softwares = $_POST["IDS_SOFT"];
 	$ref_libres = $_POST["ref_libres"];
@@ -154,8 +154,8 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 			if($resultado == 1) {
 				// Guardamos los componentes que forman un producto en la Orden de Produccion				
 				$contador_componente = 1;
-				
-				if($id_cabina != NULL and $id_cabina != 0 and $id_cabina != -1){
+				/*
+				 * if($id_cabina != NULL and $id_cabina != 0 and $id_cabina != -1){
 					$ids_componentes[] = $id_cabina;
 					// Comprobamos si la cabina tiene kits
 					$orden_produccion->dameIdsKitComponente($id_cabina);
@@ -164,6 +164,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 					}
 					if($ids_kit != NULL) $ids_componentes = array_merge($ids_componentes,$ids_kit);
 				}
+				*/
 				unset($ids_kit);
 				if($ids_perifericos != NULL){
 					for($i=0;$i<count($ids_perifericos);$i++){
@@ -190,10 +191,13 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 					$id_tipo = $orden_produccion->dameTipoComponente($ids_componentes[$i]);
 					switch ($id_tipo["id_tipo"]) {
 						case '1':
+							/*
 							// CABINA
 							$cabina->cargaDatosCabinaId($ids_componentes[$i]);
 							$num_serie_componente = $cabina->referencia."_".$cabina->version."_".$id_produccion."_".$contador_componente;
 							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);		
+							*/
+							// Dejan de existir en Septiembre de 2016
 						break;
 						case '2':
 							// PERIFERICO
@@ -541,12 +545,13 @@ include ('../includes/header.php');
             }
         ?>
 
-        <div class="ContenedorCamposCreacionBasico">
+        <!--<div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Cabina</div>
-            <?php $cabina->cargaDatosCabinaId($id_cabina); ?>
-            <input type="text" id="nombre_cabina" name="nombre_cabina" class="CreacionBasicoInput" readonly="readonly" value="<?php if (($id_cabina != 0) and ($id_cabina != -1)) echo $cabina->cabina.'_v'.$cabina->version;?>" />
-            <input type="hidden" id="id_cabina" name="id_cabina" value="<?php echo $id_cabina;?>"/>
-        </div>
+            <?php // $cabina->cargaDatosCabinaId($id_cabina); ?>
+            <input type="text" id="nombre_cabina" name="nombre_cabina" class="CreacionBasicoInput" readonly="readonly" value="<?php // if (($id_cabina != 0) and ($id_cabina != -1)) echo $cabina->cabina.'_v'.$cabina->version;?>" />
+            <input type="hidden" id="id_cabina" name="id_cabina" value="<?php // echo $id_cabina;?>"/>
+        </div>-->
+
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Perifericos</div>
           	<?php
@@ -577,6 +582,7 @@ include ('../includes/header.php');
         -->
 
         <?php
+			/*
 			if(($id_cabina != 0) and ($id_cabina != -1)) { ?>
                 <div class="ContenedorCamposCreacionBasico">
                     <div class="LabelCreacionBasico">Referencias Cabina</div>
@@ -734,6 +740,7 @@ include ('../includes/header.php');
                 </div>
         <?php
 		    }
+			*/
             // Obtener el numero de perifericos para generar las tablas de referencias correspondientes a ese periferico
             $precio_todos_perifericos = 0;
             for($i=0;$i<count($perifericos);$i++){
@@ -986,7 +993,7 @@ include ('../includes/header.php');
                 	<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
    						<?php
 							$precio_total_producto = 0;
-							$precio_total_producto = $precio_total_cabina + $precio_todos_perifericos + $precio_refs_libres;
+							$precio_total_producto = /*$precio_total_cabina +*/ $precio_todos_perifericos + $precio_refs_libres;
 							echo '<span class="tituloComp">'.number_format($precio_total_producto, 2, ',', '.').'€'.'</span>';
 						?>
                     </td>

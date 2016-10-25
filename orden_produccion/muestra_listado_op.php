@@ -47,11 +47,11 @@
 		$nombre_producto = new Nombre_Producto();
 		$nombre_producto->cargaDatosNombreProductoId($id_nombre_producto);
 				
-		$id_cabina = $orden_produccion->dameIdCabina($id_produccion);
+		/*$id_cabina = $orden_produccion->dameIdCabina($id_produccion);
 		$id_cabina = $id_cabina["id_componente"];
 					
 		$cabina = new Cabina();
-		$cabina->cargaDatosCabinaId($id_cabina);
+		$cabina->cargaDatosCabinaId($id_cabina);*/
 					
 		$orden_produccion->fecha_inicio = $orden_produccion->cFechaNormal($orden_produccion->fecha_inicio);
 		$orden_produccion->fecha_entrega = $orden_produccion->cFechaNormal($orden_produccion->fecha_entrega);
@@ -104,9 +104,13 @@
 		<td style="text-align:center"><?php echo $orden_produccion->fecha_entrega_deseada;?></td>
 		<td style="text-align:center">
         	<a href="../orden_produccion/informe_referencias_op.php?id=<?php echo $id_produccion;?>">XLS</a>
-            	- 
-            <a href="../orden_produccion/informe_referencias_op_componentes.php?id=<?php echo $id_produccion;?>">XLS COM.</a>
-        </td>                        
+            <?php
+				/*
+				-
+            	<a href="../orden_produccion/informe_referencias_op_componentes.php?id=<?php echo $id_produccion;?>">XLS COM.</a>
+        		*/
+			?>
+		</td>
         <td style="text-align:center"><?php echo $orden_produccion->unidades; ?></td>
 		<td style="text-align:center"><a href="javascript:abrir('muestra_perifericos.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "PERIFS";?></a></td>
 		<td style="text-align:center"><a href="javascript:abrir('muestra_ordenadores.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "PCS";?></a></td>

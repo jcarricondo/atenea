@@ -3,10 +3,10 @@
 include("../includes/sesion.php");
 include("../classes/basicos/plantilla_producto.class.php");
 include("../classes/basicos/nombre_producto.class.php");
-include("../classes/basicos/cabina.class.php");
+/* include("../classes/basicos/cabina.class.php"); */
 include("../classes/basicos/periferico.class.php");
 /* include("../classes/basicos/software.class.php"); */
-include("../classes/basicos/listado_cabinas.class.php");
+/* include("../classes/basicos/listado_cabinas.class.php"); */
 include("../classes/basicos/listado_perifericos.class.php");
 /* include("../classes/basicos/listado_softwares.class.php"); */
 include("../classes/basicos/listado_nombre_producto.class.php");
@@ -14,10 +14,10 @@ permiso(34);
 
 $plant = new Plantilla_Producto();
 $np = new Nombre_Producto();
-$cab = new Cabina();
+/* $cab = new Cabina(); */
 $per = new Periferico();
 /* $soft = new Software(); */
-$listado_cab = new listadoCabinas();
+/* $listado_cab = new listadoCabinas(); */
 $listado_per = new listadoPerifericos();
 /* $listado_soft = new listadoSoftwares(); */
 $listado_np = new ListadoNombreProducto();
@@ -38,15 +38,15 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
 	$nombre = $_POST["nombre"];
 	$version = $_POST["version"];
     $id_nombre_producto = $_POST["sel_inp_nombre_producto"];
-    $id_cabina = $_POST["cabina"];
+    /* $id_cabina = $_POST["cabina"]; */
     $ids_perifericos = $_POST["perifericos"];
     /* $ids_software = $_POST["software"]; */
 
-    $no_hay_cabina = empty($id_cabina) || $id_cabina == -1;
+    /* $no_hay_cabina = empty($id_cabina) || $id_cabina == -1; */
     $no_hay_perifericos = empty($ids_perifericos);
     /* $no_hay_software = empty($ids_software); */
 
-    $plantilla_vacia = ($no_hay_cabina && $no_hay_perifericos /* && $no_hay_software */);
+    $plantilla_vacia = (/* $no_hay_cabina && */ $no_hay_perifericos /* && $no_hay_software */);
 
     if(!$plantilla_vacia){
         // Guardamos la plantilla del producto
@@ -58,7 +58,7 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
             if($res_desactivar == 1) {
                 $error_componentes = false;
                 // Preparamos los ids de los componentes de la plantilla de producto
-                if(!$no_hay_cabina) $ids_componentes[] = $id_cabina;
+                /* if(!$no_hay_cabina) $ids_componentes[] = $id_cabina; */
                 for($i=0;$i<count($ids_perifericos);$i++) {
                     $ids_componentes[] = $ids_perifericos[$i];
                 }
@@ -106,7 +106,7 @@ $plant->cargaDatosPlantillaProductoId($id_plantilla);
 $nombre = $plant->nombre;
 $version = $plant->version;
 $id_nombre_producto = $plant->id_nombre_producto;
-$id_cabina = $plant->dameCabinaPlantillaProducto($id_plantilla);
+/* $id_cabina = $plant->dameCabinaPlantillaProducto($id_plantilla); */
 $ids_perifericos = $plant->damePerifericosPlantillaProducto($id_plantilla);
 /* $ids_software = $plant->dameSoftwarePlantillaProducto($id_plantilla); */
 
@@ -173,10 +173,10 @@ echo '<script type="text/javascript" src="../js/basicos/mod_plantilla_producto.j
         <br/>
 
         <h5>Selecci&oacute;n de componentes para la plantilla del producto</h5><br/>
-        <div class="ContenedorCamposCreacionBasico">
+        <!-- <div class="ContenedorCamposCreacionBasico">
             <div class="LabelCreacionBasico">Cabina</div>
             <?php
-                if($modificar) { ?>
+                /* if($modificar) { ?>
                     <div id="CapaBotonesCabOP">
                         <input type="button" id="BotonCabProduccion" name="BotonCabProduccion" class="BotonEliminar" value="Mostrar cabinas en producción" onclick="javascript:MostrarCabProduccion()"/>
                     </div>
@@ -249,9 +249,9 @@ echo '<script type="text/javascript" src="../js/basicos/mod_plantilla_producto.j
                     </div>
                 </div>
         <?php
-            }
+            } */
         ?>
-        <br/>
+        <br/>-->
 
         <div class="ContenedorCamposCreacionBasico">
             <div class="LabelCreacionBasico">Periféricos</div>

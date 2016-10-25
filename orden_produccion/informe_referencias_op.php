@@ -16,17 +16,27 @@ $referencia = new Referencia();
 // Cargamos las referencias de orden_produccion_referencias
 $resultados = $op->dameOCReferenciasPorProduccion($id);
 
+$op->cargaDatosProduccionId($id);
+$num_simuladores = $op->unidades;
+
 $table = '<table>
 	<tr>
-		<th>ID Ref.</th>
+		<th style="text-align: center;">ID Ref.</th>
     	<th>Nombre</th>
         <th>Referencia Proveedor</th>
-        <th>Proveedor</th>   
+        <th>Proveedor</th>
+		<th>Unidades por paquete</th>
+		<th>Unidades por simulador</th>
+		<th>Paquetes por simulador</th>
+		<th>Precio por paquete</th>
+		<th>Precio por unidad</th>
+		<th>Precio por simulador (en base unidades)</th>
+		<th>Precio por simulador (en base paquetes)</th>
         <th>Piezas Pedidas</th>
         <th>Piezas Recibidas</th>
         <th>Piezas Restantes</th>
         <th>Piezas Usadas</th>
-        <th>Precio</th>  
+        <th>Precio</th>
 		<th>Total Paquetes</th>
         <th>Tipo Pieza</th>
         <th>Nombre Pieza</th> 
@@ -43,8 +53,6 @@ $table = '<table>
         <th>Valor 4</th>
         <th>Nombre 5</th>
         <th>Valor 5</th>
-        <th>Precio Pack</th>
-        <th>Unidades Paquete</th>
         <th>Comentarios</th>
     </tr>';
 
@@ -53,23 +61,33 @@ $salida = "";
 // Preparamos las refernecias
 for($i=0;$i<count($resultados);$i++){
 	$id_ref = $resultados[$i]["id_referencia"];
-	$uds_paquete = $resultados[$i]["uds_paquete"];
-	$pack_precio = $resultados[$i]["pack_precio"];
-	$total_paquetes = $resultados[$i]["total_packs"];
-	$coste = $resultados[$i]["coste"];
-	$coste = round($coste,2);
+	$unidades_por_paquete = $resultados[$i]["uds_paquete"];
+	$unidades_por_simulador = $resultados[$i]["piezas"];
+	$precio_por_paquete = $resultados[$i]["pack_precio"];
+	if($unidades_por_paquete != 0) {
+		$paquetes_por_simulador = ceil($unidades_por_simulador / $unidades_por_paquete);
+		$precio_por_unidad = round($precio_por_paquete / $unidades_por_paquete, 2, PHP_ROUND_HALF_UP);
+	}
+	else {
+		$paquetes_por_simulador = 0;
+		$precio_por_unidad = 0;
+	}
+	$precio_por_simulador_unidades = $unidades_por_simulador * $precio_por_unidad;
+	$precio_por_simulador_paquetes = $paquetes_por_simulador * $precio_por_paquete;
 
-	$piezas = $resultados[$i]["piezas"];
-	$piezas = round($total_piezas,2);
 	$total_piezas = $resultados[$i]["total_piezas"];
 	$total_piezas = round($total_piezas,2);
 	$total_piezas_recibidas = $resultados[$i]["piezas_recibidas"];
 	$total_piezas_recibidas = round($total_piezas_recibidas,2);
 	$total_piezas_usadas = $resultados[$i]["piezas_usadas"];
 	$total_piezas_usadas = round($total_piezas_usadas,2);
-
 	$total_piezas_restantes = $total_piezas - $total_piezas_recibidas;
 	$total_piezas_restantes = round($total_piezas_restantes,2);
+	$coste = $resultados[$i]["coste"];
+	$coste = round($coste,2);
+
+	$piezas = $resultados[$i]["piezas"];
+	$total_paquetes = $resultados[$i]["total_packs"];
 
 	$referencia->cargaDatosReferenciaId($id_ref);
     $referencia->prepararCodificacionReferencia();
@@ -81,6 +99,13 @@ for($i=0;$i<count($resultados);$i++){
 			<td>'.$referencia->referencia.'</td>
 			<td align="center">'.$referencia->part_proveedor_referencia.'</td>
 			<td>'.$referencia->nombre_proveedor.'</td>
+			<td>'.utf8_decode($unidades_por_paquete).'</td>
+			<td>'.utf8_decode($unidades_por_simulador).'</td>
+			<td>'.utf8_decode($paquetes_por_simulador).'</td>
+			<td align="right">'.number_format($precio_por_paquete,2,',','.').'</td>
+			<td align="right">'.number_format($precio_por_unidad,2,',','.').'</td>
+			<td align="right">'.number_format($precio_por_simulador_unidades,2,',','.').'</td>
+			<td align="right">'.number_format($precio_por_simulador_paquetes,2,',','.').'</td>
 			<td>'.number_format($total_piezas,2,',','.').'</td>
 			<td>'.number_format($total_piezas_recibidas,2,',','.').'</td>
 			<td>'.number_format($total_piezas_restantes,2,',','.').'</td>
@@ -102,8 +127,6 @@ for($i=0;$i<count($resultados);$i++){
 			<td>'.$referencia->part_valor_cantidad_4.'</td>
 			<td>'.$referencia->part_valor_nombre_5.'</td>
 			<td>'.$referencia->part_valor_cantidad_5.'</td>
-			<td align="right">'.number_format($pack_precio,2,',','.').'</td>
-			<td>'.utf8_decode($uds_paquete).'</td>
 			<td>'.$referencia->comentarios.'</td>
 		</tr>';
 }

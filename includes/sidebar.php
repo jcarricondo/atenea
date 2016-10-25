@@ -90,7 +90,7 @@
                         <li><a href="../basicos/referencias.php">Referencias</a></li>
                         <li><a href="../basicos/nombres_de_productos.php">Nombres de productos</a></li>
                         <li><a href="../basicos/plantillas_de_productos.php">Plantillas de productos</a></li>
-                        <li><a href="../basicos/cabinas.php">Cabinas</a></li>
+                        <!--<li><a href="../basicos/cabinas.php">Cabinas</a></li>-->
                         <li><a href="../basicos/perifericos.php">Perif&eacute;ricos</a></li>
                         <li><a href="../basicos/kits.php">Kits</a></li>
                         <!--<li><a href="../basicos/software_simulacion.php">Software Simulaci&oacute;n</a>-->

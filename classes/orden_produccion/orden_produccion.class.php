@@ -420,6 +420,7 @@ class Orden_Produccion extends MySQL {
 		return $this->getResultados();
 	}
 
+	/*
 	// Devuelve el id de la cabina de la orden de produccion
 	function dameIdCabina($id_produccion){
 		$consultaId = sprintf("select opr.id_componente from orden_produccion_referencias as opr where opr.id_produccion=%s and id_tipo_componente=1 and opr.activo=1 ",
@@ -428,6 +429,7 @@ class Orden_Produccion extends MySQL {
 		$this->ejecutarConsulta();
 		return $this->getPrimerResultado();
 	}
+	*/
 
 	// Devuelve los ids de los periféricos de la orden de produccion
 	function dameIdsPerifericos($id_produccion) {

@@ -57,7 +57,8 @@ class Imputacion extends MySQL {
 		$this->id_usuario = $id_usuario;
 		$this->horas = $horas;
 	}
-	
+
+	/*
 	// Guarda los cambios realizados en la cabina
 	function guardarCambios() {
 		// Si el id_componente es NULL lo toma como una nueva cabina
@@ -83,16 +84,16 @@ class Imputacion extends MySQL {
 	function getErrorMessage($error_num) {
 		switch($error_num) {
 			case 2:
-				return 'Ya existe una cabina con ese nombre en la base de datos<br/>';
+				return 'Ya existe una imputacion con ese nombre en la base de datos<br/>';
 			break;
 			case 3:
-				return 'Se produjo un error al guardar la nueva cabina<br/>';
+				return 'Se produjo un error al guardar la nueva imputacion<br/>';
 			break;
 			case 4:
-				return 'Se produjo un error al modificar los datos de la cabina<br/>';
+				return 'Se produjo un error al modificar los datos de la imputacion<br/>';
 			break;
 			case 5;
-				return 'Se produjo un error al eliminar la cabina<br/>';
+				return 'Se produjo un error al eliminar la imputacion<br/>';
 			break;
 			case 5;
 				return 'Las horas imputadas han sido eliminadas<br/>';
@@ -108,6 +109,7 @@ class Imputacion extends MySQL {
 			break;
 		}
 	}
+	*/
 	
 	function eliminar(){
 		//ELIMINAR

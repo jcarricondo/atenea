@@ -39,10 +39,10 @@
 	  	<input type="hidden" id="id_nombre_producto" name="id_nombre_producto" value="<?php echo $id_nombre_producto;?>"/>
 	</div>
 
-<?php 
+<?php
+	/*
 	// Si hay cabina
-	if (($id_cabina != 0) and ($id_cabina != -1)) {
-?>
+	if (($id_cabina != 0) and ($id_cabina != -1)) { ?>
 		<div class="ContenedorCamposCreacionBasico">
         	<div class="LabelCreacionBasico">Cabina</div>
             <?php $cabina->cargaDatosCabinaId($id_cabina); ?>
@@ -51,14 +51,14 @@
         </div>
 <?php
 	}
-	else {
-?>
+	else { ?>
 		<div class="ContenedorCamposCreacionBasico">
     		<div class="LabelCreacionBasico">Cabina</div>
         	<div class="tituloSinComponente">Sin Cábina</div> 
         </div>
 <?php 
 	}
+	*/
 ?>
 
 <div class="ContenedorCamposCreacionBasico">
@@ -100,8 +100,7 @@
 <br/>
 
 <?php
-	if (($id_cabina != 0 and ($id_cabina != -1))) {
-?>
+	/* if (($id_cabina != 0 and ($id_cabina != -1))) { ?>
 		<div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Referencias Cabina</div> 
            	<div class="tituloComponente">
@@ -217,6 +216,7 @@
         </div>
 <?php 
 	}
+	*/
 	// Obtenemos el numero de perifericos para generar las tablas de referencias correspondientes a ese periferico
 	$precio_todos_perifericos = 0;
 	$es_periferico = true;
@@ -360,7 +360,7 @@
 	              	<?php $precio_total_producto = 0;?>
 	              	<td id="celda_total_producto" style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
 	   					<?php 
-							$precio_total_producto = $precio_total_cabina + $precio_todos_perifericos + $precio_refs_libres;
+							$precio_total_producto = /* $precio_total_cabina + */ $precio_todos_perifericos + $precio_refs_libres;
 							echo '<span class="tituloComp">'.number_format($precio_total_producto, 2, ',', '.').'€'.'</span>'; 
 						?>
 	                </td>

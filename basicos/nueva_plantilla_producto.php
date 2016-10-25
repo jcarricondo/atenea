@@ -4,10 +4,10 @@ set_time_limit(10000);
 include("../includes/sesion.php");
 include("../classes/basicos/plantilla_producto.class.php");
 include("../classes/basicos/nombre_producto.class.php");
-include("../classes/basicos/cabina.class.php");
+/* include("../classes/basicos/cabina.class.php"); */
 include("../classes/basicos/periferico.class.php");
 /* include("../classes/basicos/software.class.php"); */
-include("../classes/basicos/listado_cabinas.class.php");
+/* include("../classes/basicos/listado_cabinas.class.php"); */
 include("../classes/basicos/listado_perifericos.class.php");
 /* include("../classes/basicos/listado_softwares.class.php"); */
 include("../classes/basicos/listado_nombre_producto.class.php");
@@ -15,10 +15,10 @@ permiso(2);
 
 $plant = new Plantilla_Producto();
 $np = new Nombre_Producto();
-$cab = new Cabina();
+/* $cab = new Cabina(); */
 $per = new Periferico();
 /* $soft = new Software(); */
-$listado_cab = new listadoCabinas();
+/* $listado_cab = new listadoCabinas(); */
 $listado_per = new listadoPerifericos();
 /* $listado_soft = new listadoSoftwares(); */
 $listado_np = new ListadoNombreProducto();
@@ -28,15 +28,15 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
 	$nombre = $_POST["nombre"];
 	$version = $_POST["version"];
     $id_nombre_producto = $_POST["select_nombre_producto"];
-    $id_cabina = $_POST["cabina"];
+    /* $id_cabina = $_POST["cabina"]; */
     $ids_perifericos = $_POST["perifericos"];
     /* $ids_software = $_POST["software"]; */
 
-    $no_hay_cabina = empty($id_cabina) || $id_cabina == -1;
+    /* $no_hay_cabina = empty($id_cabina) || $id_cabina == -1; */
     $no_hay_perifericos = empty($ids_perifericos);
     /* $no_hay_software = empty($ids_software); */
 
-    $plantilla_vacia = ($no_hay_cabina && $no_hay_perifericos /* && $no_hay_software */);
+    $plantilla_vacia = (/* $no_hay_cabina && */ $no_hay_perifericos /* && $no_hay_software */);
 
     // Comprobamos que la plantilla no este vacia
     if(!$plantilla_vacia) {
@@ -49,7 +49,7 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
             $error_componentes = false;
 
             // Preparamos los ids de los componentes de la plantilla de producto
-            if(!$no_hay_cabina) $ids_componentes[] = $id_cabina;
+            /* if(!$no_hay_cabina) $ids_componentes[] = $id_cabina; */
             for($i=0;$i<count($ids_perifericos);$i++) {
                 $ids_componentes[] = $ids_perifericos[$i];
             }
@@ -138,21 +138,21 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_plantilla_producto
         <br/>
 
         <h5>Selecci&oacute;n de componentes para la plantilla del producto</h5><br/>
-        <div class="ContenedorCamposCreacionBasico">
+        <!-- <div class="ContenedorCamposCreacionBasico">
             <div class="LabelCreacionBasico">Cabina</div>
             <div id="CapaBotonesCabOP">
                 <input type="button" id="BotonTodasCabinas" name="BotonTodasCabinas" class="BotonEliminar" value="Mostrar todas las cabinas" onclick="javascript:MostrarTodasCabinas()" />
                 <input type="hidden" id="tipo_boton_cabina" name="tipo_boton_cabina" value="TODAS"/>
             </div>
-        </div>
+        </div> -->
         <!-- Lista de las cabinas -->
-        <div class="ContenedorCamposCreacionBasico">
+        <!-- <div class="ContenedorCamposCreacionBasico">
             <div id="lista_cabinas">
                 <div class="LabelCreacionBasico"></div>
                 <select id="cabina" name="cabina" class="CreacionBasicoInput">
                     <option value="0">Selecciona..</option>
                     <?php
-                        $listado_cab->prepararConsultaProduccion();
+                        /* $listado_cab->prepararConsultaProduccion();
                         $listado_cab->realizarConsulta();
                         $resultado_cabinas = $listado_cab->cabinas;
 
@@ -160,14 +160,14 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_plantilla_producto
                             $datoCab = $resultado_cabinas[$i];
                             $cab->cargaDatosCabinaId($datoCab["id_componente"]);
                             echo '<option value="'.$cab->id_componente.'">'.$cab->cabina.'_v'.$cab->version.'</option>';
-                        }
+                        } */
                     ?>
                 </select>
 
                 <?php
                     // Se guarda en un input hidden los id de las cabinas de produccion
                     // Se guarda en un input hidden los nombres de las cabinas de produccion
-                    $listado_cab->prepararConsultaProduccion();
+                    /* $listado_cab->prepararConsultaProduccion();
                     $listado_cab->realizarConsulta();
                     $resultado_cabinas = $listado_cab->cabinas;
 
@@ -189,11 +189,11 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_plantilla_producto
                         $cab->cargaDatosCabinaId($datoTodasCab["id_componente"]);
                         echo '<input type="hidden" id="id_todas_cabinas[]" name="id_todas_cabinas[]" value="'.$cab->id_componente.'"/>';
                         echo '<input type="hidden" id="nombre_todas_cabinas[]" name="nombre_todas_cabinas[]" value="'.$cab->cabina.'_v'.$cab->version.'"/>';
-                    }
+                    } */
                 ?>
             </div>
         </div>
-        <br/>
+        <br/>-->
 
         <div class="ContenedorCamposCreacionBasico">
             <div class="LabelCreacionBasico">Periféricos</div>

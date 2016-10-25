@@ -3,7 +3,7 @@ class listadoOrdenesProduccion extends MySQL {
 	
 	// Variables de la clase
 	var $unidades = "";
-	var $cabina = "";
+	// var $cabina = "";
 	var $periferico = "";
 	var $num_ordenadores = "";
 	var $ordenador = "";
@@ -30,7 +30,7 @@ class listadoOrdenesProduccion extends MySQL {
 	// Pasan los valores de las variables del buscador a las de la clase
 	function setValores($unidades,$cabina,$periferico,$num_ordenadores,$ordenador,$software,$fecha_inicio,$fecha_entrega,$fecha_entrega_deseada,$estado,$ref_libres,$fecha_desde,$fecha_hasta,$alias_op,$id_tipo,$id_sede) {
 		$this->unidades = $unidades;
-		$this->cabina = $cabina;
+		// $this->cabina = $cabina;
 		$this->periferico = $periferico;
 		$this->num_ordenadores = $num_ordenadores;
 		$this->ordenador = $ordenador;
@@ -95,9 +95,11 @@ class listadoOrdenesProduccion extends MySQL {
 		if($this->id_tipo != ""){
 			$condiciones .= " and orden_produccion.id_tipo=".$this->id_tipo; 	
 		}
+		/*
 		if($this->cabina != "") {
 			$condiciones .= " and orden_produccion.id_produccion in (select opc.id_produccion from orden_produccion_componentes as opc where opc.id_componente=".$this->cabina.")";
 		}
+		*/
 		if($this->periferico != "") {
 			$condiciones .= " and orden_produccion.id_produccion in (select opc.id_produccion from orden_produccion_componentes as opc where opc.id_componente=".$this->periferico.")";
 		}

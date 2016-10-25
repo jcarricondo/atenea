@@ -11,6 +11,7 @@ if ($tipo_componente == 1){
 	print_r("TOTAL PAQS CABINA: ");print_r($total_paquetes_cabina);echo"<br/>";
 	echo"<br/>";*/
 
+	/*
 	// Si hay referencias
 	if ($referencias_cabina[0] != NULL){
 		// Hay que comprobar si las referencias de la cabina estan duplicadas. 
@@ -71,12 +72,12 @@ if ($tipo_componente == 1){
 		unset($uds_paquete_final);
 		unset($total_paquetes_final);
 	}		
-	/*echo"<br/>";
+	echo"<br/>";
 	print_r("REFS CABINA: ");print_r($referencias_cabina);echo"<br/>";		
 	print_r("PIEZAS CABINA: ");print_r($piezas_cabina);echo"<br/>";		
 	print_r("UDSP CABINA: ");print_r($uds_paquete_cabina);echo"<br/>";		
 	print_r("TOTAL PAQS CABINA: ");print_r($total_paquetes_cabina);echo"<br/>";
-	echo"<br/>";echo"<br/>";*/		
+	echo"<br/>";echo"<br/>";*/
 }
 // Referencias duplicadas de los perifericos
 elseif($tipo_componente == 2){

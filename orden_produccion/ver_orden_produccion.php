@@ -2,7 +2,7 @@
 // Este fichero muestra información sobre la Orden de Producción
 include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 // include("../classes/basicos/software.class.php");
 include("../classes/basicos/kit.class.php");
@@ -21,7 +21,7 @@ permiso(8);
 
 $orden_produccion = new Orden_Produccion();
 $producto = new Producto();
-$cabina = new Cabina();
+// $cabina = new Cabina();
 $periferico = new Periferico();
 // $software = new Software();
 $kit = new Kit();
@@ -161,12 +161,15 @@ include ('../includes/header.php');
         switch ($id_tipo) {
             case '1':
                 // CABINA
+                /*
                 $cabina->cargaDatosCabinaId($id_componente);
                 $nombre_componente = "Cabina";
                 $nombre_componente_principal = "Cabina";
                 $titulo_componente = $cabina->cabina.'_v'.$cabina->version;
                 $es_prototipo = ($cabina->prototipo == 1);
                 $coste_total_componente = 0;
+                */
+                // Deja de existir en Septiembre de 2016
                 break;
             case '2':
                 // PERIFERICO
@@ -180,6 +183,7 @@ include ('../includes/header.php');
             case '3':
                 // SOFTWARE
                 // Los mostramos despues de los componentes
+                // Deja de existir en Septiembre de 2016
             break;    
             case '4':
                 // INTERFAZ
@@ -200,8 +204,7 @@ include ('../includes/header.php');
         // Cargamos los datos de orden_produccion_referencias
         $resultados = $orden_produccion->cargaDatosPorProduccionComponente($id_produccion,$id_produccion_componente);
 
-        if($id_tipo != 3){    
-?>
+        if($id_tipo != 3){ ?>
             <div class="ContenedorCamposCreacionBasico">
                 <div class="LabelCreacionBasico">Referencias <?php echo $nombre_componente;?></div> 
                 <div class="tituloComponente">
@@ -575,7 +578,7 @@ include ('../includes/header.php');
             <tr>
               	<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
    		       		<?php 
-						$precio_total_producto = $precio_total_cabina + $precio_todos_perifericos + $precio_refs_libres;
+						$precio_total_producto = /*$precio_total_cabina +*/ $precio_todos_perifericos + $precio_refs_libres;
 						// echo '<span class="tituloComp">'.number_format($coste_producto, 2, ',', '.').'€'.'</span>'; 
                         echo '<span class="tituloComp">'.number_format($coste_total_producto, 2, ',', '.').'€'.'</span>'; 
 					?>

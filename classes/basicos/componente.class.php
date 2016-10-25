@@ -42,7 +42,7 @@ class Componente extends MySQL {
 		);
 	}
 
-	// Se hace la carga de datos  de una nueva cabina
+	// Se hace la carga de datos  de un nuevo componente
 	function datosComponente($id_componente,$nombre,$referencia,$version,$descripcion,$estado,$prototipo,$id_tipo) {
 		$this->id_componente = $id_componente;
 		$this->nombre = $nombre;

@@ -171,8 +171,8 @@ include ("../includes/header.php");
                                 <td><?php echo strtoupper($np->nombre);?></td>
                                 <td style="text-align: center;">
                                     <a href="javascript:abrir('muestra_componentes_plantilla.php?id_plantilla=<?php echo $plant->id_plantilla;?>')">VER</a> -
-                                    <a href="javascript:window.location='informe_referencias_plantilla.php?id_plantilla=<?php echo $plant->id_plantilla;?>';">XLS</a> -
-                                    <a href="javascript:window.location='informe_referencias_componentes.php?id_plantilla=<?php echo $plant->id_plantilla;?>';">XLS COM</a>
+                                    <a href="javascript:window.location='informe_referencias_plantilla.php?id_plantilla=<?php echo $plant->id_plantilla;?>';">XLS</a><!-- - -->
+                                    <!--<a href="javascript:window.location='informe_referencias_componentes.php?id_plantilla- --><?php // echo $plant->id_plantilla;?><!-- ';">XLS COM</a>-->
                                 </td>
                                 <td style="text-align:center;">
                                     <?php echo $fecha_creado; ?>

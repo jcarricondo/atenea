@@ -5,11 +5,11 @@ include("../includes/sesion.php");
 include("../classes/control_usuario.class.php");
 include("../classes/sede/sede.class.php");
 include("../classes/funciones/funciones.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 /* include("../classes/basicos/software.class.php"); */
 include("../classes/basicos/nombre_producto.class.php");
-include("../classes/basicos/listado_cabinas.class.php");
+// include("../classes/basicos/listado_cabinas.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
 /* include("../classes/basicos/listado_softwares.class.php"); */
 include("../classes/orden_produccion/orden_produccion.class.php");
@@ -23,12 +23,12 @@ permiso(8);
 $control_usuario = new Control_Usuario();
 $sede = new Sede();
 $funciones = new Funciones();
-$cab = new Cabina();
+// $cab = new Cabina();
 $perif = new Periferico();
 /* $soft = new Software(); */
 /* $softs = new listadoSoftwares(); */
 $perifs = new listadoPerifericos();
-$cabs = new listadoCabinas();
+// $cabs = new listadoCabinas();
 $op = new Orden_Produccion();
 $orden_prod = new Orden_Produccion();
 $ordenes_produccion = new listadoOrdenesProduccion();
@@ -162,7 +162,7 @@ if(($_GET ["OProduccion"] == "iniciado_message") || ($_GET ["OProduccion"] == "c
 if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $realizarBusqueda == 1) {
 	$mostrar_tabla = true;
 	$unidades = $_GET["unidades"]; // numero de unidades del producto
-	$cabina = $_GET["cabina"];	// id de la cabina 
+	// $cabina = $_GET["cabina"];	// id de la cabina
 	$periferico = $_GET["periferico"]; // id del periferico
 	/* $software = $_GET["software"];*/  // id del software
 	$fecha_inicio = $_GET["fecha_inicio"];
@@ -199,7 +199,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	if ($fecha_hasta != "") $fecha_hasta = $funciones->cFechaMy($fecha_hasta);
 
 	// Se pasan los datos del buscador a la clase del listado y se realiza la consulta a la base de datos
-	$ordenes_produccion->setValores($unidades,$cabina,$periferico,$num_ordenadores,$ordenador,$software,$fecha_inicio,$fecha_entrega,$fecha_entrega_deseada,$estado,$ref_libres,$fecha_desde,$fecha_hasta,$alias_op,$id_tipo,$id_sede);
+	$ordenes_produccion->setValores($unidades,/*$cabina*/NULL,$periferico,$num_ordenadores,$ordenador,$software,$fecha_inicio,$fecha_entrega,$fecha_entrega_deseada,$estado,$ref_libres,$fecha_desde,$fecha_hasta,$alias_op,$id_tipo,$id_sede);
 	$ordenes_produccion->realizarConsulta();
 	$resultadosBusqueda = $ordenes_produccion->ordenes_produccion;
 	$num_resultados = count($resultadosBusqueda);
@@ -215,7 +215,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	
 	// Guardar las variables del formulario en variable de sesion
 	$_SESSION["unidades_orden_produccion"] = $unidades;
-	$_SESSION["cabina_orden_produccion"] = $cabina;
+	// $_SESSION["cabina_orden_produccion"] = $cabina;
 	$_SESSION["periferico_orden_produccion"] = $periferico;
 	/* $_SESSION["software_orden_produccion"] = $software; */
 	$_SESSION["fecha_inicio_orden_produccion"] = $fecha_inicio;
@@ -291,9 +291,11 @@ echo '<script type="text/javascript" src="../js/orden_produccion/ordenes_producc
     </tr>
     <tr style="border:0;">
        	<td>
+			<!--
             <div class="Label">Cabinas</div>
             <select id="cabina" name="cabina" class="BuscadorInput">
-            	<?php 
+            	<?php
+					/*
 					$cabs->prepararConsulta();
 					$cabs->realizarConsulta();
 					$resultado_cabinas = $cabs->cabinas;
@@ -307,8 +309,14 @@ echo '<script type="text/javascript" src="../js/orden_produccion/ordenes_producc
 						echo '>';
 						if($i!=-1) echo $cab->cabina.'_v'.$cab->version.'</option>';
 					}
+					*/
 				?>
-            </select>
+            </select>-->
+			<div class="Label">Tipo</div>
+			<select id="tipo" name="tipo" class="BuscadorInput">
+				<option value="1" <?php if($_SESSION["tipo_orden_produccion"] == 1) echo 'selected="selected"';?>>ORDEN PRODUCCIÓN</option>
+				<option value="2" <?php if($_SESSION["tipo_orden_produccion"] == 2) echo 'selected="selected"';?>>MANTENIMIENTO</option>
+			</select>
         </td>
         <td>
             <div class="Label">Periféricos</div>
@@ -384,19 +392,15 @@ echo '<script type="text/javascript" src="../js/orden_produccion/ordenes_producc
     </tr>
     <tr style="border:0;">
        	<td>
-			<div class="Label">Tipo</div>
-			<select id="tipo" name="tipo" class="BuscadorInput">
-				<option value="1" <?php if($_SESSION["tipo_orden_produccion"] == 1) echo 'selected="selected"';?>>ORDEN PRODUCCIÓN</option>
-				<option value="2" <?php if($_SESSION["tipo_orden_produccion"] == 2) echo 'selected="selected"';?>>MANTENIMIENTO</option>
-			</select>
-        </td>
-        <td>
 			<div class="Label">Fecha desde</div>
-           	<input type="text" name="fecha_desde" id="datepicker_orden_produccion_desde" class="fechaCal" value="<?php echo $_SESSION["fecha_desde_orden_produccion"];?>"/>	
+			<input type="text" name="fecha_desde" id="datepicker_orden_produccion_desde" class="fechaCal" value="<?php echo $_SESSION["fecha_desde_orden_produccion"];?>"/>
         </td>
         <td>
-            <div class="Label">Fecha hasta</div>
-        	<input type="text" name="fecha_hasta" id="datepicker_orden_produccion_hasta" class="fechaCal" value="<?php echo $_SESSION["fecha_hasta_orden_produccion"];?>"/>
+			<div class="Label">Fecha hasta</div>
+			<input type="text" name="fecha_hasta" id="datepicker_orden_produccion_hasta" class="fechaCal" value="<?php echo $_SESSION["fecha_hasta_orden_produccion"];?>"/>
+        </td>
+        <td>
+
         </td>
     </tr>
 	<tr style="border:0;">

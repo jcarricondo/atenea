@@ -7,7 +7,7 @@ include("../includes/sesion.php");
 include("../classes/control_usuario.class.php");
 include("../classes/sede/sede.class.php");
 include("../classes/funciones/funciones.class.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/componente.class.php");
@@ -23,7 +23,7 @@ $db = new MySQL();
 $control_usuario = new Control_Usuario();
 $sede = new Sede();
 $funciones = new Funciones();
-$cabina = new Cabina();
+// $cabina = new Cabina();
 $periferico = new Periferico();
 $componente = new Componente();
 $orden_produccion = new Orden_Produccion();
@@ -390,9 +390,9 @@ echo '<script type="text/javascript" src="../js/producciones/producciones.js"></
 							<?php				
 								// El id_tipo solo puede ser 1 o 2 dependiendo de si es una cabina o un periferico
 								if($id_tipo_componente == 1){
-									$cabina->cargaDatosCabinaId($id_componente);
+									// $cabina->cargaDatosCabinaId($id_componente);
 							?>
-									<td width="80%"><?php echo $cabina->cabina; ?></td>
+									<!-- <td width="80%"><?php // echo $cabina->cabina; ?></td>-->
 							<?php
 								}
 								else {

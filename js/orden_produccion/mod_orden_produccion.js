@@ -295,7 +295,8 @@ function SeleccionarPerifericos(){
 		lista[i].selected = "selected";
 	}
 }
-	
+
+/*
 // Función que solo muestra en el select las cabinas en producción	
 function MostrarCabProduccion(){
 	// Obtenemos el boton de cabinas en produccion y lo eliminamos
@@ -391,6 +392,7 @@ function MostrarTodasCabinas(){
 		selectCabinas.add(opcion_cabina,null);
 	}
 }
+*/
 	
 // Función que solo muestra los periféricos en producción 	
 function MostrarPerProduccion(){

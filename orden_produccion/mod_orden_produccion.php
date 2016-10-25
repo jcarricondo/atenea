@@ -3,18 +3,19 @@ set_time_limit(10000);
 // Primer paso para la modificación de la Orden de Producción
 // Carga de clases y funciones JavaScript
 include("../includes/sesion.php");
-include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 // include("../classes/basicos/software.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/nombre_producto.class.php");
-include("../classes/basicos/listado_cabinas.class.php");
+// include("../classes/basicos/listado_cabinas.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
 // include("../classes/basicos/listado_softwares.class.php");
 include("../classes/orden_produccion/orden_produccion.class.php");
 include("../classes/orden_produccion/incluir_referencia_libre.class.php");
 include("../classes/productos/producto.class.php");
 include("../classes/control_usuario.class.php");
+include("../classes/kint/Kint.class.php");
 permiso(10);
 
 $orden_produccion = new Orden_Produccion();
@@ -26,7 +27,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 	$alias_op = $_POST["alias_op"];
 	$unidades = $_POST["unidades"];
 	$nombre_producto = $_POST["nombre_producto"];
-	$cabina = $_POST["cabina"];
+	// $cabina = $_POST["cabina"];
 	$perifericos = $_POST["perifericos"];
 	// $software = $_POST["software"];
 	$ref_libres = $_POST["REFS"];
@@ -104,16 +105,21 @@ echo '<script type="text/javascript" src="../js/orden_produccion/mod_orden_produ
             <input type="text" id="producto" name="producto" class="CreacionBasicoInput" readonly="readonly" value="<?php echo $nombre_producto->nombre;?>" />
             <input type="hidden" id="id_nombre_producto" name="id_nombre_producto" value="<?php echo $id_nombre_producto;?>" />
         </div>
+		<!--
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Cabina</div>
             <div id="CapaBotonesCabOP"><input type="button" id="BotonCabProduccion" name="BotonCabProduccion" class="BotonEliminar" value="Mostrar cabinas en producción" onclick="javascript:MostrarCabProduccion()" /></div>
         </div>
-        <div class="ContenedorCamposCreacionBasico">
-        	<div id="lista_cabinas">
+        -->
+        <!--
+		<div class="ContenedorCamposCreacionBasico">
+			<div id="lista_cabinas">
             	<div class="LabelCreacionBasico"></div>
             	<select id="cabina" name="cabina" class="CreacionBasicoInput">
             		<option value="0">Selecciona...</option>
-            		<?php 
+            		<?php
+						$ids_produccion_componente = $orden_produccion->dameIdsProduccionComponente($id_produccion);
+						/*
 						$bbdd = new MySQL;
 						$cabs = new listadoCabinas();
 						$cabs->prepararConsulta();
@@ -180,9 +186,10 @@ echo '<script type="text/javascript" src="../js/orden_produccion/mod_orden_produ
 							echo '<input type="hidden" id="cab_sel_todas[]" name="cab_sel_todas[]" value="'.$cab_t->id_componente.'"/>'; 
 						}									
 					}
+						*/
 				?>
-            </div>        
-        </div>
+            </div>
+        </div>-->
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Periféricos</div>
             <div id="CapaBotonesPerOP">
