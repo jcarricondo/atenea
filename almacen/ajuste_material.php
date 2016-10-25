@@ -43,6 +43,8 @@ $_SESSION["id_almacen_ajuste_almacen"] = $id_almacen_usuario;
 
 $esAdminGlobal = $control_usuario->esAdministradorGlobal($id_tipo_usuario);
 $esAdminGes = $control_usuario->esAdministradorGes($id_tipo_usuario);
+$esUsuarioFab = $control_usuario->esUsuarioFab($id_tipo_usuario);
+$esUsuarioMan = $control_usuario->esUsuarioMan($id_tipo_usuario);
 $filtroSede = $esAdminGlobal || $esAdminGes;
 
 // Predeterminado si el usuario sin sede asignada no escogió ninguna
@@ -167,7 +169,17 @@ $max_caracteres = 35;
                         <option value="">Seleccionar</option>
                         <?php
                             // Obtenemos los almacenes de esa sede
-                            $res_almacenes = $sede->dameAlmacenesSede($id_sede);
+                            if($esUsuarioFab){
+                                $res_almacenes = $sede->dameAlmacenesFabricaSede($id_sede);
+                            }
+                            else if($esUsuarioMan){
+                                $res_almacenes = $sede->dameAlmacenesMantenimientoSede($id_sede);
+                            }
+                            else {
+                                // Obtenemos los almacenes de esa sede
+                                $res_almacenes = $sede->dameAlmacenesSede($id_sede);
+                            }
+
                             for($i=0;$i<count($res_almacenes);$i++){
                                 $id_almacen_bus = $res_almacenes[$i]["id_almacen"];
                                 $nombre = $res_almacenes[$i]["almacen"]; ?>
