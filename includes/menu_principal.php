@@ -26,7 +26,7 @@
       <?php
           }
           if(permisoMenu(31)){ ?>
-            <a class="BotonMenu" href="../almacen_perifericos/listado_perifericos.php">T. Periféricos</a>
+            <a class="BotonMenu" href="../almacen_perifericos/listado_perifericos.php">A. Periféricos</a>
       <?php
           }
           if(permisoMenu(1)){ ?>
