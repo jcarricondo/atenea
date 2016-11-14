@@ -7,7 +7,18 @@ include("../classes/basicos/fabricante.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/listado_fabricantes.class.php");
 include("../classes/basicos/listado_proveedores.class.php");
+include("../classes/log/basicos/log_basicos_referencias.class.php");
 permiso(2);
+
+$db = new MySQL();
+$bbdd = new MySQL;
+$referencias = new Referencia();
+$validacion = new Funciones();
+$fab = new Fabricante();
+$prov = new Proveedor();
+$nf = new listadoFabricantes();
+$np = new listadoProveedores();
+$log = new LogBasicosReferencias();
 
 if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) {
 	// Se reciben los datos
@@ -32,8 +43,6 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 	$unidades = $_POST["unidades"];
 	$comentarios = $_POST["comentarios"];
 	$error=false;
-
-	$validacion = new Funciones();
 
 	if (($ref_proveedor_pieza == '') or ($ref_fabricante_pieza == '') or ($pack_precio == '') or ($unidades == '') ){
 		echo '<script type="text/javascript">alert("Rellene los campos obligatorios")</script>';
@@ -71,14 +80,56 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 			}
 		}
 		if ((!$archivos_adjuntos) or (($subido) and ($error_archivo == 0))) {
-			$referencias = new Referencia();
 			$referencias->datosNuevaReferencia(NULL,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,$nombre_archivo,$comentarios);
 			$resultado = $referencias->guardarCambios();
 			if($resultado == 1) {
+				// Guardamos el log de la operación
+				$id_referencia = $referencias->getUltimoID();
+				$referencias->cargaDatosReferenciaId($id_referencia);
+				$fecha_creado = $referencias->fecha_creado;
+
+				$id_usuario = $_SESSION["AT_id_usuario"];
+				$proceso = "CREACION REFERENCIA";
+				$descripcion = "-";
+				$referencia_creada = "SI";
+				$referencia_heredada = "NO";
+				$referencia_compatible = "NO";
+				$error = "NO";
+				$codigo_error = "OK!";
+
+				$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fabricante_pieza,$ref_proveedor_pieza,
+								$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
+								$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
+								$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+
+				$res_log = $log->guardarLog();
+				if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
 				header("Location: referencias.php?ref=creado");
 			}
 			else {
 				$mensaje_error = $referencias->getErrorMessage($resultado);
+
+				// Guardamos el log de la operación
+				$id_referencia = $referencias->getUltimoID();
+				$referencias->cargaDatosReferenciaId($id_referencia);
+				$fecha_creado = $referencias->fecha_creado;
+
+				$id_usuario = $_SESSION["AT_id_usuario"];
+				$proceso = "CREACION REFERENCIA";
+				$descripcion = "-";
+				$referencia_creada = "SI";
+				$referencia_heredada = "NO";
+				$referencia_compatible = "NO";
+				$error = "SI";
+				$codigo_error = $mensaje_error;
+
+				$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fabricante_pieza,$ref_proveedor_pieza,
+						$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
+						$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
+						$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+
+				$res_log = $log->guardarLog();
+				if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
 			}
 		}
 	}
@@ -123,18 +174,15 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
            	<div class="LabelCreacionBasico">Fabricante *</div>
            	<select id="fabricante" name="fabricante"  class="CreacionBasicoInput">
             	<?php
-      					$bbdd = new MySQL;
-      					$nf = new listadoFabricantes();
-      					$nf->prepararConsulta();
-      					$nf->realizarConsulta();
-      					$resultado_fabricantes = $nf->fabricantes;
+   					$nf->prepararConsulta();
+   					$nf->realizarConsulta();
+   					$resultado_fabricantes = $nf->fabricantes;
 
-      					for($i=0;$i<count($resultado_fabricantes);$i++) {
-      						$fab = new Fabricante();
-      						$datoFabricante = $resultado_fabricantes[$i];
-      						$fab->cargaDatosFabricanteId($datoFabricante["id_fabricante"]);
-      						echo '<option value="'.$fab->id_fabricante.'"';if ($fab->id_fabricante == $fabricante) { echo 'selected="selected"'; } echo '>'.$fab->nombre.'</option>';
-      					}
+   					for($i=0;$i<count($resultado_fabricantes);$i++) {
+   						$datoFabricante = $resultado_fabricantes[$i];
+  						$fab->cargaDatosFabricanteId($datoFabricante["id_fabricante"]);
+   						echo '<option value="'.$fab->id_fabricante.'"';if ($fab->id_fabricante == $fabricante) { echo 'selected="selected"'; } echo '>'.$fab->nombre.'</option>';
+   					}
       				?>
             </select>
         </div>
@@ -142,20 +190,18 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
           	<div class="LabelCreacionBasico">Proveedor *</div>
            	<select id="proveedor" name="proveedor"  class="CreacionBasicoInput">
             	<?php
-      					$np = new listadoProveedores();
-      					$np->prepararConsulta();
-      					$np->realizarConsulta();
-      					$resultado_proveedores = $np->proveedores;
+   					$np->prepararConsulta();
+   					$np->realizarConsulta();
+   					$resultado_proveedores = $np->proveedores;
 
-      					for($i=0;$i<count($resultado_proveedores);$i++) {
-      						$prov = new Proveedor();
-      						$datoProveedor = $resultado_proveedores[$i];
-      						$prov->cargaDatosProveedorId($datoProveedor["id_proveedor"]);
-                  if($prov->nombre != "0 - SIN ESPECIFICAR"){
-      						  echo '<option value="'.$prov->id_proveedor.'"';if ($prov->id_proveedor == $proveedor) { echo 'selected="selected"'; } echo '>'.$prov->nombre.'</option>';
-                  }  
-      					}
-      				?>
+   					for($i=0;$i<count($resultado_proveedores);$i++) {
+   						$datoProveedor = $resultado_proveedores[$i];
+   						$prov->cargaDatosProveedorId($datoProveedor["id_proveedor"]);
+		                if($prov->nombre != "0 - SIN ESPECIFICAR"){
+      						echo '<option value="'.$prov->id_proveedor.'"';if ($prov->id_proveedor == $proveedor) { echo 'selected="selected"'; } echo '>'.$prov->nombre.'</option>';
+                  		}
+      				}
+      			?>
             </select>
         </div>
         <div class="ContenedorCamposCreacionBasico">
