@@ -34,15 +34,17 @@ class Referencia extends MySQL {
 	var $id_archivo;
 	var $fecha_subida;
 	var $ids_archivos;
-	var $nombres_archivos; // array de nombres que tiene una referencia
+	var $nombres_archivos; 										// array de nombres que tiene una referencia
 	var $resultados_componentes;
 	var $total_paquetes;
     var $coste;
 	var $id_proceso;
-	var $activo;  
+	var $activo;
+	var $fecha_creado;
 
 
-	function cargarDatos($id_referencia,$referencia,$fabricante,$proveedor,$part_nombre,$part_tipo,$part_proveedor_referencia,$part_fabricante_referencia,$part_valor_nombre,$part_valor_cantidad,$part_valor_nombre_2,$part_valor_cantidad_2,$part_valor_nombre_3,$part_valor_cantidad_3,$part_valor_nombre_4,$part_valor_cantidad_4,$part_valor_nombre_5,$part_valor_cantidad_5,$pack_precio,$unidades,$part_descripcion,$comentarios,$part_precio_cantidad,$nombre_proveedor,$nombre_fab,$unidades_stock,$unidades_entrada) {
+	function cargarDatos($id_referencia,$referencia,$fabricante,$proveedor,$part_nombre,$part_tipo,$part_proveedor_referencia,$part_fabricante_referencia,$part_valor_nombre,$part_valor_cantidad,$part_valor_nombre_2,$part_valor_cantidad_2,$part_valor_nombre_3,$part_valor_cantidad_3,$part_valor_nombre_4,$part_valor_cantidad_4,$part_valor_nombre_5,$part_valor_cantidad_5,$pack_precio,$unidades,$part_descripcion,$comentarios,
+						 $part_precio_cantidad,$nombre_proveedor,$nombre_fab,$unidades_stock,$unidades_entrada,$fecha_creado) {
 		$this->id_referencia = $id_referencia;
 		$this->referencia = $referencia;
 		$this->fabricante = $fabricante;
@@ -65,13 +67,12 @@ class Referencia extends MySQL {
 		$this->unidades = $unidades;
 		$this->unidades_stock = round($unidades_stock);
 		$this->unidades_entrada = round($unidades_entrada);
-
 		$this->part_descripcion = $part_descripcion;
 		$this->comentarios = $comentarios;
 		$this->part_precio_cantidad = $part_precio_cantidad;
-
 		$this->nombre_proveedor = $nombre_proveedor;
 		$this->nombre_fabricante = $nombre_fab;
+		$this->fecha_creado = $fecha_creado;
 	}
 
 	function cargaDatosReferenciaId($id_referencia) {
@@ -107,7 +108,8 @@ class Referencia extends MySQL {
 			$resultados["nombre_prov"],
 			$resultados["nombre_fab"],
 			$resultados["unidades_stock"],
-			$resultados["unidades_entrada"]
+			$resultados["unidades_entrada"],
+			$resultados["fecha_creado"]
 		);
 	}
 
