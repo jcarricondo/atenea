@@ -11,6 +11,7 @@ include("../classes/basicos/fabricante.class.php");
 include("../classes/basicos/listado_proveedores.class.php");
 include("../classes/basicos/listado_fabricantes.class.php");
 include("../classes/basicos/componente.class.php");
+include("../classes/log/basicos/log_basicos_referencias.class.php");
 permiso(34);
 
 // Comprobamos si el usuario puede modificar el basico
@@ -25,7 +26,10 @@ else {
 
 $error = false;
 $bbdd = new MySQL;
+$db = new MySQL();
 $referencias = new Referencia();
+$ref = new Referencia();
+$ref_archivo = new Referencia();
 // $cabina = new Cabina();
 $periferico = new Periferico();
 $kit = new Kit();
@@ -33,8 +37,9 @@ $fab = new Fabricante();
 $prov = new Proveedor();
 $nf = new listadoFabricantes();
 $np = new listadoProveedores();
-$ref = new Referencia();
 $comp = new Componente();
+$validacion = new Funciones();
+$log = new LogBasicosReferencias();
 
 if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) {
 	// Se reciben los datos
@@ -64,9 +69,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 	if ($nombre == '') $nombre = '-';
 	if ($nombre_pieza == '') $nombre_pieza = '-';
 	if ($tipo_pieza == '') $tipo_pieza = '-';
-	
-	$validacion = new Funciones();	
-		
+
 	if (($ref_prov_pieza == '') or ($ref_fab_pieza == '') or ($pack_precio == '') or ($unidades_paquete == '') ){
 		echo '<script type="text/javascript">alert("Rellene los campos obligatorios")</script>';
 		$error = true;
@@ -82,8 +85,6 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 	else {
 		// Consulta para comprobar que los nombres de la tabla son los mismos que los de la base de datos
 		// Comprobamos que los nombres de la base de datos estan en archivos_tabla. Si alguno no esta ponemos su activo a cero.
-		$db = new MySQL();
-		//$referencias = new Referencia();
 		$referencias->dameNombres_archivos($id_referencia);
 		$nombres = $referencias->nombres_archivos;
 		// Los guardamos en un array simple
@@ -151,10 +152,51 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					}
 				}
 				if (!$error){
-					header("Location: referencias.php?ref=modificado");	
+					// Guardamos el log de la operación
+					$referencias->cargaDatosReferenciaId($id_referencia);
+					$fecha_creado = $referencias->fecha_creado;
+
+					$id_usuario = $_SESSION["AT_id_usuario"];
+					$proceso = "MODIFICACION REFERENCIA";
+					$descripcion = "-";
+					$referencia_creada = "NO";
+					$referencia_heredada = "NO";
+					$referencia_compatible = "NO";
+					$error = "NO";
+					$codigo_error = "OK!";
+
+					$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fab_pieza,$ref_prov_pieza,
+							$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
+							$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades_paquete,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
+							$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+
+					$res_log = $log->guardarLog();
+					if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
+					header("Location: referencias.php?ref=modificado");
 				}
 				else{
-					$mensaje_error = $referencias->getErrorMessage($resultado);		
+					$mensaje_error = $referencias->getErrorMessage($resultado);
+
+					// Guardamos el log de la operación
+					$referencias->cargaDatosReferenciaId($id_referencia);
+					$fecha_creado = $referencias->fecha_creado;
+
+					$id_usuario = $_SESSION["AT_id_usuario"];
+					$proceso = "MODIFICACION REFERENCIA";
+					$descripcion = "-";
+					$referencia_creada = "NO";
+					$referencia_heredada = "NO";
+					$referencia_compatible = "NO";
+					$error = "SI";
+					$codigo_error = $mensaje_error;
+
+					$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fab_pieza,$ref_prov_pieza,
+							$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
+							$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades_paquete,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
+							$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+
+					$res_log = $log->guardarLog();
+					if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
 				}
 			}
 			else {
@@ -391,15 +433,14 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
         					<th style="text-align: center;">ELIMINAR</th>
                         </tr>
                         <?php 
-							$archivo = new Referencia();
-							$archivo->dameId_archivo($referencias->id_referencia);
-							$ids_archivos = $archivo->ids_archivos;
+							$ref_archivo->dameId_archivo($referencias->id_referencia);
+							$ids_archivos = $ref_archivo->ids_archivos;
 							
 							for($i=0;$i<count($ids_archivos);$i++) {
 								$array_ids_archivos[] = $ids_archivos[$i]["id_archivo"];
-								$archivo->cargaDatosArchivosReferenciaId($array_ids_archivos[$i]);
+								$ref_archivo->cargaDatosArchivosReferenciaId($array_ids_archivos[$i]);
 						?>
-						<tr><td><?php echo $archivo->nombre_archivo;?><input type="hidden" name="archivos_tabla[]" id="archivos_tabla[]" value="<?php echo $archivo->nombre_archivo;?>" /></td><td style="text-align: center;"><?php echo $archivo->fecha_subida;?></td><td style="text-align: center;"><input type="button" id="descargar" name="descargar" class="BotonEliminar"  value="DESCARGAR" onclick="window.location.href='download_upload.php?id=<?php echo $archivo->nombre_archivo;?>'"/> </td><td style="text-align: center;"><input type="checkbox" name="chkbox" value="<?php echo $archivo->id_archivo;?>" /></td></tr>
+						<tr><td><?php echo $ref_archivo->nombre_archivo;?><input type="hidden" name="archivos_tabla[]" id="archivos_tabla[]" value="<?php echo $ref_archivo->nombre_archivo;?>" /></td><td style="text-align: center;"><?php echo $ref_archivo->fecha_subida;?></td><td style="text-align: center;"><input type="button" id="descargar" name="descargar" class="BotonEliminar"  value="DESCARGAR" onclick="window.location.href='download_upload.php?id=<?php echo $ref_archivo->nombre_archivo;?>'"/> </td><td style="text-align: center;"><input type="checkbox" name="chkbox" value="<?php echo $ref_archivo->id_archivo;?>" /></td></tr>
                     <?php 
 					}
 					?> 
