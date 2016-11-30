@@ -117,7 +117,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 				$id_usuario = $_SESSION["AT_id_usuario"];
 				$proceso = "CREACION REFERENCIA";
 				$descripcion = "-";
-				$referencia_creada = "SI";
+				$referencia_creada = "NO";
 				$referencia_heredada = "NO";
 				$referencia_compatible = "NO";
 				$error = "SI";
