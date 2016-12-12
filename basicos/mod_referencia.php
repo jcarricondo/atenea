@@ -4,14 +4,17 @@ include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/referencia.class.php");
-// include("../classes/basicos/cabina.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/fabricante.class.php");
 include("../classes/basicos/listado_proveedores.class.php");
 include("../classes/basicos/listado_fabricantes.class.php");
 include("../classes/basicos/componente.class.php");
+include("../classes/basicos/usuario.class.php");
 include("../classes/log/basicos/log_basicos_referencias.class.php");
+// include("../classes/basicos/cabina.class.php");
 permiso(34);
 
 // Comprobamos si el usuario puede modificar el basico
@@ -29,8 +32,13 @@ $bbdd = new MySQL;
 $db = new MySQL();
 $referencias = new Referencia();
 $ref = new Referencia();
+$ref_ant = new Referencia();
+$ref_her = new Referencia();
+$ref_comp = new Referencia();
 $ref_archivo = new Referencia();
-// $cabina = new Cabina();
+$ref_antecesor = new Referencia_Heredada();
+$ref_heredada = new Referencia_Heredada();
+$ref_compatible = new Referencia_Compatible();
 $periferico = new Periferico();
 $kit = new Kit();
 $fab = new Fabricante();
@@ -40,6 +48,8 @@ $np = new listadoProveedores();
 $comp = new Componente();
 $validacion = new Funciones();
 $log = new LogBasicosReferencias();
+$user = new Usuario();
+// $cabina = new Cabina();
 
 if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) {
 	// Se reciben los datos
@@ -65,7 +75,9 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 	$id_referencia = $_GET["id"];
 	$archivos_tabla = $_POST["archivos_tabla"];
 	$comentarios = $_POST["comentarios"];
-	
+	$referencias_heredadas = $_POST["REFS"];
+	$piezas_referencias_heredadas = $_POST["piezas"];
+
 	if ($nombre == '') $nombre = '-';
 	if ($nombre_pieza == '') $nombre_pieza = '-';
 	if ($tipo_pieza == '') $tipo_pieza = '-';
@@ -152,6 +164,14 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					}
 				}
 				if (!$error){
+					$ref_heredada->setReferenciasHeredadas($id_referencia,$referencias_heredadas,$piezas_referencias_heredadas);
+					// Primero desactivamos las referencias heredadas que tuviera la referencia
+					$res_desactivar_heredadas = $ref_heredada->desactivarReferenciasHeredadas();
+					if($res_desactivar_heredadas != 1) echo '<script>alert("Se ha producido un error al desactivar las referencias herederas")</script>';
+					// Guardamos las referencias heredadas y sus piezas
+					$error_heredadas = $ref_heredada->guardarReferenciasHeredadas();
+					if($error_heredadas)  echo '<script>alert("Se ha producido un error al guardar algunas de las referencias herederas")</script>';
+
 					// Guardamos el log de la operación
 					$referencias->cargaDatosReferenciaId($id_referencia);
 					$fecha_creado = $referencias->fecha_creado;
@@ -160,8 +180,8 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					$proceso = "MODIFICACION REFERENCIA";
 					$descripcion = "-";
 					$referencia_creada = "NO";
-					$referencia_heredada = "NO";
-					$referencia_compatible = "NO";
+					$referencia_heredada = "SI";
+					$referencia_compatible = "SI";
 					$error = "NO";
 					$codigo_error = "OK!";
 
@@ -204,7 +224,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 			} 
 		}
 	}
-} 
+}
 
 // Se cargan los datos buscando por el ID
 $referencias->cargaDatosReferenciaId($_GET["id"]);
@@ -233,6 +253,17 @@ $nombre_fabricante = htmlspecialchars($referencias->nombre_fabricante);
 $pack_precio = $referencias->pack_precio;
 $unidades_paquete = $referencias->unidades; 
 $comentarios = htmlspecialchars($referencias->comentarios);
+
+// Obtenemos las referencias de las que hereda la referencia
+$res_antecesores = $ref_antecesor->dameAntecesores($id_referencia);
+// Obtenemos las referencias que heredan de la referencia
+$res_heredadas = $ref_heredada->dameHeredadas($id_referencia);
+// Obtenemos las referencias compatibles de la referencia
+$res_compatibles = $ref_compatible->dameReferenciasCompatiblesSinElla($id_referencia);
+
+var_dump($res_compatibles);
+
+$max_caracteres_ref = 50;
 
 // Titulo de pagina
 $titulo_pagina = "B&aacutesico > Modifica Referencia";
@@ -401,6 +432,244 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
            	<div class="LabelCreacionBasico">Comentarios</div>
           	<textarea type="text" id="comentarios" name="comentarios" rows="10" class="textareaInput" <?php echo $solo_lectura; ?> ><?php echo $comentarios; ?></textarea>	
         </div>
+		<br/>
+		<div class="ContenedorCamposCreacionBasico" id="capa_referencias_antecesores">
+			<div class="LabelCreacionBasico">Hereda de</div>
+			<div class="CajaReferencias">
+				<div id="ContenedorReferenciasAntecesores" class="ContenedorReferencias">
+					<table id="mitablaAntecesores">
+						<tr>
+							<th style="text-align:center">ID REF</th>
+							<th>NOMBRE</th>
+							<th>PROVEEDOR</th>
+							<th>REF. PROVEEDOR</th>
+							<th>NOMBRE PIEZA</th>
+							<th style="text-align:center">PACK PRECIO</th>
+							<th style="text-align:center">UDS/P</th>
+							<th style="text-align:center">PRECIO UNIDAD</th>
+							<th style="text-align:center">PRECIO</th>
+						</tr>
+						<?php
+							for($i=0;$i<count($res_antecesores);$i++){
+								$id_ref_antecesor = $res_antecesores[$i]["id_referencia"];
+								$ref_ant->cargaDatosReferenciaId($id_ref_antecesor);
+								if($ref_ant->pack_precio <> 0){
+									$precio_unidad_antecesor = $ref_ant->pack_precio / $ref_ant->unidades;
+									$precio_referencia_antecesor = $precio_unidad_antecesor;
+								}
+								else {
+									$precio_unidad_antecesor = 0;
+									$precio_referencia_antecesor = 0;
+								} ?>
+								<tr style="background: #eee;">
+									<td style="text-align:center;">
+										<?php echo $id_ref_antecesor; ?>
+										<input type="hidden" name="REFS_ANCESTRO[]" id="REFS_ANCESTRO[]" value="<?php echo $id_ref_antecesor;?>" />
+									</td>
+									<td>
+										<a href="mod_referencia.php?id=<?php echo $id_ref_antecesor;?>" target="blank"/>
+										<?php
+											if (strlen($ref_ant->referencia) > $max_caracteres_ref){
+												echo substr($ref_ant->referencia,0,$max_caracteres_ref).'...';
+											}
+											else echo $ref_ant->referencia; ?>
+										</a>
+									</td>
+									<td><?php echo $ref_ant->nombre_proveedor;?></td>
+									<td><?php echo $ref_ant->part_proveedor_referencia;?></td>
+									<td><?php echo $ref_ant->part_nombre; ?></td>
+									<td style="text-align:center"><?php echo number_format($ref_ant->pack_precio, 2, '.', '');?></td>
+									<td style="text-align:center"><?php echo $ref_ant->unidades; ?></td>
+									<td style="text-align:center"><?php echo number_format($precio_unidad_antecesor, 2, '.', '');?></td>
+									<td style="text-align:center"><?php echo number_format($precio_referencia_antecesor, 2, '.', '');?></td>
+								</tr>
+						<?php
+							}
+						?>
+					</table>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<br/>
+		<!-- AÑADIR TABLA REFERENCIAS HEREDADAS -->
+		<div class="ContenedorCamposCreacionBasico" id="capa_referencias_heredadas">
+			<div class="LabelCreacionBasico">Referencias Heredadas</div>
+			<div class="CajaReferencias">
+				<div id="ContenedorReferenciasHeredadas" class="ContenedorReferencias">
+					<table id="mitablaHeredadas">
+						<tr>
+							<th style="text-align:center">ID REF</th>
+							<th>NOMBRE</th>
+							<th>PROVEEDOR</th>
+							<th>REF. PROVEEDOR</th>
+							<th>NOMBRE PIEZA</th>
+							<th style="text-align:center">PIEZAS</th>
+							<th style="text-align:center">PACK PRECIO</th>
+							<th style="text-align:center">UDS/P</th>
+							<th style="text-align:center">PRECIO UNIDAD</th>
+							<th style="text-align:center">PRECIO</th>
+							<?php if($modificar) { ?>
+								<th style="text-align:center">ELIMINAR</th>
+							<?php } ?>
+						</tr>
+						<?php
+							$fila = 0;
+							for($i=0;$i<count($res_heredadas);$i++) {
+								$id_ref_heredada = $res_heredadas[$i]["id_ref_heredada"];
+								$ref_her->cargaDatosReferenciaId($id_ref_heredada);
+								$cantidad_piezas_heredada = $ref_heredada->dameCantidadPiezaHeredada($id_referencia,$id_ref_heredada);
+
+								if($ref_her->pack_precio <> 0){
+									$precio_unidad_heredada = $ref_her->pack_precio / $ref_her->unidades;
+									$precio_referencia_heredada = $precio_unidad_heredada * $cantidad_piezas_heredada;
+								}
+								else {
+									$precio_unidad_heredada = 0;
+									$precio_referencia_heredada = 0;
+								} ?>
+								<tr>
+									<td style="text-align:center;"><?php echo $id_ref_heredada;?></td>
+									<td id="enlaceComposites">
+										<a href="mod_referencia.php?id=<?php echo $id_ref_heredada;?>" target="blank"/>
+										<?php
+											if (strlen($ref_her->referencia) > $max_caracteres_ref){
+												echo substr($ref_her->referencia,0,$max_caracteres_ref).'...';
+											}
+											else echo $ref_her->referencia; ?>
+										</a>
+										<input type="hidden" name="REFS[]" id="REFS[]" value="<?php echo $id_ref_heredada;?>" />
+									</td>
+									<td><?php echo $ref_her->nombre_proveedor; ?></td>
+									<td><?php $ref_her->vincularReferenciaProveedor();?></td>
+									<td><?php echo $ref_her->part_nombre;?></td>
+									<?php
+										if($modificar) { ?>
+											<td style="text-align:center"><input type="text" name="piezas[]" id="piezas[]" class="CampoPiezasInput" value="<?php echo number_format($cantidad_piezas_heredada, 2, '.', ''); ?>" onblur="javascript:validarHayCaracter(<?php echo $fila;?>)" /></td>
+									<?php
+										}
+										else { ?>
+											<td style="text-align:center"><?php echo number_format($cantidad_piezas_heredada, 2, '.', ''); ?></td>
+									<?php
+										}
+									?>
+									<td style="text-align:center"><?php echo number_format($ref_her->pack_precio, 2, '.', '');?></td>
+									<td style="text-align:center"><?php echo $ref_her->unidades; ?></td>
+									<td style="text-align:center"><?php echo number_format($precio_unidad_heredada, 2, '.', '');?></td>
+									<td style="text-align:center"><?php echo number_format($precio_referencia_heredada, 2, '.', ''); ?></td>
+									<?php if($modificar) { ?>
+										<td style="text-align:center"><input type="checkbox" name="chkbox" value="<?php echo $id_ref_heredada;?>" /></td>
+									<?php } ?>
+								</tr>
+								<?php $fila = $fila + 1; ?>
+								<input type="hidden" name="fila" id="fila" value="<?php echo $fila;?>"/>
+								<?php
+							}
+						?>
+					</table>
+				</div>
+			</div>
+			<?php
+				if($modificar) { ?>
+					<input type="button" id="mas" name="mas" class="BotonMas"  value="+" onclick="javascript:Abrir_ventana('buscador_referencias_heredadas.php?id_ref=<?php echo $id_referencia;?>')"/>
+					<input type="button" id="menos" name="menos" class="BotonMenos" value="-" onclick="javascript:removeRowHeredada(mitablaHeredadas)"/>
+			<?php
+				}
+			?>
+		</div>
+		<br/>
+		<br/>
+		<!-- AÑADIR TABLA REFERENCIAS COMPATIBLES -->
+		<div class="ContenedorCamposCreacionBasico" id="capa_referencias_compatibles">
+			<div class="LabelCreacionBasico">Referencias Compatibles</div>
+			<div class="CajaReferencias">
+				<div id="ContenedorReferenciasCompatibles" class="ContenedorReferencias">
+					<table id="mitablaCompatibles">
+						<tr>
+							<th style="text-align:center">ID GRUPO</th>
+							<th style="text-align:center">FECHA GRUPO</th>
+							<th style="text-align:center">ID REF</th>
+							<th>NOMBRE</th>
+							<th>PROVEEDOR</th>
+							<th>REF. PROVEEDOR</th>
+							<th>NOMBRE PIEZA</th>
+							<th style="text-align:center">PACK PRECIO</th>
+							<th style="text-align:center">UDS/P</th>
+							<th style="text-align:center">PRECIO UNIDAD</th>
+							<th style="text-align:center">PRECIO</th>
+							<?php if($modificar) { ?>
+								<th style="text-align:center">ELIMINAR</th>
+							<?php } ?>
+						</tr>
+						<?php
+							$fila_comp = 0;
+							for($i=0;$i<count($res_compatibles);$i++) {
+								$id_grupo = $res_compatibles[$i]["id_grupo"];
+								$fecha_grupo = $user->fechaHoraSpain($res_compatibles[$i]["fecha_creado"]);
+								$id_ref_compatible = $res_compatibles[$i]["id_referencia"];
+								$ref_comp->cargaDatosReferenciaId($id_ref_compatible);
+
+								if($ref_comp->pack_precio <> 0){
+									$precio_unidad_compatible = $ref_comp->pack_precio / $ref_comp->unidades;
+									$precio_referencia_compatible = $precio_unidad_compatible;
+								}
+								else {
+									$precio_unidad_compatible = 0;
+									$precio_referencia_compatible = 0;
+								} ?>
+								<tr>
+									<td style="text-align:center;"><?php echo $id_grupo;?></td>
+									<td style="text-align:center;"><?php echo $fecha_grupo;?></td>
+									<td style="text-align:center;"><?php echo $id_ref_compatible;?></td>
+									<td id="enlaceComposites">
+										<a href="mod_referencia.php?id=<?php echo $id_ref_compatible;?>" target="blank"/>
+										<?php
+											if (strlen($ref_comp->referencia) > $max_caracteres_ref){
+												echo substr($ref_comp->referencia,0,$max_caracteres_ref).'...';
+											}
+											else echo $ref_comp->referencia; ?>
+										</a>
+										<input type="hidden" name="REFS_COMP[]" id="REFS_COMP[]" value="<?php echo $id_ref_compatible;?>" />
+									</td>
+									<td><?php echo $ref_comp->nombre_proveedor; ?></td>
+									<td><?php $ref_comp->vincularReferenciaProveedor();?></td>
+									<td><?php echo $ref_comp->part_nombre;?></td>
+									<td style="text-align:center"><?php echo number_format($ref_comp->pack_precio, 2, '.', '');?></td>
+									<td style="text-align:center"><?php echo $ref_comp->unidades; ?></td>
+									<td style="text-align:center"><?php echo number_format($precio_unidad_compatible, 2, '.', '');?></td>
+									<td style="text-align:center"><?php echo number_format($precio_referencia_compatible, 2, '.', ''); ?></td>
+									<?php if($modificar) { ?>
+										<td style="text-align:center"><input type="checkbox" name="chkbox_comp" value="<?php echo $id_ref_compatible;?>" /></td>
+									<?php } ?>
+								</tr>
+								<?php $fila_comp = $fila_comp + 1; ?>
+								<input type="hidden" name="fila_comp" id="fila_comp" value="<?php echo $fila;?>"/>
+								<?php
+							}
+						?>
+					</table>
+				</div>
+			</div>
+			<?php
+				if($modificar) { ?>
+					<input type="button" id="mas_comp" name="mas" class="BotonMas"  value="+" onclick="javascript:Abrir_ventana('buscador_referencias_compatibles.php?id_ref=<?php echo $id_referencia;?>')"/>
+					<input type="button" id="menos_comp" name="menos" class="BotonMenos" value="-" onclick="javascript:removeRowHeredada(mitablaCompatibles)"/>
+			<?php
+				}
+			?>
+		</div>
+		<br/>
+		<br/>
+
+
+
+
+
+
+
+
+
+
         <div class="ContenedorCamposCreacionBasico">
            	<?php 
                 if($modificar){ ?>

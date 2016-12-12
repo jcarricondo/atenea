@@ -679,6 +679,22 @@ a {
 	heigth:30px;
 }
 
+#ContenedorCentral .ContenedorReferencias table{
+	width: 100%; /*1630px;98%;*/
+	height: auto;
+	margin: 0px 0px 0px 0px;
+	border: 1px solid #2998cc;
+	float: none;
+	text-align: center;
+	min-height: 208px;
+	background: #fff;
+	font: 10px Helvetica, Verdana, Arial;
+	color: #000;
+	padding: 10px 5px 10px 5px;
+	min-width: 460px;
+	overflow: hidden;
+}
+
 
 /* BASICOS */
 /* Proveedores */
@@ -2953,4 +2969,3 @@ table td .botonAsignacion {
 	max-height: 300px;
 	float: none;
 }
-

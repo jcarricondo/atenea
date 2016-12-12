@@ -41,6 +41,7 @@ class Referencia extends MySQL {
 	var $id_proceso;
 	var $activo;
 	var $fecha_creado;
+	var $id_referencia_heredera;
 
 
 	function cargarDatos($id_referencia,$referencia,$fabricante,$proveedor,$part_nombre,$part_tipo,$part_proveedor_referencia,$part_fabricante_referencia,$part_valor_nombre,$part_valor_cantidad,$part_valor_nombre_2,$part_valor_cantidad_2,$part_valor_nombre_3,$part_valor_cantidad_3,$part_valor_nombre_4,$part_valor_cantidad_4,$part_valor_nombre_5,$part_valor_cantidad_5,$pack_precio,$unidades,$part_descripcion,$comentarios,
@@ -1096,7 +1097,6 @@ class Referencia extends MySQL {
         }
         $this->comentarios = $comentarios_aux;
     }
-
 
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {
