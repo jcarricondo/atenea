@@ -88,8 +88,8 @@ $id_referencia = $_GET["id_ref"];
 <script type="text/javascript">
 // Llama a la funcion addRow para insertar la referencia en la tabla seleccionada
 function add_referencia(id_referencia){
-	id_grupo = document.getElementById("id_grupo-" + id_referencia).value; alert(id_grupo);
-	fecha_grupo = document.getElementById("fecha_grupo-" + id_referencia).value; alert(fecha_grupo);
+	id_grupo = document.getElementById("id_grupo-" + id_referencia).value;
+	fecha_grupo = document.getElementById("fecha_grupo-" + id_referencia).value;
 	referencia = document.getElementById("referencia-" + id_referencia).value;
 	proveedor = document.getElementById("proveedor-" + id_referencia).value;
 	nombre_pieza = document.getElementById("nombre_pieza-" + id_referencia).value;
@@ -166,7 +166,6 @@ function add_referencia(id_referencia){
 	window.opener.id_ref= identificador;
 	
 	window.opener.addRowCompatible('mitablaCompatibles',id_referencia);
-	//window.close();
 }
 
 // Cambia las comas de un precio por punto
@@ -300,7 +299,10 @@ function cambiarComaPorPunto(p_precio){
 					$ref->cargaDatosReferenciaId($datoRef["id_referencia"]);
 					// Obtenemos el id_grupo de la referencia
 					$res_grupo = $ref_comp->dameGrupoReferencia($datoRef["id_referencia"]);
-					if(empty($res_grupo)) $id_grupo = "-";
+					if(empty($res_grupo)) {
+						$id_grupo = "-";
+						$fecha_grupo = $usuario->fechaHoraSpain(date('Y-m-d H:i:s'));
+					}
 					else {
 						$id_grupo = $res_grupo["id_grupo"];
 						// Obtenemos la fecha del grupo

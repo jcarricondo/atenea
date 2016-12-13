@@ -679,6 +679,20 @@ a {
 	heigth:30px;
 }
 
+
+#ContenedorCentral .ContenedorReferencias {
+	background: #fff none repeat scroll 0 0;
+	float: none;
+	height: auto;
+	margin: 0;
+	max-height: 208px;
+	max-width: 1100px;
+	min-width: 480px;
+	overflow-y: auto;
+	text-align: center;
+	width: auto;
+}
+
 #ContenedorCentral .ContenedorReferencias table{
 	width: 100%; /*1630px;98%;*/
 	height: auto;
@@ -1693,13 +1707,13 @@ a {
 }
 
 .BotonQuitar{
-	width:auto; /*auto;/*50px;*/
-	height:auto; /*auto;/*50px;*/
-	margin:-200px 0px 0px 1325px;
-	vertical-align:top;
-	float:left;
-	font: 10px Helvetica, Tahoma, Verdana;
-}
+	 width:auto; /*auto;/*50px;*/
+	 height:auto; /*auto;/*50px;*/
+	 margin:-200px 0px 0px 1325px;
+	 vertical-align:top;
+	 float:left;
+	 font: 10px Helvetica, Tahoma, Verdana;
+ }
 
 #AñadirMasArchivos{
 	width:245px;
@@ -2968,4 +2982,13 @@ table td .botonAsignacion {
 	min-height: 208px;
 	max-height: 300px;
 	float: none;
+}
+
+.BotonQuitarCompatibilidad, .BotonQuitarHeredadas{
+	width:auto; /*auto;/*50px;*/
+	height:auto; /*auto;/*50px;*/
+	margin: 5px 20px 5px 200px;
+	vertical-align:top;
+	float:left;
+	font: 10px Helvetica, Tahoma, Verdana;
 }

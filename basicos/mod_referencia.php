@@ -77,6 +77,9 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 	$comentarios = $_POST["comentarios"];
 	$referencias_heredadas = $_POST["REFS"];
 	$piezas_referencias_heredadas = $_POST["piezas"];
+	$referencias_compatibles = $_POST["REFS_COMP"];
+
+	$hay_referencias_compatibles = !empty($referencias_compatibles);
 
 	if ($nombre == '') $nombre = '-';
 	if ($nombre_pieza == '') $nombre_pieza = '-';
@@ -164,6 +167,8 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					}
 				}
 				if (!$error){
+					/*
+					// REFERENCIAS HEREDADAS
 					$ref_heredada->setReferenciasHeredadas($id_referencia,$referencias_heredadas,$piezas_referencias_heredadas);
 					// Primero desactivamos las referencias heredadas que tuviera la referencia
 					$res_desactivar_heredadas = $ref_heredada->desactivarReferenciasHeredadas();
@@ -171,7 +176,40 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					// Guardamos las referencias heredadas y sus piezas
 					$error_heredadas = $ref_heredada->guardarReferenciasHeredadas();
 					if($error_heredadas)  echo '<script>alert("Se ha producido un error al guardar algunas de las referencias herederas")</script>';
+					*/
 
+
+
+
+
+
+					// REFERENCIAS COMPATIBLES
+					// Si hay referencias compatibles añadidas reajustamos los grupos en función del grupo más antiguo
+					if($hay_referencias_compatibles){
+						// Establecemos en la clase la referencia principal y las referencias compatibles
+						$ref_compatible->setReferenciasCompatibles($id_referencia,$referencias_compatibles);
+
+
+						// Guardar referencias compatibles
+						$ref_compatible->guardarReferenciasCompatibles();
+
+
+
+
+					}
+					else {
+						// Quitamos la referencia principal del grupo de compatibilidad
+						$error_quitar_referencia = $ref_compatible->quitaReferenciaGrupo($id_referencia);
+						if($error_quitar_referencia)  echo '<script>alert("Se ha producido un error al eliminar la referencia compatible del grupo")</script>';
+					}
+
+
+
+
+
+
+
+					/*
 					// Guardamos el log de la operación
 					$referencias->cargaDatosReferenciaId($id_referencia);
 					$fecha_creado = $referencias->fecha_creado;
@@ -193,6 +231,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					$res_log = $log->guardarLog();
 					if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
 					header("Location: referencias.php?ref=modificado");
+					*/
 				}
 				else{
 					$mensaje_error = $referencias->getErrorMessage($resultado);
@@ -260,8 +299,6 @@ $res_antecesores = $ref_antecesor->dameAntecesores($id_referencia);
 $res_heredadas = $ref_heredada->dameHeredadas($id_referencia);
 // Obtenemos las referencias compatibles de la referencia
 $res_compatibles = $ref_compatible->dameReferenciasCompatiblesSinElla($id_referencia);
-
-var_dump($res_compatibles);
 
 $max_caracteres_ref = 50;
 
@@ -573,10 +610,12 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
 				if($modificar) { ?>
 					<input type="button" id="mas" name="mas" class="BotonMas"  value="+" onclick="javascript:Abrir_ventana('buscador_referencias_heredadas.php?id_ref=<?php echo $id_referencia;?>')"/>
 					<input type="button" id="menos" name="menos" class="BotonMenos" value="-" onclick="javascript:removeRowHeredada(mitablaHeredadas)"/>
+					<input type="button" id="quitar_heredadas" name="quitar" class="BotonQuitarHeredadas" value="QUITAR HEREDADAS" onclick="javascript:quitarHeredadas(mitablaHeredadas)"/>
 			<?php
 				}
 			?>
 		</div>
+		<br/>
 		<br/>
 		<br/>
 		<!-- AÑADIR TABLA REFERENCIAS COMPATIBLES -->
@@ -653,23 +692,15 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
 			<?php
 				if($modificar) { ?>
 					<input type="button" id="mas_comp" name="mas" class="BotonMas"  value="+" onclick="javascript:Abrir_ventana('buscador_referencias_compatibles.php?id_ref=<?php echo $id_referencia;?>')"/>
-					<input type="button" id="menos_comp" name="menos" class="BotonMenos" value="-" onclick="javascript:removeRowHeredada(mitablaCompatibles)"/>
+					<input type="button" id="menos_comp" name="menos" class="BotonMenos" value="-" onclick="javascript:removeRowCompatible(mitablaCompatibles)"/>
+					<input type="button" id="quitar_comp" name="quitar" class="BotonQuitarCompatibilidad" value="QUITAR COMPATIBILIDAD" onclick="javascript:quitarCompatibilidad(mitablaCompatibles)"/>
 			<?php
 				}
 			?>
 		</div>
 		<br/>
 		<br/>
-
-
-
-
-
-
-
-
-
-
+		<br/>
         <div class="ContenedorCamposCreacionBasico">
            	<?php 
                 if($modificar){ ?>

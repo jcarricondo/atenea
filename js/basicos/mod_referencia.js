@@ -342,7 +342,7 @@ function addRowCompatible(tableId,id_referencia){
 		var cell_8 = row.insertCell(8);
 		var cell_9 = row.insertCell(9);
 		var cell_10 = row.insertCell(10);
-		var cell_11 = row.insertCell(10);
+		var cell_11 = row.insertCell(11);
 
 		cell_0.setAttribute("style", "text-align:center");
 		cell_1.setAttribute("style", "text-align:center");
@@ -373,20 +373,19 @@ function addRowCompatible(tableId,id_referencia){
 
 // Función para eliminar una referencia compatible
 function removeRowCompatible(tableID) {
-	/*
 	try {
 		table = document.getElementById('mitablaCompatibles');
 		var rowCount = table.rows.length;
 
 		for(var i=0; i<rowCount; i++) {
 			var row = table.rows[i];
-			var chkbox = row.cells[10].childNodes[0];
+			var chkbox = row.cells[11].childNodes[0];
 			if(null != chkbox && true == chkbox.checked) {
 				table.deleteRow(i);
 				rowCount--;
 				i--;
 				if (i+1 != rowCount){
-					actualizarFilaHeredada(table,i,rowCount);
+					// actualizarFilaHeredada(table,i,rowCount);
 				}
 			}
 		}
@@ -394,7 +393,7 @@ function removeRowCompatible(tableID) {
 	catch(e) {
 		alert(e);
 	}
-	*/
+
 }
 
 // Función que determina si se esta intentando añadir una referencia que ya haya sido añadida a la tabla
@@ -408,6 +407,46 @@ function validarCompatiblesRepetida(id_referencia){
 		i++;
 	}
 	return encontrado;
+}
+
+// Función que limpia toda la tabla de referencias heredadas de la referencia
+function quitarHeredadas(tablaHeredadas){
+	try {
+		var rowCount = tablaHeredadas.rows.length;
+		if(rowCount != 1) {
+			if (confirm("Se eliminarán todas las referencias de la tabla. ¿Desea continuar?")) {
+				for (var i = 1; i < rowCount; i++) {
+					var row = tablaHeredadas.rows[i];
+					tablaHeredadas.deleteRow(i);
+					rowCount--;
+					i--;
+				}
+			}
+		}
+	}
+	catch(e) {
+		alert(e);
+	}
+}
+
+// Función que limpia toda la tabla de referencias compatibles con la referencia
+function quitarCompatibilidad(tablaComp){
+	try {
+		var rowCount = tablaComp.rows.length;
+		if(rowCount != 1) {
+			if(confirm("Se eliminarán todas las referencias de la tabla. ¿Desea continuar?")){
+				for (var i = 1; i < rowCount; i++) {
+					var row = tablaComp.rows[i];
+					tablaComp.deleteRow(i);
+					rowCount--;
+					i--;
+				}
+			}
+		}
+	}
+	catch (e) {
+		alert(e);
+	}
 }
 
 
