@@ -10,27 +10,14 @@ class Referencia_Compatible extends MySQL {
 	var $id_referencia_principal;
 	var $referencias_compatibles;
 
-	function cargarDatos($id,$id_grupo,$id_referencia,$activo,$fecha_creado) {
-		$this->id = $id;
-		$this->id_grupo = $id_grupo;
-		$this->id_referencia = $id_referencia;
-		$this->activo = $activo;
-		$this->fecha_creado = $fecha_creado;
-	}
 
-	function cargaDatosGrupoId($id_grupo) {
-		$consultaSql = sprintf("select * from referencias_compatibles where referencias_compatibles.id_grupo=%s",
-				$this->makeValue($id_grupo, "int"));
+	// Función que devuelve todos los datos de un grupo según su id
+	function dameDatosGrupoId($id_grupo){
+		$consultaSql = sprintf("select * from referencias_compatibles where activo=1 and id_grupo=%s",
+							$this->makeValue($id_grupo, "int"));
 		$this->setConsulta($consultaSql);
 		$this->ejecutarConsulta();
-		$resultados = $this->getPrimerResultado();
-		$this->cargarDatos(
-				$resultados["id"],
-				$resultados["id_grupo"],
-				$resultados["id_referencia"],
-				$resultados["activo"],
-				$resultados["fecha_creado"]
-		);
+		return $res_grupo = $this->getResultados();
 	}
 
 	// Función que devuelve las referencias compatibles a las que pertenece la referencia sin incluirse
@@ -69,8 +56,6 @@ class Referencia_Compatible extends MySQL {
 	function setReferenciasCompatibles($id_referencia_principal,$referencias_compatibles){
 		$this->id_referencia_principal = $id_referencia_principal;
 		$this->referencias_compatibles = $referencias_compatibles;
-		// var_dump($this->id_referencia_principal); echo "<br/>";
-		// var_dump($this->referencias_compatibles); echo "<br/>";
 	}
 
 	// Funcion que devuelve el último grupo creado
@@ -79,13 +64,8 @@ class Referencia_Compatible extends MySQL {
 		$this->setConsulta($consultaSql);
 		$this->ejecutarConsulta();
 		$res_ult_grupo = $this->getPrimerResultado();
-
-		var_dump($res_ult_grupo); echo "<br/>";
-
 		return $res_ult_grupo;
-
 	}
-
 
 	// Función que crea un grupo y guarda las referencias compatibles
 	function creaGrupo($array_referencias){
@@ -109,28 +89,51 @@ class Referencia_Compatible extends MySQL {
 		return $error;
 	}
 
+	// Función que guarda nuevas referencias en un grupo
+	function actualizaGrupo($array_referencias,$id_grupo){
+		// Obtenemos la fecha del grupo existente
+		$res_fecha_grupo = $this->dameFechaGrupo($id_grupo);
+		$fecha_grupo = $res_fecha_grupo["fecha_creado"];
+		// Guardamos las nuevas referencias compatibles en el grupo
+		for($i=0;$i<count($array_referencias);$i++) {
+			$id_referencia = $array_referencias[$i];
+			$insertSql = sprintf("insert into referencias_compatibles (id_grupo,id_referencia,activo,fecha_creado) values (%s,%s,1,%s)",
+					$this->makeValue($id_grupo, "int"),
+					$this->makeValue($id_referencia, "int"),
+					$this->makeValue($fecha_grupo, "date"));
+			$this->setConsulta($insertSql);
+			if(!$this->ejecutarSoloConsulta()) {
+				echo '<script>alert("Se ha producido un error al guardar la referencia en el grupo existente")</script>';
+				$error = true;
+			}
+		}
+		return $error;
+	}
+
+	// Función que desactiva un grupo
+	function desactivaGrupo($id_grupo){
+		$updateSql = sprintf("update referencias_compatibles set activo=0 where activo=1 and id_grupo=%s",
+						$this->makeValue($id_grupo,"int"));
+		$this->setConsulta($updateSql);
+		if(!$this->ejecutarSoloConsulta()) {
+			echo '<script>alert("Se ha producido un error al desactivar el grupo")</script>';
+			return true;
+		}
+		return false;
+	}
 
 
 	// Función que guarda las referencias compatibles
 	function guardarReferenciasCompatibles(){
-		// $res_grupo_ref_principal = $this->dameGrupoReferencia($this->id_referencia_principal);
-		// $id_grupo_ref_principal = $res_grupo_ref_principal["id_grupo"];
-		// $id_grupo_mas_antiguo = $id_grupo_ref_principal;
-		// var_dump($this->id_referencia_principal); echo "<br/>";
-		// var_dump($this->referencias_compatibles); echo "<br/>";
-
 		// Guardamos en un array las referencias compatibles y la referencia principal
 		$array_referencias = $this->referencias_compatibles;
 		$array_referencias[] = $this->id_referencia_principal;
-		// var_dump($array_referencias); echo "<br/>";
 
 		$id_grupo_mas_antiguo = NULL;
 		// De todas las referencias obtenemos el grupo más antiguo
 		for($i=0;$i<count($array_referencias);$i++) {
 			$res_grupo = $this->dameGrupoReferencia($array_referencias[$i]);
 			$id_grupo = $res_grupo["id_grupo"];
-
-			// var_dump($id_grupo); echo "<br/>";
 
 			if($id_grupo != NULL) {
 				if(is_null($id_grupo_mas_antiguo)) $id_grupo_mas_antiguo = $id_grupo;
@@ -142,8 +145,6 @@ class Referencia_Compatible extends MySQL {
 			}
 		}
 
-		// var_dump($id_grupo_mas_antiguo); echo "<br/>";
-
 		// Si las referencias no pertenecen a ningún grupo
 		if($id_grupo_mas_antiguo == NULL){
 			sort($array_referencias);
@@ -153,29 +154,46 @@ class Referencia_Compatible extends MySQL {
 		}
 		else {
 			// Obtenemos las referencias del grupo mas antiguo
+			$res_grupo_antiguo = $this->dameDatosGrupoId($id_grupo_mas_antiguo);
+			// Guardamos en un array las referencias del grupo mas antiguo
+			for($i=0;$i<count($res_grupo_antiguo);$i++) $array_refs_gr_antiguo[] = $res_grupo_antiguo[$i]["id_referencia"];
+			sort($array_refs_gr_antiguo);
 
-			// Ordenamos las referencias del grupo mas antiguo
+			// Obtenemos las referencias de todos los grupos menos el del grupo mas antiguo
+			for($i=0;$i<count($array_id_grupo);$i++){
+				$id_grupo = $array_id_grupo[$i];
+				if($id_grupo != $id_grupo_mas_antiguo){
+					// Añadimos al array las referencias de los grupos que vamos a desactivar
+					$res_grupo_eliminar = $this->dameDatosGrupoId($id_grupo);
+					for($j=0;$j<count($res_grupo_eliminar);$j++) $array_refs_grupo_eliminar[] = $res_grupo_eliminar[$j]["id_referencia"];
+				}
+			}
 
-			// Guardamos en un array las referencias compatibles, la principal y las libres sin grupo en un array
+			// Añadimos al array de referencias compatibles las referencias de los grupos a desactivar
+			$array_referencias = array_merge($array_referencias,$array_refs_grupo_eliminar);
+			$array_referencias = array_unique($array_referencias);
+			sort($array_referencias);
 
 			// Eliminamos del array las referencias que ya esten en el array del grupo mas antiguo
-
-			// Eliminamos las referencias duplicadas
+			$array_referencias = array_diff($array_referencias,$array_refs_gr_antiguo);
+			sort($array_referencias);
 
 			// Guardamos las referencias de los otros grupos en el grupo antiguo en la BBDD
+			$error_actualizar_grupo = $this->actualizaGrupo($array_referencias,$id_grupo_mas_antiguo);
+			if($error_actualizar_grupo) echo '<script>alert("Se produjo un error durante el proceso de guardado de la referencia en la actualización del grupo. Consulte con el administrador")</script>';
 
-			// Recorremos los grupos y desactivamos todas las referencias menos el del array mas antiguo
-
-
-
+			// Desactivamos los grupos menos el grupo más antiguo
+			for($i=0;$i<count($array_id_grupo);$i++){
+				$id_grupo = $array_id_grupo[$i];
+				if($id_grupo != $id_grupo_mas_antiguo){
+					$error_desactivar_grupo = $this->desactivaGrupo($id_grupo);
+					if($error_desactivar_grupo) echo '<script>alert("Se produjo un error durante el proceso de desactivación de un grupo. Consulte con el administrador")</script>';
+				}
+			}
 		}
+		$error_general = ($error_crear_grupo || $error_actualizar_grupo || $error_desactivar_grupo);
+		return $error_general;
 	}
-
-
-
-
-
-
 
 
 	// Función que desactiva una referencia de un grupo
@@ -183,10 +201,10 @@ class Referencia_Compatible extends MySQL {
 		$updateSql = sprintf("update referencias_compatibles set activo=0 where activo=1 and id_referencia=%s",
 							$this->makeValue($id_referencia, "int"));
 		$this->setConsulta($updateSql);
-		if($this->ejecutarSoloConsulta()){
-			return 1;
+		if(!$this->ejecutarSoloConsulta()){
+			return true;
 		}
-		else return 2;
+		else return false;
 	}
 
 

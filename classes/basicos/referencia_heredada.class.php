@@ -93,7 +93,6 @@ class Referencia_Heredada extends MySQL {
 		return $error_heredadas;
 	}
 
-
 	// Función que desactiva todas las referencias herederas de una referencia
 	function desactivarReferenciasHeredadas(){
 		$updateSql = sprintf("update referencias_heredadas set activo=0 where id_referencia=%s",

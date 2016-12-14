@@ -167,7 +167,6 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					}
 				}
 				if (!$error){
-					/*
 					// REFERENCIAS HEREDADAS
 					$ref_heredada->setReferenciasHeredadas($id_referencia,$referencias_heredadas,$piezas_referencias_heredadas);
 					// Primero desactivamos las referencias heredadas que tuviera la referencia
@@ -176,26 +175,15 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					// Guardamos las referencias heredadas y sus piezas
 					$error_heredadas = $ref_heredada->guardarReferenciasHeredadas();
 					if($error_heredadas)  echo '<script>alert("Se ha producido un error al guardar algunas de las referencias herederas")</script>';
-					*/
-
-
-
-
-
 
 					// REFERENCIAS COMPATIBLES
 					// Si hay referencias compatibles añadidas reajustamos los grupos en función del grupo más antiguo
 					if($hay_referencias_compatibles){
 						// Establecemos en la clase la referencia principal y las referencias compatibles
 						$ref_compatible->setReferenciasCompatibles($id_referencia,$referencias_compatibles);
-
-
 						// Guardar referencias compatibles
-						$ref_compatible->guardarReferenciasCompatibles();
-
-
-
-
+						$error_general = $ref_compatible->guardarReferenciasCompatibles();
+						if($error_general) echo '<script>alert("Se ha producido un error general al guardar las referencias compatibles de un grupo")</script>';
 					}
 					else {
 						// Quitamos la referencia principal del grupo de compatibilidad
@@ -203,13 +191,6 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 						if($error_quitar_referencia)  echo '<script>alert("Se ha producido un error al eliminar la referencia compatible del grupo")</script>';
 					}
 
-
-
-
-
-
-
-					/*
 					// Guardamos el log de la operación
 					$referencias->cargaDatosReferenciaId($id_referencia);
 					$fecha_creado = $referencias->fecha_creado;
@@ -231,7 +212,6 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					$res_log = $log->guardarLog();
 					if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
 					header("Location: referencias.php?ref=modificado");
-					*/
 				}
 				else{
 					$mensaje_error = $referencias->getErrorMessage($resultado);
@@ -318,7 +298,7 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
  	</div>
       
     <h3> Modificacion de referencia </h3>
-    <form id="FormularioCreacionBasico" name="modificarReferencia" action="mod_referencia.php?id=<?php echo $referencias->id_referencia; ?>" method="post" enctype="multipart/form-data">
+    <form id="FormularioCreacionBasico" name="modificarReferencia" onsubmit="return validarFormulario()" action="mod_referencia.php?id=<?php echo $referencias->id_referencia; ?>" method="post" enctype="multipart/form-data">
     	<br />
         <h5> Modifique los datos en el siguiente formulario </h5>
         <div class="ContenedorCamposCreacionBasico">

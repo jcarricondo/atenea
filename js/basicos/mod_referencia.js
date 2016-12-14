@@ -21,11 +21,11 @@ function removeRow(tableID) {
 	}
 }
 
-var numero = 0; //Esta es una variable de control para mantener nombres
-           		//diferentes de cada campo creado dinamicamente.
-evento = function (evt) { //esta funcion nos devuelve el tipo de evento disparado
-	return (!evt) ? event : evt;
-	}
+var numero = 0; // Esta es una variable de control para mantener nombres diferentes de cada campo creado dinamicamente.
+
+evento = function (evt) { // esta funcion nos devuelve el tipo de evento disparado
+			return (!evt) ? event : evt;
+		}
 
 // Esta función crea dinámicamente los nuevos campos file
 addCampo = function () { 
@@ -219,23 +219,13 @@ function validarHayCaracter(fila) {
 		}
 		j++;
 	}
-	// Obtenemos el id de la referencia heredada y las piezas que habia anteriormente
-	// var array_id_ref_heredada = document.getElementsByName("REFS[]");
-	// var id_ref_heredada = array_id_ref_heredada[fila].value;
-	// var input_piezas_anteriores = document.getElementById("campo_piezas_actual-" + id_ref_heredada);
-	// var piezas_anteriores = input_piezas_anteriores.value;
 
 	if (!error){
 		modificaPrecioReferencia(num_piezas,fila);
 	}
 	else {
 		alert("El campo PIEZAS tiene que ser un valor entero o un decimal con punto");
-		// Volvemos a poner las piezas que habia anteriormente
-		// piezas[fila].value = piezas_anteriores;
 	}
-	// Borramos el array de las piezas anteriores
-	// var celda_campo_piezas = document.getElementById("celda_campo_piezas-" + fila);
-	// celda_campo_piezas.removeChild(input_piezas_anteriores);
 }
 
 // Función que calcula el nuevo coste cuando se modifica el campo piezas de una referencia
@@ -449,32 +439,64 @@ function quitarCompatibilidad(tablaComp){
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-function obtenerPiezasActuales(fila,id_referencia_heredada){
-	var celda_campo_piezas = document.getElementById("celda_campo_piezas-" + fila);
-	var array_piezas_actuales = document.getElementsByName("piezas[]");
-	var piezas_actuales = array_piezas_actuales[fila].value;
-
-	var input_piezas_actuales = document.createElement("input");
-	input_piezas_actuales.type = "hidden";
-	input_piezas_actuales.id = "campo_piezas_actual-" + id_referencia_heredada;
-	input_piezas_actuales.name = "campo_piezas_actual-" + id_referencia_heredada;
-	input_piezas_actuales.value = piezas_actuales;
-	celda_campo_piezas.appendChild(input_piezas_actuales);
+// Función para comprobar que el valor introducido en "piezas" es un entero o decimal con punto.
+// Se utiliza en la funcion validarFormulario y se le pasa la posición de la letra de la palabra
+// y la palabra a validar
+function validarPiezasHeredadas(i,a) {
+	var j = 0;
+	var error = false;
+	var digito = 0;
+	var primer_caracter = false;
+	var punto_reconocido = false;
+	while (j<a[i].value.length && !error){
+		primer_caracter = parseInt(a[i].value[0]);
+		if (isNaN(primer_caracter)) error = true;
+		else {
+			digito = parseInt(a[i].value[j]);
+			if (isNaN(digito) && a[i].value[j] != ".") error = true;
+			else if ((a[i].value[j] == "." && punto_reconocido)) error = true;
+			if (a[i].value[j] == ".") punto_reconocido = true;
+		}
+		j++;
+	}
+	return error;
 }
-*/
 
 
+// Comprueba el formulario antes de pasar al siguiente punto
+function validarFormulario() {
+
+	var error_no_hay_piezas = false;		// Piezas por introducir
+	var error_tipo_piezas = false;	      	// Piezas no es tipo number
+
+	var a = document.getElementsByName("piezas[]");
+	var fallo = false;
+	var no_es_numero = false;
+	var pieza = 0;
+	if (a.length != 0) {
+		var i = 0;
+		while ((i < a.length) && (!fallo) && (!no_es_numero)) {
+			if (a[i].value.length == 0) fallo = true;
+			else if (validarPiezasHeredadas(i,a)) no_es_numero = true;
+			else {
+				pieza = parseFloat(a[i].value);
+				if (isNaN(pieza)) no_es_numero = true;
+			}
+			i++;
+		}
+	}
+	if (fallo) error_no_hay_piezas = true;
+	if (no_es_numero) error_tipo_piezas = true;
+
+	if (error_no_hay_piezas) {
+		alert("Rellene el campo PIEZAS de todas las referencias heredadas");
+		return false;
+	}
+	else if (error_tipo_piezas){
+		alert("El campo PIEZAS tiene que ser un valor entero o un decimal con punto");
+		return false;
+	}
+	else {
+		return true;
+	}
+}
