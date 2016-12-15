@@ -100,57 +100,65 @@ function rellenarTipoPieza(){
 function addRowHeredada(tableId,id_referencia){
 	// Comprobamos que no se esta intentando añadir una referencia ancestro
 	var error_ancestro = validarAncestro(id_referencia);
+	var error_autoheredera = validarAutoHeredera(id_referencia);
 	if(!error_ancestro) {
-		// Comprobamos que no se esta intentado añadir una referencia repetida
-		var error_heredera_repetida = validarHeredadasRepetida(id_referencia);
-		if(!error_heredera_repetida) {
-			var table = document.getElementById(tableId);
-			// Guardamos en una variable la cantidad de filas que tiene la tabla.
-			// Esta variable también nos servirá para indicar que la fila se tiene
-			// que insertar al final de la tabla.
-			var pos = table.rows.length;
-			var row = table.insertRow(pos);
-			var fila = pos - 1;
+		// Comprobamos que no se esta intentando heredar una referencia a si misma
+		if(!error_autoheredera) {
 
-			var cell_0 = row.insertCell(0);
-			var cell_1 = row.insertCell(1);
-			var cell_2 = row.insertCell(2);
-			var cell_3 = row.insertCell(3);
-			var cell_4 = row.insertCell(4);
-			var cell_5 = row.insertCell(5);
-			var cell_6 = row.insertCell(6);
-			var cell_7 = row.insertCell(7);
-			var cell_8 = row.insertCell(8);
-			var cell_9 = row.insertCell(9);
-			var cell_10 = row.insertCell(10);
+			// Comprobamos que no se esta intentado añadir una referencia repetida
+			var error_heredera_repetida = validarHeredadasRepetida(id_referencia);
+			if (!error_heredera_repetida) {
+				var table = document.getElementById(tableId);
+				// Guardamos en una variable la cantidad de filas que tiene la tabla.
+				// Esta variable también nos servirá para indicar que la fila se tiene
+				// que insertar al final de la tabla.
+				var pos = table.rows.length;
+				var row = table.insertRow(pos);
+				var fila = pos - 1;
 
-			var piezas = new Array();
-			var num_piezas = num_uds;
+				var cell_0 = row.insertCell(0);
+				var cell_1 = row.insertCell(1);
+				var cell_2 = row.insertCell(2);
+				var cell_3 = row.insertCell(3);
+				var cell_4 = row.insertCell(4);
+				var cell_5 = row.insertCell(5);
+				var cell_6 = row.insertCell(6);
+				var cell_7 = row.insertCell(7);
+				var cell_8 = row.insertCell(8);
+				var cell_9 = row.insertCell(9);
+				var cell_10 = row.insertCell(10);
 
-			cell_0.setAttribute("style", "text-align:center");
-			cell_1.setAttribute("id", "enlaceComposites");
-			cell_5.setAttribute("style", "text-align:center");
-			cell_5.setAttribute("id", "celda_campo_piezas-" + fila);
-			cell_6.setAttribute("style", "text-align:center");
-			cell_7.setAttribute("style", "text-align:center");
-			cell_8.setAttribute("style", "text-align:center");
-			cell_9.setAttribute("style", "text-align:center");
-			cell_10.setAttribute("style", "text-align:center");
+				var piezas = new Array();
+				var num_piezas = num_uds;
 
-			cell_0.innerHTML = id_ref;
-			cell_1.innerHTML = ref;
-			cell_2.innerHTML = prov;
-			cell_3.innerHTML = ref_prov;
-			cell_4.innerHTML = nom_pieza;
-			cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarHayCaracter(' + fila + ')"/>';
-			cell_6.innerHTML = pack_precio.toFixed(2);
-			cell_7.innerHTML = cant.toFixed(2);
-			cell_8.innerHTML = precio_unidad.toFixed(2);
-			cell_9.innerHTML = precio_referencia.toFixed(2);
-			cell_10.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '"/>';
+				cell_0.setAttribute("style", "text-align:center");
+				cell_1.setAttribute("id", "enlaceComposites");
+				cell_5.setAttribute("style", "text-align:center");
+				cell_5.setAttribute("id", "celda_campo_piezas-" + fila);
+				cell_6.setAttribute("style", "text-align:center");
+				cell_7.setAttribute("style", "text-align:center");
+				cell_8.setAttribute("style", "text-align:center");
+				cell_9.setAttribute("style", "text-align:center");
+				cell_10.setAttribute("style", "text-align:center");
+
+				cell_0.innerHTML = id_ref;
+				cell_1.innerHTML = ref;
+				cell_2.innerHTML = prov;
+				cell_3.innerHTML = ref_prov;
+				cell_4.innerHTML = nom_pieza;
+				cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarHayCaracter(' + fila + ')"/>';
+				cell_6.innerHTML = pack_precio.toFixed(2);
+				cell_7.innerHTML = cant.toFixed(2);
+				cell_8.innerHTML = precio_unidad.toFixed(2);
+				cell_9.innerHTML = precio_referencia.toFixed(2);
+				cell_10.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '"/>';
+			}
+			else {
+				alert("ERROR: Ya se ha añadido la referencia heredada a la tabla")
+			}
 		}
 		else{
-			alert("ERROR: Ya se ha añadido la referencia heredada a la tabla")
+			alert("ERROR: No se puede autoheredar la misma referencia")
 		}
 	}
 	else {
@@ -292,6 +300,12 @@ function validarAncestro(id_referencia){
 		i++;
 	}
 	return encontrado;
+}
+
+// Función que determina si se esta intentando heredar una referencia a si misma
+function validarAutoHeredera(id_referencia){
+	var id_referencia_principal = document.getElementById("id_ref").value;
+	return id_referencia_principal == id_referencia;
 }
 
 // Función que determina si se esta intentando añadir una referencia que ya haya sido añadida a la tabla

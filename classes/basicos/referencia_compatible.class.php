@@ -24,7 +24,7 @@ class Referencia_Compatible extends MySQL {
 	function dameReferenciasCompatiblesSinElla($id_referencia){
 		$consultaSql = sprintf("select * from referencias_compatibles where activo=1 and id_grupo in
  									(select id_grupo from referencias_compatibles where activo=1 and id_referencia=%s)
-								and id_referencia <> %s",
+								and id_referencia <> %s order by id_referencia",
 				$this->makeValue($id_referencia, "int"),
 				$this->makeValue($id_referencia, "int"));
 		$this->setConsulta($consultaSql);
@@ -147,6 +147,7 @@ class Referencia_Compatible extends MySQL {
 
 		// Si las referencias no pertenecen a ningún grupo
 		if($id_grupo_mas_antiguo == NULL){
+			$array_referencias = array_unique($array_referencias);
 			sort($array_referencias);
 			// Creamos el grupo y  guardamos las referencias
 			$error_crear_grupo = $this->creaGrupo($array_referencias);
@@ -170,7 +171,7 @@ class Referencia_Compatible extends MySQL {
 			}
 
 			// Añadimos al array de referencias compatibles las referencias de los grupos a desactivar
-			$array_referencias = array_merge($array_referencias,$array_refs_grupo_eliminar);
+			if($array_refs_grupo_eliminar != NULL) $array_referencias = array_merge($array_referencias,$array_refs_grupo_eliminar);
 			$array_referencias = array_unique($array_referencias);
 			sort($array_referencias);
 
