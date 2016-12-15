@@ -4,32 +4,32 @@
 include("../includes/sesion.php");
 include("../classes/control_usuario.class.php");
 include("../classes/sede/sede.class.php");
-// include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
-// include("../classes/basicos/software.class.php");
 include("../classes/basicos/nombre_producto.class.php");
-// include("../classes/basicos/listado_cabinas.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
-// include("../classes/basicos/listado_softwares.class.php");
 include("../classes/basicos/listado_nombre_producto.class.php");
 include("../classes/almacen/almacen.class.php");
+// include("../classes/basicos/cabina.class.php");
+// include("../classes/basicos/software.class.php");
+// include("../classes/basicos/listado_cabinas.class.php");
+// include("../classes/basicos/listado_softwares.class.php");
 permiso(9);
 
 $control_usuario = new Control_Usuario();
 $sede_class = new Sede();
 $nombre_prod = new Nombre_Producto();
-// $cab = new Cabina();
-// $cab_t = new Cabina();
 $perif = new Periferico();
 $perif_t = new Periferico();
+$perifs = new listadoPerifericos();
+$todos_perifs = new listadoPerifericos();
+$nom_prods = new listadoNombreProducto();
+$almacen = new Almacen();
+// $cab = new Cabina();
+// $cab_t = new Cabina();
 // $soft = new Software();
 // $cabs = new listadoCabinas();
 // $todas_cabs = new listadoCabinas();
-$perifs = new listadoPerifericos();
-$todos_perifs = new listadoPerifericos();
 // $softs = new listadoSoftwares();
-$nom_prods = new listadoNombreProducto();
-$almacen = new Almacen();
 
 // Obtenemos el tipo de usuario para conocer su sede
 $id_tipo_usuario = $_SESSION["AT_id_tipo_usuario"];
@@ -44,25 +44,25 @@ if(isset($_POST["guardandoOP"]) and $_POST["guardandoOP"] == 1) {
 	$alias_op = $_POST["alias_op"];
 	$unidades = $_POST["unidades"];
 	$producto = $_POST["producto"];
-	// $cabina = $_POST["cabina"];
 	$perifericos = $_POST["perifericos"];
-	// $software = $_POST["software"];
 	$ref_libres = $_POST["REFS"];
 	$piezas = $_POST["piezas"];
 	$fecha_inicio_construccion = $_POST["fecha_inicio_construccion"];
 	$sede = $_POST["sede"];
+    // $cabina = $_POST["cabina"];
+    // $software = $_POST["software"];
 }
 else {
 	$alias_op = "";
 	$unidades = "";
 	$producto = "";
-	// $cabina = "";
 	$perifericos = "";
-	// $software = "";
 	$ref_libres = "";
 	$fecha_inicio_construccion = "";
 	$sede = "";
 	$Campos_no_rellenados = false;
+    // $cabina = "";
+    // $software = "";
 }
 $titulo_pagina = "Órdenes de Producción > Nueva Orden de Producción";
 $pagina = "new_orden_produccion";
