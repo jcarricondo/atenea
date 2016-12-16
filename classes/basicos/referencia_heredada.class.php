@@ -22,8 +22,9 @@ class Referencia_Heredada extends MySQL {
 	}
 
 	function cargaDatosReferenciaId($id_referencia) {
-		$consultaSql = sprintf("select * from referencias_heredadas where referencias_heredadas.id_referencia=%s",
+		$consultaSql = sprintf("select * from referencias_heredadas where activo=1 and referencias_heredadas.id_referencia=%s",
 				$this->makeValue($id_referencia, "int"));
+		$this->setConsulta($consultaSql);
 		$this->setConsulta($consultaSql);
 		$this->ejecutarConsulta();
 		$resultados = $this->getPrimerResultado();
@@ -39,7 +40,7 @@ class Referencia_Heredada extends MySQL {
 
 	// Función que devuelve los antecesores de la referencia heredada
 	function dameAntecesores($id_referencia){
-		$consulta = sprintf("select id_referencia from referencias_heredadas where id_ref_heredada=%s",
+		$consulta = sprintf("select id_referencia from referencias_heredadas where activo=1 and id_ref_heredada=%s order by id_referencia",
 				$this->makeValue($id_referencia, "int"));
 		$this->setConsulta($consulta);
 		$this->ejecutarConsulta();

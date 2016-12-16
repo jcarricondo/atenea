@@ -461,6 +461,7 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
 							<th>PROVEEDOR</th>
 							<th>REF. PROVEEDOR</th>
 							<th>NOMBRE PIEZA</th>
+							<th style="text-align: center">PIEZAS</th>
 							<th style="text-align:center">PACK PRECIO</th>
 							<th style="text-align:center">UDS/P</th>
 							<th style="text-align:center">PRECIO UNIDAD</th>
@@ -469,10 +470,11 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
 						<?php
 							for($i=0;$i<count($res_antecesores);$i++){
 								$id_ref_antecesor = $res_antecesores[$i]["id_referencia"];
+								$piezas_antecesor = 1;
 								$ref_ant->cargaDatosReferenciaId($id_ref_antecesor);
 								if($ref_ant->pack_precio <> 0){
 									$precio_unidad_antecesor = $ref_ant->pack_precio / $ref_ant->unidades;
-									$precio_referencia_antecesor = $precio_unidad_antecesor;
+									$precio_referencia_antecesor = $precio_unidad_antecesor * $piezas_antecesor;
 								}
 								else {
 									$precio_unidad_antecesor = 0;
@@ -495,6 +497,7 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
 									<td><?php echo $ref_ant->nombre_proveedor;?></td>
 									<td><?php echo $ref_ant->part_proveedor_referencia;?></td>
 									<td><?php echo $ref_ant->part_nombre; ?></td>
+									<td style="text-align: center"><?php echo $piezas_antecesor; ?></td>
 									<td style="text-align:center"><?php echo number_format($ref_ant->pack_precio, 2, '.', '');?></td>
 									<td style="text-align:center"><?php echo $ref_ant->unidades; ?></td>
 									<td style="text-align:center"><?php echo number_format($precio_unidad_antecesor, 2, '.', '');?></td>
