@@ -273,8 +273,8 @@ $pack_precio = $referencias->pack_precio;
 $unidades_paquete = $referencias->unidades; 
 $comentarios = htmlspecialchars($referencias->comentarios);
 
-// Obtenemos las referencias de las que hereda la referencia
-$res_antecesores = $ref_antecesor->dameAntecesores($id_referencia);
+// Obtenemos todos los antecesores de la referencia
+$res_antecesores = $ref_antecesor->dameTodosAntecesores($id_referencia);
 // Obtenemos las referencias que heredan de la referencia
 $res_heredadas = $ref_heredada->dameHeredadas($id_referencia);
 // Obtenemos las referencias compatibles de la referencia
