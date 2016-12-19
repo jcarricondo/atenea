@@ -1,5 +1,5 @@
 <?php
-class Referencia_Heredada extends MySQL {
+class Referencia_Heredada extends Referencia {
 
 	var $id;
 	var $id_referencia;
@@ -11,7 +11,7 @@ class Referencia_Heredada extends MySQL {
 	var $referencias_heredadas;
 	var $piezas_referencias_heredadas;
 
-
+	/*
 	function cargarDatos($id,$id_referencia,$id_referencia_heredada,$cantidad,$activo,$fecha_creado) {
 		$this->id = $id;
 		$this->id_referencia = $id_referencia;
@@ -37,6 +37,7 @@ class Referencia_Heredada extends MySQL {
 				$resultados["fecha_creado"]
 		);
 	}
+	*/
 
 	// Función que devuelve los antecesores de la referencia heredada
 	function dameAntecesoresPrincipales($id_referencia){
@@ -126,7 +127,6 @@ class Referencia_Heredada extends MySQL {
 		}
 		else return 2;
 	}
-
 
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {

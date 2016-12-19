@@ -335,6 +335,9 @@ function addRowCompatible(tableId,id_referencia){
 		var row = table.insertRow(pos);
 		var fila = pos - 1;
 
+		// var cell_0 = row.insertCell(0);
+		// var cell_1 = row.insertCell(1);
+
 		var cell_0 = row.insertCell(0);
 		var cell_1 = row.insertCell(1);
 		var cell_2 = row.insertCell(2);
@@ -345,30 +348,30 @@ function addRowCompatible(tableId,id_referencia){
 		var cell_7 = row.insertCell(7);
 		var cell_8 = row.insertCell(8);
 		var cell_9 = row.insertCell(9);
-		var cell_10 = row.insertCell(10);
-		var cell_11 = row.insertCell(11);
+
+		// cell_0.setAttribute("style", "text-align:center");
+		// cell_1.setAttribute("style", "text-align:center");
 
 		cell_0.setAttribute("style", "text-align:center");
-		cell_1.setAttribute("style", "text-align:center");
-		cell_2.setAttribute("style", "text-align:center");
+		cell_5.setAttribute("style", "text-align:center");
+		cell_6.setAttribute("style", "text-align:center");
 		cell_7.setAttribute("style", "text-align:center");
 		cell_8.setAttribute("style", "text-align:center");
 		cell_9.setAttribute("style", "text-align:center");
-		cell_10.setAttribute("style", "text-align:center");
-		cell_11.setAttribute("style", "text-align:center");
 
-		cell_0.innerHTML = id_grupo;
-		cell_1.innerHTML = fecha_grupo;
-		cell_2.innerHTML = id_ref;
-		cell_3.innerHTML = ref;
-		cell_4.innerHTML = prov;
-		cell_5.innerHTML = ref_prov;
-		cell_6.innerHTML = nom_pieza;
-		cell_7.innerHTML = pack_precio.toFixed(2);
-		cell_8.innerHTML = cant.toFixed(2);
-		cell_9.innerHTML = precio_unidad.toFixed(2);
-		cell_10.innerHTML = precio_referencia.toFixed(2);
-		cell_11.innerHTML = '<input type="checkbox" name="chkbox_comp" value"' + id_ref + '"/>';
+		// cell_0.innerHTML = id_grupo;
+		// cell_1.innerHTML = fecha_grupo;
+
+		cell_0.innerHTML = id_ref;
+		cell_1.innerHTML = ref;
+		cell_2.innerHTML = prov;
+		cell_3.innerHTML = ref_prov;
+		cell_4.innerHTML = nom_pieza;
+		cell_5.innerHTML = pack_precio.toFixed(2);
+		cell_6.innerHTML = cant.toFixed(2);
+		cell_7.innerHTML = precio_unidad.toFixed(2);
+		cell_8.innerHTML = precio_referencia.toFixed(2);
+		cell_9.innerHTML = '<input type="checkbox" name="chkbox_comp" value"' + id_ref + '"/>';
 	}
 	else{
 		alert("ERROR: Ya se ha añadido la referencia compatible a la tabla")
@@ -383,14 +386,11 @@ function removeRowCompatible(tableID) {
 
 		for(var i=0; i<rowCount; i++) {
 			var row = table.rows[i];
-			var chkbox = row.cells[11].childNodes[0];
+			var chkbox = row.cells[9].childNodes[0];
 			if(null != chkbox && true == chkbox.checked) {
 				table.deleteRow(i);
 				rowCount--;
 				i--;
-				if (i+1 != rowCount){
-					// actualizarFilaHeredada(table,i,rowCount);
-				}
 			}
 		}
 	}

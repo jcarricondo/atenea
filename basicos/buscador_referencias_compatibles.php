@@ -150,8 +150,8 @@ function add_referencia(id_referencia){
 		}
 	}
 
-	window.opener.id_grupo = id_grupo;
-	window.opener.fecha_grupo = fecha_grupo;
+	// window.opener.id_grupo = id_grupo;
+	// window.opener.fecha_grupo = fecha_grupo;
 	window.opener.ref = enlace + referencia + fin_enlace + cadena_identificador;
 	window.opener.prov = proveedor;
 	window.opener.ref_prov = ref_proveedor;
@@ -281,7 +281,7 @@ function cambiarComaPorPunto(p_precio){
    			<div class="CapaTablaReferencias">
     		<table>
         	<tr>
-				<th style="text-align: center";>ID GR</th>
+				<th style="text-align: center; display: none;">ID GR</th>
         		<th style="text-align:center">ID</th>
         		<th>NOMBRE</th>
             	<th>PROVEEDOR</th>
@@ -310,7 +310,7 @@ function cambiarComaPorPunto(p_precio){
 						$fecha_grupo = $usuario->fechaHoraSpain($res_fecha_grupo["fecha_creado"]);
 					} ?>
 					<tr>
-						<td style="text-align: center">
+						<td style="text-align: center; display: none;">
 							<?php echo $id_grupo; ?>
 							<input type="hidden" name="id_grupo-<?php echo $ref->id_referencia;?>" id="id_grupo-<?php echo $ref->id_referencia;?>" value="<?php echo $id_grupo; ?>" />
 							<input type="hidden" name="fecha_grupo-<?php echo $ref->id_referencia;?>" id="fecha_grupo-<?php echo $ref->id_referencia;?>" value="<?php echo $fecha_grupo; ?>" />
