@@ -1,6 +1,8 @@
 // JavaScript Document
 // Fichero que contiene las funciones JavaScript utilizadas en el proceso de modificación de una referencia
 
+// FUNCIONES TABLA FICHEROS
+
 // Función que elimina de la tabla ficheros adjuntos
 function removeRow(tableID) {
 	try {
@@ -95,6 +97,7 @@ function rellenarTipoPieza(){
 	}
 }
 
+// FUNCIONES TABLA HEREDADAS
 
 // Función para añadir una referencia heredada
 function addRowHeredada(tableId,id_referencia){
@@ -321,60 +324,111 @@ function validarHeredadasRepetida(id_referencia){
 	return encontrado;
 }
 
+// Función para comprobar que el valor introducido en "piezas" es un entero o decimal con punto.
+// Se utiliza en la funcion validarFormulario y se le pasa la posición de la letra de la palabra
+// y la palabra a validar
+function validarPiezasHeredadas(i,a) {
+	var j = 0;
+	var error = false;
+	var digito = 0;
+	var primer_caracter = false;
+	var punto_reconocido = false;
+	while (j<a[i].value.length && !error){
+		primer_caracter = parseInt(a[i].value[0]);
+		if (isNaN(primer_caracter)) error = true;
+		else {
+			digito = parseInt(a[i].value[j]);
+			if (isNaN(digito) && a[i].value[j] != ".") error = true;
+			else if ((a[i].value[j] == "." && punto_reconocido)) error = true;
+			if (a[i].value[j] == ".") punto_reconocido = true;
+		}
+		j++;
+	}
+	return error;
+}
+
+// Función que limpia toda la tabla de referencias heredadas de la referencia
+function quitarHeredadas(tablaHeredadas){
+	try {
+		var rowCount = tablaHeredadas.rows.length;
+		if(rowCount != 1) {
+			if (confirm("Se eliminarán todas las referencias de la tabla. ¿Desea continuar?")) {
+				for (var i = 1; i < rowCount; i++) {
+					var row = tablaHeredadas.rows[i];
+					tablaHeredadas.deleteRow(i);
+					rowCount--;
+					i--;
+				}
+			}
+		}
+	}
+	catch(e) {
+		alert(e);
+	}
+}
+
+// FUNCIONES TABLA COMPATIBLES
 
 // Función para añadir una referencia compatible
 function addRowCompatible(tableId,id_referencia){
-	// Comprobamos que no se esta intentado añadir una referencia repetida
-	var error_compatible_repetida = validarCompatiblesRepetida(id_referencia);
-	if(!error_compatible_repetida) {
-		var table = document.getElementById(tableId);
-		// Guardamos en una variable la cantidad de filas que tiene la tabla.
-		// Esta variable también nos servirá para indicar que la fila se tiene
-		// que insertar al final de la tabla.
-		var pos = table.rows.length;
-		var row = table.insertRow(pos);
-		var fila = pos - 1;
+	// Comprobamos si se esta intentando añadir la misma referencia
+	var error_autoreferencia = validarAutoCompatible(id_referencia_principal,id_referencia);
+	if(!error_autoreferencia) {
+		// Comprobamos que no se esta intentado añadir una referencia repetida
+		var error_compatible_repetida = validarCompatiblesRepetida(id_referencia);
+		if (!error_compatible_repetida) {
+			var table = document.getElementById(tableId);
+			// Guardamos en una variable la cantidad de filas que tiene la tabla.
+			// Esta variable también nos servirá para indicar que la fila se tiene
+			// que insertar al final de la tabla.
+			var pos = table.rows.length;
+			var row = table.insertRow(pos);
+			var fila = pos - 1;
 
-		// var cell_0 = row.insertCell(0);
-		// var cell_1 = row.insertCell(1);
+			// var cell_0 = row.insertCell(0);
+			// var cell_1 = row.insertCell(1);
 
-		var cell_0 = row.insertCell(0);
-		var cell_1 = row.insertCell(1);
-		var cell_2 = row.insertCell(2);
-		var cell_3 = row.insertCell(3);
-		var cell_4 = row.insertCell(4);
-		var cell_5 = row.insertCell(5);
-		var cell_6 = row.insertCell(6);
-		var cell_7 = row.insertCell(7);
-		var cell_8 = row.insertCell(8);
-		var cell_9 = row.insertCell(9);
+			var cell_0 = row.insertCell(0);
+			var cell_1 = row.insertCell(1);
+			var cell_2 = row.insertCell(2);
+			var cell_3 = row.insertCell(3);
+			var cell_4 = row.insertCell(4);
+			var cell_5 = row.insertCell(5);
+			var cell_6 = row.insertCell(6);
+			var cell_7 = row.insertCell(7);
+			var cell_8 = row.insertCell(8);
+			var cell_9 = row.insertCell(9);
 
-		// cell_0.setAttribute("style", "text-align:center");
-		// cell_1.setAttribute("style", "text-align:center");
+			// cell_0.setAttribute("style", "text-align:center");
+			// cell_1.setAttribute("style", "text-align:center");
 
-		cell_0.setAttribute("style", "text-align:center");
-		cell_5.setAttribute("style", "text-align:center");
-		cell_6.setAttribute("style", "text-align:center");
-		cell_7.setAttribute("style", "text-align:center");
-		cell_8.setAttribute("style", "text-align:center");
-		cell_9.setAttribute("style", "text-align:center");
+			cell_0.setAttribute("style", "text-align:center");
+			cell_5.setAttribute("style", "text-align:center");
+			cell_6.setAttribute("style", "text-align:center");
+			cell_7.setAttribute("style", "text-align:center");
+			cell_8.setAttribute("style", "text-align:center");
+			cell_9.setAttribute("style", "text-align:center");
 
-		// cell_0.innerHTML = id_grupo;
-		// cell_1.innerHTML = fecha_grupo;
+			// cell_0.innerHTML = id_grupo;
+			// cell_1.innerHTML = fecha_grupo;
 
-		cell_0.innerHTML = id_ref;
-		cell_1.innerHTML = ref;
-		cell_2.innerHTML = prov;
-		cell_3.innerHTML = ref_prov;
-		cell_4.innerHTML = nom_pieza;
-		cell_5.innerHTML = pack_precio.toFixed(2);
-		cell_6.innerHTML = cant.toFixed(2);
-		cell_7.innerHTML = precio_unidad.toFixed(2);
-		cell_8.innerHTML = precio_referencia.toFixed(2);
-		cell_9.innerHTML = '<input type="checkbox" name="chkbox_comp" value"' + id_ref + '"/>';
+			cell_0.innerHTML = id_ref;
+			cell_1.innerHTML = ref;
+			cell_2.innerHTML = prov;
+			cell_3.innerHTML = ref_prov;
+			cell_4.innerHTML = nom_pieza;
+			cell_5.innerHTML = pack_precio.toFixed(2);
+			cell_6.innerHTML = cant.toFixed(2);
+			cell_7.innerHTML = precio_unidad.toFixed(2);
+			cell_8.innerHTML = precio_referencia.toFixed(2);
+			cell_9.innerHTML = '<input type="checkbox" name="chkbox_comp" value"' + id_ref + '"/>';
+		}
+		else {
+			alert("ERROR: Ya se ha añadido la referencia compatible a la tabla")
+		}
 	}
-	else{
-		alert("ERROR: Ya se ha añadido la referencia compatible a la tabla")
+	else {
+		alert("ERROR: No se puede autoañadir como compatible a la misma referencia")
 	}
 }
 
@@ -400,6 +454,11 @@ function removeRowCompatible(tableID) {
 
 }
 
+// Función que comprueba si se ha añadido como compatible la misma referencia principal
+function validarAutoCompatible(id_referencia_principal,id_referencia){
+	return id_referencia_principal == id_referencia;
+}
+
 // Función que determina si se esta intentando añadir una referencia que ya haya sido añadida a la tabla
 function validarCompatiblesRepetida(id_referencia){
 	var referencias_compatibles = document.getElementsByName("REFS_COMP[]");
@@ -411,26 +470,6 @@ function validarCompatiblesRepetida(id_referencia){
 		i++;
 	}
 	return encontrado;
-}
-
-// Función que limpia toda la tabla de referencias heredadas de la referencia
-function quitarHeredadas(tablaHeredadas){
-	try {
-		var rowCount = tablaHeredadas.rows.length;
-		if(rowCount != 1) {
-			if (confirm("Se eliminarán todas las referencias de la tabla. ¿Desea continuar?")) {
-				for (var i = 1; i < rowCount; i++) {
-					var row = tablaHeredadas.rows[i];
-					tablaHeredadas.deleteRow(i);
-					rowCount--;
-					i--;
-				}
-			}
-		}
-	}
-	catch(e) {
-		alert(e);
-	}
 }
 
 // Función que limpia toda la tabla de referencias compatibles con la referencia
@@ -453,29 +492,7 @@ function quitarCompatibilidad(tablaComp){
 	}
 }
 
-// Función para comprobar que el valor introducido en "piezas" es un entero o decimal con punto.
-// Se utiliza en la funcion validarFormulario y se le pasa la posición de la letra de la palabra
-// y la palabra a validar
-function validarPiezasHeredadas(i,a) {
-	var j = 0;
-	var error = false;
-	var digito = 0;
-	var primer_caracter = false;
-	var punto_reconocido = false;
-	while (j<a[i].value.length && !error){
-		primer_caracter = parseInt(a[i].value[0]);
-		if (isNaN(primer_caracter)) error = true;
-		else {
-			digito = parseInt(a[i].value[j]);
-			if (isNaN(digito) && a[i].value[j] != ".") error = true;
-			else if ((a[i].value[j] == "." && punto_reconocido)) error = true;
-			if (a[i].value[j] == ".") punto_reconocido = true;
-		}
-		j++;
-	}
-	return error;
-}
-
+// FUNCIONES FORMULARIO
 
 // Comprueba el formulario antes de pasar al siguiente punto
 function validarFormulario() {

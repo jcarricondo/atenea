@@ -45,7 +45,7 @@
                             <!-- <td style="text-align:center;"><?php // echo $fecha_grupo;?></td>-->
                             <td style="text-align:center;"><?php echo $id_ref_compatible;?></td>
                             <td id="enlaceComposites">
-                                <a href="mod_referencia.php?id=<?php echo $id_ref_compatible;?>" target="blank"/>
+                                <a href="mod_referencia.php?id=<?php echo $id_ref_compatible;?>" target="blank" />
                                 <?php
                                     if (strlen($ref_comp->referencia) > $max_caracteres_ref){
                                         echo substr($ref_comp->referencia,0,$max_caracteres_ref).'...';
@@ -53,6 +53,7 @@
                                     else echo $ref_comp->referencia; ?>
                                 </a>
                                 <input type="hidden" name="REFS_COMP[]" id="REFS_COMP[]" value="<?php echo $id_ref_compatible;?>" />
+                                <input type="hidden" name="REFS_COMP_GRUPO[]" id="REFS_COMP_GRUPO[]" value="<?php echo $id_ref_compatible;?>" />
                             </td>
                             <td><?php echo $ref_comp->nombre_proveedor; ?></td>
                             <td><?php $ref_comp->vincularReferenciaProveedor();?></td>
@@ -63,9 +64,10 @@
                             <td style="text-align:center"><?php echo number_format($precio_referencia_compatible, 2, '.', ''); ?></td>
                             <?php
                                 if($modificar) {
-                                    $texto_error_mismos_grupo = "No se puede eliminar una referencia que pertenece al mismo grupo"; ?>
+                                    $texto_error_mismos_grupo = "No se puede eliminar una referencia que pertenece al mismo grupo. ";
+                                    $texto_error_mismos_grupo .= "Para quitarla del grupo dirijase a la modificación de dicha referencia y pulse QUITAR COMPATIBILIDAD"; ?>
                                     <td style="text-align:center">
-                                        <input type="image" name="img_grupo" src="" alt="<?php echo $texto_error_mismos_grupo;?>" />
+                                        <img alt="<?php echo $texto_error_mismos_grupo;?>" title="<?php echo $texto_error_mismos_grupo;?>" src="../images/estrella.png" style="vertical-align: middle;"  />
                                     </td>
                             <?php } ?>
                         </tr>
