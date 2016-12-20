@@ -1,6 +1,8 @@
 // JavaScript Document
 // Fichero que contiene las funciones JavaScript utilizadas en el proceso de modificación de una referencia
 
+// FUNCIONES TABLA FICHEROS
+
 // Función que elimina de la tabla ficheros adjuntos
 function removeRow(tableID) {
 	try {
@@ -95,62 +97,71 @@ function rellenarTipoPieza(){
 	}
 }
 
+// FUNCIONES TABLA HEREDADAS
 
 // Función para añadir una referencia heredada
 function addRowHeredada(tableId,id_referencia){
 	// Comprobamos que no se esta intentando añadir una referencia ancestro
 	var error_ancestro = validarAncestro(id_referencia);
+	var error_autoheredera = validarAutoHeredera(id_referencia);
 	if(!error_ancestro) {
-		// Comprobamos que no se esta intentado añadir una referencia repetida
-		var error_heredera_repetida = validarHeredadasRepetida(id_referencia);
-		if(!error_heredera_repetida) {
-			var table = document.getElementById(tableId);
-			// Guardamos en una variable la cantidad de filas que tiene la tabla.
-			// Esta variable también nos servirá para indicar que la fila se tiene
-			// que insertar al final de la tabla.
-			var pos = table.rows.length;
-			var row = table.insertRow(pos);
-			var fila = pos - 1;
+		// Comprobamos que no se esta intentando heredar una referencia a si misma
+		if(!error_autoheredera) {
 
-			var cell_0 = row.insertCell(0);
-			var cell_1 = row.insertCell(1);
-			var cell_2 = row.insertCell(2);
-			var cell_3 = row.insertCell(3);
-			var cell_4 = row.insertCell(4);
-			var cell_5 = row.insertCell(5);
-			var cell_6 = row.insertCell(6);
-			var cell_7 = row.insertCell(7);
-			var cell_8 = row.insertCell(8);
-			var cell_9 = row.insertCell(9);
-			var cell_10 = row.insertCell(10);
+			// Comprobamos que no se esta intentado añadir una referencia repetida
+			var error_heredera_repetida = validarHeredadasRepetida(id_referencia);
+			if (!error_heredera_repetida) {
+				var table = document.getElementById(tableId);
+				// Guardamos en una variable la cantidad de filas que tiene la tabla.
+				// Esta variable también nos servirá para indicar que la fila se tiene
+				// que insertar al final de la tabla.
+				var pos = table.rows.length;
+				var row = table.insertRow(pos);
+				var fila = pos - 1;
 
-			var piezas = new Array();
-			var num_piezas = num_uds;
+				var cell_0 = row.insertCell(0);
+				var cell_1 = row.insertCell(1);
+				var cell_2 = row.insertCell(2);
+				var cell_3 = row.insertCell(3);
+				var cell_4 = row.insertCell(4);
+				var cell_5 = row.insertCell(5);
+				var cell_6 = row.insertCell(6);
+				var cell_7 = row.insertCell(7);
+				var cell_8 = row.insertCell(8);
+				var cell_9 = row.insertCell(9);
+				var cell_10 = row.insertCell(10);
 
-			cell_0.setAttribute("style", "text-align:center");
-			cell_1.setAttribute("id", "enlaceComposites");
-			cell_5.setAttribute("style", "text-align:center");
-			cell_5.setAttribute("id", "celda_campo_piezas-" + fila);
-			cell_6.setAttribute("style", "text-align:center");
-			cell_7.setAttribute("style", "text-align:center");
-			cell_8.setAttribute("style", "text-align:center");
-			cell_9.setAttribute("style", "text-align:center");
-			cell_10.setAttribute("style", "text-align:center");
+				var piezas = new Array();
+				var num_piezas = num_uds;
 
-			cell_0.innerHTML = id_ref;
-			cell_1.innerHTML = ref;
-			cell_2.innerHTML = prov;
-			cell_3.innerHTML = ref_prov;
-			cell_4.innerHTML = nom_pieza;
-			cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarHayCaracter(' + fila + ')"/>';
-			cell_6.innerHTML = pack_precio.toFixed(2);
-			cell_7.innerHTML = cant.toFixed(2);
-			cell_8.innerHTML = precio_unidad.toFixed(2);
-			cell_9.innerHTML = precio_referencia.toFixed(2);
-			cell_10.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '"/>';
+				cell_0.setAttribute("style", "text-align:center");
+				cell_1.setAttribute("id", "enlaceComposites");
+				cell_5.setAttribute("style", "text-align:center");
+				cell_5.setAttribute("id", "celda_campo_piezas-" + fila);
+				cell_6.setAttribute("style", "text-align:center");
+				cell_7.setAttribute("style", "text-align:center");
+				cell_8.setAttribute("style", "text-align:center");
+				cell_9.setAttribute("style", "text-align:center");
+				cell_10.setAttribute("style", "text-align:center");
+
+				cell_0.innerHTML = id_ref;
+				cell_1.innerHTML = ref;
+				cell_2.innerHTML = prov;
+				cell_3.innerHTML = ref_prov;
+				cell_4.innerHTML = nom_pieza;
+				cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarHayCaracter(' + fila + ')"/>';
+				cell_6.innerHTML = pack_precio.toFixed(2);
+				cell_7.innerHTML = cant.toFixed(2);
+				cell_8.innerHTML = precio_unidad.toFixed(2);
+				cell_9.innerHTML = precio_referencia.toFixed(2);
+				cell_10.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '"/>';
+			}
+			else {
+				alert("ERROR: Ya se ha añadido la referencia heredada a la tabla")
+			}
 		}
 		else{
-			alert("ERROR: Ya se ha añadido la referencia heredada a la tabla")
+			alert("ERROR: No se puede autoheredar la misma referencia")
 		}
 	}
 	else {
@@ -294,6 +305,12 @@ function validarAncestro(id_referencia){
 	return encontrado;
 }
 
+// Función que determina si se esta intentando heredar una referencia a si misma
+function validarAutoHeredera(id_referencia){
+	var id_referencia_principal = document.getElementById("id_ref").value;
+	return id_referencia_principal == id_referencia;
+}
+
 // Función que determina si se esta intentando añadir una referencia que ya haya sido añadida a la tabla
 function validarHeredadasRepetida(id_referencia){
 	var referencias_herederas = document.getElementsByName("REFS[]");
@@ -305,138 +322,6 @@ function validarHeredadasRepetida(id_referencia){
 		i++;
 	}
 	return encontrado;
-}
-
-
-// Función para añadir una referencia compatible
-function addRowCompatible(tableId,id_referencia){
-	// Comprobamos que no se esta intentado añadir una referencia repetida
-	var error_compatible_repetida = validarCompatiblesRepetida(id_referencia);
-	if(!error_compatible_repetida) {
-		var table = document.getElementById(tableId);
-		// Guardamos en una variable la cantidad de filas que tiene la tabla.
-		// Esta variable también nos servirá para indicar que la fila se tiene
-		// que insertar al final de la tabla.
-		var pos = table.rows.length;
-		var row = table.insertRow(pos);
-		var fila = pos - 1;
-
-		var cell_0 = row.insertCell(0);
-		var cell_1 = row.insertCell(1);
-		var cell_2 = row.insertCell(2);
-		var cell_3 = row.insertCell(3);
-		var cell_4 = row.insertCell(4);
-		var cell_5 = row.insertCell(5);
-		var cell_6 = row.insertCell(6);
-		var cell_7 = row.insertCell(7);
-		var cell_8 = row.insertCell(8);
-		var cell_9 = row.insertCell(9);
-		var cell_10 = row.insertCell(10);
-		var cell_11 = row.insertCell(11);
-
-		cell_0.setAttribute("style", "text-align:center");
-		cell_1.setAttribute("style", "text-align:center");
-		cell_2.setAttribute("style", "text-align:center");
-		cell_7.setAttribute("style", "text-align:center");
-		cell_8.setAttribute("style", "text-align:center");
-		cell_9.setAttribute("style", "text-align:center");
-		cell_10.setAttribute("style", "text-align:center");
-		cell_11.setAttribute("style", "text-align:center");
-
-		cell_0.innerHTML = id_grupo;
-		cell_1.innerHTML = fecha_grupo;
-		cell_2.innerHTML = id_ref;
-		cell_3.innerHTML = ref;
-		cell_4.innerHTML = prov;
-		cell_5.innerHTML = ref_prov;
-		cell_6.innerHTML = nom_pieza;
-		cell_7.innerHTML = pack_precio.toFixed(2);
-		cell_8.innerHTML = cant.toFixed(2);
-		cell_9.innerHTML = precio_unidad.toFixed(2);
-		cell_10.innerHTML = precio_referencia.toFixed(2);
-		cell_11.innerHTML = '<input type="checkbox" name="chkbox_comp" value"' + id_ref + '"/>';
-	}
-	else{
-		alert("ERROR: Ya se ha añadido la referencia compatible a la tabla")
-	}
-}
-
-// Función para eliminar una referencia compatible
-function removeRowCompatible(tableID) {
-	try {
-		table = document.getElementById('mitablaCompatibles');
-		var rowCount = table.rows.length;
-
-		for(var i=0; i<rowCount; i++) {
-			var row = table.rows[i];
-			var chkbox = row.cells[11].childNodes[0];
-			if(null != chkbox && true == chkbox.checked) {
-				table.deleteRow(i);
-				rowCount--;
-				i--;
-				if (i+1 != rowCount){
-					// actualizarFilaHeredada(table,i,rowCount);
-				}
-			}
-		}
-	}
-	catch(e) {
-		alert(e);
-	}
-
-}
-
-// Función que determina si se esta intentando añadir una referencia que ya haya sido añadida a la tabla
-function validarCompatiblesRepetida(id_referencia){
-	var referencias_compatibles = document.getElementsByName("REFS_COMP[]");
-	var encontrado = false;
-	var i=0;
-	while (i < referencias_compatibles.length && !encontrado){
-		id_ref_compatible = referencias_compatibles[i].value;
-		encontrado = id_referencia == id_ref_compatible;
-		i++;
-	}
-	return encontrado;
-}
-
-// Función que limpia toda la tabla de referencias heredadas de la referencia
-function quitarHeredadas(tablaHeredadas){
-	try {
-		var rowCount = tablaHeredadas.rows.length;
-		if(rowCount != 1) {
-			if (confirm("Se eliminarán todas las referencias de la tabla. ¿Desea continuar?")) {
-				for (var i = 1; i < rowCount; i++) {
-					var row = tablaHeredadas.rows[i];
-					tablaHeredadas.deleteRow(i);
-					rowCount--;
-					i--;
-				}
-			}
-		}
-	}
-	catch(e) {
-		alert(e);
-	}
-}
-
-// Función que limpia toda la tabla de referencias compatibles con la referencia
-function quitarCompatibilidad(tablaComp){
-	try {
-		var rowCount = tablaComp.rows.length;
-		if(rowCount != 1) {
-			if(confirm("Se eliminarán todas las referencias de la tabla. ¿Desea continuar?")){
-				for (var i = 1; i < rowCount; i++) {
-					var row = tablaComp.rows[i];
-					tablaComp.deleteRow(i);
-					rowCount--;
-					i--;
-				}
-			}
-		}
-	}
-	catch (e) {
-		alert(e);
-	}
 }
 
 // Función para comprobar que el valor introducido en "piezas" es un entero o decimal con punto.
@@ -462,6 +347,152 @@ function validarPiezasHeredadas(i,a) {
 	return error;
 }
 
+// Función que limpia toda la tabla de referencias heredadas de la referencia
+function quitarHeredadas(tablaHeredadas){
+	try {
+		var rowCount = tablaHeredadas.rows.length;
+		if(rowCount != 1) {
+			if (confirm("Se eliminarán todas las referencias de la tabla. ¿Desea continuar?")) {
+				for (var i = 1; i < rowCount; i++) {
+					var row = tablaHeredadas.rows[i];
+					tablaHeredadas.deleteRow(i);
+					rowCount--;
+					i--;
+				}
+			}
+		}
+	}
+	catch(e) {
+		alert(e);
+	}
+}
+
+// FUNCIONES TABLA COMPATIBLES
+
+// Función para añadir una referencia compatible
+function addRowCompatible(tableId,id_referencia){
+	// Comprobamos si se esta intentando añadir la misma referencia
+	var error_autoreferencia = validarAutoCompatible(id_referencia_principal,id_referencia);
+	if(!error_autoreferencia) {
+		// Comprobamos que no se esta intentado añadir una referencia repetida
+		var error_compatible_repetida = validarCompatiblesRepetida(id_referencia);
+		if (!error_compatible_repetida) {
+			var table = document.getElementById(tableId);
+			// Guardamos en una variable la cantidad de filas que tiene la tabla.
+			// Esta variable también nos servirá para indicar que la fila se tiene
+			// que insertar al final de la tabla.
+			var pos = table.rows.length;
+			var row = table.insertRow(pos);
+			var fila = pos - 1;
+
+			// var cell_0 = row.insertCell(0);
+			// var cell_1 = row.insertCell(1);
+
+			var cell_0 = row.insertCell(0);
+			var cell_1 = row.insertCell(1);
+			var cell_2 = row.insertCell(2);
+			var cell_3 = row.insertCell(3);
+			var cell_4 = row.insertCell(4);
+			var cell_5 = row.insertCell(5);
+			var cell_6 = row.insertCell(6);
+			var cell_7 = row.insertCell(7);
+			var cell_8 = row.insertCell(8);
+			var cell_9 = row.insertCell(9);
+
+			// cell_0.setAttribute("style", "text-align:center");
+			// cell_1.setAttribute("style", "text-align:center");
+
+			cell_0.setAttribute("style", "text-align:center");
+			cell_5.setAttribute("style", "text-align:center");
+			cell_6.setAttribute("style", "text-align:center");
+			cell_7.setAttribute("style", "text-align:center");
+			cell_8.setAttribute("style", "text-align:center");
+			cell_9.setAttribute("style", "text-align:center");
+
+			// cell_0.innerHTML = id_grupo;
+			// cell_1.innerHTML = fecha_grupo;
+
+			cell_0.innerHTML = id_ref;
+			cell_1.innerHTML = ref;
+			cell_2.innerHTML = prov;
+			cell_3.innerHTML = ref_prov;
+			cell_4.innerHTML = nom_pieza;
+			cell_5.innerHTML = pack_precio.toFixed(2);
+			cell_6.innerHTML = cant.toFixed(2);
+			cell_7.innerHTML = precio_unidad.toFixed(2);
+			cell_8.innerHTML = precio_referencia.toFixed(2);
+			cell_9.innerHTML = '<input type="checkbox" name="chkbox_comp" value"' + id_ref + '"/>';
+		}
+		else {
+			alert("ERROR: Ya se ha añadido la referencia compatible a la tabla")
+		}
+	}
+	else {
+		alert("ERROR: No se puede autoañadir como compatible a la misma referencia")
+	}
+}
+
+// Función para eliminar una referencia compatible
+function removeRowCompatible(tableID) {
+	try {
+		table = document.getElementById('mitablaCompatibles');
+		var rowCount = table.rows.length;
+
+		for(var i=0; i<rowCount; i++) {
+			var row = table.rows[i];
+			var chkbox = row.cells[9].childNodes[0];
+			if(null != chkbox && true == chkbox.checked) {
+				table.deleteRow(i);
+				rowCount--;
+				i--;
+			}
+		}
+	}
+	catch(e) {
+		alert(e);
+	}
+
+}
+
+// Función que comprueba si se ha añadido como compatible la misma referencia principal
+function validarAutoCompatible(id_referencia_principal,id_referencia){
+	return id_referencia_principal == id_referencia;
+}
+
+// Función que determina si se esta intentando añadir una referencia que ya haya sido añadida a la tabla
+function validarCompatiblesRepetida(id_referencia){
+	var referencias_compatibles = document.getElementsByName("REFS_COMP[]");
+	var encontrado = false;
+	var i=0;
+	while (i < referencias_compatibles.length && !encontrado){
+		id_ref_compatible = referencias_compatibles[i].value;
+		encontrado = id_referencia == id_ref_compatible;
+		i++;
+	}
+	return encontrado;
+}
+
+// Función que limpia toda la tabla de referencias compatibles con la referencia
+function quitarCompatibilidad(tablaComp){
+	try {
+		var rowCount = tablaComp.rows.length;
+		if(rowCount != 1) {
+			if(confirm("Se eliminarán todas las referencias de la tabla. ¿Desea continuar?")){
+				for (var i = 1; i < rowCount; i++) {
+					var row = tablaComp.rows[i];
+					tablaComp.deleteRow(i);
+					rowCount--;
+					i--;
+				}
+			}
+		}
+	}
+	catch (e) {
+		alert(e);
+	}
+}
+
+// FUNCIONES FORMULARIO
 
 // Comprueba el formulario antes de pasar al siguiente punto
 function validarFormulario() {

@@ -50,14 +50,6 @@ $salida = '<table>
             <th>Comentarios</th>
         </tr>';
 
-        /*
-        <th>Precio</th>
-        <th>Total Paquetes</th>
-        <th>Precio Pack</th>
-        <th>Unidades Paquete</th>
-        <th>Piezas</th>
-        */
-
 // Obtenemos los componentes principales de la plantilla
 $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
 // Guardamos en un array los componentes con sus kits asociados
@@ -118,21 +110,15 @@ for($i=0;$i<count($referencias_componente_final);$i++){
     $precio_por_simulador_unidades = $unidades_por_simulador * $precio_por_unidad;
     $precio_por_simulador_paquetes = $paquetes_por_simulador * $precio_por_paquete;
 
-    /*
-    // Calculamos el numero total de paquetes en funcion de las piezas
-    $ref->calculaTotalPaquetes($ref->unidades,$piezas);
-    $ref->calculaCosteReferencia();
-    */
-
     $ref->prepararCodificacionReferencia();
     $salida .= '<tr>
                 <td style="text-align: center;">'.$id_referencia.'</td>
                 <td>'.$ref->referencia.'</td>
                 <td>'.$ref->part_proveedor_referencia.'</td>
                 <td>'.$ref->nombre_proveedor.'</td>
-                <td style="text-align: right;">'.$unidades_por_paquete.'</td>
-                <td style="text-align: right;">'.$unidades_por_simulador.'</td>
-                <td style="text-align: right;">'.$paquetes_por_simulador.'</td>
+                <td style="text-align: right;">'.number_format($unidades_por_paquete,2,',','.').'</td>
+                <td style="text-align: right;">'.number_format($unidades_por_simulador,2,',','.').'</td>
+                <td style="text-align: right;">'.number_format($paquetes_por_simulador,2,',','.').'</td>
 			    <td style="text-align: right;">'.number_format($precio_por_paquete,2,',','.').'</td>
 			    <td style="text-align: right;">'.number_format($precio_por_unidad,2,',','.').'</td>
 			    <td style="text-align: right;">'.number_format($precio_por_simulador_unidades,2,',','.').'</td>
@@ -154,13 +140,6 @@ for($i=0;$i<count($referencias_componente_final);$i++){
                 <td>'.$ref->part_valor_cantidad_5.'</td>
                 <td>'.$ref->comentarios.'</td>
             </tr>';
-
-            /*
-            <td style="text-align: right;">'.number_format(round($ref->coste,2),2,',','.').'</td>
-            <td style="text-align: right;">'.$ref->total_paquetes.'</td>
-            <td style="text-align: right;">'.number_format(round($ref->pack_precio,2),2,',','.').'</td>
-            <td style="text-align: right;">'.number_format(round($piezas,2),2,',','.').'</td>
-            */
 }
 $salida .= '</table>';
 header("Content-type: application/vnd.ms-excel");

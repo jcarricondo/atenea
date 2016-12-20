@@ -1,5 +1,5 @@
 <?php
-class Referencia_Heredada extends MySQL {
+class Referencia_Heredada extends Referencia {
 
 	var $id;
 	var $id_referencia;
@@ -11,7 +11,7 @@ class Referencia_Heredada extends MySQL {
 	var $referencias_heredadas;
 	var $piezas_referencias_heredadas;
 
-
+	/*
 	function cargarDatos($id,$id_referencia,$id_referencia_heredada,$cantidad,$activo,$fecha_creado) {
 		$this->id = $id;
 		$this->id_referencia = $id_referencia;
@@ -22,8 +22,9 @@ class Referencia_Heredada extends MySQL {
 	}
 
 	function cargaDatosReferenciaId($id_referencia) {
-		$consultaSql = sprintf("select * from referencias_heredadas where referencias_heredadas.id_referencia=%s",
+		$consultaSql = sprintf("select * from referencias_heredadas where activo=1 and referencias_heredadas.id_referencia=%s",
 				$this->makeValue($id_referencia, "int"));
+		$this->setConsulta($consultaSql);
 		$this->setConsulta($consultaSql);
 		$this->ejecutarConsulta();
 		$resultados = $this->getPrimerResultado();
@@ -36,10 +37,11 @@ class Referencia_Heredada extends MySQL {
 				$resultados["fecha_creado"]
 		);
 	}
+	*/
 
 	// Función que devuelve los antecesores de la referencia heredada
-	function dameAntecesores($id_referencia){
-		$consulta = sprintf("select id_referencia from referencias_heredadas where id_ref_heredada=%s",
+	function dameAntecesoresPrincipales($id_referencia){
+		$consulta = sprintf("select id_referencia from referencias_heredadas where activo=1 and id_ref_heredada=%s order by id_referencia",
 				$this->makeValue($id_referencia, "int"));
 		$this->setConsulta($consulta);
 		$this->ejecutarConsulta();
@@ -47,9 +49,31 @@ class Referencia_Heredada extends MySQL {
 		return $res_antecesores;
 	}
 
+	// Función que devuelve todos los antecesores de una referencia
+	function dameTodosAntecesores($id_referencia){
+		// Obtenemos los padres de la referencia
+		$res_antecesores = $this->dameAntecesoresPrincipales($id_referencia);
+		$array_antecesores_leidos = array();
+		$hay_ancestros = true;
+		while ($hay_ancestros){
+			for($i=0;$i<count($res_antecesores);$i++){
+				$id_ref_antecesor = $res_antecesores[$i]["id_referencia"];
+				if(!in_array($id_ref_antecesor,$array_antecesores_leidos)){
+					// Buscamos antecesores de un antecesor
+					$res_padres_antecesores = $this->dameAntecesoresPrincipales($id_ref_antecesor);
+					if($res_padres_antecesores != NULL) $res_antecesores = array_merge($res_antecesores,$res_padres_antecesores);
+					// Añadimos el nodo al array de los leidos
+					$array_antecesores_leidos[] = $id_ref_antecesor;
+				}
+			}
+			$hay_ancestros = $res_antecesores === $array_antecesores_leidos;
+		}
+		return $res_antecesores;
+	}
+
 	// Función que devuelve las referencias heredadas de la referencia
 	function dameHeredadas($id_referencia){
-		$consulta = sprintf("select id_ref_heredada from referencias_heredadas where activo=1 and id_referencia=%s",
+		$consulta = sprintf("select id_ref_heredada from referencias_heredadas where activo=1 and id_referencia=%s order by id_ref_heredada",
 				$this->makeValue($id_referencia, "int"));
 		$this->setConsulta($consulta);
 		$this->ejecutarConsulta();
@@ -103,7 +127,6 @@ class Referencia_Heredada extends MySQL {
 		}
 		else return 2;
 	}
-
 
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {

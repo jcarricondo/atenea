@@ -81,7 +81,7 @@ if(isset($_POST["realizandoBusqueda"]) and $_POST["realizandoBusqueda"] == 1) {
 	$ref_proveedor = $ref_proveedor_ant;
 	$ref_fabricante = $ref_fabricante_ant;
 }
-$id_referencia = $_GET["id_ref"];
+$id_referencia_principal = $_GET["id_ref"];
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="../css/style.css" />
 
@@ -96,6 +96,7 @@ function add_referencia(id_referencia){
 	ref_proveedor = document.getElementById("ref_proveedor-" + id_referencia).value;
 	cantidad = document.getElementById("unidades-" + id_referencia).value;
 	p_precio = document.getElementById("p_precio-" + id_referencia).value;
+	id_referencia_principal = document.getElementById("id_referencia_principal").value;
 
 	var p_unitario;
 	var p_referencia;
@@ -150,8 +151,8 @@ function add_referencia(id_referencia){
 		}
 	}
 
-	window.opener.id_grupo = id_grupo;
-	window.opener.fecha_grupo = fecha_grupo;
+	// window.opener.id_grupo = id_grupo;
+	// window.opener.fecha_grupo = fecha_grupo;
 	window.opener.ref = enlace + referencia + fin_enlace + cadena_identificador;
 	window.opener.prov = proveedor;
 	window.opener.ref_prov = ref_proveedor;
@@ -164,6 +165,8 @@ function add_referencia(id_referencia){
 	window.opener.boton = boton;
 	
 	window.opener.id_ref= identificador;
+
+	window.opener.id_referencia_principal = id_referencia_principal;
 	
 	window.opener.addRowCompatible('mitablaCompatibles',id_referencia);
 }
@@ -192,7 +195,7 @@ function cambiarComaPorPunto(p_precio){
 	<h3> Añadir referencia compatible </h3>
 	<div id="ContenedorBuscadorReferencias">
 		<h4> Buscar la referencia para añadir </h4>
-   		<form name="BuscadorReferencias" id="BuscadorReferencias" action="buscador_referencias_compatibles.php?id_ref=<?php echo $id_referencia;?>" method="post">
+   		<form name="BuscadorReferencias" id="BuscadorReferencias" action="buscador_referencias_compatibles.php?id_ref=<?php echo $id_referencia_principal;?>" method="post">
     		<div class="ContenedorCamposBuscadorReferencias">
 				<div class="LabelReferencias">Referencia</div>
             	<input type="text" name="referencia" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($referencia));?>"/> 
@@ -281,7 +284,7 @@ function cambiarComaPorPunto(p_precio){
    			<div class="CapaTablaReferencias">
     		<table>
         	<tr>
-				<th style="text-align: center";>ID GR</th>
+				<th style="text-align: center; display: none;">ID GR</th>
         		<th style="text-align:center">ID</th>
         		<th>NOMBRE</th>
             	<th>PROVEEDOR</th>
@@ -310,7 +313,7 @@ function cambiarComaPorPunto(p_precio){
 						$fecha_grupo = $usuario->fechaHoraSpain($res_fecha_grupo["fecha_creado"]);
 					} ?>
 					<tr>
-						<td style="text-align: center">
+						<td style="text-align: center; display: none;">
 							<?php echo $id_grupo; ?>
 							<input type="hidden" name="id_grupo-<?php echo $ref->id_referencia;?>" id="id_grupo-<?php echo $ref->id_referencia;?>" value="<?php echo $id_grupo; ?>" />
 							<input type="hidden" name="fecha_grupo-<?php echo $ref->id_referencia;?>" id="fecha_grupo-<?php echo $ref->id_referencia;?>" value="<?php echo $fecha_grupo; ?>" />
@@ -357,6 +360,7 @@ function cambiarComaPorPunto(p_precio){
                             <form name="BuscadorReferenciaCompatible" id="BuscadorReferenciaCompatible" action="#" method="post">
 								<input type="button" onclick="javascript:add_referencia(<?php echo $ref->id_referencia;?>);" value="+" />
                                 <input type="hidden" id="guardandoReferenciaCompatible" name="guardandoReferenciaCompatible" />
+								<input type="hidden" id="id_referencia_principal" name="id_referencia_principal" value="<?php echo $id_referencia_principal;?>" />
                             </form>
                         </td>                        
 					</tr> 
