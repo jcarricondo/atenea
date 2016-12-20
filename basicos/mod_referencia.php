@@ -4,14 +4,17 @@ include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/referencia.class.php");
-// include("../classes/basicos/cabina.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/fabricante.class.php");
 include("../classes/basicos/listado_proveedores.class.php");
 include("../classes/basicos/listado_fabricantes.class.php");
 include("../classes/basicos/componente.class.php");
+include("../classes/basicos/usuario.class.php");
 include("../classes/log/basicos/log_basicos_referencias.class.php");
+// include("../classes/basicos/cabina.class.php");
 permiso(34);
 
 // Comprobamos si el usuario puede modificar el basico
@@ -29,8 +32,13 @@ $bbdd = new MySQL;
 $db = new MySQL();
 $referencias = new Referencia();
 $ref = new Referencia();
+$ref_ant = new Referencia();
+$ref_her = new Referencia();
+$ref_comp = new Referencia();
 $ref_archivo = new Referencia();
-// $cabina = new Cabina();
+$ref_antecesor = new Referencia_Heredada();
+$ref_heredada = new Referencia_Heredada();
+$ref_compatible = new Referencia_Compatible();
 $periferico = new Periferico();
 $kit = new Kit();
 $fab = new Fabricante();
@@ -40,6 +48,8 @@ $np = new listadoProveedores();
 $comp = new Componente();
 $validacion = new Funciones();
 $log = new LogBasicosReferencias();
+$user = new Usuario();
+// $cabina = new Cabina();
 
 if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) {
 	// Se reciben los datos
@@ -65,7 +75,12 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 	$id_referencia = $_GET["id"];
 	$archivos_tabla = $_POST["archivos_tabla"];
 	$comentarios = $_POST["comentarios"];
-	
+	$referencias_heredadas = $_POST["REFS"];
+	$piezas_referencias_heredadas = $_POST["piezas"];
+	$referencias_compatibles = $_POST["REFS_COMP"];
+
+	$hay_referencias_compatibles = !empty($referencias_compatibles);
+
 	if ($nombre == '') $nombre = '-';
 	if ($nombre_pieza == '') $nombre_pieza = '-';
 	if ($tipo_pieza == '') $tipo_pieza = '-';
@@ -152,6 +167,30 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					}
 				}
 				if (!$error){
+					// REFERENCIAS HEREDADAS
+					$ref_heredada->setReferenciasHeredadas($id_referencia,$referencias_heredadas,$piezas_referencias_heredadas);
+					// Primero desactivamos las referencias heredadas que tuviera la referencia
+					$res_desactivar_heredadas = $ref_heredada->desactivarReferenciasHeredadas();
+					if($res_desactivar_heredadas != 1) echo '<script>alert("Se ha producido un error al desactivar las referencias herederas")</script>';
+					// Guardamos las referencias heredadas y sus piezas
+					$error_heredadas = $ref_heredada->guardarReferenciasHeredadas();
+					if($error_heredadas)  echo '<script>alert("Se ha producido un error al guardar algunas de las referencias herederas")</script>';
+
+					// REFERENCIAS COMPATIBLES
+					// Si hay referencias compatibles añadidas reajustamos los grupos en función del grupo más antiguo
+					if($hay_referencias_compatibles){
+						// Establecemos en la clase la referencia principal y las referencias compatibles
+						$ref_compatible->setReferenciasCompatibles($id_referencia,$referencias_compatibles);
+						// Guardar referencias compatibles
+						$error_general = $ref_compatible->guardarReferenciasCompatibles();
+						if($error_general) echo '<script>alert("Se ha producido un error general al guardar las referencias compatibles de un grupo")</script>';
+					}
+					else {
+						// Quitamos la referencia principal del grupo de compatibilidad
+						$error_quitar_referencia = $ref_compatible->quitaReferenciaGrupo($id_referencia);
+						if($error_quitar_referencia)  echo '<script>alert("Se ha producido un error al eliminar la referencia compatible del grupo")</script>';
+					}
+
 					// Guardamos el log de la operación
 					$referencias->cargaDatosReferenciaId($id_referencia);
 					$fecha_creado = $referencias->fecha_creado;
@@ -160,8 +199,8 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					$proceso = "MODIFICACION REFERENCIA";
 					$descripcion = "-";
 					$referencia_creada = "NO";
-					$referencia_heredada = "NO";
-					$referencia_compatible = "NO";
+					$referencia_heredada = "SI";
+					$referencia_compatible = "SI";
 					$error = "NO";
 					$codigo_error = "OK!";
 
@@ -204,7 +243,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 			} 
 		}
 	}
-} 
+}
 
 // Se cargan los datos buscando por el ID
 $referencias->cargaDatosReferenciaId($_GET["id"]);
@@ -234,6 +273,17 @@ $pack_precio = $referencias->pack_precio;
 $unidades_paquete = $referencias->unidades; 
 $comentarios = htmlspecialchars($referencias->comentarios);
 
+// Obtenemos todos los antecesores de la referencia
+$res_antecesores = $ref_antecesor->dameTodosAntecesores($id_referencia);
+// Obtenemos los antecesores principales de la referencia
+$res_antecesores_principales = $ref_antecesor->dameAntecesoresPrincipales($id_referencia);
+// Obtenemos las referencias que heredan de la referencia
+$res_heredadas = $ref_heredada->dameHeredadas($id_referencia);
+// Obtenemos las referencias compatibles de la referencia
+$res_compatibles = $ref_compatible->dameReferenciasCompatiblesSinElla($id_referencia);
+
+$max_caracteres_ref = 50;
+
 // Titulo de pagina
 $titulo_pagina = "B&aacutesico > Modifica Referencia";
 $pagina = "mod_referencia";
@@ -250,7 +300,7 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
  	</div>
       
     <h3> Modificacion de referencia </h3>
-    <form id="FormularioCreacionBasico" name="modificarReferencia" action="mod_referencia.php?id=<?php echo $referencias->id_referencia; ?>" method="post" enctype="multipart/form-data">
+    <form id="FormularioCreacionBasico" name="modificarReferencia" onsubmit="return validarFormulario()" action="mod_referencia.php?id=<?php echo $referencias->id_referencia; ?>" method="post" enctype="multipart/form-data">
     	<br />
         <h5> Modifique los datos en el siguiente formulario </h5>
         <div class="ContenedorCamposCreacionBasico">
@@ -401,6 +451,11 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
            	<div class="LabelCreacionBasico">Comentarios</div>
           	<textarea type="text" id="comentarios" name="comentarios" rows="10" class="textareaInput" <?php echo $solo_lectura; ?> ><?php echo $comentarios; ?></textarea>	
         </div>
+		<br/>
+		<?php include("mod_referencia_muestra_antecesores.php"); ?>
+		<?php include("mod_referencia_muestra_heredadas.php"); ?>
+		<?php include("mod_referencia_muestra_compatibles.php"); ?>
+
         <div class="ContenedorCamposCreacionBasico">
            	<?php 
                 if($modificar){ ?>

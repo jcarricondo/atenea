@@ -99,9 +99,9 @@ for($i=0;$i<count($resultados);$i++){
 			<td>'.$referencia->referencia.'</td>
 			<td align="center">'.$referencia->part_proveedor_referencia.'</td>
 			<td>'.$referencia->nombre_proveedor.'</td>
-			<td>'.utf8_decode($unidades_por_paquete).'</td>
-			<td>'.utf8_decode($unidades_por_simulador).'</td>
-			<td>'.utf8_decode($paquetes_por_simulador).'</td>
+			<td>'.number_format($unidades_por_paquete,2,',','.').'</td>
+			<td>'.number_format($unidades_por_simulador,2,',','.').'</td>
+			<td>'.number_format($paquetes_por_simulador,2,',','.').'</td>
 			<td align="right">'.number_format($precio_por_paquete,2,',','.').'</td>
 			<td align="right">'.number_format($precio_por_unidad,2,',','.').'</td>
 			<td align="right">'.number_format($precio_por_simulador_unidades,2,',','.').'</td>

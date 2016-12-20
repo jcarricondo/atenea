@@ -680,6 +680,36 @@ a {
 }
 
 
+#ContenedorCentral .ContenedorReferencias {
+	background: #fff none repeat scroll 0 0;
+	float: none;
+	height: auto;
+	margin: 0;
+	max-height: 208px;
+	max-width: 1100px;
+	min-width: 480px;
+	overflow-y: auto;
+	text-align: center;
+	width: auto;
+}
+
+#ContenedorCentral .ContenedorReferencias table{
+	width: 100%; /*1630px;98%;*/
+	height: auto;
+	margin: 0px 0px 0px 0px;
+	border: 1px solid #2998cc;
+	float: none;
+	text-align: center;
+	min-height: 208px;
+	background: #fff;
+	font: 10px Helvetica, Verdana, Arial;
+	color: #000;
+	padding: 10px 5px 10px 5px;
+	min-width: 460px;
+	overflow: hidden;
+}
+
+
 /* BASICOS */
 /* Proveedores */
 
@@ -1677,13 +1707,13 @@ a {
 }
 
 .BotonQuitar{
-	width:auto; /*auto;/*50px;*/
-	height:auto; /*auto;/*50px;*/
-	margin:-200px 0px 0px 1325px;
-	vertical-align:top;
-	float:left;
-	font: 10px Helvetica, Tahoma, Verdana;
-}
+	 width:auto; /*auto;/*50px;*/
+	 height:auto; /*auto;/*50px;*/
+	 margin:-200px 0px 0px 1325px;
+	 vertical-align:top;
+	 float:left;
+	 font: 10px Helvetica, Tahoma, Verdana;
+ }
 
 #AñadirMasArchivos{
 	width:245px;
@@ -2954,3 +2984,11 @@ table td .botonAsignacion {
 	float: none;
 }
 
+.BotonQuitarCompatibilidad, .BotonQuitarHeredadas{
+	width:auto; /*auto;/*50px;*/
+	height:auto; /*auto;/*50px;*/
+	margin: 5px 20px 5px 200px;
+	vertical-align:top;
+	float:left;
+	font: 10px Helvetica, Tahoma, Verdana;
+}
