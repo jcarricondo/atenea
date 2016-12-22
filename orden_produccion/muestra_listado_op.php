@@ -103,13 +103,8 @@
 		</td>
 		<td style="text-align:center"><?php echo $orden_produccion->fecha_entrega_deseada;?></td>
 		<td style="text-align:center">
-        	<a href="../orden_produccion/informe_referencias_op.php?id=<?php echo $id_produccion;?>">XLS</a>
-            <?php
-				/*
-				-
-            	<a href="../orden_produccion/informe_referencias_op_componentes.php?id=<?php echo $id_produccion;?>">XLS COM.</a>
-        		*/
-			?>
+	       	<a href="../orden_produccion/informe_referencias_op.php?id=<?php echo $id_produccion;?>">XLS</a> -
+            <a href="../orden_produccion/informe_referencias_op_componentes.php?id=<?php echo $id_produccion;?>">XLS COM.</a>
 		</td>
         <td style="text-align:center"><?php echo $orden_produccion->unidades; ?></td>
 		<td style="text-align:center"><a href="javascript:abrir('muestra_perifericos.php?producto=<?php echo $nombre_producto->nombre;?>&id_produccion=<?php echo $id_produccion;?>')"><?php echo "PERIFS";?></a></td>
