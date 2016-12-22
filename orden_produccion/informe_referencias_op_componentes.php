@@ -2,11 +2,11 @@
 // Este fichero genera un excel con las referencias de los componentes de una OP
 include("../includes/sesion.php");
 include("../classes/basicos/referencia.class.php");
-include("../classes/basicos/cabina.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/orden_produccion/orden_produccion.class.php");
 include("../classes/productos/producto.class.php");
+// include("../classes/basicos/cabina.class.php");
 
 function truncateFloat($number, $digitos)
 {
@@ -22,9 +22,9 @@ $db = new MySQL();
 $referencia = new Referencia();
 $op = new Orden_Produccion();
 $producto = new Producto();
-$cabina = new Cabina();
 $periferico = new Periferico();
 $kit = new Kit();
+// $cabina = new Cabina();
 
 $salida = "";
 $salida .= '<table>
@@ -84,10 +84,12 @@ for($i=0;$i<count($componentes_produccion);$i++){
     	break;
     	case '1':
         	// CABINA
+			/*
             $cabina->cargaDatosCabinaId($id_componente);
 			$nombre_componente = $cabina->cabina."_v".$cabina->version;
 			$nombre_subcomponente = "";
 			$componente_principal = $nombre_componente;
+			*/
 		break;
         case '2':
             // PERIFERICO
