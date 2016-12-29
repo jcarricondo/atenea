@@ -277,8 +277,10 @@ $comentarios = htmlspecialchars($referencias->comentarios);
 $res_antecesores = $ref_antecesor->dameTodosAntecesores($id_referencia);
 // Obtenemos los antecesores principales de la referencia
 $res_antecesores_principales = $ref_antecesor->dameAntecesoresPrincipales($id_referencia);
-// Obtenemos las referencias que heredan de la referencia
-$res_heredadas = $ref_heredada->dameHeredadas($id_referencia);
+// Obtenemos todos las referencias heredadas de la referencia
+$res_heredadas = $ref_heredada->dameTodasHeredadas($id_referencia);
+// Obtenemos las herederas principales de la referencia
+$res_heredadas_principales = $ref_heredada->dameHeredadasPrincipales($id_referencia);
 // Obtenemos las referencias compatibles de la referencia
 $res_compatibles = $ref_compatible->dameReferenciasCompatiblesSinElla($id_referencia);
 
@@ -288,7 +290,7 @@ $max_caracteres_ref = 50;
 $titulo_pagina = "B&aacutesico > Modifica Referencia";
 $pagina = "mod_referencia";
 include ('../includes/header.php');
-echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/mod_referencia_29122016_1710.js"></script>';
 ?>
 
 <div class="separador"></div> 
@@ -493,13 +495,18 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
 							
 							for($i=0;$i<count($ids_archivos);$i++) {
 								$array_ids_archivos[] = $ids_archivos[$i]["id_archivo"];
-								$ref_archivo->cargaDatosArchivosReferenciaId($array_ids_archivos[$i]);
+								$ref_archivo->cargaDatosArchivosReferenciaId($array_ids_archivos[$i]); ?>
+								<tr>
+									<td>
+										<?php echo $ref_archivo->nombre_archivo;?>
+										<input type="hidden" name="archivos_tabla[]" id="archivos_tabla[]" value="<?php echo $ref_archivo->nombre_archivo;?>" /></td><td style="text-align: center;"><?php echo $ref_archivo->fecha_subida;?></td><td style="text-align: center;"><input type="button" id="descargar" name="descargar" class="BotonEliminar"  value="DESCARGAR" onclick="window.location.href='download_upload.php?id=<?php echo $ref_archivo->nombre_archivo;?>'"/>
+									</td>
+									<td style="text-align: center;"><input type="checkbox" name="chkbox" value="<?php echo $ref_archivo->id_archivo;?>" /></td>
+								</tr>
+                    	<?php
+							}
 						?>
-						<tr><td><?php echo $ref_archivo->nombre_archivo;?><input type="hidden" name="archivos_tabla[]" id="archivos_tabla[]" value="<?php echo $ref_archivo->nombre_archivo;?>" /></td><td style="text-align: center;"><?php echo $ref_archivo->fecha_subida;?></td><td style="text-align: center;"><input type="button" id="descargar" name="descargar" class="BotonEliminar"  value="DESCARGAR" onclick="window.location.href='download_upload.php?id=<?php echo $ref_archivo->nombre_archivo;?>'"/> </td><td style="text-align: center;"><input type="checkbox" name="chkbox" value="<?php echo $ref_archivo->id_archivo;?>" /></td></tr>
-                    <?php 
-					}
-					?> 
-                    </table>   
+                    	</table>
                     </div> 
 			    </div>
 			    <?php 
@@ -600,8 +607,6 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
                                                 </tr>
                                         <?php
                                             }
-                                        ?>
-                                    <?php
                                         }
                                         else { ?>
                                             <tr>
@@ -632,6 +637,7 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
             <?php 
                 if($modificar){ ?>
 		            <input type="hidden" id="guardandoReferencia" name="guardandoReferencia" value="1"/>
+					<input type="hidden" id="id_referencia_mod" name="id_referencia_mod" value="<?php echo $id_referencia;?>"/>
 		            <input type="submit" id="continuar" name="continuar" value="Continuar" />
 		    <?php 
 		    	}
@@ -639,8 +645,8 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia.js"></scr
         </div>
         <?php
         	if($mensaje_error != "") {
-			echo '<div class="mensaje_error">'.$mensaje_error.'</div>'; 
-		}
+				echo '<div class="mensaje_error">'.$mensaje_error.'</div>';
+			}
 		?>
         <br />
     </form>

@@ -1098,7 +1098,6 @@ if(isset($_GET["comp"])){
             $json = $array_motivos;
             echo json_encode($json, JSON_FORCE_OBJECT);
             break;
-        default:
         case "cargaMotivosBuscador":
             $json = array();
             // Obtenemos la sede
