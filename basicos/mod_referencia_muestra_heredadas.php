@@ -25,8 +25,8 @@
             </tr>
             <?php
                 $fila = 0;
-                for($i=0;$i<count($res_heredadas);$i++) {
-                    $id_ref_heredada = $res_heredadas[$i]["id_ref_heredada"];
+                for($i=0;$i<count($res_heredadas_principales);$i++) {
+                    $id_ref_heredada = $res_heredadas_principales[$i]["id_ref_heredada"];
                     $ref_her->cargaDatosReferenciaId($id_ref_heredada);
                     $cantidad_piezas_heredada = $ref_heredada->dameCantidadPiezaHeredada($id_referencia,$id_ref_heredada);
 
@@ -87,6 +87,26 @@
     <?php
         }
     ?>
+</div>
+<div id="capa_input_referencias_heredadas_totales" style="display: none">
+<?php
+    // Guardamos en un array oculto todas las referencias heredadas anidadas de la referencia
+    for($i=0;$i<count($res_heredadas);$i++){
+        $id_ref_heredada = $res_heredadas[$i]["id_ref_heredada"];?>
+        <input type="hidden" name="REFS_HEREDADAS_TOTALES[]" id="REFS_HEREDADAS_TOTALES[]" value="<?php echo $id_ref_heredada;?>" />
+<?php
+    }
+?>
+</div>
+<div id="capa_input_referencias_heredadas_principales" style="display: none">
+<?php
+    // Guardamos en un array oculto todas las referencias principales de la referencia
+    for($i=0;$i<count($res_heredadas_principales);$i++) {
+        $id_ref_heredada = $res_heredadas_principales[$i]["id_ref_heredada"]; ?>
+        <input type="hidden" name="REFS_HEREDADAS_PRINCIPALES[]" id="REFS_HEREDADAS_PRINCIPALES[]" value="<?php echo $id_ref_heredada; ?>"/>
+<?php
+    }
+?>
 </div>
 <br/>
 <br/>

@@ -16,7 +16,7 @@ $albaranInformatico = new AlbaranInformatico();
 $listadoAlbaranesInformaticos = new ListadoAlbaranesInformaticos();
 
 // ALMACEN OFICINA SIMUMAK
-$id_almacen = 1;
+$id_almacen = 22;
 
 if(isset($_GET["cerrarAlbaran"]) and $_GET["cerrarAlbaran"] == 1) {
     $id_albaran = $_GET["id_albaran"];    

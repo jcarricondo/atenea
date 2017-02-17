@@ -204,7 +204,6 @@ class AlbaranPeriferico extends MySQL {
         return res;
     }
 
-
 	// Devuelve los movimientos activos de un periferico 
 	function dameUltimoMovimientoPeriferico($id_periferico) {
 		$consulta = sprintf("select * from albaranes_perifericos_movimientos where id_periferico=%s and activo=1 order by fecha_creado DESC",
@@ -292,6 +291,37 @@ class AlbaranPeriferico extends MySQL {
 		$this->ejecutarConsulta();
 		return $this->getResultados();
 	}
+
+	// Función que devuelve los motivos de un albarán de entrada de periféricos
+	function dameMotivosAlbaranEntradaPerifericos($id_almacen){
+		$consultaSql = sprintf("select motivo from albaranes_perifericos_motivos where activo=1 and tipo_motivo='ENTRADA' and id_sede in
+                                  (select id_sede from almacenes where activo=1 and id_almacen=%s)",
+				$this->makeValue($id_almacen, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		return $this->getResultados();
+	}
+
+	// Función que devuelve los motivos de un albarán de salida de periféricos
+	function dameMotivosAlbaranSalidaPerifericos($id_almacen){
+		$consultaSql = sprintf("select motivo from albaranes_perifericos_motivos where activo=1 and tipo_motivo='SALIDA' and id_sede in
+                                  (select id_sede from almacenes where activo=1 and id_almacen=%s)",
+				$this->makeValue($id_almacen, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		return $this->getResultados();
+	}
+
+	// Función que devuelve los motivos de un albarán de periféricos un almacen sin tener en cuenta el tipo
+	function dameMotivosAlbaranPerifericos($id_almacen){
+		$consultaSql = sprintf("select distinct motivo from albaranes_perifericos_motivos where activo=1 and id_sede in
+                                  (select id_sede from almacenes where activo=1 and id_almacen=%s) order by tipo_motivo,id_motivo",
+				$this->makeValue($id_almacen, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		return $this->getResultados();
+	}
+
 
 	
 	// Devuelve la cadena de un error según su identificador

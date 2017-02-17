@@ -288,10 +288,9 @@ class PerifericoAlmacen extends MySQL {
 		else {
 			return 9;
 		}
-
 	}
 
-	
+
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {
 		switch($error_num) {

@@ -360,9 +360,71 @@ function cambiarEstado(id_periferico,estado){
 	}
 }
 
-// Función que cambia los campos del buscador de albaranes según la sede
+// Función que carga los tipos de motivos de los albaranes del almacen de perifericos
+function cargaMotivos(id_almacen,tipo_albaran){
+    // Realizamos la petición al servidor para obtener los motivos del albaran
+    var respuesta = (function () {
+        var respuesta = null;
+        $.ajax({
+            dataType: "json",
+            url: "../ajax/almacen_perifericos/almacen_perifericos.php?func=cargaMotivos",
+            data: "id_almacen=" + id_almacen + "&tipo_albaran=" + tipo_albaran,
+            type: "GET",
+            async: false,
+            success: function (data) {
+                respuesta = data;
+            }
+        });
+        return respuesta;
+    })();
+
+    var capa_motivo = document.getElementById('capa_motivo');
+    var salida = '';
+
+    if(respuesta == null) {
+        capa_motivo.innerHTML = "";
+        salida = '<input type="hidden" id="motivo" name="motivo" value=""/>';
+        capa_motivo.innerHTML = salida;
+    }
+    else {
+        salida += '<div class="LabelCreacionBasico">Motivo * </div>';
+        salida += '<select id="motivo" name="motivo" class="CreacionBasicoInput">';
+        for(var i in respuesta) salida += '<option value="' + respuesta[i] + '">' + respuesta[i] + '</option>';
+        salida += '</select>';
+        capa_motivo.innerHTML = salida;
+    }
+}
+
+// Función que carga los tipos de motivos de los albaranes de periféricos para el buscador
+function cargaMotivosBuscador(id_sede){
+    // Realizamos la petición al servidor para obtener los motivos del albaran
+    var respuesta = (function () {
+        var respuesta = null;
+        $.ajax({
+            dataType: "json",
+            url: "../ajax/almacen_perifericos/almacen_perifericos.php?func=cargaMotivosBuscador",
+            data: "id_sede=" + id_sede,
+            type: "GET",
+            async: false,
+            success: function (data) {
+                respuesta = data;
+            }
+        });
+        return respuesta;
+    })();
+
+    var select_motivo = document.getElementById('tipo_motivo');
+    var salida = "";
+    salida += '<option></option>';
+
+    for(var i in respuesta) salida += '<option>' + respuesta[i] + '</option>';
+    select_motivo.innerHTML = salida;
+}
+
+// Función que cambia los campos del buscador de albaranes de periféricos según la sede
 function cambiaCamposBuscadorAlbaran(id_sede){
     cargaAlmacenes(id_sede);
+    cargaMotivosBuscador(id_sede);
 }
 
 // Función que descarga el informe del albarán

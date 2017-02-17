@@ -72,7 +72,7 @@ class Referencia_Heredada extends Referencia {
 	}
 
 	// Función que devuelve las referencias heredadas de la referencia
-	function dameHeredadas($id_referencia){
+	function dameHeredadasPrincipales($id_referencia){
 		$consulta = sprintf("select id_ref_heredada from referencias_heredadas where activo=1 and id_referencia=%s order by id_ref_heredada",
 				$this->makeValue($id_referencia, "int"));
 		$this->setConsulta($consulta);
@@ -80,6 +80,30 @@ class Referencia_Heredada extends Referencia {
 		$res_heredadas = $this->getResultados();
 		return $res_heredadas;
 	}
+
+	// Función que devuelve todas las referencias heredadas incluyendo a su descendencia de una referencia
+	function dameTodasHeredadas($id_referencia){
+		// Obtenemos los hijos y descendencia de la referencia
+		$res_heredadas = $this->dameHeredadasPrincipales($id_referencia);
+		$array_heredadas_leidas = array();
+		$hay_heredadas = true;
+		while ($hay_heredadas){
+			for($i=0;$i<count($res_heredadas);$i++){
+				$id_ref_heredada = $res_heredadas[$i]["id_ref_heredada"];
+				if(!in_array($id_ref_heredada,$array_heredadas_leidas)){
+					// Buscamos heredadas de una heredada
+					$res_hijos_heredadas = $this->dameHeredadasPrincipales($id_ref_heredada);
+					if($res_hijos_heredadas != NULL) $res_heredadas = array_merge($res_heredadas,$res_hijos_heredadas);
+					// Añadimos el nodo al array de los leidos
+					$array_heredadas_leidas[] = $id_ref_heredada;
+				}
+			}
+			$hay_heredadas = $res_heredadas === $array_heredadas_leidas;
+		}
+		return $res_heredadas;
+	}
+
+
 
 	// Función que devuelve la cantidad de piezas de la referencia heredada
 	function dameCantidadPiezaHeredada($id_referencia,$id_referencia_heredada){

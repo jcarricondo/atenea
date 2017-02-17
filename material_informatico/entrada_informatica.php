@@ -16,7 +16,7 @@ $materialInformatico = new MaterialInformatico();
 $albaranInformatico = new AlbaranInformatico();
 
 // Obtenemos el nombre del almacen 
-$id_almacen = 1;
+$id_almacen = 22;
 $almacen->cargaDatosAlmacenId($id_almacen);
 $nombre_almacen = $almacen->nombre;
 
