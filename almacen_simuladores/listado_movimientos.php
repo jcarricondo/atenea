@@ -267,17 +267,14 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
                 <select id="tipo_motivo" name="tipo_motivo"  class="BuscadorInputAlmacen">
                     <option></option>
                     <?php
-                    if($esAdminGlobal) $array_tipos_motivo = array("AJUSTE DESVIACION","COMPRA / SUMINISTRO","SERVICIO REPARACION","MERMA","NACIONALIZAÇÃO","ARMAZENAGEM","MOVIMENTAÇÃO ARMAZÉNS","MERMA","EXPLORAÇÃO","AJUSTE DESVIO","OUTROS" );
-                    else if($esUsuarioBrasil) $array_tipos_motivo = array("NACIONALIZAÇÃO","ARMAZENAGEM","MOVIMENTAÇÃO ARMAZÉNS","MERMA","EXPLORAÇÃO","AJUSTE DESVIO","OUTROS");
-                    else $array_tipos_motivo = $array_tipos_motivo = array("AJUSTE DESVIACION","COMPRA / SUMINISTRO","SERVICIO REPARACION","MERMA");
+                        if(!empty($id_almacen)) $res_motivos = $albaranSimulador->dameMotivosAlbaranSimuladores($id_almacen);
+                        else $res_motivos = $sede->dameMotivosAlbaranSimuladoresSede($id_sede);
 
-                    for($i=0;$i<count($array_tipos_motivo);$i++){
-                        echo '<option';
-                        if($array_tipos_motivo[$i] == $_SESSION["tipo_motivo_simuladores_movimientos"]){
-                            echo ' selected="selected"';
+                        for($i=0;$i<count($res_motivos);$i++) {
+                            $motivo_bus = $res_motivos[$i]["motivo"]; ?>
+                            <option <?php if($_SESSION["tipo_motivo_simuladores_movimientos"] == $motivo_bus) echo "selected"; ?>><?php echo $motivo_bus;?></option>
+                    <?php
                         }
-                        echo '>'.$array_tipos_motivo[$i].'</option>';
-                    }
                     ?>
                 </select>
             </td>

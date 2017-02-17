@@ -292,6 +292,36 @@ class AlbaranSimulador extends MySQL {
 		return $this->getResultados();
 	}
 
+	// Función que devuelve los motivos de un albarán de entrada de simuladores
+	function dameMotivosAlbaranEntradaSimuladores($id_almacen){
+		$consultaSql = sprintf("select motivo from albaranes_simuladores_motivos where activo=1 and tipo_motivo='ENTRADA' and id_sede in
+                                  (select id_sede from almacenes where activo=1 and id_almacen=%s)",
+				$this->makeValue($id_almacen, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		return $this->getResultados();
+	}
+
+	// Función que devuelve los motivos de un albarán de salida de simuladores
+	function dameMotivosAlbaranSalidaSimuladores($id_almacen){
+		$consultaSql = sprintf("select motivo from albaranes_simuladores_motivos where activo=1 and tipo_motivo='SALIDA' and id_sede in
+                                  (select id_sede from almacenes where activo=1 and id_almacen=%s)",
+				$this->makeValue($id_almacen, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		return $this->getResultados();
+	}
+
+	// Función que devuelve los motivos de un albarán de simuladores un almacen sin tener en cuenta el tipo
+	function dameMotivosAlbaranSimuladores($id_almacen){
+		$consultaSql = sprintf("select distinct motivo from albaranes_simuladores_motivos where activo=1 and id_sede in
+                                  (select id_sede from almacenes where activo=1 and id_almacen=%s) order by tipo_motivo,id_motivo",
+				$this->makeValue($id_almacen, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		return $this->getResultados();
+	}
+
 	
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {

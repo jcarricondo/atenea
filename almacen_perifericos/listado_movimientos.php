@@ -269,13 +269,13 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
                 <select id="tipo_motivo" name="tipo_motivo" class="BuscadorInputAlmacen">
                     <option></option>
                     <?php
-                    $array_tipos_motivo = array("AJUSTE DESVIACION","COMPRA / SUMINISTRO","MERMA","SERVICIO REPARACION");
-                    for($i=0;$i<count($array_tipos_motivo);$i++){
-                        echo '<option';
-                        if($array_tipos_motivo[$i] == $_SESSION["tipo_motivo_perifericos_movimientos"]){
-                            echo ' selected="selected"';
-                        }
-                        echo '>'.$array_tipos_motivo[$i].'</option>';
+                        if(!empty($id_almacen)) $res_motivos = $albaranPeriferico->dameMotivosAlbaranPerifericos($id_almacen);
+                        else $res_motivos = $sede->dameMotivosAlbaranPerifericosSede($id_sede);
+
+                        for($i=0;$i<count($res_motivos);$i++) {
+                            $motivo_bus = $res_motivos[$i]["motivo"]; ?>
+                            <option <?php if($_SESSION["tipo_motivo_perifericos_movimientos"] == $motivo_bus) echo "selected"; ?>><?php echo $motivo_bus;?></option>
+                        <?php
                     }
                     ?>
                 </select>

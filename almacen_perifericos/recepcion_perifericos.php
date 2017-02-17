@@ -136,13 +136,16 @@ echo '<script type="text/javascript" src="../js/almacen_perifericos/almacen_peri
                 </div>
                 <?php
                     // Cargamos todos los almacenes existentes segun la sede del usuario
-                    if($esAdminGlobal) $res_almacenes = $almacen->dameAlmacenesMantenimiento();
+                    if($esAdminGlobal) {
+                        $res_almacenes = $almacen->dameAlmacenesMantenimiento();
+                        $id_almacen_usuario = $almacen->damePrimerAlmacenMantenimiento();
+                    }
                     else $res_almacenes = $sede->dameAlmacenesMantenimientoSede($id_sede_usuario);
 
                     if($esAdminGlobal || $esAdminAlmacen){ ?>
                         <div class="ContenedorCamposCreacionBasico">
                             <div class="LabelCreacionBasico">Almacen * </div>
-                            <select id="almacenes" name="almacenes" class="CreacionBasicoInput">
+                            <select id="almacenes" name="almacenes" class="CreacionBasicoInput" onchange="cargaMotivos(this.value,'ENTRADA')">
                                 <?php
                                     for($i=0;$i<count($res_almacenes);$i++){
                                         $id_almacen_sel = $res_almacenes[$i]["id_almacen"];
@@ -171,17 +174,29 @@ echo '<script type="text/javascript" src="../js/almacen_perifericos/almacen_peri
                         </div>
                 <?php 
                     }
+                    // Cargamos los motivos del albarán de entrada
+                    $res_motivos = $albaranPeriferico->dameMotivosAlbaranEntradaPerifericos($id_almacen_usuario);
                 ?>
-                <div class="ContenedorCamposCreacionBasico">
-                    <div class="LabelCreacionBasico">Motivo * </div>
-                    <select id="motivo" name="motivo"  class="CreacionBasicoInput">
+                <div id="capa_motivo" class="ContenedorCamposCreacionBasico">
+                <?php
+                    if(!empty($res_motivos)) { ?>
+                        <div class="LabelCreacionBasico">Motivo * </div>
+                        <select id="motivo" name="motivo" class="CreacionBasicoInput">
                         <?php
-                        $motivos_entrada = array("AJUSTE DESVIACION","COMPRA / SUMINISTRO","SERVICIO REPARACION");
-                        for($i=0;$i<count($motivos_entrada);$i++){
-                            echo '<option value="'.$motivos_entrada[$i].'">'.$motivos_entrada[$i].'</option>';
-                        }
+                            for($i=0;$i<count($res_motivos);$i++) {
+                                $nombre_motivo = $res_motivos[$i]["motivo"];?>
+                                <option value="<?php echo $nombre_motivo; ?>"><?php echo $nombre_motivo ?></option>
+                        <?php
+                            }
                         ?>
-                    </select>
+                        </select>
+                <?php
+                    }
+                    else { ?>
+                        <input type="hidden" id="motivo" name="motivo" value=""/>
+                <?php
+                    }
+                ?>
                 </div>
                 <br/>
                 <br/>

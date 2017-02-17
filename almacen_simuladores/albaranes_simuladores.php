@@ -79,7 +79,7 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
 	$id_usuario = $_GET["id_usuario"];
     $fecha_creacion = $_GET["fecha_creacion"];
     $num_serie = addslashes($_GET["num_serie"]);
-    $motivo = $_GET["motivo"];
+    $tipo_motivo = $_GET["tipo_motivo"];
     if($filtroSede) $id_sede = $_GET["sedes"];
 
     if($_GET["cerrarAlbaran"] == 1){
@@ -115,14 +115,14 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
         }
     }
 
-    $listadoAlbaranesSimulador->setValores($nombre_albaran,$tipo_albaran,$id_centro_logistico,$id_usuario,$fecha_creacion,$num_serie,$motivo,$id_almacen,$id_sede,$fecha_creacion_ini,$fecha_creacion_fin,'');
+    $listadoAlbaranesSimulador->setValores($nombre_albaran,$tipo_albaran,$id_centro_logistico,$id_usuario,$fecha_creacion,$num_serie,$tipo_motivo,$id_almacen,$id_sede,$fecha_creacion_ini,$fecha_creacion_fin,'');
     $listadoAlbaranesSimulador->realizarConsulta();
     $resultadosBusqueda = $listadoAlbaranesSimulador->albaranes;
     $num_resultados = count($resultadosBusqueda); 
 
 	// Se realiza la consulta con paginación
     $pg_totalPaginas = ceil(count($resultadosBusqueda) / $pg_registros);
-    $listadoAlbaranesSimulador->setValores($nombre_albaran,$tipo_albaran,$id_centro_logistico,$id_usuario,$fecha_creacion,$num_serie,$motivo,$id_almacen,$id_sede,$fecha_creacion_ini,$fecha_creacion_fin,$paginacion);
+    $listadoAlbaranesSimulador->setValores($nombre_albaran,$tipo_albaran,$id_centro_logistico,$id_usuario,$fecha_creacion,$num_serie,$tipo_motivo,$id_almacen,$id_sede,$fecha_creacion_ini,$fecha_creacion_fin,$paginacion);
     $listadoAlbaranesSimulador->realizarConsulta();
     $resultadosBusqueda = $listadoAlbaranesSimulador->albaranes; 
 
@@ -133,7 +133,7 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
 	$_SESSION["id_usuario_albaran_simuladores"] = $id_usuario;
     $_SESSION["fecha_creacion_albaran_simuladores"] = $fecha_creacion;
     $_SESSION["num_serie_albaran_simuladores"] = stripslashes(htmlspecialchars($num_serie)); 
-    $_SESSION["tipo_motivo_albaran_simuladores"] = $motivo;
+    $_SESSION["tipo_motivo_albaran_simuladores"] = $tipo_motivo;
     $_SESSION["id_almacen_albaran_simuladores"] = $id_almacen;
     $_SESSION["id_sede_albaran_simuladores"] = $id_sede;
 }
@@ -279,18 +279,16 @@ echo '<script type="text/javascript" src="../js/almacen_simuladores/almacen_simu
             </td>
             <td style="width: 33%;">
                 <div class="Label">Motivo</div>
-                <select id="motivo" name="motivo"  class="BuscadorInputAlmacen">
+                <select id="tipo_motivo" name="tipo_motivo"  class="BuscadorInputAlmacen">
                     <option></option>
                     <?php
-                        if($esAdminGlobal) $array_tipos_motivo = array("AJUSTE DESVIACION","COMPRA / SUMINISTRO","SERVICIO REPARACION","MERMA","NACIONALIZAÇÃO","ARMAZENAGEM","MOVIMENTAÇÃO ARMAZÉNS","MERMA","EXPLORAÇÃO","AJUSTE DESVIO","OUTROS" );
-                        else if($esUsuarioBrasil) $array_tipos_motivo = array("NACIONALIZAÇÃO","ARMAZENAGEM","MOVIMENTAÇÃO ARMAZÉNS","MERMA","EXPLORAÇÃO","AJUSTE DESVIO","OUTROS");
-                        else $array_tipos_motivo = array("AJUSTE DESVIACION","COMPRA / SUMINISTRO","SERVICIO REPARACION","MERMA");
-                        for($i=0;$i<count($array_tipos_motivo);$i++){
-                            echo '<option';
-                            if($array_tipos_motivo[$i] == $_SESSION["tipo_motivo_albaran_simuladores"]){
-                                echo ' selected="selected"';
-                            }
-                            echo '>'.$array_tipos_motivo[$i].'</option>';
+                        if(!empty($id_almacen)) $res_motivos = $albaranSimulador->dameMotivosAlbaranSimuladores($id_almacen);
+                        else $res_motivos = $sede->dameMotivosAlbaranSimuladoresSede($id_sede);
+
+                        for($i=0;$i<count($res_motivos);$i++) {
+                            $motivo_bus = $res_motivos[$i]["motivo"]; ?>
+                            <option <?php if($_SESSION["tipo_motivo_albaran_simuladores"] == $motivo_bus) echo "selected"; ?>><?php echo $motivo_bus;?></option>
+                    <?php
                         }
                     ?>
                 </select>
@@ -404,8 +402,8 @@ echo '<script type="text/javascript" src="../js/almacen_simuladores/almacen_simu
                 <div style="font: bold 11px Verdana,Arial; margin: 0 auto; padding: 10px 0; width: 350px; text-align: center;"> 
                 <?php    
                     if(($pg_pagina - 1) > 0) { ?>
-                        <a href="albaranes_simuladores.php?pg=1&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_simuladores"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_simuladores"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_simuladores"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_simuladores"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_simuladores"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_simuladores"];?>&motivo=<?php echo $_SESSION["tipo_motivo_albaran_simuladores"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_simuladores"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_simuladores"];?>">Primera&nbsp&nbsp&nbsp</a>
-                        <a href="albaranes_simuladores.php?pg=<?php echo $pg_pagina - 1;?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_simuladores"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_simuladores"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_simuladores"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_simuladores"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_simuladores"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_simuladores"];?>&motivo=<?php echo $_SESSION["tipo_motivo_albaran_simuladores"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_simuladores"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_simuladores"];?>"> Anterior</a>
+                        <a href="albaranes_simuladores.php?pg=1&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_simuladores"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_simuladores"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_simuladores"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_simuladores"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_simuladores"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_simuladores"];?>&tipo_motivo=<?php echo $_SESSION["tipo_motivo_albaran_simuladores"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_simuladores"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_simuladores"];?>">Primera&nbsp&nbsp&nbsp</a>
+                        <a href="albaranes_simuladores.php?pg=<?php echo $pg_pagina - 1;?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_simuladores"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_simuladores"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_simuladores"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_simuladores"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_simuladores"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_simuladores"];?>&tipo_motivo=<?php echo $_SESSION["tipo_motivo_albaran_simuladores"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_simuladores"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_simuladores"];?>"> Anterior</a>
                 <?php  
                     }  
                     else {
@@ -414,8 +412,8 @@ echo '<script type="text/javascript" src="../js/almacen_simuladores/almacen_simu
             
                     echo ' &nbsp;&nbsp;&nbsp;['.$pg_pagina.' / '.$pg_totalPaginas.']&nbsp;&nbsp;&nbsp;';
                     if($pg_pagina < $pg_totalPaginas) { ?>
-                        <a href="albaranes_simuladores.php?pg=<?php echo $pg_pagina + 1;?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_simuladores"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_simuladores"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_simuladores"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_simuladores"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_simuladores"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_simuladores"];?>&motivo=<?php echo $_SESSION["tipo_motivo_albaran_simuladores"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_simuladores"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_simuladores"];?>">Siguiente&nbsp&nbsp&nbsp</a>
-                        <a href="albaranes_simuladores.php?pg=<?php echo $pg_totalPaginas; ?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_simuladores"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_simuladores"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_simuladores"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_simuladores"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_simuladores"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_simuladores"];?>&motivo=<?php echo $_SESSION["tipo_motivo_albaran_simuladores"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_simuladores"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_simuladores"];?>">Última</a>
+                        <a href="albaranes_simuladores.php?pg=<?php echo $pg_pagina + 1;?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_simuladores"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_simuladores"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_simuladores"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_simuladores"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_simuladores"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_simuladores"];?>&tipo_motivo=<?php echo $_SESSION["tipo_motivo_albaran_simuladores"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_simuladores"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_simuladores"];?>">Siguiente&nbsp&nbsp&nbsp</a>
+                        <a href="albaranes_simuladores.php?pg=<?php echo $pg_totalPaginas; ?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_simuladores"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_simuladores"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_simuladores"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_simuladores"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_simuladores"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_simuladores"];?>&tipo_motivo=<?php echo $_SESSION["tipo_motivo_albaran_simuladores"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_simuladores"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_simuladores"];?>">Última</a>
                 <?php        
                     } 
                     else {
