@@ -48,6 +48,16 @@ class Almacen extends MySql{
         return $this->getResultados();
     }
 
+    // Función que devuelve el primer almacen de mantenimiento de todas las sedes de Mantenimiento
+    function damePrimerAlmacenMantenimiento(){
+        $consultaSql = "select id_almacen from almacenes where activo=1 and (id_tipo=0 or id_tipo=2) limit 0,1";
+        $this->setConsulta($consultaSql);
+        $this->ejecutarConsulta();
+        $res_id_almacen = $this->getPrimerResultado();
+        $res_id_almacen = $res_id_almacen["id_almacen"];
+        return $res_id_almacen;
+    }
+
 	// Función que devuelve la sede a la que pertenece el almacen
 	function dameSedeAlmacen($id_almacen){
 		$consultaSql = sprintf("select id_sede from almacenes where id_almacen=%s",
@@ -96,7 +106,6 @@ class Almacen extends MySql{
         $res = $this->getPrimerResultado();
         return $res["id_sede"] == 3;
     }
-
 
 }
 ?>

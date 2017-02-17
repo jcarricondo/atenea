@@ -23,7 +23,7 @@ $materialInformatico = new MaterialInformatico();
 $listadoMovimientos = new listadoMovimientosInformaticos();
 
 // ALMACEN OFICINA SIMUMAK
-$id_almacen = 1;
+$id_almacen = 22;
 
 // Se obtienen los datos del formulario
 if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or $buscar == 1) {

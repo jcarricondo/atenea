@@ -677,6 +677,37 @@ if(isset($_GET["func"])){
             $respuesta .= '</select>';
             echo $respuesta;
             break;
+		case "cargaMotivos":
+			$json = array();
+			// Obtenemos el almacen y el tipo de albarán
+			$id_almacen = $_GET["id_almacen"];
+			$tipo_albaran = $_GET["tipo_albaran"];
+
+			if($tipo_albaran == "ENTRADA") $res_motivos = $albaranPeriferico->dameMotivosAlbaranEntradaPerifericos($id_almacen);
+			else if($tipo_albaran == "SALIDA") $res_motivos = $albaranPeriferico->dameMotivosAlbaranSalidaPerifericos($id_almacen);
+			else $res_motivos = $albaranPeriferico->dameMotivosAlbaranPerifericos($id_almacen);
+
+			// Cargamos los motivos y los guardamos en un array para incluirlo en la variable JSON
+			for($i=0;$i<count($res_motivos);$i++) $array_motivos[] = $res_motivos[$i]["motivo"];
+
+			$json = $array_motivos;
+			echo json_encode($json, JSON_FORCE_OBJECT);
+			break;
+		case "cargaMotivosBuscador":
+			$json = array();
+			// Obtenemos la sede
+			$id_sede = $_GET["id_sede"];
+			// Obtenemos los motivos según la sede
+			$res_motivos = $sede->dameMotivosAlbaranPerifericosSede($id_sede);
+			// Cargamos los motivos y los guardamos en un array para incluirlo en la variable JSON
+			for($i=0;$i<count($res_motivos);$i++) $array_motivos[] = $res_motivos[$i]["motivo"];
+
+			$json = $array_motivos;
+			echo json_encode($json, JSON_FORCE_OBJECT);
+			break;
+		default:
+
+		break;
 	}
 }
 ?>

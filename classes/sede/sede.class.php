@@ -103,6 +103,24 @@ class Sede extends MySql{
         return $this->getResultados();
     }
 
+	// Función que devuelve los motivos de albaran de periféricos según la sede
+	function dameMotivosAlbaranPerifericosSede($id_sede){
+		$consultaSql = sprintf("select distinct motivo from albaranes_perifericos_motivos where activo=1 and id_sede=%s",
+				$this->makeValue($id_sede,"int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		return $this->getResultados();
+	}
+
+	// Función que devuelve los motivos de albaran de simuladores según la sede
+	function dameMotivosAlbaranSimuladoresSede($id_sede){
+		$consultaSql = sprintf("select distinct motivo from albaranes_simuladores_motivos where activo=1 and id_sede=%s",
+				$this->makeValue($id_sede,"int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		return $this->getResultados();
+	}
+
     // Función que devuelve los usuarios de almacen segun su sede
     function dameUsuariosAlmacenSede($id_sede){
         $consultaSql = sprintf("select * from usuarios where id_almacen in (select id_almacen from almacenes where id_sede=%s)",

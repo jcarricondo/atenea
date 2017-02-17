@@ -80,7 +80,7 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
 	$id_usuario = $_GET["id_usuario"];
     $fecha_creacion = $_GET["fecha_creacion"];
     $num_serie = addslashes($_GET["num_serie"]);
-    $motivo = $_GET["motivo"];
+    $tipo_motivo = $_GET["tipo_motivo"];
     if($filtroSede) $id_sede = $_GET["sedes"];
 
     if($_GET["cerrarAlbaran"] == 1){
@@ -116,14 +116,14 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
         }
     }
 
-    $listadoAlbaranesPeriferico->setValores($nombre_albaran,$tipo_albaran,$id_centro_logistico,$id_usuario,$fecha_creacion,$num_serie,$motivo,$id_almacen,$id_sede,$fecha_creacion_ini,$fecha_creacion_fin,'');
+    $listadoAlbaranesPeriferico->setValores($nombre_albaran,$tipo_albaran,$id_centro_logistico,$id_usuario,$fecha_creacion,$num_serie,$tipo_motivo,$id_almacen,$id_sede,$fecha_creacion_ini,$fecha_creacion_fin,'');
     $listadoAlbaranesPeriferico->realizarConsulta();
     $resultadosBusqueda = $listadoAlbaranesPeriferico->albaranes;
     $num_resultados = count($resultadosBusqueda); 
 
 	// Se realiza la consulta con paginación
     $pg_totalPaginas = ceil(count($resultadosBusqueda) / $pg_registros);
-    $listadoAlbaranesPeriferico->setValores($nombre_albaran,$tipo_albaran,$id_centro_logistico,$id_usuario,$fecha_creacion,$num_serie,$motivo,$id_almacen,$id_sede,$fecha_creacion_ini,$fecha_creacion_fin,$paginacion);
+    $listadoAlbaranesPeriferico->setValores($nombre_albaran,$tipo_albaran,$id_centro_logistico,$id_usuario,$fecha_creacion,$num_serie,$tipo_motivo,$id_almacen,$id_sede,$fecha_creacion_ini,$fecha_creacion_fin,$paginacion);
     $listadoAlbaranesPeriferico->realizarConsulta();
     $resultadosBusqueda = $listadoAlbaranesPeriferico->albaranes; 
 
@@ -134,10 +134,9 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
 	$_SESSION["id_usuario_albaran_perifericos"] = $id_usuario;
     $_SESSION["fecha_creacion_albaran_perifericos"] = $fecha_creacion;
     $_SESSION["num_serie_albaran_perifericos"] = stripslashes(htmlspecialchars($num_serie)); 
-    $_SESSION["tipo_motivo_albaran_perifericos"] = $motivo;
+    $_SESSION["tipo_motivo_albaran_perifericos"] = $tipo_motivo;
     $_SESSION["id_almacen_albaran_perifericos"] = $id_almacen;
     $_SESSION["id_sede_albaran_perifericos"] = $id_sede;
-
 }
 
 $titulo_pagina = "Almacen Periféricos > Albaranes";
@@ -281,16 +280,16 @@ echo '<script type="text/javascript" src="../js/almacen_perifericos/almacen_peri
             </td>
             <td style="width:33%;">
                 <div class="Label">Motivo</div>
-                <select id="motivo" name="motivo" class="BuscadorInputAlmacen">
+                <select id="tipo_motivo" name="tipo_motivo" class="BuscadorInputAlmacen">
                     <option></option>
                     <?php
-                        $array_tipos_motivo = array("AJUSTE DESVIACION","COMPRA / SUMINISTRO","SERVICIO REPARACION","MERMA");
-                        for($i=0;$i<count($array_tipos_motivo);$i++){
-                            echo '<option';
-                            if($array_tipos_motivo[$i] == $_SESSION["tipo_motivo_albaran_perifericos"]){
-                                echo ' selected="selected"';
-                            }
-                            echo '>'.$array_tipos_motivo[$i].'</option>';
+                        if(!empty($id_almacen)) $res_motivos = $albaranPeriferico->dameMotivosAlbaranPerifericos($id_almacen);
+                        else $res_motivos = $sede->dameMotivosAlbaranPerifericosSede($id_sede);
+
+                        for($i=0;$i<count($res_motivos);$i++) {
+                            $motivo_bus = $res_motivos[$i]["motivo"]; ?>
+                            <option <?php if($_SESSION["tipo_motivo_albaran_perifericos"] == $motivo_bus) echo "selected"; ?>><?php echo $motivo_bus;?></option>
+                    <?php
                         }
                     ?>
                 </select>
@@ -405,8 +404,8 @@ echo '<script type="text/javascript" src="../js/almacen_perifericos/almacen_peri
                 <div style="font: bold 11px Verdana,Arial; margin: 0 auto; padding: 10px 0; width: 350px; text-align: center;"> 
                 <?php    
                     if(($pg_pagina - 1) > 0) { ?>
-                        <a href="albaranes_perifericos.php?pg=1&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_perifericos"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_perifericos"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_perifericos"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_perifericos"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_perifericos"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_perifericos"];?>&motivo=<?php echo $_SESSION["tipo_motivo_albaran_perifericos"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_perifericos"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_perifericos"];?>">Primera&nbsp&nbsp&nbsp</a>
-                        <a href="albaranes_perifericos.php?pg=<?php echo $pg_pagina - 1;?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_perifericos"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_perifericos"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_perifericos"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_perifericos"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_perifericos"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_perifericos"];?>&motivo=<?php echo $_SESSION["tipo_motivo_albaran_perifericos"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_perifericos"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_perifericos"];?>"> Anterior</a>
+                        <a href="albaranes_perifericos.php?pg=1&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_perifericos"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_perifericos"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_perifericos"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_perifericos"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_perifericos"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_perifericos"];?>&tipo_motivo=<?php echo $_SESSION["tipo_motivo_albaran_perifericos"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_perifericos"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_perifericos"];?>">Primera&nbsp&nbsp&nbsp</a>
+                        <a href="albaranes_perifericos.php?pg=<?php echo $pg_pagina - 1;?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_perifericos"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_perifericos"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_perifericos"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_perifericos"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_perifericos"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_perifericos"];?>&tipo_motivo=<?php echo $_SESSION["tipo_motivo_albaran_perifericos"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_perifericos"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_perifericos"];?>"> Anterior</a>
                 <?php  
                     }  
                     else {
@@ -415,8 +414,8 @@ echo '<script type="text/javascript" src="../js/almacen_perifericos/almacen_peri
             
                     echo ' &nbsp;&nbsp;&nbsp;['.$pg_pagina.' / '.$pg_totalPaginas.']&nbsp;&nbsp;&nbsp;';
                     if($pg_pagina < $pg_totalPaginas) { ?>
-                        <a href="albaranes_perifericos.php?pg=<?php echo $pg_pagina + 1;?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_perifericos"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_perifericos"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_perifericos"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_perifericos"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_perifericos"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_perifericos"];?>&motivo=<?php echo $_SESSION["tipo_motivo_albaran_perifericos"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_perifericos"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_perifericos"];?>">Siguiente&nbsp&nbsp&nbsp</a>
-                        <a href="albaranes_perifericos.php?pg=<?php echo $pg_totalPaginas; ?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_perifericos"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_perifericos"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_perifericos"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_perifericos"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_perifericos"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_perifericos"];?>&motivo=<?php echo $_SESSION["tipo_motivo_albaran_perifericos"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_perifericos"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_perifericos"];?>">Última</a>
+                        <a href="albaranes_perifericos.php?pg=<?php echo $pg_pagina + 1;?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_perifericos"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_perifericos"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_perifericos"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_perifericos"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_perifericos"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_perifericos"];?>&tipo_motivo=<?php echo $_SESSION["tipo_motivo_albaran_perifericos"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_perifericos"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_perifericos"];?>">Siguiente&nbsp&nbsp&nbsp</a>
+                        <a href="albaranes_perifericos.php?pg=<?php echo $pg_totalPaginas; ?>&realizandoBusqueda=1&nombre_albaran=<?php echo $_SESSION["nombre_albaran_albaran_perifericos"];?>&tipo_albaran=<?php echo $_SESSION["tipo_albaran_albaran_perifericos"];?>&id_centro_logistico=<?php echo $_SESSION["id_centro_logistico_albaran_perifericos"];?>&id_usuario=<?php echo $_SESSION["id_usuario_albaran_perifericos"];?>&fecha_creacion=<?php echo $_SESSION["fecha_creacion_albaran_perifericos"];?>&num_serie=<?php echo $_SESSION["num_serie_albaran_perifericos"];?>&tipo_motivo=<?php echo $_SESSION["tipo_motivo_albaran_perifericos"];?>&almacenes=<?php echo $_SESSION["id_almacen_albaran_perifericos"];?>&sedes=<?php echo $_SESSION["id_sede_albaran_perifericos"];?>">Última</a>
                 <?php        
                     } 
                     else {

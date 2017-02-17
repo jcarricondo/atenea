@@ -13,7 +13,7 @@ $validacion = new Funciones();
 $materialInformatico = new MaterialInformatico();
 
 // Obtenemos el nombre del almacen 
-$id_almacen = 1;
+$id_almacen = 22;
 $almacen->cargaDatosAlmacenId($id_almacen);
 $nombre_almacen = $almacen->nombre;
 $unidades = 1;
