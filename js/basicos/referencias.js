@@ -1,0 +1,6 @@
+// JavaScript Document
+// Fichero que contiene las funciones JavaScript utilizadas en el listado de referencias
+
+function descargar_documentacion(id_referencia){
+   window.location="referencias.php?id_referencia=" + id_referencia + "&op=descargar_documentacion";
+}

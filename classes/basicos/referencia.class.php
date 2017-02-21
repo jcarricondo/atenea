@@ -1097,6 +1097,17 @@ class Referencia extends MySQL {
         $this->comentarios = $comentarios_aux;
     }
 
+	// Función que determina si una referencia tiene documentación adjunta
+	function tieneDocumentacionAdjunta($id_referencia){
+		$consultaSql = sprintf("select id_archivo from referencias_archivos where activo=1 and id_referencia=%s order by id_referencia",
+						$this->makeValue($id_referencia, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_archivos = $this->getResultados();
+		$tiene_archivos = $res_archivos != NULL;
+		return $tiene_archivos;
+	}
+
 
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {

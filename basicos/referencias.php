@@ -4,6 +4,7 @@ include("../includes/sesion.php");
 include("../classes/basicos/listado_referencias.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/funciones/funciones.class.php");
+require("../funciones/pclzip/pclzip.lib.php");
 permiso(1);
 
 // Establecemos los parametros de la paginacion
@@ -19,8 +20,59 @@ else {
 }
 $paginacion = " limit ".$pg_inicio.', '.$pg_registros;
 
+if ($_GET["op"] == "descargar_documentacion") {
+	$id_referencia = $_GET["id_referencia"];
+
+	// Obtenemos directorio actual y creamos la carpeta que contendra las carpetas de los proveedores
+	$dir_actual = getcwd();
+	mkdir($dir_actual."\\DOCUMENTACION_".$id_referencia, 0700); //LOCAL
+	// mkdir($dir_actual."/DOCUMENTACION_".$id_referencia, 0700);
+	$dir_descarga = $dir_actual."\\DOCUMENTACION_".$id_referencia; //LOCAL
+	// $dir_descarga = $dir_actual."/DOCUMENTACION_".$id_referencia;
+	$dir_actual = $dir_descarga;
+
+	// var_dump($dir_actual);
+
+
+
+
+
+
+
+	// Comprimimos la carpeta y generamos el zip
+	$filename = "DOCUMENTACION_".$id_referencia.".zip";
+	$zip = new PclZip($filename);
+	$zip->create('DOCUMENTACION_'.$id_referencia);
+
+	/*$filename = "ORDENES_COMPRA.zip";
+	$zip = new PclZip('ORDENES_COMPRA.zip');
+	$zip->create("ORDENES_COMPRA");*/
+
+
+	// Llamada para abrir o descargar el zip
+	header("Content-Type: application/zip");
+	header("Content-Disposition: attachment; filename=".$filename);
+	header("Expires: 0");
+	header("Content-Transfer-Encoding: binary");
+	header("Content-Length: ".filesize($filename));
+	header("Pragma: public");
+	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+	header("Cache-Control: private, false");
+	header("Content-Description: File Transfer");
+	readfile($filename);
+
+	// Eliminamos la carpeta creada con sus archivos
+	$funciones->eliminarDir($dir_descarga);
+	// Eliminamos el zip temporal
+	unlink($filename);
+
+
+
+}
+
+
 // Se obtienen los datos del formulario
-if($_GET["ref"] == "creado" or $_GET["ref"] == "modificado" or $_GET["ref"] == "eliminado") {
+if($_GET["ref"] == "creado" or $_GET["ref"] == "modificado" or $_GET["ref"] == "eliminado" or $_GET["op"] == "descargar_documentacion") {
 	$realizarBusqueda = 1;
 }
 if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $realizarBusqueda == 1) {
@@ -134,6 +186,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 $titulo_pagina = "Básicos > Referencias";
 $pagina = "referencias";
 include("../includes/header.php");
+echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script>';
 ?>
 
 <div class="separador"></div> 
@@ -299,6 +352,7 @@ include("../includes/header.php");
             		<th>NOMBRE PIEZA</th>
             		<th>TIPO PIEZA</th>
           			<th>REF. PROV.</th>
+					<th>DOCUMENTACION</th>
                     <th>REF. FABRIC.</th>
             		<th>E.N.</th>
             		<th>E.V.</th>
@@ -378,6 +432,15 @@ include("../includes/header.php");
 							}
 							else {
 								echo $ref->part_proveedor_referencia;	
+							}
+						?>
+					</td>
+					<td style="text-align: center;">
+						<?php
+							$tiene_archivos = $ref->tieneDocumentacionAdjunta($ref->id_referencia);
+							if($tiene_archivos) { ?>
+								<input type="button" id="descargar_doc" name="descargar_doc" value="DESCARGAR" style="font-size: 9px;" class="BotonEliminar" onclick="descargar_documentacion(<?php echo $ref->id_referencia;?>)"/>
+						<?php
 							}
 						?>
 					</td>
