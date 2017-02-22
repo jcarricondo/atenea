@@ -183,5 +183,18 @@ class Funciones extends MySQL{
         }
         return $hasBOM;
     }
+
+	// Función que obtiene la barra de directorio en función del entorno
+	function dameBarraDirectorio(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_barra = '\\';
+				break;
+			default:
+				$dir_barra = '/';
+				break;
+		}
+		return $dir_barra;
+	}
 }
 ?>

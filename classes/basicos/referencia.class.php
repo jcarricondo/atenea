@@ -1108,6 +1108,37 @@ class Referencia extends MySQL {
 		return $tiene_archivos;
 	}
 
+	// Función que obtiene el directorio actual de documentación en función del entorno
+	function dameRutaDocumentacion(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_documentacion = 'C:\xampp\htdocs\proyectos\git\atenea\basicos\documentacion';
+				break;
+			case '/var/www/vhosts/ateneadev.simumak.com/httpdocs':  // DESARROLLO
+				$dir_documentacion = '/var/www/vhosts/ateneadev.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
+				$dir_documentacion = '/var/www/vhosts/ateneapre.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
+				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			default:
+				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+		}
+		return $dir_documentacion;
+	}
+
+	// Función que devuelve todos los archivos adjuntos de la referencia
+	function dameArchivosReferencia($id_referencia){
+		$consultaSql = sprintf("select * from referencias_archivos where activo=1 and id_referencia=%s",
+						$this->makeValue($id_referencia,"int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_archivos = $this->getResultados();
+		return $res_archivos;
+	}
 
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {

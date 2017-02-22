@@ -1,11 +1,15 @@
 <?php
-//Este fichero muestra el listado de las referencias
+// Este fichero muestra el listado de las referencias
 include("../includes/sesion.php");
 include("../classes/basicos/listado_referencias.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/funciones/funciones.class.php");
 require("../funciones/pclzip/pclzip.lib.php");
 permiso(1);
+
+$ref = new Referencia();
+$referencias = new listadoReferencias();
+$funciones = new Funciones();
 
 // Establecemos los parametros de la paginacion
 // Número de registros a mostrar por página
@@ -20,56 +24,9 @@ else {
 }
 $paginacion = " limit ".$pg_inicio.', '.$pg_registros;
 
-if ($_GET["op"] == "descargar_documentacion") {
-	$id_referencia = $_GET["id_referencia"];
-
-	// Obtenemos directorio actual y creamos la carpeta que contendra las carpetas de los proveedores
-	$dir_actual = getcwd();
-	mkdir($dir_actual."\\DOCUMENTACION_".$id_referencia, 0700); //LOCAL
-	// mkdir($dir_actual."/DOCUMENTACION_".$id_referencia, 0700);
-	$dir_descarga = $dir_actual."\\DOCUMENTACION_".$id_referencia; //LOCAL
-	// $dir_descarga = $dir_actual."/DOCUMENTACION_".$id_referencia;
-	$dir_actual = $dir_descarga;
-
-	// var_dump($dir_actual);
-
-
-
-
-
-
-
-	// Comprimimos la carpeta y generamos el zip
-	$filename = "DOCUMENTACION_".$id_referencia.".zip";
-	$zip = new PclZip($filename);
-	$zip->create('DOCUMENTACION_'.$id_referencia);
-
-	/*$filename = "ORDENES_COMPRA.zip";
-	$zip = new PclZip('ORDENES_COMPRA.zip');
-	$zip->create("ORDENES_COMPRA");*/
-
-
-	// Llamada para abrir o descargar el zip
-	header("Content-Type: application/zip");
-	header("Content-Disposition: attachment; filename=".$filename);
-	header("Expires: 0");
-	header("Content-Transfer-Encoding: binary");
-	header("Content-Length: ".filesize($filename));
-	header("Pragma: public");
-	header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-	header("Cache-Control: private, false");
-	header("Content-Description: File Transfer");
-	readfile($filename);
-
-	// Eliminamos la carpeta creada con sus archivos
-	$funciones->eliminarDir($dir_descarga);
-	// Eliminamos el zip temporal
-	unlink($filename);
-
-
-
+if($_GET["op"] == "descargar_documentacion") {
+	include("../basicos/descargar_documentacion_referencias.php");
 }
-
 
 // Se obtienen los datos del formulario
 if($_GET["ref"] == "creado" or $_GET["ref"] == "modificado" or $_GET["ref"] == "eliminado" or $_GET["op"] == "descargar_documentacion") {
@@ -98,7 +55,6 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	if(!is_numeric($precio_pack)) $precio_pack = NULL;
 	if(!is_numeric($id_referencia)) $id_referencia = NULL;
 
-	$funciones = new Funciones();
 	// Convierte la fecha a formato MySql
 	if ($fecha_desde != "") $fecha_desde = $funciones->cFechaMy($fecha_desde);
 	if ($fecha_hasta != "") $fecha_hasta = $funciones->cFechaMy($fecha_hasta);
@@ -121,7 +77,6 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 		if (($ref_fab_pieza[$i] == '-') or ($ref_fab_pieza[$i] == ' ')) $ref_fab_pieza[$i] = '%'; 	
 	}
 	
-	$referencias = new listadoReferencias();
 	// Se pasan los datos del buscador a la clase del listado y se realiza la consulta a la base de datos
 	$referencias->setValores($referencia,$proveedor,$ref_prov_pieza,$precio_pack,$fabricante,$ref_fab_pieza,$tipo_pieza,$part_value_name,$unidades_paquete,$nombre_pieza,$part_value_qty,$busqueda_magica,$ordenar_referencias,$fecha_desde,$fecha_hasta,$id_referencia,'');
 	$referencias->realizarConsulta();
@@ -352,7 +307,7 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
             		<th>NOMBRE PIEZA</th>
             		<th>TIPO PIEZA</th>
           			<th>REF. PROV.</th>
-					<th>DOCUMENTACION</th>
+					<th style="text-align:center">DOCUMENTACION</th>
                     <th>REF. FABRIC.</th>
             		<th>E.N.</th>
             		<th>E.V.</th>
@@ -369,7 +324,6 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
 				<?php
 					// Se cargan los datos de las referencias según su identificador
 					for($i=0;$i<count($resultadosBusqueda);$i++) {
-						$ref = new Referencia();
 						$datoReferencia = $resultadosBusqueda[$i];
 						$ref->cargaDatosReferenciaId($datoReferencia["id_referencia"]);
 				?>
