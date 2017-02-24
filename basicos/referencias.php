@@ -294,8 +294,7 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
     <?php
 		if($mostrar_tabla) {
 			$max_caracteres_ref = 50;
-			$max_caracteres = 25;
-	?>
+			$max_caracteres = 25; ?>
 			<div class="CapaTabla">
 				<table>
         		<tr>
@@ -307,15 +306,14 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
             		<th>NOMBRE PIEZA</th>
             		<th>TIPO PIEZA</th>
           			<th>REF. PROV.</th>
-					<th style="text-align:center">DOCUMENTACION</th>
+					<th style="text-align:center">DOC</th>
                     <th>REF. FABRIC.</th>
-            		<th>E.N.</th>
-            		<th>E.V.</th>
+            		<!--<th>E.N.</th>-->
+            		<!--<th>E.V.</th>-->
                     <th style="text-align:center">PACK PRECIO</th>
             		<th style="text-align:center">UND/PQ</th>
                     <?php 
-                    	if(permisoMenu(4)){
-                    ?>
+                    	if(permisoMenu(4)){ ?>
                     		<th style="text-align:center">ELIMINAR</th>
                     <?php
                     	}
@@ -347,13 +345,11 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
 					</td>
                     <td style="text-align:center">
                        	<?php 
-							if ($ref->proveedor == 1) {
-						?>
+							if ($ref->proveedor == 1) { ?>
                           		<a href="http://es.rs-online.com/web/c/?searchTerm=<?php echo $ref->part_proveedor_referencia;?>" target="_blank">web</a>
                         <?php
 							}
-						    elseif ($ref->proveedor == 2) {
-						?>
+						    elseif ($ref->proveedor == 2) { ?>
                           		<a href="http://es.farnell.com/webapp/wcs/stores/servlet/Search?catalogId=15001&langId=-5&storeId=10176&gs=true&st=<?php echo $ref->part_proveedor_referencia;?>" target="_blank">web</a>
                         <?php 
 							}
@@ -393,7 +389,7 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
 						<?php
 							$tiene_archivos = $ref->tieneDocumentacionAdjunta($ref->id_referencia);
 							if($tiene_archivos) { ?>
-								<input type="button" id="descargar_doc" name="descargar_doc" value="DESCARGAR" style="font-size: 9px;" class="BotonEliminar" onclick="descargar_documentacion(<?php echo $ref->id_referencia;?>)"/>
+								<a href="#" onclick="descargar_documentacion(<?php echo $ref->id_referencia;?>)"><img src="../images/download_icon.jpg" style="vertical-align: middle;" /></a>
 						<?php
 							}
 						?>
@@ -405,26 +401,6 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
 							}
 							else {
 								echo $ref->part_fabricante_referencia;	
-							}
-						?>
-					</td>
-					<td>
-						<?php 
-							if (strlen($ref->part_valor_nombre) > $max_caracteres){
-								echo mb_strcut($ref->part_valor_nombre, 0, 25, "UTF-8").'...';
-							}
-							else {
-								echo $ref->part_valor_nombre;	
-							}
-						?>
-					</td>
-					<td>
-						<?php 
-							if (strlen($ref->part_valor_cantidad) > $max_caracteres){
-								echo mb_strcut($ref->part_valor_cantidad, 0, 25, "UTF-8").'...';
-							}
-							else {
-								echo $ref->part_valor_cantidad;	
 							}
 						?>
 					</td>

@@ -212,6 +212,24 @@ class Plantilla_Producto extends MySql{
             return 7;
         }
     }
+
+
+	// Función que determina si una plantilla tiene documentación adjunta en sus referencias o kits adjuntos
+	function tieneDocumentacionAdjunta($id_plantilla){
+		$consultaSql =
+			sprintf("select distinct id_componente from plantilla_producto_componentes where activo=1 and id_plantilla=%s
+						and ((id_componente in (select id_componente from componentes_archivos where activo=1) or
+							(id_componente in (select id_componente from componentes_referencias where activo=1)) or
+							(id_componente in (select id_componente from componentes_kits where activo=1
+													and (id_kit in (select id_componente from componentes_archivos where activo=1) or
+											 			(id_kit in (select id_componente from componentes_referencias where activo=1)))))))",
+				$this->makeValue($id_plantilla, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_doc = $this->getResultados();
+		$tiene_doc = $res_doc != NULL;
+		return $tiene_doc;
+	}
 	
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {

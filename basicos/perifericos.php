@@ -4,7 +4,6 @@ include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
-include("../classes/kint/Kint.class.php");
 permiso(1);
 
 // Establecemos los parametros de la paginacion
@@ -86,6 +85,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 $titulo_pagina = "Básicos > Periféricos";
 $pagina = "perifericos";
 include ("../includes/header.php");
+echo '<script type="text/javascript" src="../js/basicos/perifericos.js"></script>';
 ?>
 
 <div class="separador"></div>
@@ -197,8 +197,7 @@ include ("../includes/header.php");
     </div>
 
     <?php
-		if ($mostrar_tabla){
-		?>
+		if ($mostrar_tabla){ ?>
    			<div class="CapaTabla">
     		<table>
         	<tr>
@@ -207,12 +206,12 @@ include ("../includes/header.php");
             	<th style="text-align:center">VERSION</th>
                 <th style="text-align:center">REFERENCIAS</th>
             	<th>DESCRIPCION</th>
+                <th style="text-align: center;">DOC</th>
                 <th style="text-align:center">KITS</th>
                 <th>ESTADO</th>
                 <th style="text-align:center">PROTOTIPO</th>
                 <?php 
-                    if(permisoMenu(4)){
-                ?>
+                    if(permisoMenu(4)){ ?>
                         <th style="text-align:center">ELIMINAR</th>
                 <?php 
                     }
@@ -223,8 +222,7 @@ include ("../includes/header.php");
 					// Se cargan los datos de los perifericos según su identificador
 					$per = new Periferico();
 					$datoPeriferico = $resultadosBusqueda[$i];
-					$per->cargaDatosPerifericoId($datoPeriferico["id_componente"]);
-					?>
+					$per->cargaDatosPerifericoId($datoPeriferico["id_componente"]); ?>
 					<tr>
 						<td>
                             <a href="mod_periferico.php?id=<?php echo $per->id_componente; ?>"><?php echo $per->periferico; ?></a>
@@ -239,6 +237,15 @@ include ("../includes/header.php");
                             <a href="../basicos/informe_referencias.php?tipo=periferico&id=<?php echo $per->id_componente;?>">XLS</a>
                         </td>
 						<td><?php echo $per->descripcion; ?></td>
+                        <td style="text-align: center;">
+                        <?php
+                            $tiene_doc = $per->tieneDocumentacionAdjunta($per->id_componente);
+                            if($tiene_doc) { ?>
+                                <a href="#" onclick="descargar_documentacion(<?php echo $per->id_componente;?>)"><img src="../images/download_icon.jpg" style="vertical-align: middle;" /></a>
+                        <?php
+                            }
+                        ?>
+                        </td>
                         <td style="text-align:center">
                         	<a href="javascript:abrir('muestra_kits.php?nombre=<?php echo $per->periferico;?>&id=<?php echo $per->id_componente;?>')">
                             	KITS
