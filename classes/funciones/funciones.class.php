@@ -196,5 +196,28 @@ class Funciones extends MySQL{
 		}
 		return $dir_barra;
 	}
+
+	// Función que obtiene el directorio actual de documentación en función del entorno
+	function dameRutaDocumentacionBasicos(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_documentacion = 'C:\xampp\htdocs\proyectos\git\atenea\basicos\documentacion';
+				break;
+			case '/var/www/vhosts/ateneadev.simumak.com/httpdocs':  // DESARROLLO
+				$dir_documentacion = '/var/www/vhosts/ateneadev.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
+				$dir_documentacion = '/var/www/vhosts/ateneapre.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
+				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			default:
+				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+		}
+		return $dir_documentacion;
+	}
+
 }
 ?>

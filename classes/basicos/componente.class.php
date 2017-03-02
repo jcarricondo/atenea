@@ -98,6 +98,15 @@ class Componente extends MySQL {
         return $this->getResultados();
     }
 
+	// Función que devuelve los kits sin repetir asociados al componente
+	function dameKitsComponenteSinRepetir($id_componente){
+		$consulta = sprintf("select distinct id_kit from componentes_kits where activo=1 and id_componente=%s order by fecha_creado",
+				$this->makeValue($id_componente,"int"));
+		$this->setConsulta($consulta);
+		$this->ejecutarConsulta();
+		return $this->getResultados();
+	}
+
 	// Función que devuelve true si es un componente principal
 	function esComponentePrincipal($id_tipo_componente){
 		return $id_tipo_componente == 1 || $id_tipo_componente == 2;
@@ -148,7 +157,37 @@ class Componente extends MySQL {
         return $referencias_componente_final;
     }
 
-    function dameNombreTipoComponente($id_tipo){
+	// Función que devuelve los archivos adjuntos de un componente
+	function dameArchivosComponente($id_componente){
+		$consultaSql = sprintf("select * from componentes_archivos where activo=1 and id_componente=%s",
+				$this->makeValue($id_componente,"int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_archivos = $this->getResultados();
+		return $res_archivos;
+	}
+
+	// Función que devuelve los id_referencia de un componente de un proveedor
+	function dameIdsReferenciaComponentePorProveedor($id_componente,$id_proveedor){
+		if(!empty($id_proveedor)){
+			$consultaSql = sprintf("select id_referencia from componentes_referencias where activo=1 and id_componente=%s
+										and id_referencia in (select id_referencia from referencias where activo=1 and id_proveedor=%s)
+										order by id_referencia",
+							$this->makeValue($id_componente,"int"),
+							$this->makeValue($id_proveedor, "int"));
+		}
+		else{
+			$consultaSql = sprintf("select id_referencia from componentes_referencias where activo=1 and id_componente=%s order by id_referencia",
+							$this->makeValue($id_componente,"int"));
+		}
+
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_ids_ref = $this->getResultados();
+		return $res_ids_ref;
+	}
+
+	function dameNombreTipoComponente($id_tipo){
         switch($id_tipo) {
             case "1":
                 $tipo_componente = "CABINA";

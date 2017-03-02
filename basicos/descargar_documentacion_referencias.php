@@ -5,7 +5,7 @@ $id_referencia = $_GET["id_referencia"];
 // Obtenemos el directorio actual y creamos la carpeta que contendrá las carpetas con los archivos
 $dir_actual = getcwd();
 $barra_directorio = $funciones->dameBarraDirectorio();
-$dir_documentacion = $ref->dameRutaDocumentacion();
+$dir_documentacion = $funciones->dameRutaDocumentacionBasicos();
 $dir_uploads = $dir_actual.$barra_directorio."uploads";
 
 $dir_actual = $dir_documentacion;

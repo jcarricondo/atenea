@@ -1,35 +1,29 @@
 <?php 
 // Este fichero permite la opcion de descargar la documentación de perifericos o plantillas
 include("../includes/sesion.php");
+include("../classes/basicos/componente.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_componente.class.php");
+include("../classes/basicos/listado_referencias_componentes.class.php");
+include("../classes/basicos/kit.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/plantilla_producto.class.php");
+include("../classes/funciones/funciones.class.php");
+require("../funciones/pclzip/pclzip.lib.php");
 
 include("../classes/kint/Kint.class.php");
 
 permiso(2);
 
+$comp = new Componente();
 $prov = new Proveedor();
 $ref = new Referencia();
+$ref_comp = new Referencia_Componente();
+$kit = new Kit();
 $per = new Periferico();
 $plant = new Plantilla_Producto();
-
-$op = $_GET["op"];
-$id = $_GET["id"];
-
-if($op == "PER") {
-	$comp = "Periférico";
-	$per->cargaDatosPerifericoId($id);
-	$ver_comp = $per->version;
-	$nombre_comp = $per->periferico."_v".$ver_comp;
-}
-else if($op == "PLANT") {
-	$comp = "Plantilla de Producto";
-	$plant->cargaDatosPlantillaProductoId($id);
-	$nombre_comp = $plant->nombre;
-}
-else $comp = "ERROR!";
+$funciones = new Funciones();
 
 if(isset($_POST["generarDocumentacion"]) and $_POST["generarDocumentacion"] == 1){
 	// Obtenemos los datos del formulario
@@ -37,14 +31,26 @@ if(isset($_POST["generarDocumentacion"]) and $_POST["generarDocumentacion"] == 1
 	$id = $_POST["id"];
 	$id_proveedor = $_POST["proveedor"];
 
-	d($op);
-	d($id);
-	d($id_proveedor);
-
-
-} 
+	if($op == "PER") include("../basicos/generar_documentacion_periferico.php");
+	else if ($op == "PLANT") include("../basicos/generar_documentacion_plantilla.php");
+	else $tipo_comp = "ERROR!";
+}
 else {
+	$op = $_GET["op"];
+	$id = $_GET["id"];
 
+	if($op == "PER") {
+		$tipo_comp = "Periférico";
+		$per->cargaDatosPerifericoId($id);
+		$ver_comp = $per->version;
+		$nombre_comp = $per->periferico."_v".$ver_comp;
+	}
+	else if($op == "PLANT") {
+		$tipo_comp = "Plantilla de Producto";
+		$plant->cargaDatosPlantillaProductoId($id);
+		$nombre_comp = $plant->nombre;
+	}
+	else $tipo_comp = "ERROR!";
 }
 
 $titulo_pagina = "Básicos > Descarga de documentación";
@@ -66,7 +72,7 @@ include ("../includes/header.php");
     	<br />
         <h5>Seleccione el proveedor para preparar la descarga de documentaci&oacute;n</h5>
     	<div class="ContenedorCamposCreacionBasico">
-           	<div class="LabelCreacionBasico"><?php echo $comp;?></div>
+           	<div class="LabelCreacionBasico"><?php echo $tipo_comp;?></div>
 			<label id="nombre_componente" class="LabelPrecio"><?php echo $nombre_comp;?></label>
         </div>
         <div class="ContenedorCamposCreacionBasico">

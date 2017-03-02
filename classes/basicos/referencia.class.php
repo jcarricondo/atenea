@@ -1108,27 +1108,18 @@ class Referencia extends MySQL {
 		return $tiene_archivos;
 	}
 
-	// Función que obtiene el directorio actual de documentación en función del entorno
-	function dameRutaDocumentacion(){
-		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
-			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
-				$dir_documentacion = 'C:\xampp\htdocs\proyectos\git\atenea\basicos\documentacion';
-				break;
-			case '/var/www/vhosts/ateneadev.simumak.com/httpdocs':  // DESARROLLO
-				$dir_documentacion = '/var/www/vhosts/ateneadev.simumak.com/httpdocs/atenea/basicos/documentacion';
-				break;
-			case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
-				$dir_documentacion = '/var/www/vhosts/ateneapre.simumak.com/httpdocs/atenea/basicos/documentacion';
-				break;
-			case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
-				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
-				break;
-			default:
-				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
-				break;
+	// Función que determina si existe documentación en alguna de las referencias de un array
+	function tieneDocumentacionAdjuntaComponente($array_referencias_componente){
+		$i=0;
+		$encontrado = false;
+		while($i<count($array_referencias_componente) && !$encontrado){
+			$id_referencia = $array_referencias_componente[$i]["id_referencia"];
+			$encontrado = $this->tieneDocumentacionAdjunta($id_referencia);
+			$i++;
 		}
-		return $dir_documentacion;
+		return $encontrado;
 	}
+
 
 	// Función que devuelve todos los archivos adjuntos de la referencia
 	function dameArchivosReferencia($id_referencia){
