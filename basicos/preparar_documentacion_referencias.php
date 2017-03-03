@@ -37,7 +37,7 @@ if($ref_tiene_documentacion){
         // Copiamos el fichero de la carpeta "uploads" en la carpeta según el tipo de extensión
         $ruta_origen_fichero = $dir_uploads.$barra_directorio.$nombre_archivo;
         $ruta_destino_fichero = $dir_actual.$barra_directorio.$nombre_archivo;
-        copy($ruta_origen_fichero, $ruta_destino_fichero);
+        if(file_exists($ruta_origen_fichero))copy($ruta_origen_fichero, $ruta_destino_fichero);
     }
 }
 

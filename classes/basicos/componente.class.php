@@ -100,7 +100,7 @@ class Componente extends MySQL {
 
 	// Función que devuelve los kits sin repetir asociados al componente
 	function dameKitsComponenteSinRepetir($id_componente){
-		$consulta = sprintf("select distinct id_kit from componentes_kits where activo=1 and id_componente=%s order by fecha_creado",
+		$consulta = sprintf("select distinct id_kit from componentes_kits where activo=1 and id_componente=%s order by id_kit",
 				$this->makeValue($id_componente,"int"));
 		$this->setConsulta($consulta);
 		$this->ejecutarConsulta();
@@ -186,6 +186,30 @@ class Componente extends MySQL {
 		$res_ids_ref = $this->getResultados();
 		return $res_ids_ref;
 	}
+
+	// Función que determina si un componente tiene documentación adjunta
+	function tieneDocumentacionAdjunta($id_componente){
+		$consultaSql = sprintf("select id_archivo from componentes_archivos where activo=1 and id_componente=%s order by id_componente",
+				$this->makeValue($id_componente,"int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_archivos = $this->getResultados();
+		$tiene_archivos = $res_archivos != NULL;
+		return $tiene_archivos;
+	}
+
+	// Función que determina si existe documentación en alguna de los subcomponentes de un array
+	function tieneDocumentacionAdjuntaComponente($array_referencias_componente){
+		$i=0;
+		$encontrado = false;
+		while($i<count($array_referencias_componente) && !$encontrado){
+			$id_referencia = $array_referencias_componente[$i]["id_referencia"];
+			$encontrado = $this->tieneDocumentacionAdjunta($id_referencia);
+			$i++;
+		}
+		return $encontrado;
+	}
+
 
 	function dameNombreTipoComponente($id_tipo){
         switch($id_tipo) {

@@ -44,7 +44,7 @@ class Plantilla_Producto extends MySql{
         $this->id_nombre_producto = $id_nombre_producto;
 	}
 
-    // Funcion que devuelve el tipo del componente
+    // Función que devuelve el tipo del componente
     function dameTipoComponente($id_componente){
         $consulta = sprintf("select id_tipo from componentes where id_componente=%s",
             $this->makeValue($id_componente, "int"));
@@ -53,19 +53,7 @@ class Plantilla_Producto extends MySql{
         return $this->getPrimerResultado();
     }
 
-	/*
-    // Funcion que devuelve la cabina de la plantilla de producto
-    function dameCabinaPlantillaProducto($id_plantilla){
-        $consulta = sprintf("select id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=1 and id_plantilla=%s",
-            $this->makeValue($id_plantilla, "int"));
-        $this->setConsulta($consulta);
-        $this->ejecutarConsulta();
-        $this->id_cabina = $this->getPrimerResultado();
-        return $this->id_cabina["id_componente"];
-    }
-	*/
-
-    // Funcion que devuelve los perifericos de la plantilla de producto
+    // Función que devuelve los periféricos de la plantilla de producto
     function damePerifericosPlantillaProducto($id_plantilla){
         $consulta = sprintf("select id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=2 and id_plantilla=%s",
             $this->makeValue($id_plantilla, "int"));
@@ -75,17 +63,15 @@ class Plantilla_Producto extends MySql{
         return $this->ids_perifericos;
     }
 
-    /*
-	// Funcion que devuelve el software de la plantilla de producto
-    function dameSoftwarePlantillaProducto($id_plantilla){
-        $consulta = sprintf("select id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=3 and id_plantilla=%s",
-            $this->makeValue($id_plantilla, "int"));
-        $this->setConsulta($consulta);
-        $this->ejecutarConsulta();
-        $this->ids_software = $this->getResultados();
-        return $this->ids_software;
-    }
-    */
+	// Función que devuelve los periféricos de la plantilla de producto sin repeticiones
+	function damePerifericosPlantillaProductoSinRepeticiones($id_plantilla){
+		$consulta = sprintf("select distinct id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=2 and id_plantilla=%s order by id_componente",
+				$this->makeValue($id_plantilla, "int"));
+		$this->setConsulta($consulta);
+		$this->ejecutarConsulta();
+		$this->ids_perifericos = $this->getResultados();
+		return $this->ids_perifericos;
+	}
 
     // Funcion que devuelve todos los componentes de la plantilla de producto
     function dameComponentesPlantillaProducto($id_plantilla){

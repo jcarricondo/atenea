@@ -3,6 +3,7 @@
 include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 include("../classes/basicos/fabricante.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/listado_fabricantes.class.php");
@@ -13,6 +14,7 @@ permiso(2);
 $db = new MySQL();
 $bbdd = new MySQL;
 $referencias = new Referencia();
+$ref_compatible = new Referencia_Compatible();
 $validacion = new Funciones();
 $fab = new Fabricante();
 $prov = new Proveedor();
@@ -224,7 +226,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre</div>
-        <input type="text" id="part_value_name" name="part_value_name" class="CreacionBasicoInput" value="<?php echo $part_value_name;?>"/>
+        	<input type="text" id="part_value_name" name="part_value_name" class="CreacionBasicoInput" value="<?php echo $part_value_name;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor</div>
@@ -232,7 +234,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre 2</div>
-        <input type="text" id="part_value_name_2" name="part_value_name_2" class="CreacionBasicoInput" value="<?php echo $part_value_name_2;?>"/>
+        	<input type="text" id="part_value_name_2" name="part_value_name_2" class="CreacionBasicoInput" value="<?php echo $part_value_name_2;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor 2</div>
@@ -240,7 +242,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre 3</div>
-        <input type="text" id="part_value_name_3" name="part_value_name_3" class="CreacionBasicoInput" value="<?php echo $part_value_name_3;?>"/>
+       		<input type="text" id="part_value_name_3" name="part_value_name_3" class="CreacionBasicoInput" value="<?php echo $part_value_name_3;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor 3 </div>
@@ -248,7 +250,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre 4</div>
-        <input type="text" id="part_value_name_4" name="part_value_name_4" class="CreacionBasicoInput" value="<?php echo $part_value_name_4;?>"/>
+        	<input type="text" id="part_value_name_4" name="part_value_name_4" class="CreacionBasicoInput" value="<?php echo $part_value_name_4;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor 4</div>
@@ -256,7 +258,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre 5</div>
-        <input type="text" id="part_value_name_5" name="part_value_name_5" class="CreacionBasicoInput" value="<?php echo $part_value_name_5;?>"/>
+        	<input type="text" id="part_value_name_5" name="part_value_name_5" class="CreacionBasicoInput" value="<?php echo $part_value_name_5;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor 5</div>
@@ -274,6 +276,22 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
            	<div class="LabelCreacionBasico">Comentarios</div>
           	<textarea type="text" id="comentarios" name="comentarios" rows="10" class="textareaInput"><?php echo $comentarios; ?></textarea>
         </div>
+		<div class="ContenedorCamposCreacionBasico">
+			<div class="LabelCreacionBasico">Motivo Compatibilidad *</div>
+			<select id="motivo_compatibilidad" name="motivo_compatibilidad"  class="CreacionBasicoInput">
+			<?php
+				$nf->prepararConsulta();
+				$nf->realizarConsulta();
+				$resultado_fabricantes = $nf->fabricantes;
+
+				for($i=0;$i<count($resultado_fabricantes);$i++) {
+					$datoFabricante = $resultado_fabricantes[$i];
+					$fab->cargaDatosFabricanteId($datoFabricante["id_fabricante"]);
+					echo '<option value="'.$fab->id_fabricante.'"';if ($fab->id_fabricante == $fabricante) { echo 'selected="selected"'; } echo '>'.$fab->nombre.'</option>';
+				}
+				?>
+			</select>
+		</div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Archivos adjuntos</div>
             <div id="AñadirMasArchivos"><a href="#" onClick="addCampo()">Subir otro archivo</a></div>

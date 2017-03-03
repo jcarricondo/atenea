@@ -1,14 +1,14 @@
 <?php
 // Este fichero prepara la documentación adjunta mecánica de un componente para descargar
 // Primero añadimos toda la documentación mecanica del periférico
-for($i=0;$i<count($res_documentacion_mecanica);$i++){
+for($mec=0;$mec<count($res_documentacion_mecanica);$mec++){
     if(!file_exists($dir_documentos_componente)) mkdir($dir_documentos_componente, 0700);
     $dir_actual = $dir_documentos_componente;
     $dir_pdf = $dir_actual.$barra_directorio."PDF";
     $dir_dwg = $dir_actual.$barra_directorio."DWG";
     $dir_otros = $dir_actual.$barra_directorio."OTROS";
 
-    $nombre_archivo = $res_documentacion_mecanica[$i]["nombre_archivo"];
+    $nombre_archivo = $res_documentacion_mecanica[$mec]["nombre_archivo"];
     $res_path_info = pathinfo($nombre_archivo);
     $extension_archivo = $res_path_info["extension"];
 
@@ -29,6 +29,6 @@ for($i=0;$i<count($res_documentacion_mecanica);$i++){
     // Copiamos el fichero de la carpeta "mecánica" en la carpeta según el tipo de extensión
     $ruta_origen_fichero = $dir_mecanica.$barra_directorio.$nombre_archivo;
     $ruta_destino_fichero = $dir_actual.$barra_directorio.$nombre_archivo;
-    copy($ruta_origen_fichero,$ruta_destino_fichero);
+    if(file_exists($ruta_origen_fichero))copy($ruta_origen_fichero,$ruta_destino_fichero);
 }
 ?>

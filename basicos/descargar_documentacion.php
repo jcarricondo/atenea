@@ -48,7 +48,8 @@ else {
 	else if($op == "PLANT") {
 		$tipo_comp = "Plantilla de Producto";
 		$plant->cargaDatosPlantillaProductoId($id);
-		$nombre_comp = $plant->nombre;
+		$ver_comp = $plant->version;
+		$nombre_comp = $plant->nombre."_v".$ver_comp;
 	}
 	else $tipo_comp = "ERROR!";
 }
