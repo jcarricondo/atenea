@@ -208,6 +208,15 @@ class Referencia_Compatible extends MySQL {
 		else return false;
 	}
 
+	// Función que devuelve los tipos de motivos de compatibilidad de una referencia
+	function dameTipoMotivosReferencia(){
+		$consultaSql = "select * from tipos_motivos_referencias where activo=1";
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_motivos = $this->getResultados();
+		return $res_motivos;
+	}
+
 
 
 

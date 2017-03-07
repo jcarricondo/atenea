@@ -9,6 +9,9 @@ include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/listado_fabricantes.class.php");
 include("../classes/basicos/listado_proveedores.class.php");
 include("../classes/log/basicos/log_basicos_referencias.class.php");
+
+include("../classes/kint/Kint.class.php");
+
 permiso(2);
 
 $db = new MySQL();
@@ -44,6 +47,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 	$pack_precio = $_POST["pack_precio"];
 	$unidades = $_POST["unidades"];
 	$comentarios = $_POST["comentarios"];
+	$id_motivo_compatibilidad = $_POST["id_motivo_compatibilidad"];
 	$error=false;
 
 	if (($ref_proveedor_pieza == '') or ($ref_fabricante_pieza == '') or ($pack_precio == '') or ($unidades == '') ){
@@ -82,7 +86,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 			}
 		}
 		if ((!$archivos_adjuntos) or (($subido) and ($error_archivo == 0))) {
-			$referencias->datosNuevaReferencia(NULL,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,$nombre_archivo,$comentarios);
+			$referencias->datosNuevaReferencia(NULL,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,$nombre_archivo,$comentarios,$id_motivo_compatibilidad);
 			$resultado = $referencias->guardarCambios();
 			if($resultado == 1) {
 				// Guardamos el log de la operación
@@ -102,7 +106,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 				$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fabricante_pieza,$ref_proveedor_pieza,
 								$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
 								$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
-								$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+								$referencia_heredada,$referencia_compatible,$id_motivo_compatibilidad,$error,$codigo_error);
 
 				$res_log = $log->guardarLog();
 				if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
@@ -128,7 +132,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 				$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fabricante_pieza,$ref_proveedor_pieza,
 						$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
 						$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
-						$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+						$referencia_heredada,$referencia_compatible,$id_motivo_compatibilidad,$error,$codigo_error);
 
 				$res_log = $log->guardarLog();
 				if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
@@ -278,18 +282,15 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
 		<div class="ContenedorCamposCreacionBasico">
 			<div class="LabelCreacionBasico">Motivo Compatibilidad *</div>
-			<select id="motivo_compatibilidad" name="motivo_compatibilidad"  class="CreacionBasicoInput">
+			<select id="id_motivo_compatibilidad" name="id_motivo_compatibilidad"  class="CreacionBasicoInput">
 			<?php
-				$nf->prepararConsulta();
-				$nf->realizarConsulta();
-				$resultado_fabricantes = $nf->fabricantes;
-
-				for($i=0;$i<count($resultado_fabricantes);$i++) {
-					$datoFabricante = $resultado_fabricantes[$i];
-					$fab->cargaDatosFabricanteId($datoFabricante["id_fabricante"]);
-					echo '<option value="'.$fab->id_fabricante.'"';if ($fab->id_fabricante == $fabricante) { echo 'selected="selected"'; } echo '>'.$fab->nombre.'</option>';
+				$res_motivos = $ref_compatible->dameTipoMotivosReferencia();
+				for($i=0;$i<count($res_motivos);$i++) {
+					$id_motivo = $res_motivos[$i]["id_motivo"];
+					$nombre_motivo = $res_motivos[$i]["motivo"];
+					echo '<option value="'.$id_motivo.'">'.$nombre_motivo.'</option>';
 				}
-				?>
+			?>
 			</select>
 		</div>
         <div class="ContenedorCamposCreacionBasico">

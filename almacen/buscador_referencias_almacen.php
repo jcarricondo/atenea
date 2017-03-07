@@ -215,7 +215,7 @@ function soloNumeros (e) {
 		<h4>Buscar la referencia para el almacen</h4>
    		<form name="BuscadorReferenciasAlmacen" id="BuscadorReferenciasAlmacen" action="buscador_referencias_almacen.php" method="post">
     		<div class="ContenedorCamposBuscadorReferencias">
-				<div class="LabelReferencias">Referencia</div>
+				<div class="LabelReferencias">Nombre</div>
             	<input type="text" name="referencia" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($referencia));?>"/> 
                	<div class="LabelReferencias">Unidades paquete</div>
             	<input type="text" name="cantidad" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($cantidad));?>"/>

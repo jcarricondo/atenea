@@ -20,8 +20,9 @@
                     <th style="text-align:center">UDS/P</th>
                     <th style="text-align:center">PRECIO UNIDAD</th>
                     <th style="text-align:center">PRECIO</th>
+                    <th style="text-align: center";>MOTIVO</th>
                     <?php if($modificar) { ?>
-                        <th style="text-align:center">ELIMINAR</th>
+                        <th style="text-align:center"></th>
                     <?php } ?>
                 </tr>
                 <?php
@@ -62,6 +63,11 @@
                             <td style="text-align:center"><?php echo $ref_comp->unidades; ?></td>
                             <td style="text-align:center"><?php echo number_format($precio_unidad_compatible, 2, '.', '');?></td>
                             <td style="text-align:center"><?php echo number_format($precio_referencia_compatible, 2, '.', ''); ?></td>
+                            <td style="text-align: center;">
+                                <?php
+                                    $
+                                ?>
+                            </td>
                             <?php
                                 if($modificar) {
                                     $texto_error_mismos_grupo = "No se puede eliminar una referencia que pertenece al mismo grupo. ";
