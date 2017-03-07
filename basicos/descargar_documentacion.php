@@ -12,9 +12,6 @@ include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/plantilla_producto.class.php");
 include("../classes/funciones/funciones.class.php");
 require("../funciones/pclzip/pclzip.lib.php");
-
-include("../classes/kint/Kint.class.php");
-
 permiso(2);
 
 $comp = new Componente();

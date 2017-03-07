@@ -22,14 +22,13 @@ for($n_kit=0;$n_kit<count($res_kits);$n_kit++){
         }
         if($kit_con_referencias){
             $dir_referencias_componente = $dir_kit_actual.$barra_directorio."REFERENCIAS";
-            $dir_actual = $dir_referencias_componente;
             // Añadimos la documentación de las referencias de los kits
             for($n_ref_kit=0;$n_ref_kit<count($res_id_refs_kit);$n_ref_kit++) {
                 $id_referencia = $res_id_refs_kit[$n_ref_kit]["id_referencia"];
                 // Añadimos la documentación de las referencias del kit
                 if (!file_exists($dir_referencias_componente)) mkdir($dir_referencias_componente, 0700);
-                include("../basicos/preparar_documentacion_referencias.php");
                 $dir_actual = $dir_referencias_componente;
+                include("../basicos/preparar_documentacion_referencias.php");
             }
         }
     }

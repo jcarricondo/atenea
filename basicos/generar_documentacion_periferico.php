@@ -14,69 +14,56 @@ $res_kits = $comp->dameKitsComponenteSinRepetir($id);
 
 $dir_documentacion_periferico = str_replace("/", "_",$dir_documentacion.$barra_directorio.$nombre_periferico."_v".$version_periferico);
 $dir_documentos_periferico = $dir_documentacion_periferico.$barra_directorio."DOCUMENTOS";
-$dir_kits = $dir_documentacion_periferico.$barra_directorio."KITS";
-$dir_referencias = $dir_documentacion_periferico.$barra_directorio."REFERENCIAS";
+$dir_periferico_referencias = $dir_documentacion_periferico.$barra_directorio."REFERENCIAS";
 
 // Creamos el directorio del periférico donde irá toda su documentación
 if(!file_exists($dir_documentacion_periferico)) mkdir($dir_documentacion_periferico, 0700);
-$dir_actual = $dir_documentacion_periferico; d($dir_actual);
 
-// Añadimos toda la documentación del periférico
-$res_documentacion_mecanica = $comp->dameArchivosComponente($id);
-$dir_documentos_componente = $dir_documentos_periferico;
-include("../basicos/preparar_documentacion_mecanica.php");
+// Comprobamos si el periférico tiene documentación
+$periferico_con_documentacion = $comp->tieneDocumentacionAdjunta($id);
 
-// Ahora añadimos todos los kits con su documentación y la de sus referencias
+// Comprobamos si alguno de los kits del periférico tiene documentación o alguna de sus referencias
+$res_kits = $comp->dameKitsComponenteSinRepetir($id);
 if(!empty($res_kits)){
-    for($i=0;$i<count($res_kits);$i++){
+    $i=0;
+    $kit_con_documentacion = false;
+    $kit_con_referencias = false;
+    while($i<count($res_kits) && !$kit_con_documentacion && !$kit_con_referencias){
         $id_kit = $res_kits[$i]["id_kit"];
-        $res_documentacion_mecanica = $comp->dameArchivosComponente($id_kit);
+        $kit_con_documentacion = $comp->tieneDocumentacionAdjunta($id_kit);
         $res_id_refs_kit = $comp->dameIdsReferenciaComponentePorProveedor($id_kit,$id_proveedor);
-        $kit_con_documentacion = !empty($res_documentacion_mecanica);
         $kit_con_referencias = $ref->tieneDocumentacionAdjuntaComponente($res_id_refs_kit);
-        $kit_no_vacio = ($kit_con_documentacion || $kit_con_referencias);
-
-        if($kit_no_vacio){
-            if(!file_exists($dir_kits)) mkdir($dir_kits, 0700);
-            $kit->cargaDatosKitId($id_kit);
-            $nombre_kit = $kit->kit;
-            $version_kit = $kit->version;
-            $dir_kit_actual = str_replace("/", "_",$dir_kits.$barra_directorio.$nombre_kit."_v".$version_kit);
-
-            $dir_actual = $dir_kit_actual;
-            if(!file_exists($dir_actual)) mkdir($dir_kit_actual, 0700);
-
-            if($kit_con_documentacion){
-                $dir_documentos_componente = $dir_kit_actual.$barra_directorio."DOCUMENTOS";
-                include("../basicos/preparar_documentacion_mecanica.php");
-                $dir_actual = $dir_kit_actual;
-            }
-
-            if($kit_con_referencias){
-                $dir_referencias_componente = $dir_kit_actual.$barra_directorio."REFERENCIAS";
-                $dir_actual = $dir_referencias_componente;
-                // Añadimos la documentación de las referencias de los kits
-                for($j=0;$j<count($res_id_refs_kit);$j++) {
-                    $id_referencia = $res_id_refs_kit[$j]["id_referencia"];
-                    // Añadimos la documentación de las referencias del kit
-                    if (!file_exists($dir_referencias_componente)) mkdir($dir_referencias_componente, 0700);
-                    include("../basicos/preparar_documentacion_referencias.php");
-                    $dir_actual = $dir_referencias_componente;
-                }
-            }
-        }
+        $i++;
     }
+    $periferico_con_kits = $kit_con_documentacion || $kit_con_referencias;
 }
+else $periferico_con_kits = false;
 
-// Añadimos la documentación de las referencias del periférico
+// Comprobamos si el periférico tiene referencias con documentación
 $res_id_refs_periferico = $comp->dameIdsReferenciaComponentePorProveedor($id,$id_proveedor);
 $periferico_con_referencias = $ref->tieneDocumentacionAdjuntaComponente($res_id_refs_periferico);
+
+if($periferico_con_documentacion){
+    // Añadimos toda la documentación del periférico
+    $res_documentacion_mecanica = $comp->dameArchivosComponente($id);
+    $dir_documentos_componente = $dir_documentos_periferico;
+    include("../basicos/preparar_documentacion_mecanica.php");
+}
+
+if($periferico_con_kits){
+    $dir_periferico_kits = $dir_documentacion_periferico.$barra_directorio."KITS";
+    if(!file_exists($dir_periferico_kits)) mkdir($dir_periferico_kits, 0700);
+    include("../basicos/preparar_documentacion_kits.php");
+}
+
 if($periferico_con_referencias){
+    // Añadimos la documentación de las referencias del periférico
+    $dir_periferico_referencias = $dir_documentacion_periferico.$barra_directorio."REFERENCIAS";
+    if(!file_exists($dir_periferico_referencias)) mkdir($dir_periferico_referencias, 0700);
     for($i=0;$i<count($res_id_refs_periferico);$i++) {
         $id_referencia = $res_id_refs_periferico[$i]["id_referencia"];
         // Añadimos la documentación de las referencias del periférico
-        if (!file_exists($dir_referencias)) mkdir($dir_referencias, 0700);
-        $dir_actual = $dir_referencias;
+        $dir_actual = $dir_periferico_referencias;
         include("../basicos/preparar_documentacion_referencias.php");
     }
 }
