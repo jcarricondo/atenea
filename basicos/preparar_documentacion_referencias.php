@@ -40,5 +40,4 @@ if($ref_tiene_documentacion){
         if(file_exists($ruta_origen_fichero))copy($ruta_origen_fichero, $ruta_destino_fichero);
     }
 }
-
 ?>

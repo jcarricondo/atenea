@@ -3,6 +3,7 @@
 include("../includes/sesion.php");
 include("../classes/basicos/componente.class.php");
 include("../classes/basicos/proveedor.class.php");
+include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/referencia_componente.class.php");
 include("../classes/basicos/listado_referencias_componentes.class.php");
@@ -18,6 +19,7 @@ permiso(2);
 
 $comp = new Componente();
 $prov = new Proveedor();
+$np = new Nombre_Producto();
 $ref = new Referencia();
 $ref_comp = new Referencia_Componente();
 $kit = new Kit();

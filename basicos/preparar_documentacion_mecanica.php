@@ -1,6 +1,5 @@
 <?php
 // Este fichero prepara la documentación adjunta mecánica de un componente para descargar
-// Primero añadimos toda la documentación mecanica del periférico
 for($mec=0;$mec<count($res_documentacion_mecanica);$mec++){
     if(!file_exists($dir_documentos_componente)) mkdir($dir_documentos_componente, 0700);
     $dir_actual = $dir_documentos_componente;

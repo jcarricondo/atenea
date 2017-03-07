@@ -18,33 +18,33 @@ for($i=0;$i<count($ids_kits);$i++){
 }
 
 // Generamos la tabla HTML 
-$table = '<table>
+$salida = '<table>
 	<tr>
-		<th>ID Ref.</th>
-    	<th>Nombre</th>
-        <th>Referencia Proveedor</th>
-        <th>Proveedor</th>   
-        <th>Piezas</th>
-        <th>Precio</th>
-		<th>Total Paquetes</th>  
-        <th>Tipo Pieza</th>
-        <th>Nombre Pieza</th> 
-        <th>Fabricante</th>  
-        <th>Referencia Fabricante</th>
-        <th>Descripci&oacute;n</th>
-        <th>Nombre</th>
-        <th>Valor</th>
-        <th>Nombre 2</th>
-        <th>Valor 2</th>
-        <th>Nombre 3</th>
-        <th>Valor 3</th>
-        <th>Nombre 4</th>
-        <th>Valor 4</th>
-        <th>Nombre 5</th>
-        <th>Valor 5</th>
-        <th>Precio Pack</th>
-        <th>Unidades Paquete</th>
-        <th>Comentarios</th>
+		<th style="text-align: center;">ID Ref.</th>
+    	<th style="text-align: left;">Nombre</th>
+        <th style="text-align: left;">Referencia Proveedor</th>
+        <th style="text-align: left;">Proveedor</th>
+        <th style="text-align: right;">Piezas</th>
+        <th style="text-align: right;">Precio</th>
+		<th style="text-align: right;">Total Paquetes</th>
+        <th style="text-align: left;">Tipo Pieza</th>
+        <th style="text-align: left;">Nombre Pieza</th>
+        <th style="text-align: left;">Fabricante</th>
+        <th style="text-align: left;">Referencia Fabricante</th>
+        <th style="text-align: left;">Descripci&oacute;n</th>
+        <th style="text-align: left;">Nombre</th>
+        <th style="text-align: left;">Valor</th>
+        <th style="text-align: left;">Nombre 2</th>
+        <th style="text-align: left;">Valor 2</th>
+        <th style="text-align: left;">Nombre 3</th>
+        <th style="text-align: left;">Valor 3</th>
+        <th style="text-align: left;">Nombre 4</th>
+        <th style="text-align: left;">Valor 4</th>
+        <th style="text-align: left;">Nombre 5</th>
+        <th style="text-align: left;">Valor 5</th>
+        <th style="text-align: right;">Precio Pack</th>
+        <th style="text-align: right;">Unidades Paquete</th>
+        <th style="text-align: left;">Comentarios</th>
         <th style="text-align: center;">COMPATIBLE</th>
     </tr>';
 	
@@ -147,38 +147,36 @@ for($i=0;$i<count($referencias_componente);$i++){
 	// Generamos la fila HTML de la tabla correspondiente a una referencia
 	$salida .= '
 	<tr>
-		<td align="center">'.$ref->id_referencia.'</td>
-		<td>'.$nombre_ref.'</td>
-		<td align="center">'.$ref_prov.'</td>
-		<td>'.utf8_decode($ref->nombre_proveedor).'</td>
-		<td>'.number_format($total_piezas,2,',','.').'</td>
-		<td align="right">'.number_format($precio_referencia,2,',','.').'</td>
-		<td align="right">'.number_format($total_paquetes,2,',','.').'</td>
-		<td align="center">'.$tipo_pieza.'</td>
-		<td>'.utf8_decode($ref->part_nombre).'</td>
-		<td>'.utf8_decode($ref->nombre_fabricante).'</td>
-		<td align="center">'.$ref_fab.'</td>
-		<td>'.$descrip.'</td>
-		<td>'.$valor_nombre.'</td>
-		<td>'.utf8_decode($ref->part_valor_cantidad).'</td>
-		<td>'.$valor_nombre2.'</td>
-		<td>'.utf8_decode($ref->part_valor_cantidad_2).'</td>
-		<td>'.$valor_nombre3.'</td>
-		<td>'.utf8_decode($ref->part_valor_cantidad_3).'</td>
-		<td>'.$valor_nombre4.'</td>
-		<td>'.utf8_decode($ref->part_valor_cantidad_4).'</td>
-		<td>'.$valor_nombre5.'</td>
-		<td>'.utf8_decode($ref->part_valor_cantidad_5).'</td>
-		<td align="right">'.number_format($ref->pack_precio,2,',','.').'</td>
-		<td>'.utf8_decode($ref->unidades).'</td>
-		<td>'.$coments.'</td>
+		<td style="text-align: center;">'.$ref->id_referencia.'</td>
+		<td style="text-align: left;">'.$nombre_ref.'</td>
+		<td style="text-align: left;">'.$ref_prov.'</td>
+		<td style="text-align: left;">'.utf8_decode($ref->nombre_proveedor).'</td>
+		<td style="text-align: right;">'.number_format($total_piezas,2,',','.').'</td>
+		<td style="text-align: right;">'.number_format($precio_referencia,2,',','.').'</td>
+		<td style="text-align: right;">'.number_format($total_paquetes,2,',','.').'</td>
+		<td style="text-align: left;">'.$tipo_pieza.'</td>
+		<td style="text-align: left;">'.utf8_decode($ref->part_nombre).'</td>
+		<td style="text-align: left;">'.utf8_decode($ref->nombre_fabricante).'</td>
+		<td style="text-align: left;">'.$ref_fab.'</td>
+		<td style="text-align: left;">'.$descrip.'</td>
+		<td style="text-align: left;">'.$valor_nombre.'</td>
+		<td style="text-align: left;">'.utf8_decode($ref->part_valor_cantidad).'</td>
+		<td style="text-align: left;">'.$valor_nombre2.'</td>
+		<td style="text-align: left;">'.utf8_decode($ref->part_valor_cantidad_2).'</td>
+		<td style="text-align: left;">'.$valor_nombre3.'</td>
+		<td style="text-align: left;">'.utf8_decode($ref->part_valor_cantidad_3).'</td>
+		<td style="text-align: left;">'.$valor_nombre4.'</td>
+		<td style="text-align: left;">'.utf8_decode($ref->part_valor_cantidad_4).'</td>
+		<td style="text-align: left;">'.$valor_nombre5.'</td>
+		<td style="text-align: left;">'.utf8_decode($ref->part_valor_cantidad_5).'</td>
+		<td style="text-align: right;">'.number_format($ref->pack_precio,2,',','.').'</td>
+		<td style="text-align: right;">'.utf8_decode($ref->unidades).'</td>
+		<td style="text-align: right;">'.$coments.'</td>
 		<td align="center">'.$es_compatible.'</td>
 	</tr>
 	';
 }
-$table_end = '</table>';
-$cadena_partlist = $table.$salida.$table_end;
-
+$salida .= '</table>';
 $partlist = $dir_documentacion_periferico.$barra_directorio."PARTLIST.xls";
-file_put_contents($partlist,$cadena_partlist);
+file_put_contents($partlist,$salida);
 ?>

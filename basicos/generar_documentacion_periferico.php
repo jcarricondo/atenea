@@ -12,14 +12,14 @@ $nombre_periferico = $per->periferico;
 $version_periferico = $per->version;
 $res_kits = $comp->dameKitsComponenteSinRepetir($id);
 
-$dir_documentacion_periferico = $dir_documentacion.$barra_directorio.$nombre_periferico."_v".$version_periferico;
+$dir_documentacion_periferico = str_replace("/", "_",$dir_documentacion.$barra_directorio.$nombre_periferico."_v".$version_periferico);
 $dir_documentos_periferico = $dir_documentacion_periferico.$barra_directorio."DOCUMENTOS";
 $dir_kits = $dir_documentacion_periferico.$barra_directorio."KITS";
 $dir_referencias = $dir_documentacion_periferico.$barra_directorio."REFERENCIAS";
 
 // Creamos el directorio del periférico donde irá toda su documentación
 if(!file_exists($dir_documentacion_periferico)) mkdir($dir_documentacion_periferico, 0700);
-$dir_actual = $dir_documentacion_periferico;
+$dir_actual = $dir_documentacion_periferico; d($dir_actual);
 
 // Añadimos toda la documentación del periférico
 $res_documentacion_mecanica = $comp->dameArchivosComponente($id);
@@ -41,7 +41,7 @@ if(!empty($res_kits)){
             $kit->cargaDatosKitId($id_kit);
             $nombre_kit = $kit->kit;
             $version_kit = $kit->version;
-            $dir_kit_actual = $dir_kits.$barra_directorio.$nombre_kit."_v".$version_kit;
+            $dir_kit_actual = str_replace("/", "_",$dir_kits.$barra_directorio.$nombre_kit."_v".$version_kit);
 
             $dir_actual = $dir_kit_actual;
             if(!file_exists($dir_actual)) mkdir($dir_kit_actual, 0700);
