@@ -219,5 +219,27 @@ class Funciones extends MySQL{
 		return $dir_documentacion;
 	}
 
+	// Función que obtiene el directorio de imágenes en función del entorno
+	function dameRutaImagenes(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_imagenes = 'C:\xampp\htdocs\proyectos\git\atenea\images';
+				break;
+			case '/var/www/vhosts/ateneadev.simumak.com/httpdocs':  // DESARROLLO
+				$dir_imagenes = '/var/www/vhosts/ateneadev.simumak.com/httpdocs/atenea/images';
+				break;
+			case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
+				$dir_imagenes = '/var/www/vhosts/ateneapre.simumak.com/httpdocs/atenea/images';
+				break;
+			case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
+				$dir_imagenes = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/images';
+				break;
+			default:
+				$dir_imagenes = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/images';
+				break;
+		}
+		return $dir_imagenes;
+	}
+
 }
 ?>

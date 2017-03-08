@@ -1,6 +1,6 @@
 // PASOS A SEGUIR SI SE PERMITE LA HERENCIA DE REFERENCIAS "NIETO"
 
-EN "js/basicos/mod_referencia_29122016_1710.js"
+EN "js/basicos/mod_referencia_08032017_1050.js"
 
 L103: 	
 function addRowHeredada(tableId,id_referencia) {

@@ -48,7 +48,6 @@ $comp = new Componente();
 $validacion = new Funciones();
 $log = new LogBasicosReferencias();
 $user = new Usuario();
-// $cabina = new Cabina();
 
 if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) {
 	// Se reciben los datos
@@ -290,7 +289,7 @@ $max_caracteres_ref = 50;
 $titulo_pagina = "B&aacutesico > Modifica Referencia";
 $pagina = "mod_referencia";
 include ('../includes/header.php');
-echo '<script type="text/javascript" src="../js/basicos/mod_referencia_29122016_1710.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/mod_referencia_08032017_1050.js"></script>';
 ?>
 
 <div class="separador"></div> 

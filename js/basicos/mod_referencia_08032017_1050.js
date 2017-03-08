@@ -540,6 +540,26 @@ function addRowCompatible(tableId,id_referencia){
 		// Comprobamos que no se esta intentado añadir una referencia repetida
 		var error_compatible_repetida = validarCompatiblesRepetida(id_referencia);
 		if (!error_compatible_repetida) {
+			// Obtenemos la ruta de la imagen de la bandera del motivo de compatibilidad
+			var respuesta = (function () {
+				var respuesta = null;
+				$.ajax({
+					dataType: "json",
+					url: "../ajax/basicos/mod_referencia.php?comp=dameBanderaMotivoCompatibilidad",
+					data: "id_referencia=" + id_referencia,
+					type: "GET",
+					async: false,
+					success: function (data) {
+						respuesta = data;
+					}
+				});
+				return respuesta;
+			})();
+
+			var ruta_imagen = respuesta["ruta_imagen"];
+			var pais_imagen = respuesta["pais_imagen"];
+			var imagen = '<img src="' + ruta_imagen + '" alt="' + pais_imagen + '" title="' + pais_imagen + '" style="vertical-align: middle;" />';
+
 			var table = document.getElementById(tableId);
 			// Guardamos en una variable la cantidad de filas que tiene la tabla.
 			// Esta variable también nos servirá para indicar que la fila se tiene
@@ -547,9 +567,6 @@ function addRowCompatible(tableId,id_referencia){
 			var pos = table.rows.length;
 			var row = table.insertRow(pos);
 			var fila = pos - 1;
-
-			// var cell_0 = row.insertCell(0);
-			// var cell_1 = row.insertCell(1);
 
 			var cell_0 = row.insertCell(0);
 			var cell_1 = row.insertCell(1);
@@ -561,9 +578,7 @@ function addRowCompatible(tableId,id_referencia){
 			var cell_7 = row.insertCell(7);
 			var cell_8 = row.insertCell(8);
 			var cell_9 = row.insertCell(9);
-
-			// cell_0.setAttribute("style", "text-align:center");
-			// cell_1.setAttribute("style", "text-align:center");
+			var cell_10 = row.insertCell(10);
 
 			cell_0.setAttribute("style", "text-align:center");
 			cell_5.setAttribute("style", "text-align:center");
@@ -571,9 +586,7 @@ function addRowCompatible(tableId,id_referencia){
 			cell_7.setAttribute("style", "text-align:center");
 			cell_8.setAttribute("style", "text-align:center");
 			cell_9.setAttribute("style", "text-align:center");
-
-			// cell_0.innerHTML = id_grupo;
-			// cell_1.innerHTML = fecha_grupo;
+			cell_10.setAttribute("style", "text-align:center");
 
 			cell_0.innerHTML = id_ref;
 			cell_1.innerHTML = ref;
@@ -584,7 +597,8 @@ function addRowCompatible(tableId,id_referencia){
 			cell_6.innerHTML = cant.toFixed(2);
 			cell_7.innerHTML = precio_unidad.toFixed(2);
 			cell_8.innerHTML = precio_referencia.toFixed(2);
-			cell_9.innerHTML = '<input type="checkbox" name="chkbox_comp" value"' + id_ref + '"/>';
+			cell_9.innerHTML = imagen;
+			cell_10.innerHTML = '<input type="checkbox" name="chkbox_comp" style="vertical-align: middle;" value"' + id_ref + '"/>';
 		}
 		else {
 			alert("ERROR: Ya se ha añadido la referencia compatible a la tabla")
@@ -603,7 +617,7 @@ function removeRowCompatible(tableID) {
 
 		for(var i=0; i<rowCount; i++) {
 			var row = table.rows[i];
-			var chkbox = row.cells[9].childNodes[0];
+			var chkbox = row.cells[10].childNodes[0];
 			if(null != chkbox && true == chkbox.checked) {
 				table.deleteRow(i);
 				rowCount--;

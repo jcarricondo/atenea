@@ -217,6 +217,56 @@ class Referencia_Compatible extends MySQL {
 		return $res_motivos;
 	}
 
+	// Función que devuelve el nombre de la imagen del motivo de compatibilidad
+	function dameNombreImagenMotivoCompatibilidad($id_motivo_compatibilidad){
+		switch ($id_motivo_compatibilidad){
+			case "1":
+				$nombre_imagen = "global.jpg";
+			break;
+			case "2":
+				$nombre_imagen = "mexico.jpg";
+			break;
+			case "3";
+				$nombre_imagen = "brasil.jpg";
+			break;
+			case "4":
+				$nombre_imagen = "francia.jpg";
+			break;
+			case "5":
+				$nombre_imagen = "chile.jpg";
+			break;
+			default:
+				$nombre_imagen = "global.jpg";
+			break;
+		}
+		return $nombre_imagen;
+	}
+
+	// Función que devuelve el pais de la imagen del motivo de compatibilidad
+	function damePaisImagenMotivoCompatibilidad($id_motivo_compatibilidad){
+		switch ($id_motivo_compatibilidad){
+			case "1":
+				$nombre_pais = "GLOBAL";
+				break;
+			case "2":
+				$nombre_pais = "MEXICO";
+				break;
+			case "3";
+				$nombre_pais = "BRASIL";
+				break;
+			case "4":
+				$nombre_pais = "FRANCIA";
+				break;
+			case "5":
+				$nombre_pais = "CHILE";
+				break;
+			default:
+				$nombre_pais = "GLOBAL";
+				break;
+		}
+		return $nombre_pais;
+	}
+
 
 
 
