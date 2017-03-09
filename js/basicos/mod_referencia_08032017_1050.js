@@ -97,6 +97,101 @@ function rellenarTipoPieza(){
 	}
 }
 
+
+// FUNCIONES TABLA ANTECESORES
+
+// Función para eliminar una referencia antecesor
+function removeRowAntecesor(tableID) {
+	try {
+		table = document.getElementById('mitablaAntecesores');
+		var rowCount = table.rows.length;
+
+		for(var i=0; i<rowCount; i++) {
+			var row = table.rows[i];
+			var chkbox = row.cells[10].childNodes[0];
+
+			if(chkbox != null && chkbox.checked == true) {
+				var id_ref = row.cells[0].innerHTML;
+				var aux_rat = document.getElementsByName("REFS_ANTECESORES_TOTALES[]");
+				var rat = new Array();
+				for(j=0; j<aux_rat.length; j++) rat[j] = aux_rat.item(j).value;
+
+				// Llamada asincrona para obtener el array de las referencias antecesores totales
+				var respuesta = (function () {
+					var respuesta = null;
+					$.ajax({
+						dataType: "json",
+						url: "../ajax/basicos/mod_referencia.php?comp=removeReferenciasAntecesores",
+						data: "id_ref=" + id_ref + "&rat=" + rat,
+						type: "GET",
+						async: false,
+						success: function (data) {
+							respuesta = data;
+						}
+					});
+					return respuesta;
+				})();
+
+				eliminarNodosReferenciasAntecesoresTotales();
+				guardarInputsReferenciasAntecesoresAlEiminar(respuesta);
+
+				// Borramos la fila de la tabla
+				table.deleteRow(i);
+				rowCount--;
+				i--;
+			}
+		}
+	}
+	catch(e) {
+		alert(e);
+	}
+}
+
+// Función que limpia toda la tabla de referencias antecesores de la referencia
+function quitarAntecesores(tablaAntecesores){
+	try {
+		var rowCount = tablaAntecesores.rows.length;
+		if(rowCount != 1) {
+			if (confirm("Se eliminarán todas las referencias de la tabla. ¿Desea continuar?")) {
+				for (var i = 1; i < rowCount; i++) {
+					var row = tablaAntecesores.rows[i];
+					tablaAntecesores.deleteRow(i);
+					rowCount--;
+					i--;
+				}
+				eliminarNodosReferenciasAntecesoresTotales();
+			}
+		}
+	}
+	catch(e) {
+		alert(e);
+	}
+}
+
+// Función que elimina todos los nodos de la capa que contiene las referencias antecesores totales
+function eliminarNodosReferenciasAntecesoresTotales(){
+	var capa_totales = document.getElementById("capa_input_referencias_antecesores_totales");
+	if(capa_totales.hasChildNodes()){
+		while(capa_totales.childNodes.length >= 1) capa_totales.removeChild(capa_totales.firstChild);
+	}
+}
+
+// Función que guarda en la capa oculta los nuevos input con las nuevas referencias de los antecesoras
+function guardarInputsReferenciasAntecesoresAlEiminar(respuesta){
+	var capa_totales = document.getElementById("capa_input_referencias_antecesores_totales");
+
+	// Generamos el nuevo array de referencias antecesores totales y lo añadimos
+	for(var j in respuesta) {
+		var input_antecesores_totales = document.createElement("input");
+		input_antecesores_totales.id = "REFS_ANTECESORES_TOTALES[]";
+		input_antecesores_totales.name = "REFS_ANTECESORES_TOTALES[]";
+		input_antecesores_totales.type = "hidden";
+		input_antecesores_totales.value = respuesta[j];
+		capa_totales.appendChild(input_antecesores_totales);
+	}
+}
+
+
 // FUNCIONES TABLA HEREDADAS
 
 // Función para añadir una referencia heredada
@@ -359,7 +454,7 @@ function cambiarComaPorPunto(p_precio){
 
 // Función que determina si se esta intentando añadir una referencia ancestro como referencia heredera
 function validarAncestro(id_referencia){
-	var referencias_ancestros = document.getElementsByName("REFS_ANCESTRO[]");
+	var referencias_ancestros = document.getElementsByName("REFS_ANTECESORES_TOTALES[]");
 	var encontrado = false;
 	var i=0;
 	while (i < referencias_ancestros.length && !encontrado){

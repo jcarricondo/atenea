@@ -87,6 +87,23 @@ if(isset($_GET["comp"])){
             $json = $array_imagen;
             echo json_encode($json, JSON_FORCE_OBJECT);
         break;
+        case "removeReferenciasAntecesores":
+            $id_ref = $_GET["id_ref"];                  // ID REF Antecesor a eliminar
+            $aux_rat = $_GET["rat"];                    // IDs de las refs antecesores totales actuales de la ref principal
+            $rat = explode(",",$aux_rat);               // Array con las refs antecesores totales actuales de la ref principal
+
+            // Obtenemos todos las referencias antecesores de la referencia que vamos a eliminar
+            $refs_antecesores_eliminada[] = $id_ref;
+            $aux_refs_antecesores_eliminada = $ref_heredada->dameTodosAntecesores($id_ref);
+            for($i=0;$i<count($aux_refs_antecesores_eliminada);$i++){
+                $refs_antecesores_eliminada[] = $aux_refs_antecesores_eliminada[$i]["id_referencia"];
+            }
+
+            $new_rat = array_diff($rat,$refs_antecesores_eliminada);
+
+            $json = $new_rat;
+            echo json_encode($json, JSON_FORCE_OBJECT);
+            break;
         default:
 
         break;

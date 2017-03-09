@@ -2984,7 +2984,7 @@ table td .botonAsignacion {
 	float: none;
 }
 
-.BotonQuitarCompatibilidad, .BotonQuitarHeredadas{
+.BotonQuitarCompatibilidad, .BotonQuitarHeredadas, .BotonQuitarAntecesores {
 	width:auto; /*auto;/*50px;*/
 	height:auto; /*auto;/*50px;*/
 	margin: 5px 20px 5px 200px;

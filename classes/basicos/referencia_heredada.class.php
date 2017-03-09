@@ -8,36 +8,21 @@ class Referencia_Heredada extends Referencia {
 	var $activo;
 	var $fecha_creado;
 
+	var $referencias_antecesor;
 	var $referencias_heredadas;
 	var $piezas_referencias_heredadas;
 
-	/*
-	function cargarDatos($id,$id_referencia,$id_referencia_heredada,$cantidad,$activo,$fecha_creado) {
-		$this->id = $id;
+
+	function setReferenciasAntecesor($id_referencia,$referencias_antecesor){
 		$this->id_referencia = $id_referencia;
-		$this->id_referencia_heredada = $id_referencia_heredada;
-		$this->cantidad = $cantidad;
-		$this->activo = $activo;
-		$this->fecha_creado = $fecha_creado;
+		$this->referencias_antecesor = $referencias_antecesor;
 	}
 
-	function cargaDatosReferenciaId($id_referencia) {
-		$consultaSql = sprintf("select * from referencias_heredadas where activo=1 and referencias_heredadas.id_referencia=%s",
-				$this->makeValue($id_referencia, "int"));
-		$this->setConsulta($consultaSql);
-		$this->setConsulta($consultaSql);
-		$this->ejecutarConsulta();
-		$resultados = $this->getPrimerResultado();
-		$this->cargarDatos(
-				$resultados["id"],
-				$resultados["id_referencia"],
-				$resultados["id_referencia_heredada"],
-				$resultados["cantidad"],
-				$resultados["activo"],
-				$resultados["fecha_creado"]
-		);
+	function setReferenciasHeredadas($id_referencia,$referencias_heredadas,$piezas_referencias_heredadas) {
+		$this->id_referencia = $id_referencia;
+		$this->referencias_heredadas = $referencias_heredadas;
+		$this->piezas_referencias_heredadas = $piezas_referencias_heredadas;
 	}
-	*/
 
 	// Función que devuelve los antecesores de la referencia heredada
 	function dameAntecesoresPrincipales($id_referencia){
@@ -69,6 +54,27 @@ class Referencia_Heredada extends Referencia {
 			$hay_ancestros = $res_antecesores === $array_antecesores_leidos;
 		}
 		return $res_antecesores;
+	}
+
+	// Función que desactiva todas las referencias antecesor de una referencia
+	function desactivarReferenciasAntecesor(){
+		$updateSql = sprintf("update referencias_heredadas set activo=0 where id_ref_heredada=%s",
+				$this->makeValue($this->id_referencia, "int"));
+		$this->setConsulta($updateSql);
+		if($this->ejecutarSoloConsulta()){
+			return 1;
+		}
+		else return 3;
+	}
+
+	// Función que desactiva un antecesor dada una referencia heredada
+	function desactivaAntecesorReferencia($id_ref_antecesor,$id_ref_heredada) {
+		$updateSql = sprintf("update referencias_heredadas set activo=0 where id_referencia=%s and id_ref_heredada=%s",
+				$this->makeValue($id_ref_antecesor, "int"),
+				$this->makeValue($id_ref_heredada, "int"));
+		$this->setConsulta($updateSql);
+		if (!$this->ejecutarSoloConsulta()) $error_antecesor = true;
+		return $error_antecesor;
 	}
 
 	// Función que devuelve las referencias heredadas de la referencia
@@ -103,8 +109,6 @@ class Referencia_Heredada extends Referencia {
 		return $res_heredadas;
 	}
 
-
-
 	// Función que devuelve la cantidad de piezas de la referencia heredada
 	function dameCantidadPiezaHeredada($id_referencia,$id_referencia_heredada){
 		$consulta = sprintf("select cantidad from referencias_heredadas where activo=1 and id_referencia=%s and id_ref_heredada=%s",
@@ -115,12 +119,6 @@ class Referencia_Heredada extends Referencia {
 		$res_cantidad_heredada = $this->getPrimerResultado();
 		$res_cantidad_heredada = $res_cantidad_heredada["cantidad"];
 		return $res_cantidad_heredada;
-	}
-
-	function setReferenciasHeredadas($id_referencia,$referencias_heredadas,$piezas_referencias_heredadas) {
-		$this->id_referencia = $id_referencia;
-		$this->referencias_heredadas = $referencias_heredadas;
-		$this->piezas_referencias_heredadas = $piezas_referencias_heredadas;
 	}
 
 	// Función para guardar las referencias heredadas de una referencia
@@ -157,6 +155,9 @@ class Referencia_Heredada extends Referencia {
 		switch($error_num) {
 			case 2:
 				return 'Se produjo un error al desactivar las referencias herederas de la referencia<br/>';
+			break;
+			case 3:
+				return 'Se produjo un error al desactivar las referencias antecesor de la referencia<br/>';
 			break;
 		}
 	}
