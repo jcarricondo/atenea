@@ -50,7 +50,7 @@ $salida = '<table>
 	
 // Por cada referencia del componente generamos la fila y codificamos los campos
 for($i=0;$i<count($referencias_componente);$i++){
-	// De la tabla componentes_referencias solo nos interesa el campo piezas y el id_referencia.
+	// De la tabla componentes_referencias sólo nos interesa el campo piezas y el id_referencia.
 	// Los demas datos los obtenemos de la tabla referencias
 	$id_referencia = $referencias_componente[$i]["id_referencia"];
 	$total_piezas = $referencias_componente[$i]["piezas"];
@@ -143,6 +143,10 @@ for($i=0;$i<count($referencias_componente);$i++){
 		if($coments_codificada[$m] == '?') $coments .= '&#8364;';
 		else $coments .= $coments_codificada[$m];
 	}
+
+	$id_motivo_compatibilidad = $ref->dameIdMotivoCompatibilidad($id_referencia);
+	if($id_motivo_compatibilidad == "1") $es_compatible = "NO";
+	else $es_compatible = "SI";
 		
 	// Generamos la fila HTML de la tabla correspondiente a una referencia
 	$salida .= '

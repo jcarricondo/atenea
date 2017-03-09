@@ -93,6 +93,10 @@ for($i=0;$i<count($referencias_componente_final);$i++){
     $precio_por_simulador_unidades = $unidades_por_simulador * $precio_por_unidad;
     $precio_por_simulador_paquetes = $paquetes_por_simulador * $precio_por_paquete;
 
+    $id_motivo_compatibilidad = $ref->dameIdMotivoCompatibilidad($id_referencia);
+    if($id_motivo_compatibilidad == "1") $es_compatible = "NO";
+    else $es_compatible = "SI";
+
     $ref->prepararCodificacionReferencia();
     $salida .= '<tr>
                 <td style="text-align: center;">'.$id_referencia.'</td>
