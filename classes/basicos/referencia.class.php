@@ -915,7 +915,7 @@ class Referencia extends MySQL {
                 $nombre_fabricante_aux .= $nombre_fabricante_cod[$i];
             }
         }
-        $this->nombre_fabricante = $nombre_pieza_aux;
+        $this->nombre_fabricante = $nombre_fabricante_aux;
 
         $part_fabricante_referencia_aux = '';
         $part_fabricante_referencia_cod = utf8_decode($this->part_fabricante_referencia);

@@ -14,10 +14,6 @@ include("../classes/basicos/listado_fabricantes.class.php");
 include("../classes/basicos/componente.class.php");
 include("../classes/basicos/usuario.class.php");
 include("../classes/log/basicos/log_basicos_referencias.class.php");
-
-include("../classes/kint/Kint.class.php");
-
-
 permiso(34);
 
 // Comprobamos si el usuario puede modificar el basico

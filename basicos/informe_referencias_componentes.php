@@ -20,33 +20,33 @@ $nombre_producto = strtoupper($np->nombre);
 
 $salida = '<table>
                 <tr>
-                    <th>Componente</th>
-                    <th>Kit</th>
+                    <th style="text-align: left;">Componente</th>
+                    <th style="text-align: left;">Kit</th>
                     <th style="text-align: center;">ID Ref.</th>
-                    <th>Nombre</th>
-                    <th>Referencia Proveedor</th>
-                    <th>Proveedor</th>
-                    <th>Precio</th>
-                    <th>Total Paquetes</th>
-                    <th>Tipo Pieza</th>
-                    <th>Nombre Pieza</th>
-                    <th>Fabricante</th>
-                    <th>Referencia Fabricante</th>
-                    <th>Descripci&oacute;n</th>
-                    <th>Nombre</th>
-                    <th>Valor</th>
-                    <th>Nombre 2</th>
-                    <th>Valor 2</th>
-                    <th>Nombre 3</th>
-                    <th>Valor 3</th>
-                    <th>Nombre 4</th>
-                    <th>Valor 4</th>
-                    <th>Nombre 5</th>
-                    <th>Valor 5</th>
-                    <th>Precio Pack</th>
-                    <th>Unidades Paquete</th>
-                    <th>Piezas</th>
-                    <th>Comentarios</th>
+                    <th style="text-align: left;">Nombre</th>
+                    <th style="text-align: left;">Referencia Proveedor</th>
+                    <th style="text-align: left;">Proveedor</th>
+                    <th style="text-align: right;">Precio</th>
+                    <th style="text-align: right;">Total Paquetes</th>
+                    <th style="text-align: left;">Tipo Pieza</th>
+                    <th style="text-align: left;">Nombre Pieza</th>
+                    <th style="text-align: left;">Fabricante</th>
+                    <th style="text-align: left;">Referencia Fabricante</th>
+                    <th style="text-align: left;">Descripci&oacute;n</th>
+                    <th style="text-align: left;">Nombre</th>
+                    <th style="text-align: left;">Valor</th>
+                    <th style="text-align: left;">Nombre 2</th>
+                    <th style="text-align: left;">Valor 2</th>
+                    <th style="text-align: left;">Nombre 3</th>
+                    <th style="text-align: left;">Valor 3</th>
+                    <th style="text-align: left;">Nombre 4</th>
+                    <th style="text-align: left;">Valor 4</th>
+                    <th style="text-align: left;">Nombre 5</th>
+                    <th style="text-align: left;">Valor 5</th>
+                    <th style="text-align: right;">Precio Pack</th>
+                    <th style="text-align: right;">Unidades Paquete</th>
+                    <th style="text-align: right;">Piezas</th>
+                    <th style="text-align: left;">Comentarios</th>
                 </tr>';
 
 // Obtenemos los componentes principales de la plantilla
@@ -98,33 +98,33 @@ for($i=0;$i<count($array_componentes_final);$i++) {
         $ref->prepararCodificacionReferencia();
 
         $salida .= '<tr>
-                        <td>'.utf8_decode($nombre_componente_principal).'</td>
-                        <td>'.utf8_decode($nombre_subcomponente).'</td>
+                        <td style="text-align: left;">'.utf8_decode($nombre_componente_principal).'</td>
+                        <td style="text-align: left;">'.utf8_decode($nombre_subcomponente).'</td>
                         <td style="text-align: center;">'.$id_referencia.'</td>
-                        <td>'.$ref->referencia.'</td>
-                        <td>'.$ref->part_proveedor_referencia.'</td>
-                        <td>'.$ref->nombre_proveedor.'</td>
+                        <td style="text-align: left;">'.$ref->referencia.'</td>
+                        <td style="text-align: left;">'.$ref->part_proveedor_referencia.'</td>
+                        <td style="text-align: left;">'.$ref->nombre_proveedor.'</td>
                         <td style="text-align: right;">'.number_format(round($ref->coste,2),2,',','.').'</td>
                         <td style="text-align: right;">'.$ref->total_paquetes.'</td>
-                        <td>'.$ref->part_tipo.'</td>
-                        <td>'.$ref->part_nombre.'</td>
-                        <td>'.$ref->nombre_fabricante.'</td>
-                        <td>'.$ref->part_fabricante_referencia.'</td>
-                        <td>'.$ref->part_descripcion.'</td>
-                        <td>'.$ref->part_valor_nombre.'</td>
-                        <td>'.$ref->part_valor_cantidad.'</td>
-                        <td>'.$ref->part_valor_nombre_2.'</td>
-                        <td>'.$ref->part_valor_cantidad_2.'</td>
-                        <td>'.$ref->part_valor_nombre_3.'</td>
-                        <td>'.$ref->part_valor_cantidad_3.'</td>
-                        <td>'.$ref->part_valor_nombre_4.'</td>
-                        <td>'.$ref->part_valor_cantidad_4.'</td>
-                        <td>'.$ref->part_valor_nombre_5.'</td>
-                        <td>'.$ref->part_valor_cantidad_5.'</td>
+                        <td style="text-align: left;">'.$ref->part_tipo.'</td>
+                        <td style="text-align: left;">'.$ref->part_nombre.'</td>
+                        <td style="text-align: left;">'.$ref->nombre_fabricante.'</td>
+                        <td style="text-align: left;">'.$ref->part_fabricante_referencia.'</td>
+                        <td style="text-align: left;">'.$ref->part_descripcion.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_nombre.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_cantidad.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_nombre_2.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_cantidad_2.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_nombre_3.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_cantidad_3.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_nombre_4.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_cantidad_4.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_nombre_5.'</td>
+                        <td style="text-align: left;">'.$ref->part_valor_cantidad_5.'</td>
                         <td style="text-align: right;">'.number_format(round($ref->pack_precio,2),2,',','.').'</td>
                         <td style="text-align: right;">'.$ref->unidades.'</td>
                         <td style="text-align: right;">'.number_format(round($piezas,2),2,',','.').'</td>
-                        <td>'.$ref->comentarios.'</td>
+                        <td style="text-align: left;">'.$ref->comentarios.'</td>
                     </tr>';
     }
 }
