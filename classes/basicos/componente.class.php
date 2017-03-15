@@ -210,6 +210,19 @@ class Componente extends MySQL {
 		return $encontrado;
 	}
 
+	// Comprueba si un componente es vacio
+	function esComponenteVacio($id_componente){
+		$consultaSql = sprintf("select id_componente from componentes where activo=1 and id_componente=%s
+							and id_componente not in (select id_componente from componentes_archivos where activo=1)
+   							and id_componente not in (select id_componente from componentes_kits where activo=1)
+   							and id_componente not in (select id_componente from componentes_referencias where activo=1)",
+						$this->makeValue($id_componente, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_id_componente = $this->getPrimerResultado();
+		return !empty($res_id_componente);
+	}
+
 
 	function dameNombreTipoComponente($id_tipo){
         switch($id_tipo) {

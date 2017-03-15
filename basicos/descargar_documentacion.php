@@ -6,6 +6,8 @@ include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/referencia_componente.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 include("../classes/basicos/listado_referencias_componentes.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/periferico.class.php");
@@ -19,6 +21,8 @@ $prov = new Proveedor();
 $np = new Nombre_Producto();
 $ref = new Referencia();
 $ref_comp = new Referencia_Componente();
+$ref_heredada = new Referencia_Heredada();
+$ref_compatible = new Referencia_Compatible();
 $kit = new Kit();
 $per = new Periferico();
 $plant = new Plantilla_Producto();
@@ -75,6 +79,7 @@ include ("../includes/header.php");
            	<div class="LabelCreacionBasico"><?php echo $tipo_comp;?></div>
 			<label id="nombre_componente" class="LabelPrecio"><?php echo $nombre_comp;?></label>
         </div>
+		<br/>
         <div class="ContenedorCamposCreacionBasico">
         	<div class="LabelCreacionBasico">Proveedor *</div>
             <select id="proveedor" name="proveedor" class="CreacionBasicoInput">

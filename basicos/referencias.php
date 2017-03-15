@@ -3,11 +3,13 @@
 include("../includes/sesion.php");
 include("../classes/basicos/listado_referencias.class.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
 include("../classes/funciones/funciones.class.php");
 require("../funciones/pclzip/pclzip.lib.php");
 permiso(1);
 
 $ref = new Referencia();
+$ref_heredada = new Referencia_Heredada();
 $referencias = new listadoReferencias();
 $funciones = new Funciones();
 
@@ -87,7 +89,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	$pg_totalPaginas = ceil(count($resultadosBusqueda) / $pg_registros);
 	$referencias->setValores($referencia,$proveedor,$ref_prov_pieza,$precio_pack,$fabricante,$ref_fab_pieza,$tipo_pieza,$part_value_name,$unidades_paquete,$nombre_pieza,$part_value_qty,$busqueda_magica,$ordenar_referencias,$fecha_desde,$fecha_hasta,$id_referencia,$paginacion);
 	$referencias->realizarConsulta();
-	$resultadosBusqueda = $referencias->referencias; 
+	$resultadosBusqueda = $referencias->referencias;
 		
 	// Convierte la fecha a formato HTML
 	if ($fecha_desde != "") $fecha_desde = $funciones->cFechaNormal($fecha_desde);
@@ -142,6 +144,7 @@ $titulo_pagina = "Básicos > Referencias";
 $pagina = "referencias";
 include("../includes/header.php");
 echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 ?>
 
 <div class="separador"></div> 
@@ -263,6 +266,7 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
         </tr>
     </table>
     <br />
+	<input type="hidden" id="nombreFormulario" name="nombreFormulario" value="BuscadorReferencias" />
     </form>
     
     <div class="ContenedorBotonCrear">
@@ -308,8 +312,6 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
           			<th>REF. PROV.</th>
 					<th style="text-align:center">DOC</th>
                     <th>REF. FABRIC.</th>
-            		<!--<th>E.N.</th>-->
-            		<!--<th>E.V.</th>-->
                     <th style="text-align:center">PACK PRECIO</th>
             		<th style="text-align:center">UND/PQ</th>
                     <?php 
@@ -387,11 +389,19 @@ echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script
 					</td>
 					<td style="text-align: center;">
 						<?php
-							$tiene_archivos = $ref->tieneDocumentacionAdjunta($ref->id_referencia);
+							// Obtenemos las referencias heredadas y descendecia de la referencia
+							$res_heredadas = $ref_heredada->dameTodasHeredadas($ref->id_referencia);
+							$array_todas_referencias[]["id_referencia"] = $ref->id_referencia;
+							for($j=0;$j<count($res_heredadas);$j++){
+								$id_ref_heredada = $res_heredadas[$j]["id_ref_heredada"];
+								$array_todas_referencias[]["id_referencia"] = $id_ref_heredada;
+							}
+							$tiene_archivos = $ref->tieneDocumentacionAdjuntaReferencias($array_todas_referencias);
 							if($tiene_archivos) { ?>
 								<a href="#" onclick="descargar_documentacion(<?php echo $ref->id_referencia;?>)"><img src="../images/download_icon.jpg" style="vertical-align: middle;" /></a>
 						<?php
 							}
+							unset($array_todas_referencias);
 						?>
 					</td>
                     <td>

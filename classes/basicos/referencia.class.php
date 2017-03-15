@@ -1062,11 +1062,11 @@ class Referencia extends MySQL {
 	}
 
 	// Función que determina si existe documentación en alguna de las referencias de un array
-	function tieneDocumentacionAdjuntaComponente($array_referencias_componente){
+	function tieneDocumentacionAdjuntaReferencias($array_referencias){
 		$i=0;
 		$encontrado = false;
-		while($i<count($array_referencias_componente) && !$encontrado){
-			$id_referencia = $array_referencias_componente[$i]["id_referencia"];
+		while($i<count($array_referencias) && !$encontrado){
+			$id_referencia = $array_referencias[$i]["id_referencia"];
 			$encontrado = $this->tieneDocumentacionAdjunta($id_referencia);
 			$i++;
 		}
@@ -1092,6 +1092,8 @@ class Referencia extends MySQL {
 		$res_id_motivo_compatibilidad = $this->getPrimerResultado();
 		return $res_id_motivo_compatibilidad["id_motivo_compatibilidad"];
 	}
+
+
 
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {

@@ -1,7 +1,6 @@
 <?php
 // Este fichero prepara la documentación adjunta de referencias para descargar
-$nombre_dir_referencia = $id_referencia;
-$dir_documentacion_referencia = $dir_actual.$barra_directorio.$nombre_dir_referencia;
+$dir_documentacion_referencia = $dir_actual.$barra_directorio.$id_referencia;
 
 // Comprobamos si la referencia tiene documentacion adjunto
 $res_documentacion_adjunta = $ref->dameArchivosReferencia($id_referencia);

@@ -184,6 +184,20 @@ class Funciones extends MySQL{
         return $hasBOM;
     }
 
+	// Función que deja un string sólo con letras y numeros
+	function soloLetrasYNumerosString($cadena){
+		$cadena_limpia = preg_replace('([^A-Za-z0-9])', '', $cadena);
+		return $cadena_limpia;
+	}
+
+	// Función que adapta un string para que se pueda utilizar como nombre de directorio
+	function quitarCaracteresNoPermitidosCarpeta($string_carpeta){
+		$reemplazo = "_";
+		$caracteres_no_permitidos = array("\\","/",":","*","\"","<",">"," ");
+		$cadena_final = str_replace($caracteres_no_permitidos, $reemplazo, $string_carpeta);
+		return $cadena_final;
+	}
+
 	// Función que obtiene la barra de directorio en función del entorno
 	function dameBarraDirectorio(){
 		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {

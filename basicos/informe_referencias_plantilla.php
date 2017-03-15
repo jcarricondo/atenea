@@ -6,11 +6,15 @@ include("../classes/basicos/plantilla_producto.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/componente.class.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 
 $plant = new Plantilla_Producto();
 $np = new Nombre_Producto();
 $comp = new Componente();
 $ref = new Referencia();
+$ref_heredada = new Referencia_Heredada();
+$ref_compatible = new Referencia_Compatible();
 
 $id_plantilla = $_GET["id_plantilla"];
 $plant->cargaDatosPlantillaProductoId($id_plantilla);
@@ -48,6 +52,7 @@ $salida = '<table>
             <th style="text-align: left;">Nombre 5</th>
             <th style="text-align: left;">Valor 5</th>
             <th style="text-align: left;">Comentarios</th>
+            <th style="text-align: center;">COMPATIBLE</th>
         </tr>';
 
 // Obtenemos los componentes principales de la plantilla
@@ -87,6 +92,29 @@ for($i=0;$i<count($array_componentes_final);$i++){
     }
 }
 
+// Comprobamos si las referencias tienen referencias heredadas
+for($i=0;$i<count($referencias_componente_final);$i++){
+    $id_referencia = $referencias_componente_final[$i]["id_referencia"];
+    $res_heredadas = $ref_heredada->dameTodasHeredadas($id_referencia);
+    if($res_heredadas){
+        // Preparamos el array con las referencias heredadas de la referencia
+        for($j=0;$j<count($res_heredadas);$j++){
+            $id_ref_heredada = $res_heredadas[$j]["id_ref_heredada"];
+            $piezas_ref_heredada = $ref_heredada->dameCantidadPiezaHeredada($id_referencia,$id_ref_heredada);
+            $array_ref_heredada[$j]["id_referencia"] = intval($id_ref_heredada);
+            $array_ref_heredada[$j]["piezas"] = floatval($piezas_ref_heredada);
+        }
+
+        if($referencias_componente_final != NULL){
+            // Agrupamos las referencias
+            $referencias_componente_final = $comp->agruparReferenciasComponentes($array_ref_heredada,$referencias_componente_final);
+        }
+        else {
+            $referencias_componente_final = $array_ref_heredada;
+        }
+    }
+}
+
 if(!empty($referencias_componente_final)) {
     // Ordenamos el array de referencias
     array_multisort($referencias_componente_final);
@@ -109,6 +137,10 @@ for($i=0;$i<count($referencias_componente_final);$i++){
     }
     $precio_por_simulador_unidades = $unidades_por_simulador * $precio_por_unidad;
     $precio_por_simulador_paquetes = $paquetes_por_simulador * $precio_por_paquete;
+
+    $id_grupo = $ref_compatible->dameGrupoReferencia($id_referencia);
+    if(!empty($id_grupo)) $es_compatible = "SI";
+    else $es_compatible = "NO";
 
     $ref->prepararCodificacionReferencia();
     $salida .= '<tr>
@@ -139,6 +171,7 @@ for($i=0;$i<count($referencias_componente_final);$i++){
                 <td style="text-align: left;">'.$ref->part_valor_nombre_5.'</td>
                 <td style="text-align: left;">'.$ref->part_valor_cantidad_5.'</td>
                 <td style="text-align: left;">'.$ref->comentarios.'</td>
+                <td style="text-align: center;">'.$es_compatible.'</td>
             </tr>';
 }
 $salida .= '</table>';

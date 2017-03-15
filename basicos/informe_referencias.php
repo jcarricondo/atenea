@@ -3,18 +3,19 @@
 include("../includes/sesion.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/referencia_componente.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 include("../classes/basicos/listado_referencias_componentes.class.php");
 
 $db = new MySQL();
 $referencia = new Referencia();
 $ref = new Referencia_Componente();
+$ref_heredada = new Referencia_Heredada();
+$ref_compatible = new Referencia_Compatible();
 // Devuelve el tipo de componente: periferico o kit
 $tipo = $_GET["tipo"]; 
 // Devuelve el id_componente
 $id	= $_GET["id"]; 
-
-// Tenemos que comprobar el tipo de componente. Si el componente es kit mostrará sus referencias.
-// Si el componente es un periferico hay que comprobar si tiene kits.
 
 $salida = "";
 
@@ -22,8 +23,8 @@ $salida = "";
 $ref->dameReferenciasPorIdComponente($id);
 $referencias_componente = $ref->referencias_componente;
 
-// Si el componente es un periferico tendremos que comprobar si tienen kits y añadir sus referencias a las referencias del componente
-if (/*($tipo == "cabina") or */($tipo == "periferico")){
+// Si el componente es un periférico tendremos que comprobar si tienen kits y añadir sus referencias
+if ($tipo == "periferico"){
 	// Creamos un array auxiliar de las referencias del componente
 	$referencias_aux = $referencias_componente;
 	
@@ -37,6 +38,35 @@ if (/*($tipo == "cabina") or */($tipo == "periferico")){
 		$referencias_kit = $ref->referencias_componente;
 		$referencias_componente = $ref->addReferenciasKitAlComponente($referencias_kit,$referencias_componente);
 	}
+}
+
+// Preparamos el array final con el id_referencia y las piezas
+for($i=0;$i<count($referencias_componente);$i++) {
+	$referencias_componente_final[$i]["id_referencia"] = $referencias_componente[$i]["id_referencia"];
+	$referencias_componente_final[$i]["piezas"] = floatval($referencias_componente[$i]["piezas"]);
+}
+
+// Comprobamos si las referencias tienen referencias heredadas
+for($i=0;$i<count($referencias_componente_final);$i++){
+	$id_referencia = $referencias_componente_final[$i]["id_referencia"];
+	$res_heredadas = $ref_heredada->dameTodasHeredadas($id_referencia);
+	if($res_heredadas){
+		// Preparamos el array con las referencias heredadas de la referencia
+		for($j=0;$j<count($res_heredadas);$j++){
+			$id_ref_heredada = $res_heredadas[$j]["id_ref_heredada"];
+			$piezas_ref_heredada = $ref_heredada->dameCantidadPiezaHeredada($id_referencia,$id_ref_heredada);
+			$array_ref_heredada[$j]["id_referencia"] = $id_ref_heredada;
+			$array_ref_heredada[$j]["piezas"] = floatval($piezas_ref_heredada);
+		}
+
+		// Agrupamos las referencias heredadas al grupo total de referencias
+		$referencias_componente_final = $ref->addReferenciasKitAlComponente($array_ref_heredada,$referencias_componente_final);
+	}
+}
+
+if(!empty($referencias_componente_final)) {
+	// Ordenamos el array de referencias
+	array_multisort($referencias_componente_final);
 }
 
 // Generamos la tabla HTML 
@@ -67,14 +97,15 @@ $table = '<table>
         <th style="text-align: right;">Precio Pack</th>
         <th style="text-align: right;">Unidades Paquete</th>
         <th style="text-align: left;">Comentarios</th>
+        <th style="text-align: center;">COMPATIBLE</th>
     </tr>';
 	
 	
 // Por cada referencia del componente generamos la fila y codificamos los campos
-for($i=0;$i<count($referencias_componente);$i++){
+for($i=0;$i<count($referencias_componente_final);$i++){
 	// De la tabla componentes_referencias solo nos interesa el campo piezas y el id_referencia. Los demas datos los obtenemos de la tabla referencias
-	$id_referencia = $referencias_componente[$i]["id_referencia"];
-	$total_piezas = $referencias_componente[$i]["piezas"];
+	$id_referencia = $referencias_componente_final[$i]["id_referencia"];
+	$total_piezas = $referencias_componente_final[$i]["piezas"];
 	$referencia->cargaDatosReferenciaId($id_referencia);
 	
 	// Tenemos que calcular el precio de la referencia 
@@ -211,6 +242,10 @@ for($i=0;$i<count($referencias_componente);$i++){
 			$coments .= $coments_codificada[$m]; 
 		}
 	}
+
+	$id_grupo = $ref_compatible->dameGrupoReferencia($id_referencia);
+	if(!empty($id_grupo)) $es_compatible = "SI";
+	else $es_compatible = "NO";
 		
 	// Generamos la fila HTML de la tabla correspondiente a una referencia
 	$salida .= '
@@ -240,6 +275,7 @@ for($i=0;$i<count($referencias_componente);$i++){
 		<td style="text-align: right;">'.number_format($referencia->pack_precio,2,',','.').'</td>
 		<td style="text-align: right;">'.utf8_decode($referencia->unidades).'</td>
 		<td style="text-align: left;">'.$coments.'</td>
+		<td style="text-align: center;">'.$es_compatible.'</td>
 	</tr>
 	';
 }

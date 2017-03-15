@@ -5,11 +5,15 @@ include("../classes/basicos/plantilla_producto.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/componente.class.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 
 $plant = new Plantilla_Producto();
 $np = new Nombre_Producto();
 $comp = new Componente();
 $ref = new Referencia();
+$ref_heredada = new Referencia_Heredada();
+$ref_compatible = new Referencia_Compatible();
 
 $id_plantilla = $_GET["id_plantilla"];
 $plant->cargaDatosPlantillaProductoId($id_plantilla);
@@ -47,6 +51,7 @@ $salida = '<table>
                     <th style="text-align: right;">Unidades Paquete</th>
                     <th style="text-align: right;">Piezas</th>
                     <th style="text-align: left;">Comentarios</th>
+                    <th style="text-align: center;">COMPATIBLE</th>
                 </tr>';
 
 // Obtenemos los componentes principales de la plantilla
@@ -97,6 +102,10 @@ for($i=0;$i<count($array_componentes_final);$i++) {
         $ref->calculaCosteReferencia();
         $ref->prepararCodificacionReferencia();
 
+        $id_grupo = $ref_compatible->dameGrupoReferencia($id_referencia);
+        if(!empty($id_grupo)) $es_compatible = "SI";
+        else $es_compatible = "NO";
+
         $salida .= '<tr>
                         <td style="text-align: left;">'.utf8_decode($nombre_componente_principal).'</td>
                         <td style="text-align: left;">'.utf8_decode($nombre_subcomponente).'</td>
@@ -125,6 +134,7 @@ for($i=0;$i<count($array_componentes_final);$i++) {
                         <td style="text-align: right;">'.$ref->unidades.'</td>
                         <td style="text-align: right;">'.number_format(round($piezas,2),2,',','.').'</td>
                         <td style="text-align: left;">'.$ref->comentarios.'</td>
+                        <td style="text-align: center;">'.$es_compatible.'</td>
                     </tr>';
     }
 }

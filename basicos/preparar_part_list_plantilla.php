@@ -79,6 +79,7 @@ for($i=0;$i<count($referencias_componente_final);$i++){
     $id_referencia = $referencias_componente_final[$i]["id_referencia"];
     $piezas = $referencias_componente_final[$i]["piezas"];
     $ref->cargaDatosReferenciaId($id_referencia);
+    $id_proveedor_referencia = $ref->proveedor;
     $unidades_por_paquete = $ref->unidades;
     $unidades_por_simulador = $piezas;
     $precio_por_paquete = $ref->pack_precio;
@@ -93,12 +94,15 @@ for($i=0;$i<count($referencias_componente_final);$i++){
     $precio_por_simulador_unidades = $unidades_por_simulador * $precio_por_unidad;
     $precio_por_simulador_paquetes = $paquetes_por_simulador * $precio_por_paquete;
 
-    $id_motivo_compatibilidad = $ref->dameIdMotivoCompatibilidad($id_referencia);
-    if($id_motivo_compatibilidad == "1") $es_compatible = "NO";
-    else $es_compatible = "SI";
+    $id_grupo = $ref_compatible->dameGrupoReferencia($id_referencia);
+    if(!empty($id_grupo)) $es_compatible = "SI";
+    else $es_compatible = "NO";
 
     $ref->prepararCodificacionReferencia();
-    $salida .= '<tr>
+
+    $muestro_fila = $id_proveedor == "0" || ($id_proveedor == $id_proveedor_referencia);
+    if($muestro_fila){
+        $salida .= '<tr>
                 <td style="text-align: center;">'.$id_referencia.'</td>
                 <td style="text-align: left;">'.$ref->referencia.'</td>
                 <td style="text-align: left;">'.$ref->part_proveedor_referencia.'</td>
@@ -128,6 +132,7 @@ for($i=0;$i<count($referencias_componente_final);$i++){
                 <td style="text-align: left;">'.$ref->comentarios.'</td>
                 <td style="text-align: center;">'.$es_compatible.'</td>
             </tr>';
+    }
 }
 $salida .= '</table>';
 $partlist = $dir_documentacion_plantilla.$barra_directorio."PARTLIST.xls";

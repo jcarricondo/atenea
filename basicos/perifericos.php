@@ -2,9 +2,15 @@
 // Este fichero muestra el listado de los perifericos
 include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
+include("../classes/basicos/componente.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/listado_perifericos.class.php");
 permiso(1);
+
+$funciones = new Funciones();
+$comp = new Componente();
+$per = new Periferico();
+$perifericos = new listadoPerifericos();
 
 // Establecemos los parametros de la paginacion
 // Número de registros a mostrar por página
@@ -36,7 +42,6 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 
 	if (!is_numeric($version)) $version = NULL;
 
-	$funciones = new Funciones();
 	// Este fichero convierte la fecha a formato MySql
 	if ($fecha_desde != "") $fecha_desde = $funciones->cFechaMy($fecha_desde);
 	if ($fecha_hasta != "") $fecha_hasta = $funciones->cFechaMy($fecha_hasta);
@@ -49,7 +54,6 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 		if (($referencia[$i] == '-') or ($referencia[$i] == ' ')) $referencia[$i] = '%';
 	}
 
-	$perifericos = new listadoPerifericos();
 	// Se pasan los datos del buscador a la clase del listado y se realiza la consulta a la base de datos
 	$perifericos->setValores($periferico,$referencia,$version,$descripcion,$estado,$prototipo,$fecha_desde,$fecha_hasta,'');
 	$perifericos->realizarConsulta();
@@ -220,7 +224,6 @@ echo '<script type="text/javascript" src="../js/basicos/perifericos.js"></script
         	<?php
 				for($i=0;$i<count($resultadosBusqueda);$i++) {
 					// Se cargan los datos de los perifericos según su identificador
-					$per = new Periferico();
 					$datoPeriferico = $resultadosBusqueda[$i];
 					$per->cargaDatosPerifericoId($datoPeriferico["id_componente"]); ?>
 					<tr>
@@ -239,8 +242,8 @@ echo '<script type="text/javascript" src="../js/basicos/perifericos.js"></script
 						<td><?php echo $per->descripcion; ?></td>
                         <td style="text-align: center;">
                         <?php
-                            $tiene_doc = $per->tieneDocumentacionAdjunta($per->id_componente);
-                            if($tiene_doc) { ?>
+                            $periferico_vacio = $comp->esComponenteVacio($per->id_componente);
+                            if(!$periferico_vacio) { ?>
                                 <a href="#" onclick="descargar_documentacion(<?php echo $per->id_componente;?>)"><img src="../images/download_icon.jpg" style="vertical-align: middle;" /></a>
                         <?php
                             }

@@ -5,14 +5,16 @@ for($n_kit=0;$n_kit<count($res_kits);$n_kit++){
     $res_documentacion_mecanica = $comp->dameArchivosComponente($id_kit);
     $res_id_refs_kit = $comp->dameIdsReferenciaComponentePorProveedor($id_kit,$id_proveedor);
     $kit_con_documentacion = !empty($res_documentacion_mecanica);
-    $kit_con_referencias = $ref->tieneDocumentacionAdjuntaComponente($res_id_refs_kit);
+    $kit_con_referencias = $ref->tieneDocumentacionAdjuntaReferencias($res_id_refs_kit);
     $kit_no_vacio = ($kit_con_documentacion || $kit_con_referencias);
 
     if($kit_no_vacio){
         $kit->cargaDatosKitId($id_kit);
         $nombre_kit = $id_kit."_".$kit->kit;
         $version_kit = $kit->version;
-        $dir_kit_actual = str_replace("/", "_",$dir_periferico_kits.$barra_directorio.$nombre_kit."_v".$version_kit);
+        $nombre_final_kit = $funciones->quitarCaracteresNoPermitidosCarpeta($nombre_kit."_v".$version_kit);
+
+        $dir_kit_actual = $dir_periferico_kits.$barra_directorio.$nombre_final_kit;
 
         if(!file_exists($dir_kit_actual)) mkdir($dir_kit_actual, 0700);
 
@@ -29,6 +31,7 @@ for($n_kit=0;$n_kit<count($res_kits);$n_kit++){
                 if (!file_exists($dir_referencias_componente)) mkdir($dir_referencias_componente, 0700);
                 $dir_actual = $dir_referencias_componente;
                 include("../basicos/preparar_documentacion_referencias.php");
+                include("../basicos/preparar_documentacion_referencias_heredadas.php");
             }
         }
     }

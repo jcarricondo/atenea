@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+include("../classes/kint/Kint.class.php");
+
 // Este fichero genera un excel con las referencias de un componente de basicos
 $salida = "";
 
@@ -17,7 +20,42 @@ for($i=0;$i<count($ids_kits);$i++){
 	$referencias_componente = $ref_comp->addReferenciasKitAlComponente($referencias_kit,$referencias_componente);
 }
 
-// Generamos la tabla HTML 
+// Preparamos el array final con el id_referencia y las piezas
+for($i=0;$i<count($referencias_componente);$i++) {
+	$referencias_componente_final[$i]["id_referencia"] = intval($referencias_componente[$i]["id_referencia"]);
+	$referencias_componente_final[$i]["piezas"] = floatval($referencias_componente[$i]["piezas"]);
+}
+
+// Comprobamos si las referencias tienen referencias heredadas
+for($i=0;$i<count($referencias_componente_final);$i++){
+	$id_referencia = $referencias_componente_final[$i]["id_referencia"];  d($id_referencia);
+	$res_heredadas = $ref_heredada->dameTodasHeredadas($id_referencia); d($res_heredadas);
+	$res_heredadas = $ref_heredada->eliminarReferenciasHeredadasDuplicadas($res_heredadas); d($res_heredadas);
+
+	/*
+	if($res_heredadas){
+		// Preparamos el array con las referencias heredadas de la referencia
+		for($j=0;$j<count($res_heredadas);$j++){
+			$id_ref_heredada = $res_heredadas[$j]["id_ref_heredada"]; // d($id_ref_heredada);
+			$piezas_ref_heredada = $ref_heredada->dameCantidadPiezaHeredada($id_referencia,$id_ref_heredada); // d($piezas_ref_heredada);
+			$array_ref_heredada[$j]["id_referencia"] = intval($id_ref_heredada);
+			$array_ref_heredada[$j]["piezas"] = floatval($piezas_ref_heredada);
+		}
+
+		// Agrupamos las referencias heredadas al grupo total de referencias
+		$referencias_componente_final = $ref_comp->addReferenciasKitAlComponente($array_ref_heredada,$referencias_componente_final);
+	}
+	*/
+}
+
+
+if(!empty($referencias_componente_final)) {
+	// Ordenamos el array de referencias
+	array_multisort($referencias_componente_final);
+}
+
+
+// Generamos la tabla HTML
 $salida = '<table>
 	<tr>
 		<th style="text-align: center;">ID Ref.</th>
@@ -55,6 +93,7 @@ for($i=0;$i<count($referencias_componente);$i++){
 	$id_referencia = $referencias_componente[$i]["id_referencia"];
 	$total_piezas = $referencias_componente[$i]["piezas"];
 	$ref->cargaDatosReferenciaId($id_referencia);
+	$id_proveedor_referencia = $ref->proveedor;
 	
 	// Tenemos que calcular el precio de la referencia 
 	$unidades_paquete = $ref->unidades;
@@ -144,41 +183,44 @@ for($i=0;$i<count($referencias_componente);$i++){
 		else $coments .= $coments_codificada[$m];
 	}
 
-	$id_motivo_compatibilidad = $ref->dameIdMotivoCompatibilidad($id_referencia);
-	if($id_motivo_compatibilidad == "1") $es_compatible = "NO";
-	else $es_compatible = "SI";
-		
-	// Generamos la fila HTML de la tabla correspondiente a una referencia
-	$salida .= '
-	<tr>
-		<td style="text-align: center;">'.$ref->id_referencia.'</td>
-		<td style="text-align: left;">'.$nombre_ref.'</td>
-		<td style="text-align: left;">'.$ref_prov.'</td>
-		<td style="text-align: left;">'.utf8_decode($ref->nombre_proveedor).'</td>
-		<td style="text-align: right;">'.number_format($total_piezas,2,',','.').'</td>
-		<td style="text-align: right;">'.number_format($precio_referencia,2,',','.').'</td>
-		<td style="text-align: right;">'.number_format($total_paquetes,2,',','.').'</td>
-		<td style="text-align: left;">'.$tipo_pieza.'</td>
-		<td style="text-align: left;">'.utf8_decode($ref->part_nombre).'</td>
-		<td style="text-align: left;">'.utf8_decode($ref->nombre_fabricante).'</td>
-		<td style="text-align: left;">'.$ref_fab.'</td>
-		<td style="text-align: left;">'.$descrip.'</td>
-		<td style="text-align: left;">'.$valor_nombre.'</td>
-		<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad).'</td>
-		<td style="text-align: left;">'.$valor_nombre2.'</td>
-		<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad_2).'</td>
-		<td style="text-align: left;">'.$valor_nombre3.'</td>
-		<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad_3).'</td>
-		<td style="text-align: left;">'.$valor_nombre4.'</td>
-		<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad_4).'</td>
-		<td style="text-align: left;">'.$valor_nombre5.'</td>
-		<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad_5).'</td>
-		<td style="text-align: right;">'.number_format($ref->pack_precio,2,',','.').'</td>
-		<td style="text-align: right;">'.utf8_decode($ref->unidades).'</td>
-		<td style="text-align: left;">'.$coments.'</td>
-		<td align="center">'.$es_compatible.'</td>
-	</tr>
-	';
+	$id_grupo = $ref_compatible->dameGrupoReferencia($id_referencia);
+	if(!empty($id_grupo)) $es_compatible = "SI";
+	else $es_compatible = "NO";
+
+	$muestro_fila = $id_proveedor == "0" || ($id_proveedor == $id_proveedor_referencia);
+	if($muestro_fila){
+		// Generamos la fila HTML de la tabla correspondiente a una referencia
+		$salida .= '
+			<tr>
+				<td style="text-align: center;">'.$ref->id_referencia.'</td>
+				<td style="text-align: left;">'.$nombre_ref.'</td>
+				<td style="text-align: left;">'.$ref_prov.'</td>
+				<td style="text-align: left;">'.utf8_decode($ref->nombre_proveedor).'</td>
+				<td style="text-align: right;">'.number_format($total_piezas,2,',','.').'</td>
+				<td style="text-align: right;">'.number_format($precio_referencia,2,',','.').'</td>
+				<td style="text-align: right;">'.number_format($total_paquetes,2,',','.').'</td>
+				<td style="text-align: left;">'.$tipo_pieza.'</td>
+				<td style="text-align: left;">'.utf8_decode($ref->part_nombre).'</td>
+				<td style="text-align: left;">'.utf8_decode($ref->nombre_fabricante).'</td>
+				<td style="text-align: left;">'.$ref_fab.'</td>
+				<td style="text-align: left;">'.$descrip.'</td>
+				<td style="text-align: left;">'.$valor_nombre.'</td>
+				<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad).'</td>
+				<td style="text-align: left;">'.$valor_nombre2.'</td>
+				<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad_2).'</td>
+				<td style="text-align: left;">'.$valor_nombre3.'</td>
+				<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad_3).'</td>
+				<td style="text-align: left;">'.$valor_nombre4.'</td>
+				<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad_4).'</td>
+				<td style="text-align: left;">'.$valor_nombre5.'</td>
+				<td style="text-align: right;">'.utf8_decode($ref->part_valor_cantidad_5).'</td>
+				<td style="text-align: right;">'.number_format($ref->pack_precio,2,',','.').'</td>
+				<td style="text-align: right;">'.utf8_decode($ref->unidades).'</td>
+				<td style="text-align: left;">'.$coments.'</td>
+				<td align="center">'.$es_compatible.'</td>
+			</tr>
+		';
+	}
 }
 $salida .= '</table>';
 $partlist = $dir_documentacion_periferico.$barra_directorio."PARTLIST.xls";
