@@ -1,5 +1,6 @@
 <?php
 // Este fichero prepara toda la documentación adjunta de una plantilla para descargar
+set_time_limit(36000);
 $dir_actual = getcwd();
 $barra_directorio = $funciones->dameBarraDirectorio();
 $dir_documentacion = $funciones->dameRutaDocumentacionBasicos();

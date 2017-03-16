@@ -1,7 +1,4 @@
 <?php
-
-include("../classes/kint/Kint.class.php");
-
 // Este fichero genera un excel con las referencias de un componente de basicos
 $salida = "";
 
@@ -26,13 +23,14 @@ for($i=0;$i<count($referencias_componente);$i++) {
 	$referencias_componente_final[$i]["piezas"] = floatval($referencias_componente[$i]["piezas"]);
 }
 
+
+/*
 // Comprobamos si las referencias tienen referencias heredadas
 for($i=0;$i<count($referencias_componente_final);$i++){
 	$id_referencia = $referencias_componente_final[$i]["id_referencia"];  d($id_referencia);
 	$res_heredadas = $ref_heredada->dameTodasHeredadas($id_referencia); d($res_heredadas);
 	$res_heredadas = $ref_heredada->eliminarReferenciasHeredadasDuplicadas($res_heredadas); d($res_heredadas);
 
-	/*
 	if($res_heredadas){
 		// Preparamos el array con las referencias heredadas de la referencia
 		for($j=0;$j<count($res_heredadas);$j++){
@@ -45,14 +43,14 @@ for($i=0;$i<count($referencias_componente_final);$i++){
 		// Agrupamos las referencias heredadas al grupo total de referencias
 		$referencias_componente_final = $ref_comp->addReferenciasKitAlComponente($array_ref_heredada,$referencias_componente_final);
 	}
-	*/
-}
 
+}
 
 if(!empty($referencias_componente_final)) {
 	// Ordenamos el array de referencias
 	array_multisort($referencias_componente_final);
 }
+*/
 
 
 // Generamos la tabla HTML

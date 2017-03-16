@@ -210,7 +210,7 @@ class Referencia_Heredada extends Referencia {
 	}
 
 
-
+	/*
 	// Función que devuelve las piezas heredadas entre un padre y un nieto
 	function damePiezasHeredadasAntecesorYHeredero($id_referencia,$id_ref_heredada){
 		// Obtenemos los hijos y descendencia de la referencia
@@ -241,7 +241,7 @@ class Referencia_Heredada extends Referencia {
 
 					// Añadimos el nodo al array de los leidos
 					$array_heredadas_leidas[] = $id_ref_heredada;
-				}*/
+				}
 			}
 			$hay_heredadas = $res_heredadas === $array_heredadas_leidas;
 
@@ -268,7 +268,7 @@ class Referencia_Heredada extends Referencia {
 			$hay_heredadas = $res_heredadas === $array_heredadas_leidas;
 		}
 		return $res_heredadas;
-	}
+	}*/
 
 
 

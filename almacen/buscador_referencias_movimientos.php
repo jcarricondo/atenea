@@ -77,6 +77,7 @@ if(isset($_POST["realizandoBusqueda"]) and $_POST["realizandoBusqueda"] == 1) {
 }
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="../css/style.css" />
+<script type="text/javascript" src="../js/funciones.js"></script>
 
 <script type="text/javascript">
 // Cambia el atributo "value" del id_ref del buscador de movimientos por la id_ref seleccionada
@@ -129,7 +130,7 @@ function soloNumeros (e) {
    				<div class="LabelReferencias">Part value qty</div>
             	<input type="text" name="part_value_qty" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($part_value_qty));?>"/>
             	<div class="LabelReferencias">ID Referencia</div>
-            	<input type="text" name="id_ref" class="BuscadorInputReferencias" value="<?php echo $id_ref;?>" onkeypress="return soloNumeros(event)"/>
+            	<input type="text" name="id_ref" class="BuscadorInputReferencias" value="<?php echo $id_ref;?>" onkeypress="return soloNumeros(event)" onkeyup="cargaReferenciaIntro(event);" />
         	</div>
             <div class="ContenedorCamposBuscadorReferencias">
 
@@ -162,6 +163,7 @@ function soloNumeros (e) {
             	<input type="submit" id="" name="" class="" value="Buscar" />
         	</div>
         	</br>
+			<input type="hidden" id="nombreFormulario" name="nombreFormulario" value="BuscadorReferenciasMovimientos" />
     	</form>
     </div>
     

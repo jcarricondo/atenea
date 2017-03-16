@@ -1,5 +1,6 @@
 <?php 
 // Este fichero genera un excel con las referencias de un componente de basicos
+set_time_limit(10000);
 include("../includes/sesion.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/referencia_componente.class.php");

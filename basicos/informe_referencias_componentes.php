@@ -1,5 +1,6 @@
 <?php 
 // Este fichero genera un excel con las referencias de los componentes de una plantilla
+set_time_limit(10000);
 include("../includes/sesion.php");
 include("../classes/basicos/plantilla_producto.class.php");
 include("../classes/basicos/nombre_producto.class.php");

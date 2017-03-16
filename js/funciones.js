@@ -133,7 +133,14 @@ function blockNonNumbers(obj, e, allowDecimal, allowNegative){
 	return isFirstN || isFirstD || reg.test(keychar);
 }
 
+// Función que carga la referencia al pulsar intro
+function cargaReferenciaIntro(e){
+	if (e.keyCode == 13) {
+		enviarFormulario();
+	}
+}
+
 function enviarFormulario(){
-	var formulario = document.getElementById(nombreFormulario);
-	document.formulario.submit();
+	var formulario = document.getElementById("nombreFormulario");
+	document.forms[formulario.value].submit();
 }

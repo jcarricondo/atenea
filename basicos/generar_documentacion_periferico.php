@@ -20,7 +20,7 @@ $dir_periferico_referencias = $dir_documentacion_periferico.$barra_directorio."R
 
 // Creamos el directorio del periférico donde irá toda su documentación
 if(!file_exists($dir_documentacion_periferico)) mkdir($dir_documentacion_periferico, 0700);
-/*
+
 // Comprobamos si el periférico tiene documentación
 $periferico_con_documentacion = $comp->tieneDocumentacionAdjunta($id);
 
@@ -73,11 +73,11 @@ if($periferico_con_referencias){
         include("../basicos/preparar_documentacion_referencias.php");
         include("../basicos/preparar_documentacion_referencias_heredadas.php");
     }
-}*/
+}
 
 // Generar el partlist
 include("../basicos/preparar_part_list_periferico.php");
-/*
+
 // Cambiamos el directorio para que pueda guardar la carpeta que hemos creado
 chdir($dir_documentacion);
 
@@ -101,5 +101,5 @@ readfile($filename);
 // Eliminamos la carpeta creada con sus archivos
 $funciones->eliminarDir($dir_documentacion_periferico);
 // Eliminamos el zip temporal
-unlink($filename);*/
+unlink($filename);
 ?>

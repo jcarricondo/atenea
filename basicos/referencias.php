@@ -213,7 +213,7 @@ echo '<script type="text/javascript" src="../js/funciones.js"></script>';
             </td>
             <td>
             	<div class="Label">ID Referencia</div>
-            	<input type="text" id="" name="id_ref" class="BuscadorInput" value="<?php echo $_SESSION["id_referencia_ref"];?>" onkeypress="return soloNumeros(event)"/>
+            	<input type="text" id="" name="id_ref" class="BuscadorInput" value="<?php echo $_SESSION["id_referencia_ref"];?>" onkeypress="return soloNumeros(event)" onkeyup="cargaReferenciaIntro(event);"/>
             </td>
 
         </tr>

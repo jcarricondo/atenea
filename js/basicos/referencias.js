@@ -5,4 +5,3 @@
 function descargar_documentacion(id_referencia){
    window.location="referencias.php?id_referencia=" + id_referencia + "&op=descargar_documentacion";
 }
-
