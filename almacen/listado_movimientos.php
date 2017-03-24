@@ -30,6 +30,7 @@ $titulo_pagina = "Almacen > Listado Movimientos";
 $pagina = "listado_movimientos";
 include("../includes/header.php");
 echo '<script type="text/javascript" src="../js/almacen/almacen.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 
 $id_tipo_usuario = $_SESSION["AT_id_tipo_usuario"];
 $id_almacen_usuario = $_SESSION["AT_id_almacen"];
@@ -314,7 +315,7 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
     <tr style="border:0;">
         <td style="width: 33%;">
             <div class="Label">ID Ref</div>
-            <input type="text" id="id_ref" name="id_ref" class="BuscadorInputAlmacen" value="<?php echo $_SESSION["id_ref_almacen_movimientos"];?>" onkeypress="return soloNumeros(event)" />
+            <input type="text" id="id_ref" name="id_ref" class="BuscadorInputAlmacen" value="<?php echo $_SESSION["id_ref_almacen_movimientos"];?>" onkeypress="return soloNumeros(event)" onkeyup="cargaReferenciaIntro(event);" />
             <input type="button" name="botonBuscadorIDRef" id="botonBuscadorIDRef" class="BotonEliminar" style="float: left; margin-top: 4px;" value="+" onclick="javascript:Abrir_ventana('buscador_referencias_movimientos.php')">
         </td>
         <td style="width: 33%;">
@@ -336,6 +337,7 @@ if((isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1) or 
     </tr>
     </table>
     <br />
+    <input type="hidden" id="nombreFormulario" name="nombreFormulario" value="buscadorMovimiento" />
     </form>
         
     <div class="ContenedorBotonCrear">

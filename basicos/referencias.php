@@ -1,10 +1,17 @@
 <?php
-//Este fichero muestra el listado de las referencias
+// Este fichero muestra el listado de las referencias
 include("../includes/sesion.php");
 include("../classes/basicos/listado_referencias.class.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
 include("../classes/funciones/funciones.class.php");
+require("../funciones/pclzip/pclzip.lib.php");
 permiso(1);
+
+$ref = new Referencia();
+$ref_heredada = new Referencia_Heredada();
+$referencias = new listadoReferencias();
+$funciones = new Funciones();
 
 // Establecemos los parametros de la paginacion
 // Número de registros a mostrar por página
@@ -19,8 +26,12 @@ else {
 }
 $paginacion = " limit ".$pg_inicio.', '.$pg_registros;
 
+if($_GET["op"] == "descargar_documentacion") {
+	include("../basicos/descargar_documentacion_referencias.php");
+}
+
 // Se obtienen los datos del formulario
-if($_GET["ref"] == "creado" or $_GET["ref"] == "modificado" or $_GET["ref"] == "eliminado") {
+if($_GET["ref"] == "creado" or $_GET["ref"] == "modificado" or $_GET["ref"] == "eliminado" or $_GET["op"] == "descargar_documentacion") {
 	$realizarBusqueda = 1;
 }
 if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $realizarBusqueda == 1) {
@@ -46,7 +57,6 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	if(!is_numeric($precio_pack)) $precio_pack = NULL;
 	if(!is_numeric($id_referencia)) $id_referencia = NULL;
 
-	$funciones = new Funciones();
 	// Convierte la fecha a formato MySql
 	if ($fecha_desde != "") $fecha_desde = $funciones->cFechaMy($fecha_desde);
 	if ($fecha_hasta != "") $fecha_hasta = $funciones->cFechaMy($fecha_hasta);
@@ -69,7 +79,6 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 		if (($ref_fab_pieza[$i] == '-') or ($ref_fab_pieza[$i] == ' ')) $ref_fab_pieza[$i] = '%'; 	
 	}
 	
-	$referencias = new listadoReferencias();
 	// Se pasan los datos del buscador a la clase del listado y se realiza la consulta a la base de datos
 	$referencias->setValores($referencia,$proveedor,$ref_prov_pieza,$precio_pack,$fabricante,$ref_fab_pieza,$tipo_pieza,$part_value_name,$unidades_paquete,$nombre_pieza,$part_value_qty,$busqueda_magica,$ordenar_referencias,$fecha_desde,$fecha_hasta,$id_referencia,'');
 	$referencias->realizarConsulta();
@@ -80,7 +89,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	$pg_totalPaginas = ceil(count($resultadosBusqueda) / $pg_registros);
 	$referencias->setValores($referencia,$proveedor,$ref_prov_pieza,$precio_pack,$fabricante,$ref_fab_pieza,$tipo_pieza,$part_value_name,$unidades_paquete,$nombre_pieza,$part_value_qty,$busqueda_magica,$ordenar_referencias,$fecha_desde,$fecha_hasta,$id_referencia,$paginacion);
 	$referencias->realizarConsulta();
-	$resultadosBusqueda = $referencias->referencias; 
+	$resultadosBusqueda = $referencias->referencias;
 		
 	// Convierte la fecha a formato HTML
 	if ($fecha_desde != "") $fecha_desde = $funciones->cFechaNormal($fecha_desde);
@@ -134,6 +143,8 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 $titulo_pagina = "Básicos > Referencias";
 $pagina = "referencias";
 include("../includes/header.php");
+echo '<script type="text/javascript" src="../js/basicos/referencias_08032017_1050.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 ?>
 
 <div class="separador"></div> 
@@ -202,7 +213,7 @@ include("../includes/header.php");
             </td>
             <td>
             	<div class="Label">ID Referencia</div>
-            	<input type="text" id="" name="id_ref" class="BuscadorInput" value="<?php echo $_SESSION["id_referencia_ref"];?>" onkeypress="return soloNumeros(event)"/>
+            	<input type="text" id="" name="id_ref" class="BuscadorInput" value="<?php echo $_SESSION["id_referencia_ref"];?>" onkeypress="return soloNumeros(event)" onkeyup="cargaReferenciaIntro(event);"/>
             </td>
 
         </tr>
@@ -255,6 +266,7 @@ include("../includes/header.php");
         </tr>
     </table>
     <br />
+	<input type="hidden" id="nombreFormulario" name="nombreFormulario" value="BuscadorReferencias" />
     </form>
     
     <div class="ContenedorBotonCrear">
@@ -286,8 +298,7 @@ include("../includes/header.php");
     <?php
 		if($mostrar_tabla) {
 			$max_caracteres_ref = 50;
-			$max_caracteres = 25;
-	?>
+			$max_caracteres = 25; ?>
 			<div class="CapaTabla">
 				<table>
         		<tr>
@@ -299,14 +310,12 @@ include("../includes/header.php");
             		<th>NOMBRE PIEZA</th>
             		<th>TIPO PIEZA</th>
           			<th>REF. PROV.</th>
+					<th style="text-align:center">DOC</th>
                     <th>REF. FABRIC.</th>
-            		<th>E.N.</th>
-            		<th>E.V.</th>
                     <th style="text-align:center">PACK PRECIO</th>
             		<th style="text-align:center">UND/PQ</th>
                     <?php 
-                    	if(permisoMenu(4)){
-                    ?>
+                    	if(permisoMenu(4)){ ?>
                     		<th style="text-align:center">ELIMINAR</th>
                     <?php
                     	}
@@ -315,7 +324,6 @@ include("../includes/header.php");
 				<?php
 					// Se cargan los datos de las referencias según su identificador
 					for($i=0;$i<count($resultadosBusqueda);$i++) {
-						$ref = new Referencia();
 						$datoReferencia = $resultadosBusqueda[$i];
 						$ref->cargaDatosReferenciaId($datoReferencia["id_referencia"]);
 				?>
@@ -339,13 +347,11 @@ include("../includes/header.php");
 					</td>
                     <td style="text-align:center">
                        	<?php 
-							if ($ref->proveedor == 1) {
-						?>
+							if ($ref->proveedor == 1) { ?>
                           		<a href="http://es.rs-online.com/web/c/?searchTerm=<?php echo $ref->part_proveedor_referencia;?>" target="_blank">web</a>
                         <?php
 							}
-						    elseif ($ref->proveedor == 2) {
-						?>
+						    elseif ($ref->proveedor == 2) { ?>
                           		<a href="http://es.farnell.com/webapp/wcs/stores/servlet/Search?catalogId=15001&langId=-5&storeId=10176&gs=true&st=<?php echo $ref->part_proveedor_referencia;?>" target="_blank">web</a>
                         <?php 
 							}
@@ -381,6 +387,23 @@ include("../includes/header.php");
 							}
 						?>
 					</td>
+					<td style="text-align: center;">
+						<?php
+							// Obtenemos las referencias heredadas y descendecia de la referencia
+							$res_heredadas = $ref_heredada->dameTodasHeredadas($ref->id_referencia);
+							$array_todas_referencias[]["id_referencia"] = $ref->id_referencia;
+							for($j=0;$j<count($res_heredadas);$j++){
+								$id_ref_heredada = $res_heredadas[$j]["id_ref_heredada"];
+								$array_todas_referencias[]["id_referencia"] = $id_ref_heredada;
+							}
+							$tiene_archivos = $ref->tieneDocumentacionAdjuntaReferencias($array_todas_referencias);
+							if($tiene_archivos) { ?>
+								<a href="#" onclick="descargar_documentacion(<?php echo $ref->id_referencia;?>)"><img src="../images/download_icon.jpg" style="vertical-align: middle;" /></a>
+						<?php
+							}
+							unset($array_todas_referencias);
+						?>
+					</td>
                     <td>
 						<?php 
 							if (strlen($ref->part_fabricante_referencia) > $max_caracteres){
@@ -388,26 +411,6 @@ include("../includes/header.php");
 							}
 							else {
 								echo $ref->part_fabricante_referencia;	
-							}
-						?>
-					</td>
-					<td>
-						<?php 
-							if (strlen($ref->part_valor_nombre) > $max_caracteres){
-								echo mb_strcut($ref->part_valor_nombre, 0, 25, "UTF-8").'...';
-							}
-							else {
-								echo $ref->part_valor_nombre;	
-							}
-						?>
-					</td>
-					<td>
-						<?php 
-							if (strlen($ref->part_valor_cantidad) > $max_caracteres){
-								echo mb_strcut($ref->part_valor_cantidad, 0, 25, "UTF-8").'...';
-							}
-							else {
-								echo $ref->part_valor_cantidad;	
 							}
 						?>
 					</td>

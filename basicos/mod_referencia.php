@@ -14,7 +14,6 @@ include("../classes/basicos/listado_fabricantes.class.php");
 include("../classes/basicos/componente.class.php");
 include("../classes/basicos/usuario.class.php");
 include("../classes/log/basicos/log_basicos_referencias.class.php");
-// include("../classes/basicos/cabina.class.php");
 permiso(34);
 
 // Comprobamos si el usuario puede modificar el basico
@@ -49,7 +48,6 @@ $comp = new Componente();
 $validacion = new Funciones();
 $log = new LogBasicosReferencias();
 $user = new Usuario();
-// $cabina = new Cabina();
 
 if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) {
 	// Se reciben los datos
@@ -74,11 +72,15 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 	$unidades_paquete = $_POST["unidades_paquete"];
 	$id_referencia = $_GET["id"];
 	$archivos_tabla = $_POST["archivos_tabla"];
+	$id_motivo_compatibilidad = $_POST["id_motivo_compatibilidad"];
 	$comentarios = $_POST["comentarios"];
+	$referencias_antecesor = $_POST["REFS_ANT"];
 	$referencias_heredadas = $_POST["REFS"];
 	$piezas_referencias_heredadas = $_POST["piezas"];
 	$referencias_compatibles = $_POST["REFS_COMP"];
+	$id_grupo_compatibilidad = $_POST["id_grupo_compatibilidad"];
 
+	$hay_referencias_heredadas = !empty($referencias_heredadas);
 	$hay_referencias_compatibles = !empty($referencias_compatibles);
 
 	if ($nombre == '') $nombre = '-';
@@ -142,15 +144,14 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 				}
 				$i++;
 			}
-									
-			$referencias->datosNuevaReferencia($id_referencia,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_prov_pieza,$ref_fab_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades_paquete,$nombre_archivo,$comentarios);
+
+			$referencias->datosNuevaReferencia($id_referencia,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_prov_pieza,$ref_fab_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades_paquete,$nombre_archivo,$comentarios,$id_motivo_compatibilidad);
 			$resultado = $referencias->guardarCambios();
 			if($resultado == 1) {
 				$error = false;
 				// Obtenemos los datos de la tabla componentes_referencias que tengan esa referencia
 				$datos_componentes_referencias = $referencias->dameComponentesReferencias($id_referencia);
-
-				for($i=0; $i<count($datos_componentes_referencias);$i++){
+				for($i=0;$i<count($datos_componentes_referencias);$i++){
 					$id = $datos_componentes_referencias[$i]["id"];
 					$piezas_componente = $datos_componentes_referencias[$i]["piezas"];
 	
@@ -166,7 +167,19 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 						$i = count($datos_componentes_referencias); 
 					}
 				}
+
 				if (!$error){
+					// REFERENCIAS ANTECESORES
+					$res_referencias_antecesor_principales = $ref_antecesor->dameAntecesoresPrincipales($id_referencia);
+					for($i=0;$i<count($res_referencias_antecesor_principales);$i++){
+						$id_ref_antecesor_bbdd = $res_referencias_antecesor_principales[$i]["id_referencia"];
+						if(!in_array($id_ref_antecesor_bbdd,$referencias_antecesor)){
+							// Desactivamos el antecesor de la referencia principal
+							$error_antecesor = $ref_antecesor->desactivaAntecesorReferencia($id_ref_antecesor_bbdd,$id_referencia);
+							if($error_antecesor)  echo '<script>alert("Se ha producido un error al desactivar alguna de las referencias de los antecesores")</script>';
+						}
+					}
+
 					// REFERENCIAS HEREDADAS
 					$ref_heredada->setReferenciasHeredadas($id_referencia,$referencias_heredadas,$piezas_referencias_heredadas);
 					// Primero desactivamos las referencias heredadas que tuviera la referencia
@@ -175,20 +188,24 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					// Guardamos las referencias heredadas y sus piezas
 					$error_heredadas = $ref_heredada->guardarReferenciasHeredadas();
 					if($error_heredadas)  echo '<script>alert("Se ha producido un error al guardar algunas de las referencias herederas")</script>';
+					if($hay_referencias_heredadas) $referencia_heredada = "SI";
+					else $referencia_heredada = "NO";
 
 					// REFERENCIAS COMPATIBLES
 					// Si hay referencias compatibles añadidas reajustamos los grupos en función del grupo más antiguo
 					if($hay_referencias_compatibles){
 						// Establecemos en la clase la referencia principal y las referencias compatibles
-						$ref_compatible->setReferenciasCompatibles($id_referencia,$referencias_compatibles);
+						$ref_compatible->setReferenciasCompatibles($id_referencia,$referencias_compatibles,$id_grupo_compatibilidad);
 						// Guardar referencias compatibles
 						$error_general = $ref_compatible->guardarReferenciasCompatibles();
 						if($error_general) echo '<script>alert("Se ha producido un error general al guardar las referencias compatibles de un grupo")</script>';
+						$referencia_compatible = "SI";
 					}
 					else {
 						// Quitamos la referencia principal del grupo de compatibilidad
 						$error_quitar_referencia = $ref_compatible->quitaReferenciaGrupo($id_referencia);
 						if($error_quitar_referencia)  echo '<script>alert("Se ha producido un error al eliminar la referencia compatible del grupo")</script>';
+						$referencia_compatible = "NO";
 					}
 
 					// Guardamos el log de la operación
@@ -199,15 +216,14 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					$proceso = "MODIFICACION REFERENCIA";
 					$descripcion = "-";
 					$referencia_creada = "NO";
-					$referencia_heredada = "SI";
-					$referencia_compatible = "SI";
+
 					$error = "NO";
 					$codigo_error = "OK!";
 
 					$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fab_pieza,$ref_prov_pieza,
 							$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
 							$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades_paquete,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
-							$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+							$referencia_heredada,$referencia_compatible,$id_motivo_compatibilidad,$error,$codigo_error);
 
 					$res_log = $log->guardarLog();
 					if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
@@ -232,7 +248,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 					$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fab_pieza,$ref_prov_pieza,
 							$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
 							$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades_paquete,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
-							$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+							$referencia_heredada,$referencia_compatible,$id_motivo_compatibilidad,$error,$codigo_error);
 
 					$res_log = $log->guardarLog();
 					if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
@@ -240,7 +256,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 			}
 			else {
 				$mensaje_error = $referencias->getErrorMessage($resultado);	
-			} 
+			}
 		}
 	}
 }
@@ -283,6 +299,10 @@ $res_heredadas = $ref_heredada->dameTodasHeredadas($id_referencia);
 $res_heredadas_principales = $ref_heredada->dameHeredadasPrincipales($id_referencia);
 // Obtenemos las referencias compatibles de la referencia
 $res_compatibles = $ref_compatible->dameReferenciasCompatiblesSinElla($id_referencia);
+// Vemos si la referencia pertenece a un grupo de compatibilidad
+$perteneceGrupoCompatibilidad = $ref_compatible->perteneceGrupoCompatibilidad($id_referencia);
+if($perteneceGrupoCompatibilidad) $muestro_motivo = "";
+else $muestro_motivo = " disabled ";
 
 $max_caracteres_ref = 50;
 
@@ -290,7 +310,7 @@ $max_caracteres_ref = 50;
 $titulo_pagina = "B&aacutesico > Modifica Referencia";
 $pagina = "mod_referencia";
 include ('../includes/header.php');
-echo '<script type="text/javascript" src="../js/basicos/mod_referencia_29122016_1710.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/mod_referencia_08032017_1050.js"></script>';
 ?>
 
 <div class="separador"></div> 
@@ -453,6 +473,22 @@ echo '<script type="text/javascript" src="../js/basicos/mod_referencia_29122016_
            	<div class="LabelCreacionBasico">Comentarios</div>
           	<textarea type="text" id="comentarios" name="comentarios" rows="10" class="textareaInput" <?php echo $solo_lectura; ?> ><?php echo $comentarios; ?></textarea>	
         </div>
+		<div class="ContenedorCamposCreacionBasico">
+			<div class="LabelCreacionBasico">Motivo Compatibilidad *</div>
+			<select id="id_motivo_compatibilidad" name="id_motivo_compatibilidad" <?php echo $muestro_motivo;?> class="CreacionBasicoInput">
+				<?php
+				$res_motivos = $ref_compatible->dameTipoMotivosReferencia();
+				$id_motivo_compatibilidad = $ref->dameIdMotivoCompatibilidad($id_referencia);
+				for($i=0;$i<count($res_motivos);$i++) {
+					$id_motivo = $res_motivos[$i]["id_motivo"];
+					$nombre_motivo = $res_motivos[$i]["motivo"];
+					echo '<option value="'.$id_motivo.'"';
+					if($id_motivo == $id_motivo_compatibilidad) echo "selected";
+					echo '>'.$nombre_motivo.'</option>';
+				}
+				?>
+			</select>
+		</div>
 		<br/>
 		<?php include("mod_referencia_muestra_antecesores.php"); ?>
 		<?php include("mod_referencia_muestra_heredadas.php"); ?>

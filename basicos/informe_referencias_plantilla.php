@@ -1,16 +1,20 @@
 <?php 
-// Este fichero genera un excel con con las referencias de los componentes de la plantilla
+// Este fichero genera un excel con las referencias de los componentes de la plantilla
 set_time_limit(10000);
 include("../classes/mysql.class.php");
 include("../classes/basicos/plantilla_producto.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/componente.class.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 
 $plant = new Plantilla_Producto();
 $np = new Nombre_Producto();
 $comp = new Componente();
 $ref = new Referencia();
+$ref_heredada = new Referencia_Heredada();
+$ref_compatible = new Referencia_Compatible();
 
 $id_plantilla = $_GET["id_plantilla"];
 $plant->cargaDatosPlantillaProductoId($id_plantilla);
@@ -22,32 +26,33 @@ $nombre_producto = strtoupper($np->nombre);
 $salida = '<table>
         <tr>
             <th style="text-align: center;">ID Ref.</th>
-            <th>Nombre</th>
-            <th>Referencia Proveedor</th>
-            <th>Proveedor</th>
-            <th>Unidades por paquete</th>
-            <th>Unidades por simulador</th>
-            <th>Paquetes por simulador</th>
-            <th>Precio por paquete</th>
-            <th>Precio por unidad</th>
-            <th>Precio por simulador (en base unidades)</th>
-		    <th>Precio por simulador (en base paquetes)</th>
-            <th>Tipo Pieza</th>
-            <th>Nombre Pieza</th>
-            <th>Fabricante</th>
-            <th>Referencia Fabricante</th>
-            <th>Descripci&oacute;n</th>
-            <th>Nombre</th>
-            <th>Valor</th>
-            <th>Nombre 2</th>
-            <th>Valor 2</th>
-            <th>Nombre 3</th>
-            <th>Valor 3</th>
-            <th>Nombre 4</th>
-            <th>Valor 4</th>
-            <th>Nombre 5</th>
-            <th>Valor 5</th>
-            <th>Comentarios</th>
+            <th style="text-align: left;">Nombre</th>
+            <th style="text-align: left;">Referencia Proveedor</th>
+            <th style="text-align: left;">Proveedor</th>
+            <th style="text-align: right;">Unidades por paquete</th>
+            <th style="text-align: right;">Unidades por simulador</th>
+            <th style="text-align: right;">Paquetes por simulador</th>
+            <th style="text-align: right;">Precio por paquete</th>
+            <th style="text-align: right;">Precio por unidad</th>
+            <th style="text-align: right;">Precio por simulador (en base unidades)</th>
+		    <th style="text-align: right;">Precio por simulador (en base paquetes)</th>
+            <th style="text-align: left;">Tipo Pieza</th>
+            <th style="text-align: left;">Nombre Pieza</th>
+            <th style="text-align: left;">Fabricante</th>
+            <th style="text-align: left;">Referencia Fabricante</th>
+            <th style="text-align: left;">Descripci&oacute;n</th>
+            <th style="text-align: left;">Nombre</th>
+            <th style="text-align: left;">Valor</th>
+            <th style="text-align: left;">Nombre 2</th>
+            <th style="text-align: left;">Valor 2</th>
+            <th style="text-align: left;">Nombre 3</th>
+            <th style="text-align: left;">Valor 3</th>
+            <th style="text-align: left;">Nombre 4</th>
+            <th style="text-align: left;">Valor 4</th>
+            <th style="text-align: left;">Nombre 5</th>
+            <th style="text-align: left;">Valor 5</th>
+            <th style="text-align: left;">Comentarios</th>
+            <th style="text-align: center;">COMPATIBLE</th>
         </tr>';
 
 // Obtenemos los componentes principales de la plantilla
@@ -78,14 +83,37 @@ for($i=0;$i<count($array_componentes_final);$i++){
         $referencias_componente[$j]["piezas"] = floatval($referencias_componente[$j]["piezas"]);
     }
 
-    if($referencias_componente_final != NULL){
-        // Agrupamos las referencias
-        $referencias_componente_final = $comp->agruparReferenciasComponentes($referencias_componente,$referencias_componente_final);
-    }
-    else {
-        $referencias_componente_final = $referencias_componente;
+    if($referencias_componente_final != NULL) $referencias_componente_final = $comp->agruparReferenciasComponentes($referencias_componente,$referencias_componente_final);
+    else $referencias_componente_final = $referencias_componente;
+}
+
+$referencias_componente_final_aux = $referencias_componente_final;
+
+// Comprobamos si las referencias tienen heredadas y multiplicamos sus piezas
+for($i=0;$i<count($referencias_componente_final);$i++){
+    $raiz = $referencias_componente_final[$i]["id_referencia"];
+    $piezas = $referencias_componente_final[$i]["piezas"];
+
+    // Obtenemos el grafo ordenado por BFS (Anchura) y después todas las piezas necesarias de cada referencia
+    $heredadas_por_nivel = $ref_heredada->dameTodasHeredadasNivel($raiz);
+    $referencias_heredadas_referencia = $ref_heredada->dameTodasHeredadasPiezas($heredadas_por_nivel);
+
+    // Si tiene heredadas las agrupamos al array de referencias final con sus piezas correspondientes
+    if(!empty($referencias_heredadas_referencia)){
+        $cont = 0;
+        foreach($referencias_heredadas_referencia as $id_ref_heredada => $piezas_heredada){
+            $array_piezas_heredadas[$cont]["id_referencia"] = $id_ref_heredada;
+            $array_piezas_heredadas[$cont]["piezas"] = $piezas * $piezas_heredada;
+            $cont++;
+        }
+
+        // Agrupamos las referencias heredadas al array final
+        $referencias_componente_final_aux = $comp->agruparReferenciasComponentes($array_piezas_heredadas,$referencias_componente_final_aux);
+        unset($array_piezas_heredadas);
     }
 }
+
+$referencias_componente_final = $referencias_componente_final_aux;
 
 if(!empty($referencias_componente_final)) {
     // Ordenamos el array de referencias
@@ -110,12 +138,16 @@ for($i=0;$i<count($referencias_componente_final);$i++){
     $precio_por_simulador_unidades = $unidades_por_simulador * $precio_por_unidad;
     $precio_por_simulador_paquetes = $paquetes_por_simulador * $precio_por_paquete;
 
+    $id_grupo = $ref_compatible->dameGrupoReferencia($id_referencia);
+    if(!empty($id_grupo)) $es_compatible = "SI";
+    else $es_compatible = "NO";
+
     $ref->prepararCodificacionReferencia();
     $salida .= '<tr>
                 <td style="text-align: center;">'.$id_referencia.'</td>
-                <td>'.$ref->referencia.'</td>
-                <td>'.$ref->part_proveedor_referencia.'</td>
-                <td>'.$ref->nombre_proveedor.'</td>
+                <td style="text-align: left;">'.$ref->referencia.'</td>
+                <td style="text-align: left;">'.$ref->part_proveedor_referencia.'</td>
+                <td style="text-align: left;">'.$ref->nombre_proveedor.'</td>
                 <td style="text-align: right;">'.number_format($unidades_por_paquete,2,',','.').'</td>
                 <td style="text-align: right;">'.number_format($unidades_por_simulador,2,',','.').'</td>
                 <td style="text-align: right;">'.number_format($paquetes_por_simulador,2,',','.').'</td>
@@ -123,22 +155,23 @@ for($i=0;$i<count($referencias_componente_final);$i++){
 			    <td style="text-align: right;">'.number_format($precio_por_unidad,2,',','.').'</td>
 			    <td style="text-align: right;">'.number_format($precio_por_simulador_unidades,2,',','.').'</td>
 			    <td style="text-align: right;">'.number_format($precio_por_simulador_paquetes,2,',','.').'</td>
-                <td>'.$ref->part_tipo.'</td>
-                <td>'.$ref->part_nombre.'</td>
-                <td>'.$ref->nombre_fabricante.'</td>
-                <td>'.$ref->part_fabricante_referencia.'</td>
-                <td>'.$ref->part_descripcion.'</td>
-                <td>'.$ref->part_valor_nombre.'</td>
-                <td>'.$ref->part_valor_cantidad.'</td>
-                <td>'.$ref->part_valor_nombre_2.'</td>
-                <td>'.$ref->part_valor_cantidad_2.'</td>
-                <td>'.$ref->part_valor_nombre_3.'</td>
-                <td>'.$ref->part_valor_cantidad_3.'</td>
-                <td>'.$ref->part_valor_nombre_4.'</td>
-                <td>'.$ref->part_valor_cantidad_4.'</td>
-                <td>'.$ref->part_valor_nombre_5.'</td>
-                <td>'.$ref->part_valor_cantidad_5.'</td>
-                <td>'.$ref->comentarios.'</td>
+                <td style="text-align: left;">'.$ref->part_tipo.'</td>
+                <td style="text-align: left;">'.$ref->part_nombre.'</td>
+                <td style="text-align: left;">'.$ref->nombre_fabricante.'</td>
+                <td style="text-align: left;">'.$ref->part_fabricante_referencia.'</td>
+                <td style="text-align: left;">'.$ref->part_descripcion.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_nombre.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_cantidad.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_nombre_2.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_cantidad_2.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_nombre_3.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_cantidad_3.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_nombre_4.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_cantidad_4.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_nombre_5.'</td>
+                <td style="text-align: left;">'.$ref->part_valor_cantidad_5.'</td>
+                <td style="text-align: left;">'.$ref->comentarios.'</td>
+                <td style="text-align: center;">'.$es_compatible.'</td>
             </tr>';
 }
 $salida .= '</table>';

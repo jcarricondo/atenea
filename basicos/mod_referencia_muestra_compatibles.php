@@ -9,8 +9,6 @@
         <div id="ContenedorReferenciasCompatibles" class="ContenedorReferencias">
             <table id="mitablaCompatibles">
                 <tr>
-                    <!-- <th style="text-align:center;">ID GRUPO</th>-->
-                    <!-- <th style="text-align:center;">FECHA GRUPO</th>-->
                     <th style="text-align:center">ID REF</th>
                     <th>NOMBRE</th>
                     <th>PROVEEDOR</th>
@@ -20,6 +18,7 @@
                     <th style="text-align:center">UDS/P</th>
                     <th style="text-align:center">PRECIO UNIDAD</th>
                     <th style="text-align:center">PRECIO</th>
+                    <th style="text-align: center";>MOTIVO</th>
                     <?php if($modificar) { ?>
                         <th style="text-align:center">ELIMINAR</th>
                     <?php } ?>
@@ -41,8 +40,6 @@
                             $precio_referencia_compatible = 0;
                         } ?>
                         <tr>
-                            <!-- <td style="text-align:center; display: none"><?php // echo $id_grupo;?></td>-->
-                            <!-- <td style="text-align:center;"><?php // echo $fecha_grupo;?></td>-->
                             <td style="text-align:center;"><?php echo $id_ref_compatible;?></td>
                             <td id="enlaceComposites">
                                 <a href="mod_referencia.php?id=<?php echo $id_ref_compatible;?>" target="blank" />
@@ -62,13 +59,17 @@
                             <td style="text-align:center"><?php echo $ref_comp->unidades; ?></td>
                             <td style="text-align:center"><?php echo number_format($precio_unidad_compatible, 2, '.', '');?></td>
                             <td style="text-align:center"><?php echo number_format($precio_referencia_compatible, 2, '.', ''); ?></td>
-                            <?php
-                                if($modificar) {
-                                    $texto_error_mismos_grupo = "No se puede eliminar una referencia que pertenece al mismo grupo. ";
-                                    $texto_error_mismos_grupo .= "Para quitarla del grupo dirijase a la modificación de dicha referencia y pulse QUITAR COMPATIBILIDAD"; ?>
-                                    <td style="text-align:center">
-                                        <img alt="<?php echo $texto_error_mismos_grupo;?>" title="<?php echo $texto_error_mismos_grupo;?>" src="../images/estrella.png" style="vertical-align: middle;"  />
-                                    </td>
+                            <td style="text-align: center;">
+                                <?php
+                                    // Cargamos la imagen según el motivo de compatibilidad de la referencia
+                                    $id_motivo_compatibilidad = $ref->dameIdMotivoCompatibilidad($id_ref_compatible);
+                                    $nombre_imagen = $ref_compatible->dameNombreImagenMotivoCompatibilidad($id_motivo_compatibilidad);
+                                    $pais_imagen = $ref_compatible->damePaisImagenMotivoCompatibilidad($id_motivo_compatibilidad);
+                                    echo '<img src="../images/banderas/'.$nombre_imagen.'" style="vertical-align: middle;" alt="'.$pais_imagen.'" title="'.$pais_imagen.'"/>';
+                                ?>
+                            </td>
+                            <?php if($modificar) { ?>
+                                <td style="text-align:center"><input type="checkbox" name="chkbox" value="<?php echo $id_ref_compatible;?>" /></td>
                             <?php } ?>
                         </tr>
                         <?php $fila_comp = $fila_comp + 1; ?>
@@ -76,6 +77,7 @@
                 <?php
                     }
                 ?>
+                <input type="hidden" id="id_grupo_compatibilidad" name="id_grupo_compatibilidad" value="<?php echo $id_grupo;?>" />
             </table>
         </div>
     </div>

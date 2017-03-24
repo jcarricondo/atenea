@@ -183,5 +183,77 @@ class Funciones extends MySQL{
         }
         return $hasBOM;
     }
+
+	// Función que deja un string sólo con letras y numeros
+	function soloLetrasYNumerosString($cadena){
+		$cadena_limpia = preg_replace('([^A-Za-z0-9])', '', $cadena);
+		return $cadena_limpia;
+	}
+
+	// Función que adapta un string para que se pueda utilizar como nombre de directorio
+	function quitarCaracteresNoPermitidosCarpeta($string_carpeta){
+		$reemplazo = "_";
+		$caracteres_no_permitidos = array("\\","/",":","*","\"","<",">"," ");
+		$cadena_final = str_replace($caracteres_no_permitidos, $reemplazo, $string_carpeta);
+		return $cadena_final;
+	}
+
+	// Función que obtiene la barra de directorio en función del entorno
+	function dameBarraDirectorio(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_barra = '\\';
+				break;
+			default:
+				$dir_barra = '/';
+				break;
+		}
+		return $dir_barra;
+	}
+
+	// Función que obtiene el directorio actual de documentación en función del entorno
+	function dameRutaDocumentacionBasicos(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_documentacion = 'C:\xampp\htdocs\proyectos\git\atenea\basicos\documentacion';
+				break;
+			case '/var/www/vhosts/ateneadev.simumak.com/httpdocs':  // DESARROLLO
+				$dir_documentacion = '/var/www/vhosts/ateneadev.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
+				$dir_documentacion = '/var/www/vhosts/ateneapre.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
+				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			default:
+				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+		}
+		return $dir_documentacion;
+	}
+
+	// Función que obtiene el directorio de imágenes en función del entorno
+	function dameRutaImagenes(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_imagenes = 'C:\xampp\htdocs\proyectos\git\atenea\images';
+				break;
+			case '/var/www/vhosts/ateneadev.simumak.com/httpdocs':  // DESARROLLO
+				$dir_imagenes = '/var/www/vhosts/ateneadev.simumak.com/httpdocs/atenea/images';
+				break;
+			case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
+				$dir_imagenes = '/var/www/vhosts/ateneapre.simumak.com/httpdocs/atenea/images';
+				break;
+			case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
+				$dir_imagenes = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/images';
+				break;
+			default:
+				$dir_imagenes = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/images';
+				break;
+		}
+		return $dir_imagenes;
+	}
+
 }
 ?>

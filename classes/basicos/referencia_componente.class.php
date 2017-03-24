@@ -97,7 +97,7 @@ class Referencia_Componente extends MySQL {
 	
 	// Devuelve las referencias de un id_componente
 	function dameReferenciasPorIdComponente($id_componente) {
-		$consultaSql = sprintf ("select * from componentes_referencias where componentes_referencias.id_componente=%s and activo=1 ",
+		$consultaSql = sprintf ("select * from componentes_referencias where id_componente=%s and activo=1 order by id_referencia",
 			$this->makeValue($id_componente, "int"));
 		$this->setConsulta($consultaSql);
 		$this->ejecutarConsulta();

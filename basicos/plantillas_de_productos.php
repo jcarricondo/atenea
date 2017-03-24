@@ -50,6 +50,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 $titulo_pagina = "Básicos > Plantillas de productos";
 $pagina = "plantillas_de_productos";
 include ("../includes/header.php");
+echo '<script type="text/javascript" src="../js/basicos/plantilla_de_productos.js"></script>';
 ?>
 
 <div class="separador"></div> 
@@ -142,18 +143,19 @@ include ("../includes/header.php");
         if($mostrar_tabla){ ?>
     		<div class="CapaTabla">
     			<table>
-                    <tr>
-                        <th>PLANTILLA</th>
-                        <th style="text-align: center;">VERSI&Oacute;N</th>
-                        <th>VINCULADA A</th>
-                        <th style="text-align: center;">COMPONENTES</th>
-                        <th style="text-align: center;">FECHA</th>
-                        <?php
-                            if(permisoMenu(4)){ ?>
-                                <th style="text-align:center">ELIMINAR</th>
-                        <?php
-                            }
-                        ?>
+                <tr>
+                    <th>PLANTILLA</th>
+                    <th style="text-align: center;">VERSI&Oacute;N</th>
+                    <th>VINCULADA A</th>
+                    <th style="text-align: center;">DOC</th>
+                    <th style="text-align: center;">COMPONENTES</th>
+                    <th style="text-align: center;">FECHA</th>
+                    <?php
+                        if(permisoMenu(4)){ ?>
+                            <th style="text-align:center">ELIMINAR</th>
+                    <?php
+                        }
+                    ?>
                     </tr>
                     <?php
                         for($i=0;$i<count($resultadosBusqueda);$i++) {
@@ -169,6 +171,15 @@ include ("../includes/header.php");
                                 </td>
                                 <td style="text-align: center;"><?php echo number_format($plant->version,1,'.',',');?></td>
                                 <td><?php echo strtoupper($np->nombre);?></td>
+                                <td style="text-align: center;">
+                                <?php
+                                    $tiene_doc = $plant->tieneDocumentacionAdjunta($plant->id_plantilla);
+                                    if($tiene_doc) { ?>
+                                        <a href="#" onclick="descargar_documentacion(<?php echo $plant->id_plantilla;?>)"><img src="../images/download_icon.jpg" style="vertical-align: middle;" /></a>
+                                <?php
+                                    }
+                                ?>
+                                </td>
                                 <td style="text-align: center;">
                                     <a href="javascript:abrir('muestra_componentes_plantilla.php?id_plantilla=<?php echo $plant->id_plantilla;?>')">VER</a> -
                                     <a href="javascript:window.location='informe_referencias_plantilla.php?id_plantilla=<?php echo $plant->id_plantilla;?>';">XLS</a> -

@@ -84,6 +84,7 @@ if(isset($_POST["realizandoBusqueda"]) and $_POST["realizandoBusqueda"] == 1) {
 $id_referencia_principal = $_GET["id_ref"];
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="../css/style.css" />
+<script type="text/javascript" src="../js/funciones.js"></script>
 
 <script type="text/javascript">
 // Llama a la funcion addRow para insertar la referencia en la tabla seleccionada
@@ -197,7 +198,7 @@ function cambiarComaPorPunto(p_precio){
 		<h4> Buscar la referencia para añadir </h4>
    		<form name="BuscadorReferencias" id="BuscadorReferencias" action="buscador_referencias_compatibles.php?id_ref=<?php echo $id_referencia_principal;?>" method="post">
     		<div class="ContenedorCamposBuscadorReferencias">
-				<div class="LabelReferencias">Referencia</div>
+				<div class="LabelReferencias">Nombre</div>
             	<input type="text" name="referencia" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($referencia));?>"/> 
                	<div class="LabelReferencias">Unidades paquete</div>
             	<input type="text" name="cantidad" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($cantidad));?>"/>
@@ -226,7 +227,7 @@ function cambiarComaPorPunto(p_precio){
    				<div class="LabelReferencias">Part value qty</div>
             	<input type="text" name="part_value_qty" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($part_value_qty));?>"/>
             	<div class="LabelReferencias">ID Referencia</div>
-            	<input type="text" name="id_ref" class="BuscadorInputReferencias" value="<?php echo $id_ref;?>" onkeypress="return soloNumeros(event)"/>
+            	<input type="text" name="id_ref" class="BuscadorInputReferencias" value="<?php echo $id_ref;?>" onkeypress="return soloNumeros(event)" onkeyup="cargaReferenciaIntro(event);"/>
         	</div>
             <div class="ContenedorCamposBuscadorReferencias">
 
@@ -259,6 +260,7 @@ function cambiarComaPorPunto(p_precio){
             	<input type="submit" id="" name="" class="" value="Buscar" />
         	</div>
         	</br>
+			<input type="hidden" id="nombreFormulario" name="nombreFormulario" value="BuscadorReferencias" />
     	</form>
     </div>
     

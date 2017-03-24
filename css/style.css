@@ -2542,7 +2542,7 @@ a {
 	background:#fff;
 }
 
-.LabelInfoOP{
+.LabelInfoOP, .LabelDescargaDocumentacion{
 	width:250px;
 	font: 13px Helvetica, Verdana, Arial;
 	color:#2998cc;
@@ -2984,7 +2984,7 @@ table td .botonAsignacion {
 	float: none;
 }
 
-.BotonQuitarCompatibilidad, .BotonQuitarHeredadas{
+.BotonQuitarCompatibilidad, .BotonQuitarHeredadas, .BotonQuitarAntecesores {
 	width:auto; /*auto;/*50px;*/
 	height:auto; /*auto;/*50px;*/
 	margin: 5px 20px 5px 200px;

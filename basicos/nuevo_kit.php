@@ -155,8 +155,9 @@ $componente = "kit";
 $titulo_pagina = "Básico > Nuevo kit";
 $pagina = "new_kit";
 include ('../includes/header.php');
-echo '<script type="text/javascript" src="../js/basicos/nuevo_kit.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/nuevo_kit_08032017_1050.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/nuevo_kit_adjuntos.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 ?>
 
 <div class="separador"></div> 
