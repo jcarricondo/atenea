@@ -1,12 +1,11 @@
 // JavaScript Document
 // Fichero que contiene las funciones JavaScript utilizadas en el proceso de creación de un kit
 
-function abrir(url) {
+	function abrir(url) {
 		open(url,'','top=200,left=700,width=500,height=500') ;
 	}
 
-	function Abrir_ventana(pagina) 
-	{
+	function Abrir_ventana(pagina) {
 		var opciones="toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, width=1220, height=500, top=100, left=350";
 		window.open(pagina,"",opciones);
 	}
@@ -27,8 +26,7 @@ function abrir(url) {
 	div.appendChild(table);
 	
 	// Funcion para añadir una referencia al kit
-	function addRow(tableId,id_referencia) 
-	{ 
+	function addRow(tableId,id_referencia) {
 		var table = document.getElementById(tableId); 
 		//Guardamos en una variable la cantidad de filas que tiene la tabla. 
 		//esta variable tambien nos servira para indicar que la fila se tiene 
@@ -72,9 +70,12 @@ function abrir(url) {
 		cell_8.innerHTML = precio_unidad.toFixed(2);
 		cell_9.innerHTML = precio_referencia.toFixed(2);
 		cell_10.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '"/>';
-		
+
 		// Calculamos el coste de todas las referencias que haya en la tabla
-		costeTotal = calculaCoste(table);
+		// costeTotal = calculaCoste(table); // <-- quitar ?
+
+		// Calcula el precio total con las referencias heredadas
+		costeTotal = damePrecioComponenteConHeredadas(table);
 		actualizarCoste(costeTotal);
 	}
 	
@@ -109,7 +110,8 @@ function abrir(url) {
 					}
 				}
 			}
-			costeTotal = calculaCoste(table);
+			// costeTotal = calculaCoste(table);
+			costeTotal = damePrecioComponenteConHeredadas(table);
 			actualizarCoste(costeTotal);
 		}
 		catch(e) {
@@ -178,7 +180,8 @@ function abrir(url) {
 		}
 		if (!error){
 			modificaPrecioReferencia(num_piezas,fila);
-			costeTotal = calculaCoste(table);
+			// costeTotal = calculaCoste(table);
+			costeTotal = damePrecioComponenteConHeredadas(table);
 			actualizarCoste(costeTotal);
 		}
 		else {

@@ -7,7 +7,7 @@ $ref_comp->dameReferenciasPorIdComponente($id);
 $referencias_componente = $ref_comp->referencias_componente;
 
 // Obtenemos ahora los kits del periférico
-$ref_comp->dameIdsKitComponente($_GET["id"]);
+$ref_comp->dameIdsKitComponente($id);
 $ids_kits = $ref_comp->ids_kits;
 	
 for($i=0;$i<count($ids_kits);$i++){
@@ -23,35 +23,38 @@ for($i=0;$i<count($referencias_componente);$i++) {
 	$referencias_componente_final[$i]["piezas"] = floatval($referencias_componente[$i]["piezas"]);
 }
 
+$referencias_componente_final_aux = $referencias_componente_final;
 
-/*
-// Comprobamos si las referencias tienen referencias heredadas
+// Comprobamos si las referencias tienen heredadas y multiplicamos sus piezas
 for($i=0;$i<count($referencias_componente_final);$i++){
-	$id_referencia = $referencias_componente_final[$i]["id_referencia"];  d($id_referencia);
-	$res_heredadas = $ref_heredada->dameTodasHeredadas($id_referencia); d($res_heredadas);
-	$res_heredadas = $ref_heredada->eliminarReferenciasHeredadasDuplicadas($res_heredadas); d($res_heredadas);
+	$raiz = $referencias_componente_final[$i]["id_referencia"];
+	$piezas = $referencias_componente_final[$i]["piezas"];
 
-	if($res_heredadas){
-		// Preparamos el array con las referencias heredadas de la referencia
-		for($j=0;$j<count($res_heredadas);$j++){
-			$id_ref_heredada = $res_heredadas[$j]["id_ref_heredada"]; // d($id_ref_heredada);
-			$piezas_ref_heredada = $ref_heredada->dameCantidadPiezaHeredada($id_referencia,$id_ref_heredada); // d($piezas_ref_heredada);
-			$array_ref_heredada[$j]["id_referencia"] = intval($id_ref_heredada);
-			$array_ref_heredada[$j]["piezas"] = floatval($piezas_ref_heredada);
+	// Obtenemos el grafo ordenado por BFS (Anchura) y después todas las piezas necesarias de cada referencia
+	$heredadas_por_nivel = $ref_heredada->dameTodasHeredadasNivel($raiz);
+	$referencias_heredadas_referencia = $ref_heredada->dameTodasHeredadasPiezas($heredadas_por_nivel);
+
+	// Si tiene heredadas las agrupamos al array de referencias final con sus piezas correspondientes
+	if(!empty($referencias_heredadas_referencia)){
+		$cont = 0;
+		foreach($referencias_heredadas_referencia as $id_ref_heredada => $piezas_heredada){
+			$array_piezas_heredadas[$cont]["id_referencia"] = $id_ref_heredada;
+			$array_piezas_heredadas[$cont]["piezas"] = $piezas * $piezas_heredada;
+			$cont++;
 		}
 
-		// Agrupamos las referencias heredadas al grupo total de referencias
-		$referencias_componente_final = $ref_comp->addReferenciasKitAlComponente($array_ref_heredada,$referencias_componente_final);
+		// Agrupamos las referencias heredadas al array final
+		$referencias_componente_final_aux = $comp->agruparReferenciasComponentes($array_piezas_heredadas,$referencias_componente_final_aux);
+		unset($array_piezas_heredadas);
 	}
-
 }
+
+$referencias_componente_final = $referencias_componente_final_aux;
 
 if(!empty($referencias_componente_final)) {
 	// Ordenamos el array de referencias
 	array_multisort($referencias_componente_final);
 }
-*/
-
 
 // Generamos la tabla HTML
 $salida = '<table>
@@ -85,11 +88,11 @@ $salida = '<table>
     </tr>';
 	
 // Por cada referencia del componente generamos la fila y codificamos los campos
-for($i=0;$i<count($referencias_componente);$i++){
+for($i=0;$i<count($referencias_componente_final);$i++){
 	// De la tabla componentes_referencias sólo nos interesa el campo piezas y el id_referencia.
 	// Los demas datos los obtenemos de la tabla referencias
-	$id_referencia = $referencias_componente[$i]["id_referencia"];
-	$total_piezas = $referencias_componente[$i]["piezas"];
+	$id_referencia = $referencias_componente_final[$i]["id_referencia"];
+	$total_piezas = $referencias_componente_final[$i]["piezas"];
 	$ref->cargaDatosReferenciaId($id_referencia);
 	$id_proveedor_referencia = $ref->proveedor;
 	

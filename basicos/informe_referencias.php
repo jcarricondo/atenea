@@ -2,6 +2,7 @@
 // Este fichero genera un excel con las referencias de un componente de basicos
 set_time_limit(10000);
 include("../includes/sesion.php");
+include("../classes/basicos/componente.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/referencia_componente.class.php");
 include("../classes/basicos/referencia_heredada.class.php");
@@ -9,6 +10,7 @@ include("../classes/basicos/referencia_compatible.class.php");
 include("../classes/basicos/listado_referencias_componentes.class.php");
 
 $db = new MySQL();
+$comp = new Componente();
 $referencia = new Referencia();
 $ref = new Referencia_Componente();
 $ref_heredada = new Referencia_Heredada();
@@ -47,24 +49,33 @@ for($i=0;$i<count($referencias_componente);$i++) {
 	$referencias_componente_final[$i]["piezas"] = floatval($referencias_componente[$i]["piezas"]);
 }
 
-// Comprobamos si las referencias tienen referencias heredadas
+$referencias_componente_final_aux = $referencias_componente_final;
+
+// Comprobamos si las referencias tienen heredadas y multiplicamos sus piezas
 for($i=0;$i<count($referencias_componente_final);$i++){
-	$id_referencia = $referencias_componente_final[$i]["id_referencia"];
-	$res_heredadas = $ref_heredada->dameTodasHeredadas($id_referencia);
-	if($res_heredadas){
-		// Preparamos el array con las referencias heredadas de la referencia
-		for($j=0;$j<count($res_heredadas);$j++){
-			$id_ref_heredada = $res_heredadas[$j]["id_ref_heredada"];
-			$piezas_ref_heredada = $ref_heredada->dameCantidadPiezaHeredada($id_referencia,$id_ref_heredada);
-			$array_ref_heredada[$j]["id_referencia"] = $id_ref_heredada;
-			$array_ref_heredada[$j]["piezas"] = floatval($piezas_ref_heredada);
+	$raiz = $referencias_componente_final[$i]["id_referencia"];
+	$piezas = $referencias_componente_final[$i]["piezas"];
+
+	// Obtenemos el grafo ordenado por BFS (Anchura) y después todas las piezas necesarias de cada referencia
+	$heredadas_por_nivel = $ref_heredada->dameTodasHeredadasNivel($raiz);
+	$referencias_heredadas_referencia = $ref_heredada->dameTodasHeredadasPiezas($heredadas_por_nivel);
+
+	// Si tiene heredadas las agrupamos al array de referencias final con sus piezas correspondientes
+	if(!empty($referencias_heredadas_referencia)){
+		$cont = 0;
+		foreach($referencias_heredadas_referencia as $id_ref_heredada => $piezas_heredada){
+			$array_piezas_heredadas[$cont]["id_referencia"] = $id_ref_heredada;
+			$array_piezas_heredadas[$cont]["piezas"] = $piezas * $piezas_heredada;
+			$cont++;
 		}
 
-		// Agrupamos las referencias heredadas al grupo total de referencias
-		$referencias_componente_final = $ref->addReferenciasKitAlComponente($array_ref_heredada,$referencias_componente_final);
+		// Agrupamos las referencias heredadas al array final
+		$referencias_componente_final_aux = $comp->agruparReferenciasComponentes($array_piezas_heredadas,$referencias_componente_final_aux);
+		unset($array_piezas_heredadas);
 	}
 }
 
+$referencias_componente_final = $referencias_componente_final_aux;
 if(!empty($referencias_componente_final)) {
 	// Ordenamos el array de referencias
 	array_multisort($referencias_componente_final);
@@ -104,7 +115,7 @@ $table = '<table>
 	
 // Por cada referencia del componente generamos la fila y codificamos los campos
 for($i=0;$i<count($referencias_componente_final);$i++){
-	// De la tabla componentes_referencias solo nos interesa el campo piezas y el id_referencia. Los demas datos los obtenemos de la tabla referencias
+	// De la tabla componentes_referencias sólo nos interesa el campo piezas y el id_referencia. Los demas datos los obtenemos de la tabla referencias
 	$id_referencia = $referencias_componente_final[$i]["id_referencia"];
 	$total_piezas = $referencias_componente_final[$i]["piezas"];
 	$referencia->cargaDatosReferenciaId($id_referencia);
@@ -281,7 +292,6 @@ for($i=0;$i<count($referencias_componente_final);$i++){
 	';
 }
 $table_end = '</table>';
-
 header("Content-type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=informeReferencias.xls");
 echo $table.$salida.$table_end;

@@ -273,8 +273,9 @@ $ref_perifericos->setValores($_GET["id"]);
 $ref_perifericos->realizarConsulta();
 $resultadosBusqueda = $ref_perifericos->referencias_componentes;
 $componente = "periferico";
-echo '<script type="text/javascript" src="../js/basicos/mod_periferico.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/mod_periferico_08032017_1050.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 ?>
 
 <div class="separador"></div>
@@ -566,7 +567,7 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
                         echo '<div id="'.$id_capa_kit.'" class="ContenedorCamposCreacionBasico"><div class="LabelCreacionBasico">Referencias Kit</div>';
                         $Kit->cargaDatosKitId($id_kit);
                         echo '<div class="tituloComponente">'.$Kit->kit.'_v'.$Kit->version.'</div>';
-                        echo '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitablakit'.$i.'">';
+                        echo '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitabla-kit-'.$i.'">';
                         echo '<tr><th style="text-align:center;">ID REF</th><th>NOMBRE</th><th>PROVEEDOR</th><th>REF PROV</th><th>NOMBRE PIEZA</th><th style="text-align:center">PIEZAS</th><th style="text-align:center">PACK PRECIO</th><th style="text-align:center">UDS/P</th><th style="text-align:center">PRECIO UNIDAD</th><th style="text-align:center">PRECIO</th></tr>';
 
                         $ref_kits->setValores($id_kit);
@@ -598,7 +599,7 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
                                 <table id="tablaTituloPrototipo">
                                 <tr>
                                     <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
-                                        <span class="tituloComp">'.number_format($coste_kit, 2, ',', '.').'€'.'</span>'.'
+                                        <span id="coste-kit-'.$i.'" class="tituloComp">'.number_format($coste_kit, 2, ',', '.').'€'.'</span>'.'
                                     </td>
                                 </tr>
                                 </table>
@@ -693,4 +694,31 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
         </div>
     </form>
 </div>
+<script type="text/javascript">
+	window.onload = function(){
+		// Obtenemos el precio del periférico con sus referencias heredadas
+		var mitabla = document.getElementById("mitabla");
+		var costePeriferico = damePrecioComponenteConHeredadas(mitabla);
+
+		// Modificamos los precios de los kits para que añadan las referencias heredadas
+		var sl = document.getElementById('kit[]');
+		var contador_kits = 0;
+		// Formateamos el valor guardado de la suma de los kits
+		document.getElementById('costeKits').setAttribute('value',0);
+
+		for(i=0;i<sl.options.length;i++) {
+			var id_capa_kit = 'kit-' + contador_kits;
+			var coste_input_kit = 'coste_kit-' + contador_kits;
+
+			// Una vez se ha añadido el kit calculamos el coste con sus referencias heredadas
+			var mitabla = document.getElementById("mitabla-" + id_capa_kit);
+			var span_coste_kit = "coste-" + id_capa_kit;
+			var precio_kit = damePrecioKitConHeredadas(mitabla);
+			actualizarPrecioKit(span_coste_kit,coste_input_kit,precio_kit);
+
+			contador_kits++;
+		}
+		actualizarCoste(costePeriferico);
+	}
+</script>
 <?php include ("../includes/footer.php"); ?>

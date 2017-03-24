@@ -161,8 +161,9 @@ $componente = "periferico";
 $titulo_pagina = "Básico > Nuevo periferico";
 $pagina = "new_periferico";
 include ('../includes/header.php');
-echo '<script type="text/javascript" src="../js/basicos/nuevo_periferico.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/nuevo_periferico_08032017_1050.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/nuevo_periferico_adjuntos.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 ?>	
 
 <div class="separador"></div> 

@@ -119,6 +119,119 @@ class Referencia_Heredada extends Referencia {
 		return $res_heredadas;
 	}
 
+	// Función que devuelve todas las referencias heredadas incluyendo a su descendencia de una referencia
+	// Devuelve los nodos del grafo por nivel. Busqueda en anchura (BFS)
+	function dameTodasHeredadasNivel($raiz){
+		$cola = array();
+		$array_final = array();
+		$nodos_leidos = array();
+		$nodos_leidos[] = $raiz;
+
+		// Obtenemos los nodos del grafo
+		$nodos_grafo = $this->dameNodosGrafo($raiz);
+		$heredadas_raiz = $this->dameHeredadasPrincipales($raiz);
+		if(!empty($heredadas_raiz)){
+			foreach($heredadas_raiz as $res_hijo){
+				$hijo = intval($res_hijo["id_ref_heredada"]);
+				$cola[] = $hijo;
+			}
+		}
+
+		$hay_heredadas = true;
+		while ($hay_heredadas) {
+			if(!empty($cola)){
+				foreach($cola as $res_hijo){
+					$hijo = intval($res_hijo);
+
+					// Obtenemos los herederos de los hijos
+					$res_herederos_hijos = $this->dameHeredadasPrincipales($hijo);
+					$nodos_leidos[] = $hijo;
+					$array_final[] = $hijo;
+
+					if(!empty($res_herederos_hijos)){
+						foreach($res_herederos_hijos as $res_nietos){
+							$nieto = intval($res_nietos["id_ref_heredada"]);
+
+							// Si alguno de los padres no ha sido procesado no lo añadimos a la cola
+							$todosPadresLeidos = $this->padresLeidosEnGrafo($nieto,$nodos_grafo,$array_final);
+							if($todosPadresLeidos) {
+								if(!in_array($nieto, $cola)) $cola[] = $nieto;
+							}
+						}
+					}
+					array_shift($cola);
+				}
+			}
+			// Salida del bucle
+			$hay_heredadas = !empty($cola);
+		}
+		return $nodos_leidos;
+	}
+
+	// Función que devuelve los nodos de un grafo en función de su raiz
+	function dameNodosGrafo($raiz){
+		// Obtenemos todos los nodos del grafo
+		$res_nodos = $this->dameTodasHeredadas($raiz);
+		$res_nodos = $this->eliminarReferenciasHeredadasDuplicadas($res_nodos);
+		if(!empty($res_nodos)) foreach($res_nodos as $nodo) $nodos[] = intval($nodo["id_ref_heredada"]);
+		return $nodos;
+	}
+
+	// Función que comprueba si los padres de una referencia han sido leidos en el grafo
+	function padresLeidosEnGrafo($id_referencia,$nodos,$cola){
+		// Obtenemos los padres de la referencia
+		$res_padres = $this->dameAntecesoresPrincipales($id_referencia);
+		if(!empty($res_padres)) foreach($res_padres as $padre) $padres[] = intval($padre["id_referencia"]);
+
+		$res_padres_grafo = array_intersect($padres,$nodos);
+		if(!empty($res_padres_grafo)) foreach($res_padres_grafo as $value) $padres_grafo[] = intval($value);
+
+		// Comprobamos que los padres de la referencia estan en la cola para ser leidos
+		$estaPadreEnCola = true;
+		$i = 0;
+		while ($estaPadreEnCola && $i<count($padres_grafo)){
+			$estaPadreEnCola = in_array($padres_grafo[$i],$cola);
+ 			$i++;
+		}
+		return $estaPadreEnCola;
+	}
+
+	// Función que devuelve todas las referencias heredadas de una referencia y sus piezas necesarias
+	function dameTodasHeredadasPiezas($heredadas_por_nivel){
+		foreach($heredadas_por_nivel as $nodo){
+			$res_heredadas = $this->dameHeredadasPrincipalesYCantidad($nodo);
+
+			if(!empty($res_heredadas)){
+				foreach($res_heredadas as $heredadas){
+					$id_ref = intval($heredadas["id_ref_heredada"]);
+					$piezas = floatval($heredadas["cantidad"]);
+					$matriz_piezas[$nodo][$id_ref] = $piezas;
+				}
+			}
+		}
+
+		if(!empty($matriz_piezas))
+			foreach($matriz_piezas as $padre => $array_hijos){
+				if(!empty($array_hijos))
+					foreach($array_hijos as $hijo => $piezas){
+						if(empty($array_final[$hijo])){
+							if(empty($array_final[$padre])){
+								// El padre es la raiz
+								$array_final[$hijo] = $piezas;
+							}
+							else{
+								$array_final[$hijo] = $piezas * $array_final[$padre];
+							}
+						}
+						else{
+							$array_final[$hijo] = $array_final[$hijo] + ($piezas * $array_final[$padre]);
+						}
+					}
+			}
+		return $array_final;
+	}
+
+
 	// Función que devuelve todas las referencias y las heredadas de varias referencias
 	function dameTodasReferenciasIncluidasHeredadas($array_referencias){
 		// Cambiamos la clave del array bidimensional para hacer la comprobación con las refs heredadas
@@ -209,67 +322,27 @@ class Referencia_Heredada extends Referencia {
 		return $array_referencias;
 	}
 
-
 	/*
-	// Función que devuelve las piezas heredadas entre un padre y un nieto
-	function damePiezasHeredadasAntecesorYHeredero($id_referencia,$id_ref_heredada){
-		// Obtenemos los hijos y descendencia de la referencia
-		$res_heredadas = $this->dameHeredadasPrincipales($id_referencia);
-		$array_heredadas_leidas = array();
-		$hay_heredadas = true;
-		while ($hay_heredadas){
-			for($i=0;$i<count($res_heredadas);$i++){
-				$id_ref_heredada = $res_heredadas[$i]["id_ref_heredada"];
-				$piezas_ref_heredada = $this->dameCantidadPiezaHeredada($id_referencia,$id_ref_heredada);
+	// Función recursiva que devuelve un array con las referencias heredadas y sus piezas totales
+	function dameHerederasYCantidad($id_referencia,&$array_piezas,&$array_final){
+		$id_referencia_padre = $id_referencia;
+		$res_heredadas_principales = $this->dameHeredadasPrincipalesYCantidad($id_referencia); d($res_heredadas_principales);
+		$tiene_heredadas = !empty($res_heredadas_principales);
 
-				if(!in_array($id_ref_heredada,$array_heredadas_leidas)) {
-					$array_heredadas_final[$i]["id_referencia"] = $id_ref_heredada;
-					$array_heredadas_final[$i]["piezas"] = $piezas_ref_heredada; d($array_heredadas_final);
+		if($tiene_heredadas){
+			for($i=0;$i<count($res_heredadas_principales);$i++){
+				$id_ref = intval($res_heredadas_principales[$i]["id_ref_heredada"]);
+				$piezas = floatval($res_heredadas_principales[$i]["cantidad"]);
 
-					// Buscamos heredadas de una heredada
-					$res_hijos_heredadas = $this->dameHeredadasPrincipales($id_ref_heredada); d($res_hijos_heredadas);
-					// if($res_hijos_heredadas != NULL) $res_heredadas = array_merge($res_heredadas,$res_hijos_heredadas);
+				$array_piezas[$id_ref][$id_referencia_padre] = $piezas;
 
-
-
-				}
-
-				/*
-				if(!in_array($id_ref_heredada,$array_heredadas_leidas)){
-
-
-
-					// Añadimos el nodo al array de los leidos
-					$array_heredadas_leidas[] = $id_ref_heredada;
-				}
+				// Aplicamos recursividad
+				$this->dameHerederasYCantidad($id_ref,$array_piezas,$array_final);
 			}
-			$hay_heredadas = $res_heredadas === $array_heredadas_leidas;
-
 		}
+		return $array_piezas;
 	}
-
-	// Función que devuelve todas las referencias heredadas incluyendo a su descendencia de una referencia
-	function dameTodasHeredadasA($id_referencia){
-		// Obtenemos los hijos y descendencia de la referencia
-		$res_heredadas = $this->dameHeredadasPrincipales($id_referencia);
-		$array_heredadas_leidas = array();
-		$hay_heredadas = true;
-		while ($hay_heredadas){
-			for($i=0;$i<count($res_heredadas);$i++){
-				$id_ref_heredada = $res_heredadas[$i]["id_ref_heredada"];
-				if(!in_array($id_ref_heredada,$array_heredadas_leidas)){
-					// Buscamos heredadas de una heredada
-					$res_hijos_heredadas = $this->dameHeredadasPrincipales($id_ref_heredada);
-					if($res_hijos_heredadas != NULL) $res_heredadas = array_merge($res_heredadas,$res_hijos_heredadas);
-					// Añadimos el nodo al array de los leidos
-					$array_heredadas_leidas[] = $id_ref_heredada;
-				}
-			}
-			$hay_heredadas = $res_heredadas === $array_heredadas_leidas;
-		}
-		return $res_heredadas;
-	}*/
-
+	*/
 
 
 	// Devuelve la cadena de un error según su identificador

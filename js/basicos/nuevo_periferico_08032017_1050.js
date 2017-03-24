@@ -1,24 +1,33 @@
 // JavaScript Document
-// Fichero que contiene las funciones JavaScript utilizadas en el proceso de modificacion de un periferico
+// Fichero que contiene las funciones JavaScript utilizadas en el proceso de creación de un periferico
 
-var div = document.getElementById('CapaTablaIframe');
+function abrir(url) {
+	open(url,'','top=200,left=700,width=500,height=500') ;
+}
+
+function Abrir_ventana(pagina) {
+    /* width=820px height=500px */
+	var opciones="toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, width=1220, height=600, top=100, left=350";
+    window.open(pagina,"",opciones);
+}
+	
+	var div = document.getElementById('CapaTablaIframe');
 	var table = document.createElement('tabla');
 	var row = table.insertRow(0);
 	var cell = row.insertCell(0);
 	div.appendChild(table);
-	
-	// Funcion para añadir una referencia al periferico
-	function addRow(tableId,id_referencia) 
-	{ 
-		var table = document.getElementById(tableId);
+
+	// Funcion para añadir una referencia al periférico
+	function addRow(tableId,id_referencia) {
+		var table = document.getElementById(tableId); 
 		//Guardamos en una variable la cantidad de filas que tiene la tabla. 
 		//esta variable tambien nos servira para indicar que la fila se tiene 
 		//que insertar al final de la tabla.Es una ventaja que las posiciones 
 		//empiecen en cero.
 		var pos = table.rows.length; 
-		var row = table.insertRow(pos); 
+		var row = table.insertRow(pos);
 		var fila = pos - 1;
-			
+		
 		var cell_0 = row.insertCell(0); 
 		var cell_1 = row.insertCell(1);
 		var cell_2 = row.insertCell(2);
@@ -30,7 +39,7 @@ var div = document.getElementById('CapaTablaIframe');
 		var cell_8 = row.insertCell(8);
 		var cell_9 = row.insertCell(9);
 		var cell_10 = row.insertCell(10);
-
+		
 		var piezas = new Array();
 		var num_piezas = num_uds;
 		
@@ -47,18 +56,18 @@ var div = document.getElementById('CapaTablaIframe');
 		cell_2.innerHTML = prov;
 		cell_3.innerHTML = ref_prov;
 		cell_4.innerHTML = nom_pieza;
-		cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarHayCaracter(' + fila + ')"/>';
+		cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarHayCaracter(' + fila  + ')"/>';
 		cell_6.innerHTML = pack_precio.toFixed(2);
 		cell_7.innerHTML = cant.toFixed(2);
 		cell_8.innerHTML = precio_unidad.toFixed(2);
 		cell_9.innerHTML = precio_referencia.toFixed(2);
-		cell_10.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '"/>';
-		
-		// Calculamos el coste de todas las referencias que haya en la tabla
-		costeTotal = calculaCoste(table);
+ 		cell_10.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '"/>';
+
+		// Calculamos el coste de todas las referencias que hubiera en la tabla
+		// costeTotal = calculaCoste(table);
+		costeTotal = damePrecioComponenteConHeredadas(table);
 		actualizarCoste(costeTotal);
 	}
-	
 	
 	// Funcion para actualizar las filas despues de la eliminacion de una fila
 	// para que se puedan validar las filas despues de la modificacion
@@ -69,18 +78,17 @@ var div = document.getElementById('CapaTablaIframe');
 			var td_precio = table.rows[j+1].insertCell(5);
 			td_precio.setAttribute("style","text-align:center");
 			td_precio.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarHayCaracter(' + j + ')"/>';
-			
 		}
 	}
 
-
-	// Funcion para eliminar una referencia del periferico	
+	// Funcion para eliminar una referencia del periferico
 	function removeRow(tableID) {
 		try {
 			table = document.getElementById('mitabla');
 			var rowCount = table.rows.length;
 
 			for(var i=0; i<rowCount; i++) {
+				// i = 0 -> Cabecera de la tabla
 				var row = table.rows[i];
 				var chkbox = row.cells[10].childNodes[0];
 				if(null != chkbox && true == chkbox.checked) {
@@ -92,16 +100,87 @@ var div = document.getElementById('CapaTablaIframe');
 					}
 				}
 			}
-			costeTotal = calculaCoste(table);
+			// costeTotal = calculaCoste(table);
+			costeTotal = damePrecioComponenteConHeredadas(table);
 			actualizarCoste(costeTotal);
 		}
 		catch(e) {
 			alert(e);
 		}
 	}
+
+	// Funcion que calcula el nuevo coste cuando se modifica el campo piezas de una referencia 
+	// y cambia el precio de la referencia modificada
+	function modificaPrecioReferencia(piezas,fila){
+		try {
+			var table = document.getElementById('mitabla');
+			fila = parseInt(fila) + 1;
+			var nuevo_coste_referencia = 0;
+			var row = table.rows[fila];
+			piezas = parseFloat(piezas);
+			piezas = piezas * 100;
+			piezas = Math.round(piezas)/100;			
+			var precio_unidad = row.cells[8].childNodes[0].nodeValue;
+			precio_unidad = parseFloat(precio_unidad);
+			precio_unidad = precio_unidad * 100;
+			precio_unidad = Math.round(precio_unidad) / 100;
+			nuevo_coste_referencia = parseFloat(piezas * precio_unidad);
+			nuevo_coste_referencia = nuevo_coste_referencia * 100;
+			nuevo_coste_referencia = Math.round(nuevo_coste_referencia) / 100;
+		
+			// Eliminamos la celda con el precio antiguo
+			table.rows[fila].deleteCell(9); 
+				
+			// Creamos la celda para el precio nuevo
+			var td_precio = table.rows[fila].insertCell(9);
+			// Establecemos el estilo
+			td_precio.setAttribute("style","text-align:center");
+			td_precio.innerHTML = nuevo_coste_referencia.toFixed(2);
+		}
+		catch(e) {
+			alert(e);
+		}
+	}
+
+	// Funcion para validar que el campo piezas sea un number
+	// Si es correcto se modifica el campo precio de la referencia
+	function validarHayCaracter(fila) {
+		var table = document.getElementById('mitabla');
+		var piezas = document.getElementsByName("piezas[]");
+		var num_piezas = piezas[fila].value;
+		var nuevo_coste = 0;
+		var costeTotal = 0;
 	
+		var j = 0;
+		var error = false;
+		var digito = 0;
+		var primer_caracter = false;
+		var punto_reconocido = false;
+		if (num_piezas.length == 0) error = true;
+		while (j<num_piezas.length && !error){
+			primer_caracter = parseInt(num_piezas[0]);
+			if (isNaN(primer_caracter)) error = true;
+			else {
+				digito = parseInt(num_piezas[j]);
+				if (isNaN(digito) && num_piezas[j] != ".") error = true;
+				else if ((num_piezas[j] == "." && punto_reconocido)) error = true;
+				if (num_piezas[j] == ".") punto_reconocido = true;
+			}
+			j++;
+		}
+		if (!error){
+			modificaPrecioReferencia(num_piezas,fila);
+			// costeTotal = calculaCoste(table);
+			costeTotal = damePrecioComponenteConHeredadas(table);
+			actualizarCoste(costeTotal);
+		}
+		else {
+			alert("El campo PIEZAS tiene que ser un valor entero o un decimal con punto");	
+		}
+	}
+
 	
-	// Función que calcula el coste total de las referencias de la tabla periferico
+	// Funcion que calcula el coste total de las referencias de la tabla periferico
 	function calculaCoste(tableId){
 		try {
 			table = document.getElementById('mitabla');
@@ -121,9 +200,8 @@ var div = document.getElementById('CapaTablaIframe');
 		catch(e) {
 			alert(e);
 		}
-	}
-	
-	
+	}	
+
 	// Función que actualiza el coste total del componente mas el coste de los kits
 	function actualizarCoste(costeTotal){
 		try{
@@ -152,190 +230,21 @@ var div = document.getElementById('CapaTablaIframe');
 			alert(e);
 		}
 	}
-	
-	
-	// Funcion para cambiar la coma de un numero decimal por un punto para su validacion
-	function cambiarComaPorPunto(p_precio){
-		tamaño_float = p_precio.length;
-		i=0;
-		cadena = "";
-		while (i<tamaño_float) {
-			if(p_precio[i] == ","){
-				cadena = cadena + ".";
-			}
-			else {
-				cadena = cadena + p_precio[i];
-			}
-			i++;	
-		}
-		p_precio = cadena;
-		return p_precio;
-	}
-	
-	
-	// Funcion que calcula el nuevo coste cuando se modifica el campo piezas de una referencia 
-	// y cambia el precio de la referencia modificada
-	function modificaPrecioReferencia(piezas,fila){
-		try {
-			var table = document.getElementById('mitabla');
-			fila = parseInt(fila) + 1;
-			var nuevo_coste_referencia = 0;
-			var row = table.rows[fila];
-			piezas = cambiarComaPorPunto(piezas);
-			piezas = parseFloat(piezas);
-			piezas = piezas * 100;
-			piezas = Math.round(piezas)/100;	
-			var precio_unidad = row.cells[8].childNodes[0].nodeValue;
-			precio_unidad = cambiarComaPorPunto(precio_unidad);
-			precio_unidad = parseFloat(precio_unidad);
-			precio_unidad = precio_unidad * 100;
-			precio_unidad = Math.round(precio_unidad) / 100;
-			nuevo_coste_referencia = parseFloat(piezas * precio_unidad);
-			nuevo_coste_referencia = nuevo_coste_referencia * 100;
-			nuevo_coste_referencia = Math.round(nuevo_coste_referencia) / 100;
-			
-			// Eliminamos la celda con el precio antiguo
-			table.rows[fila].deleteCell(9); 
-						
-			// Creamos la celda para el precio nuevo
-			var td_precio = table.rows[fila].insertCell(9);
-			// Establecemos el estilo
-			td_precio.setAttribute("style","text-align:center");
-			td_precio.innerHTML = nuevo_coste_referencia.toFixed(2);
-		}
-		catch(e) {
-			alert(e);
-		}
-	}
-	
-	
-	// Funcion para validar que el campo piezas sea un number
-	// Si es correcto se modifica el campo precio de la referencia
-	function validarHayCaracter(fila) {
-		var table = document.getElementById('mitabla');
-		var piezas = document.getElementsByName("piezas[]");
-		var num_piezas = piezas[fila].value;
-		var nuevo_coste = 0;
-		var costeTotal = 0;
 
-		var j = 0;
-		var error = false;
-		var digito = 0;
-		var primer_caracter = false;
-		var punto_reconocido = false;
-		if (num_piezas.length == 0) error = true;
-		while (j<num_piezas.length && !error){
-			primer_caracter = parseInt(num_piezas[0]);
-			if (isNaN(primer_caracter)) error = true;
-			else {
-				digito = parseInt(num_piezas[j]);
-				if (isNaN(digito) && num_piezas[j] != ".") error = true;
-				else if ((num_piezas[j] == "." && punto_reconocido)) error = true;
-				if (num_piezas[j] == ".") punto_reconocido = true;
- 			}
-			j++;
-		}
-		if (!error){
-			modificaPrecioReferencia(num_piezas,fila);
-			costeTotal = calculaCoste(table);
-			actualizarCoste(costeTotal);
-		}
-		else {
-			alert("El campo PIEZAS tiene que ser un valor entero o un decimal con punto");	
-		}
-	}
-	
-	
-	// Funcion para eliminar archivos del periferico
-	function removeRowArchivos(tableID) {
-		try {
-			table = document.getElementById('mitablaArchivos');
-			var rowCount = table.rows.length;
-
-			for(var i=0; i<rowCount; i++) {
-				var row = table.rows[i];
-				var chkboxArch = row.cells[3].childNodes[0];
-				if(null != chkboxArch && true == chkboxArch.checked) {
-					table.deleteRow(i);
-					rowCount--;
-					i--;
-				}
-
-			}
-		} 
-		catch(e) {
-			alert(e);
-		}
-	}
-	
-	
-	// Función que envia el formulario para la actualizacion del periferico
-	function actualizarVersion(){
-		var form = document.getElementById("FormularioCreacionBasico");
-		var capa = document.getElementById("aux");
-		var act = document.getElementById("act_version");
-		act.parentNode.removeChild(act);
-		act = '<input type="hidden" id="act_version" name="act_version" value="1"/>'; 
-		capa.innerHTML = act;
-		SeleccionarComponentes();
-		form.submit();
-	}
-	
-	
-	// Función que obtiene los ids de los kits seleccionados y llama a la funcion para abrir el pop-up de referencias de los kits
-	function AbrirVentanasKits(){
-		// Obtenemos los ids de los kits seleccionados
-		var lista = document.getElementById("kit[]");
-		var lista_no_asignados = document.getElementById("kits_no_asignados[]");
-		
-		var ids_kits = new Array();
-		var ids_kits_no_asignados = new Array();
-		var nombres = new Array();
-		var nombres_no_asignados = new Array();
-		
-		var j=0;
-		for	(i=0;i<lista.options.length;i++){
-			// Mostramos unicamente los que esten seleccionados dentro de la caja
-			if (lista.options[i].selected){
-				ids_kits[j] = lista.options[i].value;
-				nombres[j] = lista.options[i].text;
-				j++;
-			}
-		}
-		j=0;
-		for	(i=0;i<lista_no_asignados.options.length;i++){
-			// Mostramos unicamente los que esten seleccionados dentro de la caja
-			if (lista_no_asignados.options[i].selected){
-				ids_kits_no_asignados[j] = lista_no_asignados.options[i].value;
-				nombres_no_asignados[j] = lista_no_asignados.options[i].text;
-				j++;
-			}
-		}
-		// Concatenamos los dos arrays
-		ids_kits = ids_kits_no_asignados.concat(ids_kits);
-		nombres = nombres_no_asignados.concat(nombres);
-		for (i=0;i<ids_kits.length;i++){
-			// Abrimos los popups
-			abrir("../basicos/muestra_referencias.php?nombre=" + nombres[i] + "&tipo=kit&id=" + ids_kits[i]);
-			// url = "../basicos/mod_kit.php?id=" + ids_kits[i];
-			// popupVerKits(url,i);		
-		}
-	}
-	
-	// Añadir elemento a la segunda lista
+	// Añadir kit a la segunda lista
 	function AddKitToSecondList(){
-        var fl = document.getElementById('kits_no_asignados[]');
-        var sl = document.getElementById('kit[]');
+		var fl = document.getElementById('kits_no_asignados[]');
+		var sl = document.getElementById('kit[]');
         var contador_kits = sl.options.length;
-
-        for(i=0;i<fl.options.length;i++){
-            if(fl.options[i].selected){
-                // Añadimos la opcion a la lista de selección
-                var option = document.createElement("option");
-                option.value = fl[i].value;
-                option.text = fl[i].text;
-                fl.add(option,i);
-                sl.add(fl.options[i],null);
+	
+		for(i=0;i<fl.options.length;i++){
+			if(fl.options[i].selected){
+				// Añadimos la opcion a la lista 1
+				var option = document.createElement("option");
+				option.value = fl[i].value;
+				option.text = fl[i].text;
+				fl.add(option,i);
+				sl.add(fl.options[i],null);
                 // Deseleccionar campo origen
                 fl.options[i].selected = false;
                 var id_componente = option.value;
@@ -345,7 +254,7 @@ var div = document.getElementById('CapaTablaIframe');
                     var respuesta = null;
                     $.ajax({
                         dataType: "json",
-                        url: "../ajax/basicos/mod_periferico.php?func=loadComp",
+                        url: "../ajax/basicos/nuevo_periferico.php?func=loadComp",
                         data: "id=" + id_componente,
                         type: "GET",
                         async: false,
@@ -374,7 +283,7 @@ var div = document.getElementById('CapaTablaIframe');
                 salida = '<div id="' + id_capa_kit + '" class="ContenedorCamposCreacionBasico" style="display: block;">';
                 salida += '<div class="LabelCreacionBasico">Referencias Kit</div>';
                 salida += '<div class="tituloComponente">' + respuesta.nombre + '</div>';
-                salida += '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitabla">';
+                salida += '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitabla-' + id_capa_kit + '">';
                 salida += '<tr><th style="text-align:center;">ID REF</th><th>NOMBRE</th><th>PROVEEDOR</th><th>REF. PROVEEDOR</th><th>NOMBRE PIEZA</th><th style="text-align:center;">PIEZAS</th><th style="text-align:center;">PACK PRECIO</th><th style="text-align:center;">UDS/P</th><th style="text-align:center;">PRECIO UNIDAD</th><th style="text-align:center;">PRECIO</th></tr>';
 
                 var precio_kit = 0;
@@ -405,33 +314,41 @@ var div = document.getElementById('CapaTablaIframe');
                 salida += '<table id="tablaTituloPrototipo">';
                 salida += '<tr>';
                 salida += '<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">';
-                salida += '<span class="tituloComp">' + precio_kit_string + '€</span>';
+
+                salida += '<span id="coste-' + id_capa_kit + '" class="tituloComp">' + precio_kit_string + '€</span>';
                 salida += '</td></tr></table>';
                 salida += '<input type="hidden" id="' + coste_input_kit + '" value="' + precio_kit + '" />';
                 salida += '</div><br/></div>';
 
-                // Actualizamos el coste total de kits
-                var costeKits = parseFloat(document.getElementById('costeKits').value);
-                costeKits = costeKits + precio_kit;
-                document.getElementById('costeKits').setAttribute('value',costeKits);
+				// Actualizamos el coste total de kits
+				/* var costeKits = parseFloat(document.getElementById('costeKits').value);
+				costeKits = costeKits + precio_kit;
+				document.getElementById('costeKits').setAttribute('value',costeKits);*/
 
-                // Mostramos la salida por pantalla
+				// Mostramos la salida por pantalla
                 capa_contenedora.innerHTML = capa_contenedora.innerHTML + salida;
+
+				// Una vez se ha añadido el kit calculamos el coste con sus referencias heredadas
+				var mitabla = document.getElementById("mitabla-" + id_capa_kit);
+				var span_coste_kit = "coste-" + id_capa_kit;
+				precio_kit = damePrecioKitConHeredadas(mitabla);
+				actualizarPrecioKit(span_coste_kit,coste_input_kit,precio_kit);
+
                 contador_kits++;
                 // Actualizamos el precio total del periferico
                 sumaPrecioComponentePeriferico(precio_kit);
-            }
-        }
-        return true;
+			}
+		}
+		return true;
 	}
 
-	// Eliminar elemento de la lista
+	// Eliminar kit de la lista
 	function DeleteKitSecondListItem(){
-        var sl = document.getElementById('kit[]');
+		var sl = document.getElementById('kit[]');
         var j=0;
-
-        for(i=0;i<sl.options.length;i++){
-            if(sl.options[i].selected){
+	
+		for(i=0;i<sl.options.length;i++){
+			if(sl.options[i].selected){
                 // Borramos el elemento del select multiple
                 sl.remove(sl.selectedIndex);
                 var num_total_kits = sl.options.length;
@@ -469,26 +386,26 @@ var div = document.getElementById('CapaTablaIframe');
                 // Actualizamos el precio total del periferico
                 restaPrecioComponentePeriferico(precio_kit);
                 i--;
-            }
-        }
-        return true;
+			}
+		}
+		return true;
 	}
-	
+
 	// Seleccionar kits para POST
 	function SeleccionarKits(){
 		var lista = document.getElementById("kit[]");
 		for	(i = 0; i<lista.options.length; i++){				
 			lista[i].selected = "selected";
-		}	
+		}
 	}
-	
+
 	// Selecciona los kits del periferico
 	function SeleccionarComponentes() {
 		SeleccionarKits();
-		return true;
-	}
-	
-	// Funcion que quita la tabla de carga de referencias y añade un enlace para subir un archivo
+		return true;	
+	}	
+
+	// Función que quita la tabla de carga de referencias y añade un enlace para subir un archivo
 	function cargaArchivoImportacion(){
 		var capa_referencias = document.getElementById('capa_referencias');
 		var capa_opciones = document.getElementById('capa_opciones');
@@ -506,7 +423,7 @@ var div = document.getElementById('CapaTablaIframe');
 		capa_boton_metodo.innerHTML = '<input type="button" id="importar_normal" name="importar_normal" class="BotonEliminar" value="IMPORTACIÓN NORMAL" onclick="cargaNormal();" /><input type="hidden" id="metodo" name="metodo" value="masivo">';  
 	}
 
-	// Función que vuelve a mostrar la tabla y las opciones para la carga normal
+	// Funcion que vuelve a mostrar la tabla y las opciones para la carga normal 
 	function cargaNormal(){
 		var capa_referencias = document.getElementById('capa_referencias');
 		var capa_opciones = document.getElementById('capa_opciones');
@@ -524,7 +441,7 @@ var div = document.getElementById('CapaTablaIframe');
 		capa_boton_metodo.innerHTML = '<input type="button" id="importar_excel" name="importar_excel" class="BotonEliminar" value="IMPORTAR DESDE EXCEL" onclick="cargaArchivoImportacion();" /><input type="hidden" id="metodo" name="metodo" value="normal">';
 	}
 
-    // Función que suma el precio de un kit al precio total del periferico
+    // Función que suma el precio de un kit al precio total del periférico
     function sumaPrecioComponentePeriferico(precio_componente){
         // Obtenemos el precio total del periferico
         var capa_coste_total = document.getElementById('CosteTotalComponente');

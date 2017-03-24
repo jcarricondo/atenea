@@ -143,7 +143,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 $titulo_pagina = "Básicos > Referencias";
 $pagina = "referencias";
 include("../includes/header.php");
-echo '<script type="text/javascript" src="../js/basicos/referencias.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/referencias_08032017_1050.js"></script>';
 echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 ?>
 

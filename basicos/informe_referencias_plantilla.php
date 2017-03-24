@@ -1,5 +1,5 @@
 <?php 
-// Este fichero genera un excel con con las referencias de los componentes de la plantilla
+// Este fichero genera un excel con las referencias de los componentes de la plantilla
 set_time_limit(10000);
 include("../classes/mysql.class.php");
 include("../classes/basicos/plantilla_producto.class.php");
@@ -83,37 +83,37 @@ for($i=0;$i<count($array_componentes_final);$i++){
         $referencias_componente[$j]["piezas"] = floatval($referencias_componente[$j]["piezas"]);
     }
 
-    if($referencias_componente_final != NULL){
-        // Agrupamos las referencias
-        $referencias_componente_final = $comp->agruparReferenciasComponentes($referencias_componente,$referencias_componente_final);
-    }
-    else {
-        $referencias_componente_final = $referencias_componente;
-    }
+    if($referencias_componente_final != NULL) $referencias_componente_final = $comp->agruparReferenciasComponentes($referencias_componente,$referencias_componente_final);
+    else $referencias_componente_final = $referencias_componente;
 }
 
-// Comprobamos si las referencias tienen referencias heredadas
+$referencias_componente_final_aux = $referencias_componente_final;
+
+// Comprobamos si las referencias tienen heredadas y multiplicamos sus piezas
 for($i=0;$i<count($referencias_componente_final);$i++){
-    $id_referencia = $referencias_componente_final[$i]["id_referencia"];
-    $res_heredadas = $ref_heredada->dameTodasHeredadas($id_referencia);
-    if($res_heredadas){
-        // Preparamos el array con las referencias heredadas de la referencia
-        for($j=0;$j<count($res_heredadas);$j++){
-            $id_ref_heredada = $res_heredadas[$j]["id_ref_heredada"];
-            $piezas_ref_heredada = $ref_heredada->dameCantidadPiezaHeredada($id_referencia,$id_ref_heredada);
-            $array_ref_heredada[$j]["id_referencia"] = intval($id_ref_heredada);
-            $array_ref_heredada[$j]["piezas"] = floatval($piezas_ref_heredada);
+    $raiz = $referencias_componente_final[$i]["id_referencia"];
+    $piezas = $referencias_componente_final[$i]["piezas"];
+
+    // Obtenemos el grafo ordenado por BFS (Anchura) y después todas las piezas necesarias de cada referencia
+    $heredadas_por_nivel = $ref_heredada->dameTodasHeredadasNivel($raiz);
+    $referencias_heredadas_referencia = $ref_heredada->dameTodasHeredadasPiezas($heredadas_por_nivel);
+
+    // Si tiene heredadas las agrupamos al array de referencias final con sus piezas correspondientes
+    if(!empty($referencias_heredadas_referencia)){
+        $cont = 0;
+        foreach($referencias_heredadas_referencia as $id_ref_heredada => $piezas_heredada){
+            $array_piezas_heredadas[$cont]["id_referencia"] = $id_ref_heredada;
+            $array_piezas_heredadas[$cont]["piezas"] = $piezas * $piezas_heredada;
+            $cont++;
         }
 
-        if($referencias_componente_final != NULL){
-            // Agrupamos las referencias
-            $referencias_componente_final = $comp->agruparReferenciasComponentes($array_ref_heredada,$referencias_componente_final);
-        }
-        else {
-            $referencias_componente_final = $array_ref_heredada;
-        }
+        // Agrupamos las referencias heredadas al array final
+        $referencias_componente_final_aux = $comp->agruparReferenciasComponentes($array_piezas_heredadas,$referencias_componente_final_aux);
+        unset($array_piezas_heredadas);
     }
 }
+
+$referencias_componente_final = $referencias_componente_final_aux;
 
 if(!empty($referencias_componente_final)) {
     // Ordenamos el array de referencias

@@ -68,7 +68,7 @@
     </div>
 	<?php
 		if($modificar) { ?>
-			<input type="button" id="menos_antecesor" name="menos_antecesor" class="BotonMenos" value="-" onclick="javascript:removeRowAntecesor(mitablaAntecesores)"/>
+			<input type="button" id="menos_antecesor" name="menos_antecesor" class="BotonQuitar" value="QUITAR" onclick="javascript:removeRowAntecesor(mitablaAntecesores)"/>
 			<input type="button" id="quitar_antecesores" name="quitar_antecesores" class="BotonQuitarAntecesores" value="QUITAR ANTECESORES" onclick="javascript:quitarAntecesores(mitablaAntecesores)"/>
 	<?php
 		}

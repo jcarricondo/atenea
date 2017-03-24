@@ -17,9 +17,8 @@ function Abrir_ventana(pagina) {
 	var cell = row.insertCell(0);
 	div.appendChild(table);
 
-	// Funcion para añadir una referencia al periferico
-	function addRow(tableId,id_referencia) 
-	{ 
+	// Funcion para añadir una referencia al periférico
+	function addRow(tableId,id_referencia) {
 		var table = document.getElementById(tableId); 
 		//Guardamos en una variable la cantidad de filas que tiene la tabla. 
 		//esta variable tambien nos servira para indicar que la fila se tiene 
@@ -65,7 +64,8 @@ function Abrir_ventana(pagina) {
  		cell_10.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '"/>';
 
 		// Calculamos el coste de todas las referencias que hubiera en la tabla
-		costeTotal = calculaCoste(table);
+		// costeTotal = calculaCoste(table);
+		costeTotal = damePrecioComponenteConHeredadas(table);
 		actualizarCoste(costeTotal);
 	}
 	
@@ -100,7 +100,8 @@ function Abrir_ventana(pagina) {
 					}
 				}
 			}
-			costeTotal = calculaCoste(table);
+			// costeTotal = calculaCoste(table);
+			costeTotal = damePrecioComponenteConHeredadas(table);
 			actualizarCoste(costeTotal);
 		}
 		catch(e) {
@@ -169,7 +170,8 @@ function Abrir_ventana(pagina) {
 		}
 		if (!error){
 			modificaPrecioReferencia(num_piezas,fila);
-			costeTotal = calculaCoste(table);
+			// costeTotal = calculaCoste(table);
+			costeTotal = damePrecioComponenteConHeredadas(table);
 			actualizarCoste(costeTotal);
 		}
 		else {
@@ -281,7 +283,7 @@ function Abrir_ventana(pagina) {
                 salida = '<div id="' + id_capa_kit + '" class="ContenedorCamposCreacionBasico" style="display: block;">';
                 salida += '<div class="LabelCreacionBasico">Referencias Kit</div>';
                 salida += '<div class="tituloComponente">' + respuesta.nombre + '</div>';
-                salida += '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitabla">';
+                salida += '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitabla-' + id_capa_kit + '">';
                 salida += '<tr><th style="text-align:center;">ID REF</th><th>NOMBRE</th><th>PROVEEDOR</th><th>REF. PROVEEDOR</th><th>NOMBRE PIEZA</th><th style="text-align:center;">PIEZAS</th><th style="text-align:center;">PACK PRECIO</th><th style="text-align:center;">UDS/P</th><th style="text-align:center;">PRECIO UNIDAD</th><th style="text-align:center;">PRECIO</th></tr>';
 
                 var precio_kit = 0;
@@ -312,18 +314,26 @@ function Abrir_ventana(pagina) {
                 salida += '<table id="tablaTituloPrototipo">';
                 salida += '<tr>';
                 salida += '<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">';
-                salida += '<span class="tituloComp">' + precio_kit_string + '€</span>';
+
+                salida += '<span id="coste-' + id_capa_kit + '" class="tituloComp">' + precio_kit_string + '€</span>';
                 salida += '</td></tr></table>';
                 salida += '<input type="hidden" id="' + coste_input_kit + '" value="' + precio_kit + '" />';
                 salida += '</div><br/></div>';
 
-                // Actualizamos el coste total de kits
-                var costeKits = parseFloat(document.getElementById('costeKits').value);
-                costeKits = costeKits + precio_kit;
-                document.getElementById('costeKits').setAttribute('value',costeKits);
+				// Actualizamos el coste total de kits
+				/* var costeKits = parseFloat(document.getElementById('costeKits').value);
+				costeKits = costeKits + precio_kit;
+				document.getElementById('costeKits').setAttribute('value',costeKits);*/
 
-                // Mostramos la salida por pantalla
+				// Mostramos la salida por pantalla
                 capa_contenedora.innerHTML = capa_contenedora.innerHTML + salida;
+
+				// Una vez se ha añadido el kit calculamos el coste con sus referencias heredadas
+				var mitabla = document.getElementById("mitabla-" + id_capa_kit);
+				var span_coste_kit = "coste-" + id_capa_kit;
+				precio_kit = damePrecioKitConHeredadas(mitabla);
+				actualizarPrecioKit(span_coste_kit,coste_input_kit,precio_kit);
+
                 contador_kits++;
                 // Actualizamos el precio total del periferico
                 sumaPrecioComponentePeriferico(precio_kit);

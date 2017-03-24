@@ -2542,7 +2542,7 @@ a {
 	background:#fff;
 }
 
-.LabelInfoOP{
+.LabelInfoOP, .LabelDescargaDocumentacion{
 	width:250px;
 	font: 13px Helvetica, Verdana, Arial;
 	color:#2998cc;

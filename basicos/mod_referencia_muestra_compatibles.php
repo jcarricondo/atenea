@@ -68,13 +68,8 @@
                                     echo '<img src="../images/banderas/'.$nombre_imagen.'" style="vertical-align: middle;" alt="'.$pais_imagen.'" title="'.$pais_imagen.'"/>';
                                 ?>
                             </td>
-                            <?php
-                                if($modificar) {
-                                    $texto_error_mismos_grupo = "No se puede eliminar una referencia que pertenece al mismo grupo. ";
-                                    $texto_error_mismos_grupo .= "Para quitarla del grupo dirijase a la modificación de dicha referencia y pulse QUITAR COMPATIBILIDAD"; ?>
-                                    <td style="text-align:center">
-                                        <img alt="<?php echo $texto_error_mismos_grupo;?>" title="<?php echo $texto_error_mismos_grupo;?>" src="../images/estrella.png" style="vertical-align: middle;"  />
-                                    </td>
+                            <?php if($modificar) { ?>
+                                <td style="text-align:center"><input type="checkbox" name="chkbox" value="<?php echo $id_ref_compatible;?>" /></td>
                             <?php } ?>
                         </tr>
                         <?php $fila_comp = $fila_comp + 1; ?>
@@ -82,6 +77,7 @@
                 <?php
                     }
                 ?>
+                <input type="hidden" id="id_grupo_compatibilidad" name="id_grupo_compatibilidad" value="<?php echo $id_grupo;?>" />
             </table>
         </div>
     </div>

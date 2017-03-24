@@ -144,3 +144,107 @@ function enviarFormulario(){
 	var formulario = document.getElementById("nombreFormulario");
 	document.forms[formulario.value].submit();
 }
+
+// Obtiene las referencias de una tabla y calcula el precio incluyendo las heredadas
+function damePrecioComponenteConHeredadas(table){
+	var array_ids = new Array();
+	var array_piezas = new Array();
+
+	var rowCount = table.rows.length;
+	var id_ref;
+	var piezas;
+
+	// Empezamos en la primera fila obviando la fila de encabezado
+	for(var i=1; i<rowCount; i++) {
+		var j=i-1;
+		var row = table.rows[i];
+		id_ref = row.cells[0].childNodes[0].nodeValue;
+		piezas = row.cells[5].childNodes[0].value;
+
+		array_ids[j] = id_ref;
+		array_piezas[j] = piezas;
+	}
+
+	// Llamada asincrona para obtener el coste total del componente con sus ref. heredadas
+	var respuesta = (function () {
+		var respuesta = null;
+		$.ajax({
+			dataType: "json",
+			url: "../ajax/basicos/referencias.php?comp=calcularCosteReferenciasHeredadas",
+			data: "ids=" + array_ids + "&piezas=" + array_piezas,
+			type: "GET",
+			async: false,
+			success: function (data) {
+				respuesta = data;
+			}
+		});
+		return respuesta;
+	})();
+
+	var precio = respuesta;
+	return precio;
+}
+
+// Obtiene las referencias de una tabla y calcula el precio incluyendo las heredadas
+function damePrecioKitConHeredadas(table){
+	var array_ids = new Array();
+	var array_piezas = new Array();
+
+	var rowCount = table.rows.length;
+	var id_ref;
+	var piezas;
+
+	// Empezamos en la primera fila obviando la fila de encabezado
+	for(var i=1; i<rowCount; i++) {
+		var j=i-1;
+		var row = table.rows[i];
+		id_ref = row.cells[0].childNodes[0].nodeValue;
+		piezas = row.cells[5].childNodes[0].nodeValue;
+
+		array_ids[j] = id_ref;
+		array_piezas[j] = piezas;
+	}
+
+	// Llamada asincrona para obtener el coste total del componente con sus ref. heredadas
+	var respuesta = (function () {
+		var respuesta = null;
+		$.ajax({
+			dataType: "json",
+			url: "../ajax/basicos/referencias.php?comp=calcularCosteReferenciasHeredadas",
+			data: "ids=" + array_ids + "&piezas=" + array_piezas,
+			type: "GET",
+			async: false,
+			success: function (data) {
+				respuesta = data;
+			}
+		});
+		return respuesta;
+	})();
+
+	var precio = respuesta;
+	return precio;
+}
+
+// Actualizamos el precio del kit
+function actualizarPrecioKit(span_coste_kit,coste_input_kit,precio_kit){
+	precio_kit = parseFloat(precio_kit);
+	precio_kit = precio_kit * 100;
+	precio_kit = Math.round(precio_kit) / 100;
+	var precio_kit_string = precio_kit.toFixed(2);
+
+	// Actualizamos el precio del kit
+	document.getElementById(span_coste_kit).innerHTML = precio_kit_string.replace('.',',') + '€';
+	// Guardamos en un array oculto el precio del kit
+	document.getElementById(coste_input_kit).value = precio_kit;
+
+	// Actualizamos el coste total de kits
+	var costeKits = parseFloat(document.getElementById('costeKits').value);
+	costeKits = costeKits + precio_kit;
+	document.getElementById('costeKits').setAttribute('value',costeKits);
+}
+
+
+
+
+
+

@@ -1,24 +1,41 @@
 // JavaScript Document
-// Fichero que contiene las funciones JavaScript utilizadas en el proceso de modificacion de un kit
+// Fichero que contiene las funciones JavaScript utilizadas en el proceso de creación de un kit
 
-var div = document.getElementById('CapaTablaIframe');
+	function abrir(url) {
+		open(url,'','top=200,left=700,width=500,height=500') ;
+	}
+
+	function Abrir_ventana(pagina) {
+		var opciones="toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=no, width=1220, height=500, top=100, left=350";
+		window.open(pagina,"",opciones);
+	}
+	
+	function popup(url,ancho,alto) {
+		var posicion_x; 
+		var posicion_y; 
+		posicion_x=(screen.width/2)-(ancho/2); 
+		posicion_y=(screen.height/2)-(alto/2); 
+		window.open(url, "width="+ancho+",height="+alto+",menubar=0,toolbar=0,directories=0,scrollbars=no,resizable=no,left="+posicion_x+",top="+posicion_y+"");
+	}
+
+
+	var div = document.getElementById('CapaTablaIframe');
 	var table = document.createElement('tabla');
 	var row = table.insertRow(0);
 	var cell = row.insertCell(0);
 	div.appendChild(table);
 	
-	// Funcion para añadir referencias al kit
-	function addRow(tableId,id_referencia) 
-	{ 
-		var table = document.getElementById(tableId);
+	// Funcion para añadir una referencia al kit
+	function addRow(tableId,id_referencia) {
+		var table = document.getElementById(tableId); 
 		//Guardamos en una variable la cantidad de filas que tiene la tabla. 
 		//esta variable tambien nos servira para indicar que la fila se tiene 
 		//que insertar al final de la tabla.Es una ventaja que las posiciones 
 		//empiecen en cero.
 		var pos = table.rows.length; 
-		var row = table.insertRow(pos); 
+		var row = table.insertRow(pos);
 		var fila = pos - 1;
-					
+		
 		var cell_0 = row.insertCell(0); 
 		var cell_1 = row.insertCell(1);
 		var cell_2 = row.insertCell(2);
@@ -29,7 +46,7 @@ var div = document.getElementById('CapaTablaIframe');
 		var cell_7 = row.insertCell(7);
 		var cell_8 = row.insertCell(8);
 		var cell_9 = row.insertCell(9);
-		var cell_10 = row.insertCell(10); 
+		var cell_10 = row.insertCell(10);
 
 		var piezas = new Array();
 		var num_piezas = num_uds;
@@ -41,21 +58,24 @@ var div = document.getElementById('CapaTablaIframe');
 		cell_8.setAttribute("style","text-align:center");
 		cell_9.setAttribute("style","text-align:center");
 		cell_10.setAttribute("style","text-align:center");
-		
+
 		cell_0.innerHTML = id_ref;
 		cell_1.innerHTML = ref;
 		cell_2.innerHTML = prov;
 		cell_3.innerHTML = ref_prov;
 		cell_4.innerHTML = nom_pieza;
-		cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarHayCaracter(' + fila + ')"/>';
+		cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarHayCaracter(' + fila  + ')"/>';
 		cell_6.innerHTML = pack_precio.toFixed(2);
 		cell_7.innerHTML = cant.toFixed(2);
 		cell_8.innerHTML = precio_unidad.toFixed(2);
 		cell_9.innerHTML = precio_referencia.toFixed(2);
 		cell_10.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '"/>';
-		
+
 		// Calculamos el coste de todas las referencias que haya en la tabla
-		costeTotal = calculaCoste(table);
+		// costeTotal = calculaCoste(table); // <-- quitar ?
+
+		// Calcula el precio total con las referencias heredadas
+		costeTotal = damePrecioComponenteConHeredadas(table);
 		actualizarCoste(costeTotal);
 	}
 	
@@ -71,13 +91,14 @@ var div = document.getElementById('CapaTablaIframe');
 		}
 	}
 	
-	// Funcion para eliminar referencias del kit
+	// Funcion para eliminar una referencia del kit
 	function removeRow(tableID) {
 		try {
 			table = document.getElementById('mitabla');
 			var rowCount = table.rows.length;
 
 			for(var i=0; i<rowCount; i++) {
+				// i = 0 -> Cabecera de la tabla
 				var row = table.rows[i];
 				var chkbox = row.cells[10].childNodes[0];
 				if(null != chkbox && true == chkbox.checked) {
@@ -89,67 +110,13 @@ var div = document.getElementById('CapaTablaIframe');
 					}
 				}
 			}
-			costeTotal = calculaCoste(table);
+			// costeTotal = calculaCoste(table);
+			costeTotal = damePrecioComponenteConHeredadas(table);
 			actualizarCoste(costeTotal);
 		}
 		catch(e) {
 			alert(e);
 		}
-	}
-	
-	// Función que calcula el coste total de las referencias de la tabla del componente
-	function calculaCoste(tableId){
-		try {
-			table = document.getElementById('mitabla');
-			var rowCount = table.rows.length;
-			var coste_ref = 0;
-			var costeTotal = 0;
-
-			for(var i=1; i<rowCount; i++) {
-				var row = table.rows[i];
-				coste_ref = parseFloat(row.cells[9].childNodes[0].nodeValue);
-				coste_ref = coste_ref * 100;
-				coste_ref = Math.round(coste_ref) / 100;
-				costeTotal = costeTotal + coste_ref;
-			}
-			return costeTotal;
-		}
-		catch(e) {
-			alert(e);
-		}
-	}
-	
-	// Función que actualiza el coste total del componente mas el coste de los kits
-	function actualizarCoste(costeTotal){
-		try{
-			costeTotal = parseFloat(costeTotal);
-			costeTotal = costeTotal * 100;
-			costeTotal = Math.round(costeTotal) / 100;
-			costeTotal = costeTotal.toFixed(2);
-			capa_coste = document.getElementById('CosteTotalComponente');
-			capa_coste.innerHTML = '<span class="fuenteSimumakNegrita">' + costeTotal + ' € </span>';
-		}
-		catch(e) {
-			alert(e);
-		}
-	}
-	
-	// Funcion para cambiar la coma de un numero decimal por un punto para su validacion
-	function cambiarComaPorPunto(p_precio){
-		tamaño_float = p_precio.length;
-		i=0;
-		cadena = "";
-		while (i<tamaño_float) {
-			if(p_precio[i] == ","){
-				cadena = cadena + ".";
-			}
-			else {
-				cadena = cadena + p_precio[i];
-			}
-			i++;	
-		}
-		p_precio = cadena;
-		return p_precio;
 	}
 	
 	// Funcion que calcula el nuevo coste cuando se modifica el campo piezas de una referencia 
@@ -160,12 +127,10 @@ var div = document.getElementById('CapaTablaIframe');
 			fila = parseInt(fila) + 1;
 			var nuevo_coste_referencia = 0;
 			var row = table.rows[fila];
-			piezas = cambiarComaPorPunto(piezas);
 			piezas = parseFloat(piezas);
 			piezas = piezas * 100;
-			piezas = Math.round(piezas)/100;	
+			piezas = Math.round(piezas)/100;			
 			var precio_unidad = row.cells[8].childNodes[0].nodeValue;
-			precio_unidad = cambiarComaPorPunto(precio_unidad);
 			precio_unidad = parseFloat(precio_unidad);
 			precio_unidad = precio_unidad * 100;
 			precio_unidad = Math.round(precio_unidad) / 100;
@@ -175,7 +140,7 @@ var div = document.getElementById('CapaTablaIframe');
 			
 			// Eliminamos la celda con el precio antiguo
 			table.rows[fila].deleteCell(9); 
-					
+						
 			// Creamos la celda para el precio nuevo
 			var td_precio = table.rows[fila].insertCell(9);
 			// Establecemos el estilo
@@ -195,7 +160,7 @@ var div = document.getElementById('CapaTablaIframe');
 		var num_piezas = piezas[fila].value;
 		var nuevo_coste = 0;
 		var costeTotal = 0;
-
+		
 		var j = 0;
 		var error = false;
 		var digito = 0;
@@ -215,45 +180,50 @@ var div = document.getElementById('CapaTablaIframe');
 		}
 		if (!error){
 			modificaPrecioReferencia(num_piezas,fila);
-			costeTotal = calculaCoste(table);
+			// costeTotal = calculaCoste(table);
+			costeTotal = damePrecioComponenteConHeredadas(table);
 			actualizarCoste(costeTotal);
 		}
 		else {
 			alert("El campo PIEZAS tiene que ser un valor entero o un decimal con punto");	
 		}
-	}
+	}	
 	
-	// Funcion para eliminar archivos del kit
-	function removeRowArchivos(tableID) {
+	// Funcion que calcula el coste total de las referencias 
+	function calculaCoste(tableId){
 		try {
-			table = document.getElementById('mitablaArchivos');
+			table = document.getElementById('mitabla');
 			var rowCount = table.rows.length;
+			var coste_ref = 0;
+			var costeTotal = 0;
 
-			for(var i=0; i<rowCount; i++) {
+			for(var i=1; i<rowCount; i++) {
 				var row = table.rows[i];
-				var chkboxArch = row.cells[3].childNodes[0];
-				if(null != chkboxArch && true == chkboxArch.checked) {
-					table.deleteRow(i);
-					rowCount--;
-					i--;
-				}
-
+				coste_ref = parseFloat(row.cells[9].childNodes[0].nodeValue);
+				coste_ref = coste_ref * 100;
+				coste_ref = Math.round(coste_ref) / 100;
+				costeTotal = costeTotal + coste_ref;
 			}
+			return costeTotal;
 		}
 		catch(e) {
 			alert(e);
 		}
-	}
+	}		
 	
-	// Funcion que envia el formulario para la actualizacion del kit
-	function actualizarVersion(){
-		var form = document.getElementById("FormularioCreacionBasico");
-		var capa = document.getElementById("aux");
-		var act = document.getElementById("act_version");
-		act.parentNode.removeChild(act);
-		act = '<input type="hidden" id="act_version" name="act_version" value="1"/>'; 
-		capa.innerHTML = act;
-		form.submit();
+	// Funcion que actualiza el coste total del componente 
+	function actualizarCoste(costeTotal){
+		try{
+			costeTotal = parseFloat(costeTotal);
+			costeTotal = costeTotal * 100;
+			costeTotal = Math.round(costeTotal) / 100;
+			costeTotal = costeTotal.toFixed(2);
+			capa_coste = document.getElementById('CosteTotalComponente');
+			capa_coste.innerHTML = '<span class="fuenteSimumakNegrita">' + costeTotal + ' € </span>';
+		}
+		catch(e) {
+			alert(e);
+		}
 	}
 
 	// Funcion que quita la tabla de carga de referencias y añade un enlace para subir un archivo
@@ -287,3 +257,4 @@ var div = document.getElementById('CapaTablaIframe');
 		// Cambiamos el boton para la importacion masiva
 		capa_boton_metodo.innerHTML = '<input type="button" id="importar_excel" name="importar_excel" class="BotonEliminar" value="IMPORTAR DESDE EXCEL" onclick="cargaArchivoImportacion();" /><input type="hidden" id="metodo" name="metodo" value="normal">';
 	}
+	

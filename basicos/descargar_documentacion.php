@@ -77,7 +77,7 @@ include ("../includes/header.php");
         <h5>Seleccione el proveedor para preparar la descarga de documentaci&oacute;n</h5>
     	<div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico"><?php echo $tipo_comp;?></div>
-			<label id="nombre_componente" class="LabelPrecio"><?php echo $nombre_comp;?></label>
+			<label id="nombre_componente" class="LabelDescargaDocumentacion"><?php echo $nombre_comp;?></label>
         </div>
 		<br/>
         <div class="ContenedorCamposCreacionBasico">
