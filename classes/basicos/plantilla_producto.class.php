@@ -8,9 +8,8 @@ class Plantilla_Producto extends MySql{
     var $fecha_creado;
     var $activo;
 
-    // var $id_cabina;
+    var $ids_kits;
     var $ids_perifericos;
-    // var $ids_software;
     var $ids_componentes;
 
 		
@@ -72,6 +71,27 @@ class Plantilla_Producto extends MySql{
 		$this->ids_perifericos = $this->getResultados();
 		return $this->ids_perifericos;
 	}
+
+	// Función que devuelve los kits libres de la plantilla de producto
+	function dameKitsPlantillaProducto($id_plantilla){
+		$consulta = sprintf("select id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=5 and id_plantilla=%s",
+				$this->makeValue($id_plantilla, "int"));
+		$this->setConsulta($consulta);
+		$this->ejecutarConsulta();
+		$this->ids_kits = $this->getResultados();
+		return $this->ids_kits;
+	}
+
+	// Función que devuelve los kits libres de la plantilla de producto sin repeticiones
+	function dameKitsPlantillaProductoSinRepeticiones($id_plantilla){
+		$consulta = sprintf("select distinct id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=5 and id_plantilla=%s order by id_componente",
+				$this->makeValue($id_plantilla, "int"));
+		$this->setConsulta($consulta);
+		$this->ejecutarConsulta();
+		$this->ids_kits = $this->getResultados();
+		return $this->ids_kits;
+	}
+
 
     // Funcion que devuelve todos los componentes de la plantilla de producto
     function dameComponentesPlantillaProducto($id_plantilla){

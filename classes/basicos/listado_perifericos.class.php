@@ -35,6 +35,7 @@ class listadoPerifericos extends MySQL {
 	// Prepara la cadena para la consulta a la base de datos
 	function prepararConsulta() {
 		$campos = "select id_componente from componentes where id_componente is not null and id_tipo = '2' and componentes.activo=1 "; // Para que cuando se muestre el listado sin ningun campo de busqueda rellenado solo muestre los perifericos
+		$condiciones = "";
 
 		if($this->periferico != "") {
 			$condiciones .= "and nombre like '%".$this->periferico."%'";

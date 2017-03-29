@@ -34,7 +34,8 @@ class listadoKits extends MySQL {
 	// Prepara la cadena para la consulta a la base de datos
 	function prepararConsulta() {
 		$campos = "select id_componente from componentes where id_componente is not null and id_tipo = '5' and componentes.activo=1 "; 
-		
+		$condiciones = "";
+
 		if($this->kit != "") {
 			$condiciones .= "and nombre like '%".$this->kit."%'";
 		}
@@ -64,7 +65,14 @@ class listadoKits extends MySQL {
 				
 		$this->consultaSql = $campos.$condiciones.$ordenado.$this->paginacion;
 	}
-	
+
+	function prepararConsultaProduccion(){
+		$campos = "select * from (select * from componentes where id_tipo=5 and activo=1 and estado='PRODUCCIÓN' order by version desc) as comp group by nombre ";
+
+		$this->consultaSql = $campos;
+	}
+
+
 		
 	// Realiza la consulta a la base de datos con las opciones de búsqueda indicadas
 	function realizarConsulta() {
