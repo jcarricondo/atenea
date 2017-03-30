@@ -254,6 +254,19 @@ if(isset($_POST["guardandoPeriferico"]) && $_POST["guardandoPeriferico"] == 1) {
 	}
 }
 
+// Obtenemos todos los kits existentes
+$listado_kits->prepararConsulta();
+$listado_kits->realizarConsulta();
+$resultado_todos_kits = $listado_kits->kits;
+foreach($resultado_todos_kits as $res_kit) $todos_kits[] = intval($res_kit["id_componente"]);
+
+// Obtenemos sólo los kits de producción
+$listado_kits->prepararConsultaProduccion();
+$listado_kits->realizarConsulta();
+$resultado_kits = $listado_kits->kits;
+$res_kits_produccion = array_column($resultado_kits, "id_componente");
+foreach($res_kits_produccion as $kit_produccion) $kits_produccion[] = intval($kit_produccion);
+
 // Se cargan los datos buscando por el ID
 $perifericos->cargaDatosPerifericoId($_GET["id"]);
 $id_componente = $perifericos->id_componente;
@@ -273,7 +286,7 @@ $ref_perifericos->setValores($_GET["id"]);
 $ref_perifericos->realizarConsulta();
 $resultadosBusqueda = $ref_perifericos->referencias_componentes;
 $componente = "periferico";
-echo '<script type="text/javascript" src="../js/basicos/mod_periferico_08032017_1050.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/mod_periferico_27032017_1313.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.js"></script>';
 echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 ?>
@@ -358,15 +371,47 @@ echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 				}
 			?>
         </div>
+		<br/>
+		<div class="ContenedorCamposCreacionBasico">
+			<div class="LabelCreacionBasico">Kits</div>
+			<div class="CapaBuscadorDinamicoComponentes">
+				<div id="CapaBotonKits">
+					<input type="button" id="BotonTodosKits" name="BotonTodosKits" class="BotonTodosComponentes" value="Mostrar todos los kits" onclick="MostrarTodosKits()"/>
+				</div>
+				<label class="LabelBuscadorComponente">Buscar</label>
+				<input type="text"
+					   id="BuscadorKitModPeriferico"
+					   name="BuscadorKitModPeriferico"
+					   class="BuscadorComponente"
+					   onkeyup="BuscadorDinamicoComponentes('produccion','BuscadorKitModPeriferico','kits_no_asignados[]');"
+					   placeholder="Buscar kit..." />
+			</div>
+		</div>
+
         <div class="ContenedorCamposCreacionBasico">
-        	<div class="LabelCreacionBasico">Kits</div>
+        	<div class="LabelCreacionBasico"></div>
             <div class="contenedorComponentes">
             	<table style="width:700px; height:208px; border:1px solid #fff; margin:5px 10px 0px 12px;">
                 <tr>
                    	<td id= "listas_kits_no_asignados" style="width:250px; border:1px solid #fff;">
             			<select multiple="multiple" id="kits_no_asignados[]" name="kits_no_asignados[]" class="SelectMultipleKitOrigen" >
-            			<?php
-							$listado_kits->prepararConsulta();
+						<?php
+							for($i=0;$i<count($todos_kits);$i++) {
+								$id_kit = $todos_kits[$i];
+								$Kit->cargaDatosKitId($id_kit);
+								if(in_array($id_kit,$kits_produccion)) {
+									$id_option = "pre-kit-".$id_kit."-option";
+									$display = "display: block;";
+								}
+								else {
+									$id_option = "";
+									$display = "display: none;";
+								}
+								echo '<option id="'.$id_option.'" style="'.$display.'" value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
+							}
+						?>
+						<?php
+							/*$listado_kits->prepararConsulta();
 							$listado_kits->realizarConsulta();
 							$resultado_kits = $listado_kits->kits;
 
@@ -374,7 +419,7 @@ echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 								$datoKit = $resultado_kits[$i];
 								$Kit->cargaDatosKitId($datoKit["id_componente"]);
 								echo '<option value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
-							}
+							}*/
 						?>
             			</select>
                     </td>
@@ -401,13 +446,13 @@ echo '<script type="text/javascript" src="../js/funciones.js"></script>';
                     </td>
                     <td id="lista" style="width:250px; border:1px solid #fff;">
 	                	<select multiple="multiple" id="kit[]" name="kit[]" class="SelectMultipleKitDestino">
-                        	<?php
-								$Kit->dameIdsKits($id_componente);
-								for($j=0;$j<count($Kit->ids_kits);$j++){
-									$Kit->cargaDatosKitId($Kit->ids_kits[$j]["id_kit"]);
-									echo '<option value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
-								}
-							?>
+                        <?php
+							$Kit->dameIdsKits($id_componente);
+							for($j=0;$j<count($Kit->ids_kits);$j++){
+								$Kit->cargaDatosKitId($Kit->ids_kits[$j]["id_kit"]);
+								echo '<option value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
+							}
+						?>
                         </select>
                     </td>
                     <td style="border:1px solid #fff; vertical-align:middle">

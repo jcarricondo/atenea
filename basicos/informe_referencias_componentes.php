@@ -61,33 +61,31 @@ $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
 for($i=0;$i<count($res_componentes);$i++){
     $id_componente = $res_componentes[$i]["id_componente"];
     $id_tipo_componente = $res_componentes[$i]["id_tipo_componente"];
-
-    $array_componentes_final[] = $id_componente;
+    $array_componentes_final[] = array("id_componente" => $id_componente, "plantilla_principal" => true);
 
     // Comprobamos si ese componente tiene kits asociados
     $kits_comp = $comp->dameKitsComponente($id_componente);
     for($j=0;$j<count($kits_comp);$j++){
         $id_kit = $kits_comp[$j]["id_kit"];
-        $array_componentes_final[] = $id_kit;
+        $array_componentes_final[] = array("id_componente" => $id_kit, "plantilla_principal" => false);
     }
 }
 
 for($i=0;$i<count($array_componentes_final);$i++) {
-    $id_componente = $array_componentes_final[$i];
+    $id_componente = $array_componentes_final[$i]["id_componente"];
+    $estaPlantillaPrincipal = $array_componentes_final[$i]["plantilla_principal"];
+
     $comp->cargaDatosComponenteId($id_componente);
     $id_tipo = $comp->id_tipo;
     $nombre_componente = $comp->nombre.'_v'.$comp->version;
 
-    $esComponentePrincipal = $comp->esComponentePrincipal($id_tipo);
-    if($esComponentePrincipal) {
+    if($estaPlantillaPrincipal) {
         $nombre_componente_principal = $nombre_componente;
         $nombre_subcomponente = '';
     }
-    else {
-        $nombre_subcomponente = $nombre_componente;
-    }
+    else $nombre_subcomponente = $nombre_componente;
 
-     // Obtenemos las referencias del componente
+    // Obtenemos las referencias del componente
     $referencias_componente = $comp->dameRefsYPiezasComponente($id_componente);
     for($j=0;$j<count($referencias_componente);$j++){
         $referencias_componente[$j]["id_referencia"] = intval($referencias_componente[$j]["id_referencia"]);

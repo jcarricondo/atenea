@@ -13,9 +13,11 @@ $nombre_plantilla = strtoupper($plant->nombre);
 $version_plantilla = $plant->version;
 $nombre_final_plantilla = $funciones->quitarCaracteresNoPermitidosCarpeta($nombre_plantilla."_v".$version_plantilla);
 $res_perifericos = $plant->damePerifericosPlantillaProductoSinRepeticiones($id);
+$res_kits_libres = $plant->dameKitsPlantillaProductoSinRepeticiones($id);
 
 $dir_documentacion_plantilla = $dir_documentacion.$barra_directorio.$nombre_final_plantilla;
 $dir_perifericos = $dir_documentacion_plantilla.$barra_directorio."PERIFERICOS";
+$dir_kits_libres = $dir_documentacion_plantilla.$barra_directorio."KITS LIBRES";
 
 // Creamos el directorio de la plantilla donde irá toda su documentación
 if(!file_exists($dir_documentacion_plantilla)) mkdir($dir_documentacion_plantilla, 0700);
@@ -81,6 +83,53 @@ if(!empty($res_perifericos)) {
                         // Añadimos la documentación de las referencias del periférico
                         if(!file_exists($dir_periferico_referencias)) mkdir($dir_periferico_referencias, 0700);
                         $dir_actual = $dir_periferico_referencias;
+                        include("../basicos/preparar_documentacion_referencias.php");
+                        include("../basicos/preparar_documentacion_referencias_heredadas.php");
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Ahora añadimos la documentación de los kits libres y la de sus referencias
+if(!empty($res_kits_libres)){
+    for($i=0;$i<count($res_kits_libres);$i++){
+        $id_kit = $res_kits_libres[$i]["id_componente"];
+        // Comprobamos si el kit libre tiene documentación
+        $kit_libre_con_documentacion = $comp->tieneDocumentacionAdjunta($id_kit);
+
+        // Comprobamos si el kit libre tiene referencias con documentación
+        $res_id_refs_kit_libre = $comp->dameIdsReferenciaComponentePorProveedor($id_kit,$id_proveedor);
+        $todas_refs_kit_libre = $ref_heredada->dameTodasReferenciasIncluidasHeredadas($res_id_refs_kit_libre);
+        $kit_libre_con_referencias = $ref->tieneDocumentacionAdjuntaReferencias($todas_refs_kit_libre);
+        $kit_libre_no_vacio = $kit_libre_con_documentacion || $kit_libre_con_referencias;
+
+        if($kit_libre_no_vacio){
+            if(!file_exists($dir_kits_libres)) mkdir($dir_kits_libres, 0700);
+            $kit->cargaDatosKitId($id_kit);
+            $nombre_kit_libre = $id_kit."_".$kit->kit;
+            $version_kit_libre = $kit->version;
+            $nombre_final_kit_libre = $funciones->quitarCaracteresNoPermitidosCarpeta($nombre_kit_libre."_v".$version_kit_libre);
+            $dir_kit_libre_actual = $dir_kits_libres.$barra_directorio.$nombre_final_kit_libre;
+
+            if(!file_exists($dir_kit_libre_actual)) mkdir($dir_kit_libre_actual, 0700);
+            if($kit_libre_con_documentacion){
+                $dir_documentos_componente = $dir_kit_libre_actual.$barra_directorio."DOCUMENTOS";
+                $res_documentacion_mecanica = $comp->dameArchivosComponente($id_kit);
+                include("../basicos/preparar_documentacion_mecanica.php");
+            }
+            if($kit_libre_con_referencias){
+                // Añadimos la documentación de las referencias del kit libre
+                $dir_kit_libre_referencias = $dir_kit_libre_actual.$barra_directorio."REFERENCIAS";
+                $res_id_refs_kit_libre = $comp->dameIdsReferenciaComponentePorProveedor($id_kit,$id_proveedor);
+                $kit_libre_con_referencias = $ref->tieneDocumentacionAdjuntaReferencias($res_id_refs_kit_libre);
+                if($kit_libre_con_referencias){
+                    for($j=0;$j<count($res_id_refs_kit_libre);$j++) {
+                        $id_referencia = $res_id_refs_kit_libre[$j]["id_referencia"];
+                        // Añadimos la documentación de las referencias del kit libre
+                        if(!file_exists($dir_kit_libre_referencias)) mkdir($dir_kit_libre_referencias, 0700);
+                        $dir_actual = $dir_kit_libre_referencias;
                         include("../basicos/preparar_documentacion_referencias.php");
                         include("../basicos/preparar_documentacion_referencias_heredadas.php");
                     }

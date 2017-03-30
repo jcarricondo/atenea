@@ -239,104 +239,106 @@ function Abrir_ventana(pagina) {
 	
 		for(i=0;i<fl.options.length;i++){
 			if(fl.options[i].selected){
-				// Añadimos la opcion a la lista 1
-				var option = document.createElement("option");
-				option.value = fl[i].value;
-				option.text = fl[i].text;
-				fl.add(option,i);
-				sl.add(fl.options[i],null);
-                // Deseleccionar campo origen
-                fl.options[i].selected = false;
-                var id_componente = option.value;
+				if(fl.options[i].style.display === "block"){
+					// Añadimos la opcion a la lista 1
+					var option = document.createElement("option");
+					option.value = fl[i].value;
+					option.text = fl[i].text;
+					fl.add(option,i);
+					sl.add(fl.options[i],null);
+					// Deseleccionar campo origen
+					fl.options[i].selected = false;
+					var id_componente = option.value;
 
-                // Realizamos la petición al servidor para obtener los datos y referencias del componente
-                var respuesta = (function () {
-                    var respuesta = null;
-                    $.ajax({
-                        dataType: "json",
-                        url: "../ajax/basicos/nuevo_periferico.php?func=loadComp",
-                        data: "id=" + id_componente,
-                        type: "GET",
-                        async: false,
-                        success: function (data) {
-                            respuesta = data;
-                        }
-                    });
-                    return respuesta;
-                })();
+					// Realizamos la petición al servidor para obtener los datos y referencias del componente
+					var respuesta = (function () {
+						var respuesta = null;
+						$.ajax({
+							dataType: "json",
+							url: "../ajax/basicos/nuevo_periferico.php?func=loadComp",
+							data: "id=" + id_componente,
+							type: "GET",
+							async: false,
+							success: function (data) {
+								respuesta = data;
+							}
+						});
+						return respuesta;
+					})();
 
-                // Obtenemos la capa contenedora para añadir los kits
-                var capa_contenedora = document.getElementById('capa_kits');
-                var id_capa_kit = 'kit-' + contador_kits;
-                var coste_input_kit = 'coste_kit-' + contador_kits;
-                var kit_repetido = document.getElementById(id_capa_kit) != null ;
-                var salida = '';
+					// Obtenemos la capa contenedora para añadir los kits
+					var capa_contenedora = document.getElementById('capa_kits');
+					var id_capa_kit = 'kit-' + contador_kits;
+					var coste_input_kit = 'coste_kit-' + contador_kits;
+					var kit_repetido = document.getElementById(id_capa_kit) != null ;
+					var salida = '';
 
-                // Si ya se insertó ese kit le asignamos otro id
-                while(kit_repetido){
-                    contador_kits++;
-                    id_capa_kit = 'kit-' + contador_kits;
-                    kit_repetido = document.getElementById(id_capa_kit) != null ;
-                }
+					// Si ya se insertó ese kit le asignamos otro id
+					while(kit_repetido){
+						contador_kits++;
+						id_capa_kit = 'kit-' + contador_kits;
+						kit_repetido = document.getElementById(id_capa_kit) != null ;
+					}
 
-                // Preparamos el HTML con las referencias
-                salida = '<div id="' + id_capa_kit + '" class="ContenedorCamposCreacionBasico" style="display: block;">';
-                salida += '<div class="LabelCreacionBasico">Referencias Kit</div>';
-                salida += '<div class="tituloComponente">' + respuesta.nombre + '</div>';
-                salida += '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitabla-' + id_capa_kit + '">';
-                salida += '<tr><th style="text-align:center;">ID REF</th><th>NOMBRE</th><th>PROVEEDOR</th><th>REF. PROVEEDOR</th><th>NOMBRE PIEZA</th><th style="text-align:center;">PIEZAS</th><th style="text-align:center;">PACK PRECIO</th><th style="text-align:center;">UDS/P</th><th style="text-align:center;">PRECIO UNIDAD</th><th style="text-align:center;">PRECIO</th></tr>';
+					// Preparamos el HTML con las referencias
+					salida = '<div id="' + id_capa_kit + '" class="ContenedorCamposCreacionBasico" style="display: block;">';
+					salida += '<div class="LabelCreacionBasico">Referencias Kit</div>';
+					salida += '<div class="tituloComponente">' + respuesta.nombre + '</div>';
+					salida += '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitabla-' + id_capa_kit + '">';
+					salida += '<tr><th style="text-align:center;">ID REF</th><th>NOMBRE</th><th>PROVEEDOR</th><th>REF. PROVEEDOR</th><th>NOMBRE PIEZA</th><th style="text-align:center;">PIEZAS</th><th style="text-align:center;">PACK PRECIO</th><th style="text-align:center;">UDS/P</th><th style="text-align:center;">PRECIO UNIDAD</th><th style="text-align:center;">PRECIO</th></tr>';
 
-                var precio_kit = 0;
-                // Cargamos cada fila de la tabla correspondiente a una referencia
-                for(var j in respuesta.referencias){
-                    salida += '<tr>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].id_referencia + '</td>';
-                    salida += '<td>' + respuesta.referencias[j].nombre + '</td>';
-                    salida += '<td>' + respuesta.referencias[j].nombre_proveedor + '</td>';
-                    salida += '<td>' + respuesta.referencias[j].ref_proveedor + '</td>';
-                    salida += '<td>' + respuesta.referencias[j].nombre_pieza +'</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].piezas + '</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].pack_precio + '</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].uds_paquete + '</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].precio_unidad + '</td>';
-                    salida += '<td style="text-align:center;">' + respuesta.referencias[j].precio + '</td>';
-                    salida += '</tr>';
-                    precio_kit = precio_kit + parseFloat(respuesta.referencias[j].precio);
-                }
-                precio_kit = precio_kit * 100;
-                precio_kit = Math.round(precio_kit) / 100;
-                var precio_kit_string = precio_kit.toFixed(2);
-                precio_kit_string = precio_kit_string.replace('.',',');
+					var precio_kit = 0;
+					// Cargamos cada fila de la tabla correspondiente a una referencia
+					for(var j in respuesta.referencias){
+						salida += '<tr>';
+						salida += '<td style="text-align:center;">' + respuesta.referencias[j].id_referencia + '</td>';
+						salida += '<td>' + respuesta.referencias[j].nombre + '</td>';
+						salida += '<td>' + respuesta.referencias[j].nombre_proveedor + '</td>';
+						salida += '<td>' + respuesta.referencias[j].ref_proveedor + '</td>';
+						salida += '<td>' + respuesta.referencias[j].nombre_pieza +'</td>';
+						salida += '<td style="text-align:center;">' + respuesta.referencias[j].piezas + '</td>';
+						salida += '<td style="text-align:center;">' + respuesta.referencias[j].pack_precio + '</td>';
+						salida += '<td style="text-align:center;">' + respuesta.referencias[j].uds_paquete + '</td>';
+						salida += '<td style="text-align:center;">' + respuesta.referencias[j].precio_unidad + '</td>';
+						salida += '<td style="text-align:center;">' + respuesta.referencias[j].precio + '</td>';
+						salida += '</tr>';
+						precio_kit = precio_kit + parseFloat(respuesta.referencias[j].precio);
+					}
+					precio_kit = precio_kit * 100;
+					precio_kit = Math.round(precio_kit) / 100;
+					var precio_kit_string = precio_kit.toFixed(2);
+					precio_kit_string = precio_kit_string.replace('.',',');
 
-                salida += '</table></div></div>';
-                salida += '<div class="LabelCreacionBasico" style="margin-top:5px;">Coste Kit</div>';
-                salida += '<div class="tituloComponente">';
-                salida += '<table id="tablaTituloPrototipo">';
-                salida += '<tr>';
-                salida += '<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">';
+					salida += '</table></div></div>';
+					salida += '<div class="LabelCreacionBasico" style="margin-top:5px;">Coste Kit</div>';
+					salida += '<div class="tituloComponente">';
+					salida += '<table id="tablaTituloPrototipo">';
+					salida += '<tr>';
+					salida += '<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">';
 
-                salida += '<span id="coste-' + id_capa_kit + '" class="tituloComp">' + precio_kit_string + '€</span>';
-                salida += '</td></tr></table>';
-                salida += '<input type="hidden" id="' + coste_input_kit + '" value="' + precio_kit + '" />';
-                salida += '</div><br/></div>';
+					salida += '<span id="coste-' + id_capa_kit + '" class="tituloComp">' + precio_kit_string + '€</span>';
+					salida += '</td></tr></table>';
+					salida += '<input type="hidden" id="' + coste_input_kit + '" value="' + precio_kit + '" />';
+					salida += '</div><br/></div>';
 
-				// Actualizamos el coste total de kits
-				/* var costeKits = parseFloat(document.getElementById('costeKits').value);
-				costeKits = costeKits + precio_kit;
-				document.getElementById('costeKits').setAttribute('value',costeKits);*/
+					// Actualizamos el coste total de kits
+					/* var costeKits = parseFloat(document.getElementById('costeKits').value);
+					 costeKits = costeKits + precio_kit;
+					 document.getElementById('costeKits').setAttribute('value',costeKits);*/
 
-				// Mostramos la salida por pantalla
-                capa_contenedora.innerHTML = capa_contenedora.innerHTML + salida;
+					// Mostramos la salida por pantalla
+					capa_contenedora.innerHTML = capa_contenedora.innerHTML + salida;
 
-				// Una vez se ha añadido el kit calculamos el coste con sus referencias heredadas
-				var mitabla = document.getElementById("mitabla-" + id_capa_kit);
-				var span_coste_kit = "coste-" + id_capa_kit;
-				precio_kit = damePrecioKitConHeredadas(mitabla);
-				actualizarPrecioKit(span_coste_kit,coste_input_kit,precio_kit);
+					// Una vez se ha añadido el kit calculamos el coste con sus referencias heredadas
+					var mitabla = document.getElementById("mitabla-" + id_capa_kit);
+					var span_coste_kit = "coste-" + id_capa_kit;
+					precio_kit = damePrecioKitConHeredadas(mitabla);
+					actualizarPrecioKit(span_coste_kit,coste_input_kit,precio_kit);
 
-                contador_kits++;
-                // Actualizamos el precio total del periferico
-                sumaPrecioComponentePeriferico(precio_kit);
+					contador_kits++;
+					// Actualizamos el precio total del periferico
+					sumaPrecioComponentePeriferico(precio_kit);
+				}
 			}
 		}
 		return true;
@@ -491,3 +493,58 @@ function Abrir_ventana(pagina) {
         input_coste_total.setAttribute('value', coste_total);
         capa_coste_total.innerHTML = '<span class="fuenteSimumakNegrita">' + coste_total_string + '€</span>';
     }
+
+	// Función que muestra todos los kits creados
+	function MostrarTodosKits(){
+		// Obtenemos el botón de todos los kits y lo eliminamos
+		var capaBotones = document.getElementById("CapaBotonKits");
+		var botonTodosKits = document.getElementById("BotonTodosKits");
+		botonTodosKits.parentNode.removeChild(botonTodosKits);
+		// Creamos el nuevo botón de kits de producción
+		var boton_kits = document.createElement("input");
+		boton_kits.type = "button";
+		boton_kits.id = "BotonKitProduccion";
+		boton_kits.name = "BotonKitProduccion";
+		boton_kits.className = "BotonTodosComponentes";
+		boton_kits.value = "Mostrar kits en producción";
+		boton_kits.setAttribute('onclick', 'MostrarKitProduccion()');
+		capaBotones.appendChild(boton_kits);
+		// Obtenemos el buscador para que busque en todos los kits
+		var input_buscador = document.getElementById("BuscadorKitNewPeriferico");
+		input_buscador.setAttribute("onkeyup","BuscadorDinamicoComponentes('todos','BuscadorKitNewPeriferico','kits_no_asignados[]')");
+
+		var selectKits = document.getElementById("kits_no_asignados[]");
+		for(i=0;i<selectKits.length;i++) {
+			var option = selectKits.options[i];
+			option.style.display = "block";
+			if(option.id == "") option.selected = false;
+		}
+		BuscadorDinamicoComponentes('todos','BuscadorKitNewPeriferico','kits_no_asignados[]');
+	}
+
+	// Función que muestra sólo los kits en estado PRODUCCION
+	function MostrarKitProduccion(){
+		// Obtenemos el botón de kits de producción y lo eliminamos
+		var capaBotones = document.getElementById("CapaBotonKits");
+		var botonKitProduccion = document.getElementById("BotonKitProduccion");
+		botonKitProduccion.parentNode.removeChild(botonKitProduccion);
+		// Creamos el nuevo botón de todos los kits
+		var boton_kits = document.createElement("input");
+		boton_kits.type = "button";
+		boton_kits.id = "BotonTodosKits";
+		boton_kits.name = "BotonTodosKits";
+		boton_kits.className = "BotonTodosComponentes";
+		boton_kits.value = "Mostrar todos los kits";
+		boton_kits.setAttribute('onclick', 'MostrarTodosKits()');
+		capaBotones.appendChild(boton_kits);
+		// Obtenemos el buscador para que busque sólo los kits de producción
+		var input_buscador = document.getElementById("BuscadorKitNewPeriferico");
+		input_buscador.setAttribute("onkeyup","BuscadorDinamicoComponentes('produccion','BuscadorKitNewPeriferico','kits_no_asignados[]')");
+
+		selectKits = document.getElementById("kits_no_asignados[]");
+		for (i = 0; i < selectKits.length; i++) {
+			var option = selectKits.options[i];
+			if (option.id == "") option.style.display = "none";
+		}
+		BuscadorDinamicoComponentes('produccion','BuscadorKitNewPeriferico','kits_no_asignados[]');
+	}
