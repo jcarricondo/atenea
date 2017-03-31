@@ -9,9 +9,6 @@ include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/listado_fabricantes.class.php");
 include("../classes/basicos/listado_proveedores.class.php");
 include("../classes/log/basicos/log_basicos_referencias.class.php");
-
-include("../classes/kint/Kint.class.php");
-
 permiso(2);
 
 $db = new MySQL();
