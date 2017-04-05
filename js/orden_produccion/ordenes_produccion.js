@@ -19,7 +19,7 @@ function validarModificacion(id_produccion,id_producto) {
 		window.location="OrdenesProduccion.php?realizarBusqueda=1";
 	}
 	else window.location='mod_OrdenProduccion.php?id_produccion=' + id_produccion + '&id_producto=' + id_producto;*/
-	window.location='mod_orden_produccion.php?id_produccion=' + id_produccion + '&id_producto=' + id_producto;
+	window.location='mod_op.php?id_produccion=' + id_produccion + '&id_producto=' + id_producto;
 }
 
 // Funcion para abrir un popup pequeño
@@ -35,14 +35,14 @@ function validarEliminacion(id_produccion) {
 		
 	if ((error_hay_facturas == 1) || (error_estado == 1)) {
 		if (confirm ("Esta Orden de Produccion tiene asociada facturas o alguna de sus ordenes de compra estan en estado PEDIDA/RECIBIDA. ¿Desea eliminar la Orden de Produccion y las Ordenes de Compra asociadas?")) {
-			window.location='elim_orden_produccion.php?id=' + id_produccion;
+			window.location='elim_op.php?id=' + id_produccion;
 		}
 		else {
 			window.location="ordenes_produccion.php?realizarBusqueda=1";
 		}
 	}
 	else if (confirm ("¿Desea eliminar la Orden de Produccion?")) {
-			window.location='elim_orden_produccion.php?id=' + id_produccion;
+			window.location='elim_op.php?id=' + id_produccion;
 	}
 	else { 
 	 	window.location="ordenes_produccion.php?realizarBusqueda=1";

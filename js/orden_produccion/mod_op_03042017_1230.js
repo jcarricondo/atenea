@@ -1,15 +1,15 @@
 // JavaScript Document
-// Fichero que contiene las funciones JavaScript utilizadas en el proceso de creación de una Orden de Producción
+// Fichero que contiene las funciones JavaScript utilizadas en el proceso de modificación de una Orden de Producción
 
 // PERIFERICOS
 
-// Funcion que muestra todos los periféricos creados
+// Función que muestra todos los periféricos creados
 function MostrarTodosPerifericos(){
 	// Obtenemos el botón de todos los periféricos y lo eliminamos
 	var capaBotones = document.getElementById("CapaBotonPerifericos");
 	var botonTodosPerifericos = document.getElementById("BotonTodosPerifericos");
 	botonTodosPerifericos.parentNode.removeChild(botonTodosPerifericos);
-	// Creamos el nuevo boton de perifericos de produccion
+	// Creamos el nuevo boton de perifericos de producción
 	var boton_perifericos = document.createElement("input");
 	boton_perifericos.type = "button";
 	boton_perifericos.id = "BotonPerProduccion";
@@ -20,8 +20,8 @@ function MostrarTodosPerifericos(){
 	capaBotones.appendChild(boton_perifericos);
 
 	// Obtenemos el buscador para que busque en todos los periféricos
-	var input_buscador = document.getElementById("BuscadorPerNewOP");
-	input_buscador.setAttribute("onkeyup","BuscadorDinamicoComponentes('todos','BuscadorPerNewOP','perifericos_no_asignados[]')");
+	var input_buscador = document.getElementById("BuscadorPerModOP");
+	input_buscador.setAttribute("onkeyup","BuscadorDinamicoComponentes('todos','BuscadorPerModOP','perifericos_no_asignados[]')");
 
 	var selectPerifericos = document.getElementById("perifericos_no_asignados[]");
 	for(i=0;i<selectPerifericos.length;i++) {
@@ -29,10 +29,10 @@ function MostrarTodosPerifericos(){
 		option.style.display = "block";
 		if(option.id == "") option.selected = false;
 	}
-	BuscadorDinamicoComponentes('todos','BuscadorPerNewOP','perifericos_no_asignados[]');
+	BuscadorDinamicoComponentes('todos','BuscadorPerModOP','perifericos_no_asignados[]');
 }
 
-// Funcion que muestra sólo los periféricos en estado PRODUCCION
+// Función que muestra sólo los periféricos en estado PRODUCCION
 function MostrarPerProduccion(){
 	// Obtenemos el botón de periféricos de producción y lo eliminamos
 	var capaBotones = document.getElementById("CapaBotonPerifericos");
@@ -49,22 +49,22 @@ function MostrarPerProduccion(){
 	capaBotones.appendChild(boton_perifericos);
 
 	// Obtenemos el buscador para que busque sólo los periféricos de producción
-	var input_buscador = document.getElementById("BuscadorPerNewOP");
-	input_buscador.setAttribute("onkeyup","BuscadorDinamicoComponentes('produccion','BuscadorPerNewOP','perifericos_no_asignados[]')");
+	var input_buscador = document.getElementById("BuscadorPerModOP");
+	input_buscador.setAttribute("onkeyup","BuscadorDinamicoComponentes('produccion','BuscadorPerModOP','perifericos_no_asignados[]')");
 
 	selectPerifericos = document.getElementById("perifericos_no_asignados[]");
 	for (i = 0; i < selectPerifericos.length; i++) {
 		var option = selectPerifericos.options[i];
 		if (option.id == "") option.style.display = "none";
 	}
-	BuscadorDinamicoComponentes('produccion','BuscadorPerNewOP','perifericos_no_asignados[]');
+	BuscadorDinamicoComponentes('produccion','BuscadorPerModOP','perifericos_no_asignados[]');
 }
 
 // Añadir elemento a la segunda lista
 function AddToSecondList(){
 	var fl = document.getElementById('perifericos_no_asignados[]');
 	var sl = document.getElementById('perifericos[]');
-	
+
 	for (i = 0; i < fl.options.length; i++){
 		if(fl.options[i].selected){
 			if(fl.options[i].style.display === "block"){
@@ -116,18 +116,18 @@ var row = table.insertRow(0);
 var cell = row.insertCell(0);
 div.appendChild(table);
 
-// Función para añadir filas a la tabla de Referencias Libres
-function addRow(tableId,id_referencia){
-	var table = document.getElementById(tableId);
-	//Guardamos en una variable la cantidad de filas que tiene la tabla.
-	//esta variable tambien nos servira para indicar que la fila se tiene
-	//que insertar al final de la tabla.Es una ventaja que las posiciones
+// Funcion para añadir referencias libres a la tabla		
+function addRow(tableId,id_referencia) 	{ 
+	var table = document.getElementById(tableId); 
+	//Guardamos en una variable la cantidad de filas que tiene la tabla. 
+	//esta variable tambien nos servira para indicar que la fila se tiene 
+	//que insertar al final de la tabla.Es una ventaja que las posiciones 
 	//empiecen en cero.
-	var pos = table.rows.length;
+	var pos = table.rows.length; 
 	var row = table.insertRow(pos);
-	var fila = pos - 1;
-
-	var cell_0 = row.insertCell(0);
+	var fila = pos - 1; 
+						
+	var cell_0 = row.insertCell(0); 
 	var cell_1 = row.insertCell(1);
 	var cell_2 = row.insertCell(2);
 	var cell_3 = row.insertCell(3);
@@ -141,7 +141,7 @@ function addRow(tableId,id_referencia){
 	var cell_11 = row.insertCell(11);
 	var piezas = new Array();
 	var num_piezas = num_uds;
-
+	
 	cell_0.setAttribute("style","text-align:center");
 	cell_5.setAttribute("style","text-align:center");
 	cell_6.setAttribute("style","text-align:center");
@@ -150,26 +150,26 @@ function addRow(tableId,id_referencia){
 	cell_9.setAttribute("style","text-align:center");
 	cell_10.setAttribute("style","text-align:center");
 	cell_11.setAttribute("style","text-align:center");
-
+	
 	cell_0.innerHTML = id_ref;
 	cell_1.innerHTML = ref;
 	cell_2.innerHTML = prov;
 	cell_3.innerHTML = ref_prov;
 	cell_4.innerHTML = nom_pieza;
-	cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarPiezasCorrectas(' + fila + ')"/>';
+	cell_5.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_uds + '" onblur="javascript:validarPiezasCorrectas(' + fila + ')"/>';
 	cell_6.innerHTML = pack_precio;
 	cell_7.innerHTML = cant;
 	cell_8.innerHTML = total_paquetes.toFixed(2);
 	cell_9.innerHTML = precio_unidad.toFixed(2);
 	cell_10.innerHTML = precio_referencia.toFixed(2);
 	cell_11.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '/>';
-
-	// Calculamos el coste de todas las referencias que haya en la tabla y actualizamos el coste total
+	
+	// Calculamos el coste de todas las referencias que haya en la tabla
 	costeTotal = calculaCoste(table);
 	actualizarCoste(costeTotal);
 }
-
-// Función para eliminar filas de la tabla de Referencias Libres
+	
+// Funcion para eliminar referencias libres a la tabla	
 function removeRow(tableID) {
 	try {
 		table = document.getElementById('mitablaRefsLibres');
@@ -187,7 +187,6 @@ function removeRow(tableID) {
 				}
 			}
 		}
-		// Calculamos el coste de todas las referencias que haya en la tabla y actualizamos el coste total
 		costeTotal = calculaCoste(table);
 		actualizarCoste(costeTotal);
 	}
@@ -195,22 +194,22 @@ function removeRow(tableID) {
 		alert(e);
 	}
 }
-
-// Función para actualizar las filas después de la eliminación de una fila
-// para que se puedan validar las filas después de la modificación
+	
+// Funcion para actualizar las filas despues de la eliminacion de una fila
+// para que se puedan validar las filas despues de la modificacion
 function actualizarFila(table,i,rowCount){
 	for (var j=i; j<rowCount-1; j++){
 		var num_piezas = table.rows[j+1].cells[5].childNodes[0].value;
-		table.rows[j+1].deleteCell(5);
-
+		table.rows[j+1].deleteCell(5);	
+		
 		var td_precio = table.rows[j+1].insertCell(5);
 		td_precio.setAttribute("style","text-align:center");
 		td_precio.innerHTML = '<input type="text" id="piezas[]" name="piezas[]" class="CampoPiezasInput" value="' + num_piezas + '" onblur="javascript:validarPiezasCorrectas(' + j + ')"/>';
 	}
 }
 
-// Función para comprobar que el valor introducido en "piezas" es un entero o decimal con punto.
-// Se utiliza en la función validarFormulario y se le pasa la posición de la letra de la palabra
+// Funcion para comprobar que el valor introducido en "piezas" es un entero o decimal con punto.
+// Se utiliza en la funcion validarFormulario y se le pasa la posicion de la letra de la palabra
 // y la palabra a validar
 function validarHayCaracter(i,a) {
 	var j = 0;
@@ -232,7 +231,7 @@ function validarHayCaracter(i,a) {
 	return error;
 }
 
-// Función que calcula el nuevo coste cuando se modifica el campo piezas de una referencia
+// Funcion que calcula el nuevo coste cuando se modifica el campo piezas de una referencia
 // y cambia el precio de la referencia modificada
 function modificaPrecioReferencia(piezas,fila){
 	try {
@@ -286,7 +285,7 @@ function modificaPrecioReferencia(piezas,fila){
 	}
 }
 
-// Función que calcula el coste total de las referencias de la tabla
+// Funcion que calcula el coste total de las referencias de la tabla
 function calculaCoste(tableId){
 	try {
 		table = document.getElementById('mitablaRefsLibres');
@@ -308,7 +307,7 @@ function calculaCoste(tableId){
 	}
 }
 
-// Función que actualiza el coste total de la tabla
+// Funcion que actualiza el coste total de la tabla
 function actualizarCoste(costeTotal){
 	try{
 		costeTotal = parseFloat(costeTotal);
@@ -323,7 +322,7 @@ function actualizarCoste(costeTotal){
 	}
 }
 
-// Función para validar que el campo piezas sea un number
+// Funcion para validar que el campo piezas sea un number
 // Si es correcto se modifica el campo precio de la referencia
 function validarPiezasCorrectas(fila) {
 	var table = document.getElementById('mitablaRefsLibres');
@@ -367,18 +366,16 @@ function validarFormulario() {
 	var error0 = false;		  // Alias no comprobado
 	var error1 = false;		  // Datos por introducir
 	var error2 = false;		  // Piezas por introducir
-	var error3 = false;	      // Piezas no son integer
+	var error3 = false;		  // Piezas no son integer
 	var error4 = false;		  // Unidades no puede ser 0
-	var error5 = false;       // Nombre de producto no puede ser 0;
 	var error_alias = false;  // Alias duplicado
 
 	var tam_unidades = document.getElementById("unidades").value.length;
 	var unidades = document.getElementById("unidades").value;
-	var producto = document.getElementById("producto").value;
 
 	var a = document.getElementsByName("piezas[]");
 	// Obtenemos el input hidden alias_validado que estan dentro de la capa alias_correcto
-	var alias_validado = document.getElementById("alias_validado").value;
+	var alias_validado = document.getElementById('alias_validado').value;
 
 	// Salta este error cuando el usuario escribe el alias y sin salir del foco envía el formulario.
 	if (alias_validado == -1){
@@ -392,9 +389,6 @@ function validarFormulario() {
 	}
 	else if(unidades == 0){
 		error4 = true;
-	}
-	else if(producto == 0) {
-		error5 = true;
 	}
 	else {
 		var fallo = false;
@@ -436,10 +430,6 @@ function validarFormulario() {
 		alert("El campo no puede ser 0");
 		return false;
 	}
-	else if (error5){
-		alert("Debe elegir un nombre de producto");
-		return false;
-	}
 	else if (error_alias){
 		alert("El alias ya existe en la base de datos");
 		return false;
@@ -450,7 +440,7 @@ function validarFormulario() {
 	}
 }
 
-// Función para cambiar la coma de un número decimal por un punto para su validación
+// Funcion para cambiar la coma de un numero decimal por un punto para su validacion
 function cambiarComaPorPunto(p_precio){
 	tamaño_float = p_precio.length;
 	i=0;
@@ -468,7 +458,7 @@ function cambiarComaPorPunto(p_precio){
 	return p_precio;
 }
 
-// Función que solo permite insertar números en los input
+// Funcion que solo permite insertar numeros en los input
 function soloNumeros (e) {
 	tecla = (document.all) ? e.keyCode : e.which;
 	if (tecla==8) return true; // 3
@@ -477,14 +467,14 @@ function soloNumeros (e) {
 	return patron.test(te);
 }
 
-
 <!-- AJAX -->
 // Comprueba al vuelo si el alias introducido por el usuario esta guardado en la base de datos
 function comprobarAliasCorrecto(){
 	var alias = document.getElementById('alias_op').value;
+	var id_produccion = document.getElementById('id_produccion').value;
 	document.getElementById("alias_correcto").innerHTML = "Comprobando..." + '<input type="hidden" id="alias_validado" name="alias_validado" value="-1"/>';
 	var ajax = objetoAJAX();
-	ajax.open("GET","../funciones/comprobaciones.php?comp=comprobar_alias&alias=" + alias,"true");
+	ajax.open("GET","../funciones/comprobaciones.php?comp=mod_comprueba_alias&alias=" + alias + '&id_produccion=' + id_produccion,"true");
 
 	ajax.onreadystatechange=function() {
 		if (ajax.readyState==4 && ajax.status==200) {
@@ -494,57 +484,19 @@ function comprobarAliasCorrecto(){
 	ajax.send(null);
 }
 
-// Función para cargar las plantillas de un producto
-function cargaPlantillasProducto(id_nombre_producto){
-	var capa_componentes = document.getElementById("CapaContenedorComponentes");
-	var capa_plantilla = document.getElementById("CapaPlantillaProducto");
-
-	if(id_nombre_producto != 0) {
-		// OBTENEMOS LAS PLANTILLAS CON ESE NOMBRE DE PRODUCTO
-		var ajax = objetoAJAX();
-		ajax.open("GET", "../ajax/orden_produccion/orden_produccion.php?comp=carga_plantillas&id_nombre_producto=" + id_nombre_producto, "true");
-		ajax.onreadystatechange = function () {
-			if(ajax.readyState == 4 && ajax.status == 200) {
-				if(ajax.responseText == 0) {
-					// OCULTAMOS EL SELECT DE PLANTILLAS
-					capa_plantilla.setAttribute('style', 'display: none;');
-					capa_componentes.setAttribute('style', 'display: block;');
-				}
-				else {
-					// CARGAMOS LAS PLANTILLAS Y OCULTAMOS LOS COMPONENTES
-					capa_plantilla.setAttribute('style', 'display: block;');
-					capa_componentes.setAttribute('style', 'display: none;');
-				}
-				document.getElementById("CapaPlantillaProducto").innerHTML = ajax.responseText;
-			}
-		}
-		ajax.send(null);
-	}
-	else {
-		// MOSTRAMOS LA CAPA QUE CONTIENE LOS COMPONENTES
-		capa_componentes.setAttribute('style', 'display: block;');
-		capa_plantilla.setAttribute('style', 'display: none;');
-	}
-}
 
 
 /*
- // Función para comprobar que el campo introducido es un número
- function noEsNumero(numero) {
- var cont = 0;
- var error = false;
- var digito = 0;
- while (cont<numero.length && !error){
- digito = parseInt(numero[cont]);
- error = (isNaN(digito));
- cont++;
- }
- return error;
- }
- */
-
-
-
-
-
-
+// Funcion para comprobar que el campo introducido es un numero	
+function noEsNumero(numero) {
+	var cont = 0;
+	var error = false;
+	var digito = 0;
+	while (cont<numero.length && !error){
+		digito = parseInt(numero[cont]);
+		error = (isNaN(digito));
+		cont++;
+	}
+	return error;
+}
+*/
