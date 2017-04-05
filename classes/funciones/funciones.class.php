@@ -33,6 +33,14 @@ class Funciones extends MySQL{
 			return false;	
 		}
 	}
+
+	// Función para truncar los decimales
+	function truncateFloat($number, $digitos){
+		$raiz = 10;
+		$multiplicador = pow ($raiz,$digitos);
+		$resultado = ((int)($number * $multiplicador)) / $multiplicador;
+		return number_format($resultado, $digitos,",",".");
+	}
 	
 	// Funcion para validar fechas
 	function validarFecha ($fecha) {
