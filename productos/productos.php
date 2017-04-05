@@ -300,7 +300,7 @@ echo '<script type="text/javascript" src="../js/productos/productos.js"></script
                         <td style="text-align: center;"><?php echo $fecha_ent_prod; ?></td>
 						<td style="text-align:center;"><?php echo $op->id_produccion; ?></td>
 						<td>
-	                        <a href="../orden_produccion/ver_orden_produccion.php?id=<?php echo $op->id_produccion;?>&nombre=<?php echo $nom_prod->nombre;?>&id_producto=<?php echo $producto->id_producto; ?>">
+	                        <a href="../orden_produccion/ver_op.php?id=<?php echo $op->id_produccion;?>&nombre=<?php echo $nom_prod->nombre;?>&id_producto=<?php echo $producto->id_producto; ?>">
 								<?php echo $op->codigo; ?>
                             </a>
 						</td>

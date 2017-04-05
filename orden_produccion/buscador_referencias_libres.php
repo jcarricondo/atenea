@@ -393,7 +393,8 @@ function soloNumeros (e) {
                             <input type="hidden" name="cantidad-<?php echo $ref->id_referencia;?>" id="cantidad-<?php echo $ref->id_referencia;?>" value="<?php echo $ref->cantidad;?>" />                            
                         </td>
                         <td style="text-align:center">
-                            <form name="BuscadorReferenciaLibre" id="BuscadorReferenciaLibre" action="nueva_orden_produccion.php?nombreref=<?php echo $ref->referencia;?>&id=<?php echo $ref->id_referencia;?>" method="post">                           		<input type="button" onclick="javascript:add_referencia(<?php echo $ref->id_referencia;?>);" value="+" />
+                            <form name="BuscadorReferenciaLibre" id="BuscadorReferenciaLibre" action="new_op.php?nombreref=<?php echo $ref->referencia;?>&id=<?php echo $ref->id_referencia;?>" method="post">
+								<input type="button" onclick="add_referencia(<?php echo $ref->id_referencia;?>);" value="+" />
                                 <input type="hidden" id="guardandoReferenciaLibre" name="guardandoReferenciaLibre" />
                             </form>
                                 
