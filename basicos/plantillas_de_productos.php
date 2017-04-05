@@ -50,7 +50,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 $titulo_pagina = "Básicos > Plantillas de productos";
 $pagina = "plantillas_de_productos";
 include ("../includes/header.php");
-echo '<script type="text/javascript" src="../js/basicos/plantilla_de_productos.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/plantilla_de_productos_27032017_1313.js"></script>';
 ?>
 
 <div class="separador"></div> 

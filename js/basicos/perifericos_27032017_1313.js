@@ -5,3 +5,4 @@
 function descargar_documentacion(id_componente){
    window.location="descargar_documentacion.php?op=PER" + "&id=" + id_componente;
 }
+

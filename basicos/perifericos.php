@@ -89,7 +89,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 $titulo_pagina = "Básicos > Periféricos";
 $pagina = "perifericos";
 include ("../includes/header.php");
-echo '<script type="text/javascript" src="../js/basicos/perifericos.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/perifericos_27032017_1313.js"></script>';
 ?>
 
 <div class="separador"></div>

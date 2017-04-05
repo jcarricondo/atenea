@@ -601,7 +601,7 @@ echo '<script type="text/javascript" src="../js/orden_compra/ordenes_compra.js">
 	           	<td><input type="checkbox" id="chkbox[]" name="chkbox[]" value="<?php echo $orden_compra->id_compra;?>" /></td>
 				<td><a href="mod_orden_compra.php?id_compra=<?php echo $orden_compra->id_compra;?>"><?php echo /*$orden_compra->orden_compra*/ $orden_compra->numero_pedido; ?></a></td>
                 <td>
-					<a href="../orden_produccion/ver_orden_produccion.php?id=<?php echo $o_produccion->id_produccion;?>&nombre=<?php echo $nom_prod->nombre;?>&id_producto=<?php echo $id_producto;?>&id_compra=<?php echo $orden_compra->id_compra;?>">
+					<a href="../orden_produccion/ver_op.php?id=<?php echo $o_produccion->id_produccion;?>&nombre=<?php echo $nom_prod->nombre;?>&id_producto=<?php echo $id_producto;?>&id_compra=<?php echo $orden_compra->id_compra;?>">
 					<?php 
 						// Si tiene alias mostramos el alias. Si no mostramos la OP
 						if (($o_produccion->alias_op != NULL) && ($o_produccion->alias_op != $o_produccion->codigo)){
