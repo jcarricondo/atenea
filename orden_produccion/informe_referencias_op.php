@@ -16,9 +16,6 @@ $referencia = new Referencia();
 // Cargamos las referencias de orden_produccion_referencias
 $resultados = $op->dameOCReferenciasPorProduccion($id);
 
-$op->cargaDatosProduccionId($id);
-$num_simuladores = $op->unidades;
-
 $table = '<table>
 	<tr>
 		<th style="text-align: center;">ID Ref.</th>
@@ -133,5 +130,5 @@ for($i=0;$i<count($resultados);$i++){
 $table_end = '</table>';
 header("Content-type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=informeReferencias.xls");
-echo $table.$salida.$table_end; 
+echo $table.$salida.$table_end;
 ?>

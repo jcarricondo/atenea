@@ -128,37 +128,36 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 
 			$resultado = $orden_produccion->insertaAliasOrdenProduccion($id_produccion,$alias_op);
 			if($resultado == 1) {
-				// Guardamos los componentes que forman un producto en la Orden de Produccion				
+				// Guardamos los componentes que forman un producto en la Orden de Producción
 				$contador_componente = 1;
 				if($ids_perifericos != NULL){
 					for($i=0;$i<count($ids_perifericos);$i++){
-						$ids_componentes[] = $ids_perifericos[$i];
+						$ids_componentes[] = array("id_componente" => $ids_perifericos[$i], "id_tipo" => 2);
 						$orden_produccion->dameIdsKitComponente($ids_perifericos[$i]);
 						for($j=0;$j<count($orden_produccion->ids_kit);$j++){
-							$ids_kit[] = $orden_produccion->ids_kit[$j]["id_kit"];
+							$id_kit = $orden_produccion->ids_kit[$j]["id_kit"];
+							$ids_componentes[] = array("id_componente" => $id_kit, "id_tipo" => 5);
 						}
-						if($ids_kit != NULL) $ids_componentes = array_merge($ids_componentes,$ids_kit);
-					    unset($ids_kit);
 					}
 				}
 
 				if($ids_kits_libres != NULL) {
-					for($i=0;$i<count($ids_kits_libres);$i++) $ids_componentes[] = $ids_kits_libres[$i];
+					for($i=0;$i<count($ids_kits_libres);$i++) $ids_componentes[] = array("id_componente" => $ids_kits_libres[$i], "id_tipo" => 6);
 				}
 
 				$i=0;
 				$error = false;
 				while($i<count($ids_componentes) and !$error){
-					$id_tipo = $orden_produccion->dameTipoComponente($ids_componentes[$i]);
-					switch ($id_tipo["id_tipo"]) {
+					$id_tipo = $ids_componentes[$i]["id_tipo"];
+					switch ($id_tipo) {
 						case '1':
 							// Dejan de existir en Septiembre de 2016
 						break;
 						case '2':
 							// PERIFERICO
-							$periferico->cargaDatosPerifericoId($ids_componentes[$i]);
+							$periferico->cargaDatosPerifericoId($ids_componentes[$i]["id_componente"]);
 							$num_serie_componente = $periferico->referencia."_".$periferico->version."_".$id_produccion."_".$contador_componente;
-							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);		
+							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i]["id_componente"],$num_serie_componente);
 						break;
 						case '3':
 							// Dejan de existir en Septiembre de 2016
@@ -168,10 +167,16 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 						break;
 						case '5':
 							// KIT
-							$kit->cargaDatosKitId($ids_componentes[$i]);
+							$kit->cargaDatosKitId($ids_componentes[$i]["id_componente"]);
 							$num_serie_componente = $kit->referencia."_".$kit->version."_".$id_produccion."_".$contador_componente;
-							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i],$num_serie_componente);				
-						break;	
+							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i]["id_componente"],$num_serie_componente);
+						break;
+						case '6':
+							// KIT LIBRE
+							$kit->cargaDatosKitId($ids_componentes[$i]["id_componente"]);
+							$num_serie_componente = $kit->referencia."_".$kit->version."_".$id_produccion."_".$contador_componente;
+							$resultado = $orden_produccion->guardarComponenteProduccion($id_produccion,$ids_componentes[$i]["id_componente"],$num_serie_componente);
+							break;
 						default:
 							# code...
 						break;
@@ -182,7 +187,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 						// Guardamos las referencias del componente
 						$id_produccion_componente = $orden_produccion->dameUltimoIdProduccionComponente();
 						// Guardamos las referencias de los componentes
-						$ref_comp->dameReferenciasPorIdComponente($ids_componentes[$i]);
+						$ref_comp->dameReferenciasPorIdComponente($ids_componentes[$i]["id_componente"]);
 						$referencias_componente = $ref_comp->referencias_componente;
 						for($j=0;$j<count($referencias_componente);$j++){
 							$id_referencia = $referencias_componente[$j]["id_referencia"];
@@ -196,7 +201,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 							$ref->cargaDatosReferenciaId($id_referencia);
 							$pack_precio = $ref->pack_precio;
 	
-							$resultado = $orden_produccion->guardarReferenciasProduccion($id_produccion,$id_tipo["id_tipo"],$id_produccion_componente,$ids_componentes[$i],$id_referencia,$uds_paquete,$piezas,$total_paquetes,$pack_precio);		
+							$resultado = $orden_produccion->guardarReferenciasProduccion($id_produccion,$id_tipo,$id_produccion_componente,$ids_componentes[$i]["id_componente"],$id_referencia,$uds_paquete,$piezas,$total_paquetes,$pack_precio);
 							if($resultado != 1){
 								$j = count($referencias_componente);
 								$error = true;
@@ -213,10 +218,10 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 					$Piezas = $_POST["Piezas"];
 					$tot_paquetes = $_POST["tot_paquetes"];
 
-					// Tenemos que comprobar si se insertaron referencias libres duplicadas
+					// Tenemos que comprobar si se insertarón referencias libres duplicadas
 					// Si hay referencias
 					if($ref_libres != NULL){
-						// Hay que comprobar si las referencias libres estan duplicadas.
+						// Hay que comprobar si las referencias libres están duplicadas.
 						// Calculamos las repeticiones de las referencias
 						$array_repeticiones_referencias = array_count_values($ref_libres);
 						// Obtenemos los ids de las referencias (claves) sin repetir a partir del array con el numero de repeticiones por referencia

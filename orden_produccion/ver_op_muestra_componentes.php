@@ -1,7 +1,4 @@
 <?php
-
-include("../classes/kint/Kint.class.php");
-
 // Este fichero muestra los componentes de una orden de producción
 $ids_produccion_componente = $orden_produccion->dameIdsProduccionComponente($id_produccion);
 $coste_producto = 0;
@@ -48,6 +45,17 @@ for($i=0;$i<count($ids_produccion_componente);$i++){
                 $coste_total_componente = 0;
             }
         break;
+        case '6':
+            // KIT LIBRE
+            $kit->cargaDatosKitId($id_componente);
+            $nombre_componente = "Kit";
+            $titulo_componente = $kit->kit.'_v'.$kit->version;
+            $es_prototipo = ($kit->prototipo == 1);
+            if($siguiente_es_kit_libre) {
+                $nombre_componente_principal = $nombre_componente." Libre";
+                $coste_total_componente = 0;
+            }
+            break;
         default:
             //
         break;
@@ -162,17 +170,13 @@ for($i=0;$i<count($ids_produccion_componente);$i++){
         </div>
     </div>
 <?php
-    // Calculamos el siguiente id_tipo_componente siguiente para asignar el coste total del componente principal PERIFERICO
+    // Calculamos el siguiente id_tipo_componente para asignar el coste total del componente principal PERIFERICO o KIT LIBRE
     if($i+1 <= count($ids_produccion_componente)){
         $id_tipo_siguiente = $orden_produccion->dameIdTipoPorIdProduccionComponente($ids_produccion_componente[$i+1]["id_produccion_componente"]);
         $id_tipo_siguiente = $id_tipo_siguiente[0]["id_tipo_componente"];
 
-        $id_produccion_componente_siguiente = $ids_produccion_componente[$i+1]["id_produccion_componente"];
-        $id_componente_siguiente = $orden_produccion->dameIdComponentePorIdProduccionComponente($id_produccion_componente_siguiente);
-        $id_componente_siguiente = $id_componente_siguiente[0]["id_componente"];
-
         $siguiente_es_periferico = $id_tipo_siguiente == 2;
-        $siguiente_es_kit_libre = $id_tipo_siguiente == 5 && (array_search($id_componente_siguiente,$res_kits) === false);
+        $siguiente_es_kit_libre = $id_tipo_siguiente == 6;
         $no_hay_mas_componentes = $id_componente_siguiente === NULL;
         $siguiente_es_principal = $siguiente_es_periferico || $siguiente_es_kit_libre || $no_hay_mas_componentes;
 
