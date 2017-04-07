@@ -68,7 +68,7 @@
         </div>
     </div>
     <input type="button" id="mas" name="mas" class="BotonMas"  value="+" onclick="Abrir_ventana('buscador_referencias_libres.php')"/>
-    <input type="button" id="menos" name="menos" class="BotonMenos" value="-" onclick="removeRow(mitabla)"  />
+    <input type="button" id="menos" name="menos" class="BotonMenos" value="-" onclick="removeRow('mitablaRefsLibres')"  />
 </div>
 <br/>
 <div class="ContenedorCamposCreacionBasico">

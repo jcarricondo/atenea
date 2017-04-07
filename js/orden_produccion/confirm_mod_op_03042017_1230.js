@@ -256,28 +256,10 @@ function validarHayCaracter(i,a) {
 // Funcion para validar que el campo PIEZAS de todas las referencias de todos los componentes
 // y las referencias libre sean correctos
 function validarFormulario() {
-	// var piezas_cabina = document.getElementsByName("piezas_cabina[]");
-	// var no_hay_piezas_cabina = false;
 	var no_hay_piezas_periferico = false;
 	var no_es_numero = false;
 	var pieza = 0;
-		
-	/*
-	if (piezas_cabina.length != 0) {
-		var i = 0;
-		while ((i < piezas_cabina.length) && (!no_hay_piezas_cabina) && (!no_es_numero)){
-			// Si piezas esta vacio
-			if (piezas_cabina[i].value.length == 0) no_hay_piezas_cabina = true;
-			// Comprobamos que el valor introducido en piezas es correcto 
-			else if (validarHayCaracter(i,piezas_cabina)) no_es_numero = true;
-		i++;
-		}
-	}
-	if (no_hay_piezas_cabina){
-		alert ("Rellene el campo PIEZAS de todas las referencias de la cabina");	
-		return false;
-	}
-	*/
+
 	if (no_es_numero) {
 		alert("El campo PIEZAS tiene que ser un valor entero o un decimal con punto");
 		return false;	
@@ -322,50 +304,12 @@ function validarFormulario() {
 	}
 }
 
-/*
-// Devuelve el coste de los kits de la cabina
-function getCosteKitsCabina(){
-	coste_kits = document.getElementById("costeKitsCabina").value;
-	return coste_kits;
-}
-*/
-	
 // Devuelve el coste de los kits del perifericos
 function getCosteKitsPerifericos(periferico){
 	coste_kits = document.getElementById('costeKitsPeriferico_' + periferico).value;
 	return coste_kits;
 }
 
-/*
-// Obtiene los precios de la cabina mas el precio de sus kits y los suma
-function actualizarCosteTotalCabina(costeTotal){
-	try{
-		// Obtenemos el td donde esta guardado el input hidden
-		var precio_total_cabina = document.getElementById("precio_total_cabina");
-	
-		// Obtener el coste total de los kits de la cabina
-		coste_kits = getCosteKitsCabina();
-		if (coste_kits != ""){
-			coste_kits = parseFloat(coste_kits);
-			coste_kits = coste_kits * 100;
-			coste_kits = Math.round(coste_kits) / 100; 
-		}
-		else {
-			coste_kits = 0;	
-		}
-
-		costeTotal = costeTotal + coste_kits;
-		coste_total_cabina = costeTotal;
-		costeTotal = costeTotal.toFixed(2);
-		precio_total_cabina.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeKitsCabina" name="costeKitsCabina" value="' + coste_kits + '"/><input type="hidden" id="coste_total_cabina" name="coste_total_cabina" value="' + coste_total_cabina + '"/>';
-		actualizarCosteTotalProducto();
-	}
-	catch(e) {
-		alert(e);
-	}
-}
-*/
-	
 // Obtiene el coste total del periferico, actualiza el coste de todos los perifericos y el del producto.
 function actualizarCosteTotalPeriferico(costeTotal,periferico){
 	try{
@@ -395,27 +339,6 @@ function actualizarCosteTotalPeriferico(costeTotal,periferico){
 	}
 }
 
-/*
-// Devuelve el coste de la cabina
-function dameCosteTotalCabina(){
-	try{	
-		if (document.getElementById('coste_total_cabina') == null){
-			coste_total_cabina = 0;	
-		}
-		else{
- 			coste_total_cabina = document.getElementById('coste_total_cabina').value;
-			coste_total_cabina = parseFloat(coste_total_cabina);
-			coste_total_cabina = coste_total_cabina * 100;
-			coste_total_cabina = Math.round(coste_total_cabina) / 100;
-		}
-		return coste_total_cabina;
-	}		
-	catch(e) {
-		alert(e);
-	}
-}
-*/
-	
 // Calcula el coste total de todos los perifericos cuando se ha producido alguna modificacion en alguno de ellos
 // Añadir referencia, eliminar referencia o cambiar numero de piezas
 function dameCosteTotalPerifericos(){
@@ -441,10 +364,27 @@ function dameCosteTotalPerifericos(){
 		alert(e);
 	}
 }
+
+// Devuelve el coste total de los kits libres
+function dameCosteTotalKitsLibres(){
+	try{
+		if(document.getElementById('coste_total_kits_libres') != null) {
+			coste_total_kits_libres = document.getElementById('coste_total_kits_libres').value;
+			coste_total_kits_libres = parseFloat(coste_total_kits_libres);
+			coste_total_kits_libres = coste_total_kits_libres * 100;
+			coste_total_kits_libres = Math.round(coste_total_kits_libres) / 100;
+		}
+		else coste_total_kits_libres = 0;
+		return coste_total_kits_libres;
+	}
+	catch(e) {
+		alert(e);
+	}
+}
 	
 // Devuelve el coste de la cabina
 function dameCosteTotalRefsLibres(){
-	try{	
+	try{
 		coste_total_refs_libres = document.getElementById('coste_total_refs_libres').value;	
 		coste_total_refs_libres = parseFloat(coste_total_refs_libres);
 		coste_total_refs_libres = coste_total_refs_libres * 100;
@@ -497,12 +437,11 @@ function actualizarCosteRefLibres(costeTotal){
 	
 // Actualiza el coste total del producto cuando se produce alguna modificacion en alguno de sus componentes
 function actualizarCosteTotalProducto(){
-	// Obntenemos el coste final de la cabina 
-	// precio_final_cabina = dameCosteTotalCabina();
 	precio_final_todos_perifericos = dameCosteTotalPerifericos();
+	precio_final_kits_libres = dameCosteTotalKitsLibres();
 	precio_final_refs_libres = dameCosteTotalRefsLibres();
 
-	precio_producto = /*precio_final_cabina +*/ precio_final_todos_perifericos + precio_final_refs_libres;
+	precio_producto = precio_final_todos_perifericos + precio_final_kits_libres + precio_final_refs_libres;
 	precio_producto_string = precio_producto.toFixed(2);
 				
 	// Obtenemos la celda de total producto

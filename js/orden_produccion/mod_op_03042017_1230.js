@@ -102,6 +102,107 @@ function SeleccionarPerifericos(){
 }
 
 
+// KITS
+
+// Función que muestra todos los kits creados
+function MostrarTodosKits(){
+	// Obtenemos el botón de todos los kits y lo eliminamos
+	var capaBotones = document.getElementById("CapaBotonKits");
+	var botonTodosKits = document.getElementById("BotonTodosKits");
+	botonTodosKits.parentNode.removeChild(botonTodosKits);
+	// Creamos el nuevo botón de kits de producción
+	var boton_kits = document.createElement("input");
+	boton_kits.type = "button";
+	boton_kits.id = "BotonKitProduccion";
+	boton_kits.name = "BotonKitProduccion";
+	boton_kits.className = "BotonTodosComponentes";
+	boton_kits.value = "Mostrar kits en producción";
+	boton_kits.setAttribute('onclick', 'MostrarKitProduccion()');
+	capaBotones.appendChild(boton_kits);
+	// Obtenemos el buscador para que busque en todos los kits
+	var input_buscador = document.getElementById("BuscadorKitModOP");
+	input_buscador.setAttribute("onkeyup","BuscadorDinamicoComponentes('todos','BuscadorKitModOP','kits_no_asignados[]')");
+
+	var selectKits = document.getElementById("kits_no_asignados[]");
+	for(i=0;i<selectKits.length;i++) {
+		var option = selectKits.options[i];
+		option.style.display = "block";
+		if(option.id == "") option.selected = false;
+	}
+	BuscadorDinamicoComponentes('todos','BuscadorKitModOP','kits_no_asignados[]');
+}
+
+// Función que muestra sólo los kits en estado PRODUCCION
+function MostrarKitProduccion(){
+	// Obtenemos el botón de kits de producción y lo eliminamos
+	var capaBotones = document.getElementById("CapaBotonKits");
+	var botonKitProduccion = document.getElementById("BotonKitProduccion");
+	botonKitProduccion.parentNode.removeChild(botonKitProduccion);
+	// Creamos el nuevo botón de todos los kits
+	var boton_kits = document.createElement("input");
+	boton_kits.type = "button";
+	boton_kits.id = "BotonTodosKits";
+	boton_kits.name = "BotonTodosKits";
+	boton_kits.className = "BotonTodosComponentes";
+	boton_kits.value = "Mostrar todos los kits";
+	boton_kits.setAttribute('onclick', 'MostrarTodosKits()');
+	capaBotones.appendChild(boton_kits);
+	// Obtenemos el buscador para que busque sólo los kits de producción
+	var input_buscador = document.getElementById("BuscadorKitModOP");
+	input_buscador.setAttribute("onkeyup","BuscadorDinamicoComponentes('produccion','BuscadorKitModOP','kits_no_asignados[]')");
+
+	selectKits = document.getElementById("kits_no_asignados[]");
+	for (i = 0; i < selectKits.length; i++) {
+		var option = selectKits.options[i];
+		if (option.id == "") option.style.display = "none";
+	}
+	BuscadorDinamicoComponentes('produccion','BuscadorKitModOP','kits_no_asignados[]');
+}
+
+// Añadir elemento a la segunda lista
+function AddKitsToSecondList(){
+	var fl = document.getElementById('kits_no_asignados[]');
+	var sl = document.getElementById('kits[]');
+
+	for(i=0;i < fl.options.length;i++){
+		if(fl.options[i].selected){
+			if(fl.options[i].style.display === "block"){
+				// Añadimos la opcion a la lista 1
+				var option = document.createElement("option");
+				option.value = fl[i].value;
+				option.text = fl[i].text;
+				fl.add(option,i);
+				sl.add(fl.options[i],null);
+			}
+		}
+	}
+	return true;
+}
+
+// Eliminar elemento de la lista
+function DeleteKitsSecondListItem(){
+	var sl = document.getElementById('kits[]');
+
+	for (i=0; i<sl.options.length;i++){
+		if(sl.options[i].selected){
+			sl.remove(sl.selectedIndex);
+			i--;
+		}
+	}
+	return true;
+}
+
+// Seleccionar kits para POST
+function SeleccionarKits(){
+	var lista = document.getElementById("kits[]");
+	for(i = 0; i<lista.options.length; i++){
+		lista[i].selected = "selected";
+	}
+}
+
+
+
+
 // REFERENCIAS LIBRES
 
 // Función para abrir el buscador de Referencias Libres
@@ -436,6 +537,7 @@ function validarFormulario() {
 	}
 	else {
 		SeleccionarPerifericos();
+		SeleccionarKits();
 		return true;
 	}
 }

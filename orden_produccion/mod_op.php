@@ -2,11 +2,13 @@
 set_time_limit(10000);
 // Primer paso para la modificación de la Orden de Producción
 include("../includes/sesion.php");
-include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/nombre_producto.class.php");
-include("../classes/basicos/listado_perifericos.class.php");
+include("../classes/basicos/periferico.class.php");
+include("../classes/basicos/kit.class.php");
 include("../classes/basicos/cliente.class.php");
+include("../classes/basicos/listado_perifericos.class.php");
+include("../classes/basicos/listado_kits.class.php");
 include("../classes/basicos/listado_clientes.class.php");
 include("../classes/orden_produccion/orden_produccion.class.php");
 include("../classes/orden_produccion/incluir_referencia_libre.class.php");
@@ -17,9 +19,11 @@ permiso(10);
 
 $ref = new Referencia();
 $per = new Periferico();
-$listado_per = new listadoPerifericos();
-$nombre_producto = new Nombre_Producto();
+$kit = new Kit();
 $client = new Cliente();
+$nombre_producto = new Nombre_Producto();
+$listado_per = new listadoPerifericos();
+$listado_kit = new listadoKits();
 $listado_client = new listadoClientes();
 $op = new Orden_Produccion();
 $producto = new Producto();
@@ -36,6 +40,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 	$cliente= $_POST["cliente"];
 	$id_produccion = $_GET["id_produccion"];
 	$piezas = $_POST["piezas"];
+	$kits_libres = $_POST["kits"];
 }
 else {
 	// Se cargan los datos de la orden de produccion y los productos asociados en funcion de su ID
@@ -52,8 +57,14 @@ else {
 	$producto->cargaDatosProductoId($id_producto);
 	$id_nombre_producto = $producto->id_nombre_producto;
 
+	// Obtenemso los periféricos de la Orden de Producción
 	$res_ids_perifericos = $op->dameIdsPerifericos($id_produccion);
 	foreach($res_ids_perifericos as $array_perifericos) $ids_perifericos[] = intval($array_perifericos["id_componente"]);
+
+	// Comprobamos si la Orden de Producción tiene una plantilla con Kits Libres
+	$tieneKitsLibres = $op->tieneKitsLibres($id_produccion);
+	if($tieneKitsLibres) $ids_kits_libres = $op->dameIdsKitsLibres($id_produccion);
+
 }
 
 $id_tipo_usuario = $_SESSION["AT_id_tipo_usuario"];
@@ -110,9 +121,7 @@ echo '<script type="text/javascript" src="../js/orden_produccion/mod_op_03042017
 	<br/>
 
 	<?php include("mod_op_add_perifericos.php")	?>
-	<?php
-		// Mostrar kits libres sólo si existen en la Orden de Producción
-	?>
+	<?php if($tieneKitsLibres) include("mod_op_add_kits_libres.php") ?>
 	<?php include("mod_op_add_refs_libres.php") ?>
 	<?php include("mod_op_add_productos.php") ?>
 

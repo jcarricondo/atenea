@@ -65,7 +65,7 @@ function removeRowPeriferico(tableID,n_periferico) {
 	try {
 		table = document.getElementById('mitabla_' + n_periferico);
 		var rowCount = table.rows.length;
-		
+
 		for(var i=0; i<rowCount; i++) {
 			var row = table.rows[i];
 			var chkbox_per = row.cells[11].childNodes[0];
@@ -86,6 +86,37 @@ function removeRowPeriferico(tableID,n_periferico) {
 		alert(e);
 	}
 }
+
+
+// Función para actualizar las filas después de la eliminación de una fila
+// para que se puedan validar las filas después de la modificacion
+function actualizarFilaPeriferico(table,i,rowCount,n_periferico){
+	for (var j=i; j<rowCount-1; j++){
+		var num_piezas = document.getElementsByName('piezas_perifericos_' + n_periferico + '[]').item(j).value;
+		table.rows[j+1].deleteCell(5);
+		var td_precio = table.rows[j+1].insertCell(5);
+		td_precio.setAttribute("style","text-align:center");
+		td_precio.innerHTML = '<input type="text" id="piezas_perifericos_' + n_periferico + '[]" name="piezas_perifericos_' + n_periferico + '[]" class="CampoPiezasInput" value="'+num_piezas+'" onblur="validarPiezasCorrectasPeriferico('+j+','+n_periferico+')"/>';
+	}
+}
+
+/*
+// Función para actualizar las filas después de la eliminación de una fila
+// para que se puedan validar las filas después de la modificacion
+function actualizarFilaPeriferico(table,i,rowCount,n_periferico){
+	for (var j=i; j<rowCount-1; j++){
+		var num_piezas = table.rows[j+1].cells[5].childNodes[0].value;
+		table.rows[j+1].deleteCell(5);
+		var td_precio = table.rows[j+1].insertCell(5);
+		td_precio.setAttribute("style","text-align:center");
+		td_precio.innerHTML = '<input type="text" id="piezas_perifericos_' + n_periferico + '[]" name="piezas_perifericos_' + n_periferico + '[]" class="CampoPiezasInput" value="'+num_piezas+'" onblur="validarPiezasCorrectasPeriferico('+j+','+n_periferico+')"/>';
+	}
+}
+*/
+
+
+
+
 	
 // Funcion para validar que el campo piezas sea un number
 // Si es correcto se modifica el campo precio de la referencia
@@ -124,19 +155,7 @@ function validarPiezasCorrectasPeriferico(fila,perif) {
 	}
 }
 	
-// Funcion para actualizar las filas despues de la eliminacion de una fila
-// para que se puedan validar las filas despues de la modificacion
-function actualizarFilaPeriferico(table,i,rowCount,n_periferico){
-	for (var j=i; j<rowCount-1; j++){
-		var num_piezas = table.rows[j+1].cells[5].childNodes[0].value;
-		table.rows[j+1].deleteCell(5);	
-		//table.rows[j+1].insertCell(4).innerHTML = '<input type="text" id="piezas_perifericos_' + n_periferico + '[]" name="piezas_perifericos_' + n_periferico + '[]" class="CampoPiezasInput" value="' + num_piezas + '"  onblur="javascript:validarPiezasCorrectasPeriferico(' + j + ',' + n_periferico + ')"/>';
-		
-		var td_precio = table.rows[j+1].insertCell(5);
-		td_precio.setAttribute("style","text-align:center");
-		td_precio.innerHTML = '<input type="text" id="piezas_perifericos_' + n_periferico + '[]" name="piezas_perifericos_' + n_periferico + '[]" class="CampoPiezasInput" value="' + num_piezas + '"  onblur="javascript:validarPiezasCorrectasPeriferico(' + j + ',' + n_periferico + ')"/>';
-	}
-}	
+
 	
 // Funcion que calcula el nuevo coste cuando se modifica el campo piezas de una referencia 
 // y cambia el precio de la referencia modificada

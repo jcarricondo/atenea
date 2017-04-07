@@ -1,36 +1,31 @@
 <?php
+// Obtenemos todos los kits existentes
+$listado_kit->prepararConsulta();
+$listado_kit->realizarConsulta();
+$resultado_todos_kits = $listado_kit->kits;
+foreach($resultado_todos_kits as $res_kit) $todos_kits[] = intval($res_kit["id_componente"]);
 
-// KITS LIBRES
-
-
-
-// Obtenemos todos los periféricos existentes
-$listado_per->prepararConsulta();
-$listado_per->realizarConsulta();
-$resultado_todos_perifericos = $listado_per->perifericos;
-foreach($resultado_todos_perifericos as $res_periferico) $todos_perifericos[] = intval($res_periferico["id_componente"]);
-
-// Obtenemos sólo los periféricos de producción
-$listado_per->prepararConsultaProduccion();
-$listado_per->realizarConsulta();
-$resultado_perifericos = $listado_per->perifericos;
-$res_perifericos_produccion = array_column($resultado_perifericos, "id_componente");
-foreach($res_perifericos_produccion as $periferico_produccion) $perifericos_produccion[] = intval($periferico_produccion);
+// Obtenemos sólo los kits de producción
+$listado_kit->prepararConsultaProduccion();
+$listado_kit->realizarConsulta();
+$resultado_kits = $listado_kit->kits;
+$res_kits_produccion = array_column($resultado_kits, "id_componente");
+foreach($res_kits_produccion as $kit_produccion) $kits_produccion[] = intval($kit_produccion);
 ?>
 
 <div class="ContenedorCamposCreacionBasico">
-    <div class="LabelCreacionBasico">Perif&eacute;ricos</div>
+    <div class="LabelCreacionBasico">Kits Libres</div>
     <div class="CapaBuscadorDinamicoComponentes">
-        <div id="CapaBotonPerifericos">
-            <input type="button" id="BotonTodosPerifericos" name="BotonTodosPerifericos" class="BotonTodosComponentes" value="Mostrar todos los periféricos" onclick="MostrarTodosPerifericos()"/>
+        <div id="CapaBotonKits">
+            <input type="button" id="BotonTodosKits" name="BotonTodosKits" class="BotonTodosComponentes" value="Mostrar todos los kits" onclick="MostrarTodosKits()"/>
         </div>
         <label class="LabelBuscadorComponente">Buscar</label>
         <input type="text"
-               id="BuscadorPerModOP"
-               name="BuscadorPerModOP"
+               id="BuscadorKitModOP"
+               name="BuscadorKitModOP"
                class="BuscadorComponente"
-               onkeyup="BuscadorDinamicoComponentes('produccion','BuscadorPerModOP','perifericos_no_asignados[]');"
-               placeholder="Buscar perif&eacute;rico..." />
+               onkeyup="BuscadorDinamicoComponentes('produccion','BuscadorKitModOP','kits_no_asignados[]');"
+               placeholder="Buscar kit..." />
     </div>
 </div>
 <div class="ContenedorCamposCreacionBasico">
@@ -38,21 +33,21 @@ foreach($res_perifericos_produccion as $periferico_produccion) $perifericos_prod
     <div class="contenedorComponentes">
         <table style="width:700px; height:208px; border:1px solid #fff;">
         <tr>
-            <td id="listas_no_asignados" style="width:250px; border:1px solid #fff; padding-left:10px;">
-                <select multiple="multiple" id="perifericos_no_asignados[]" name="perifericos_no_asignados[]" class="SelectMultiplePerOrigen">
+            <td id="listas_no_asignados" style="width:250px; border:1px solid #fff; padding-left:15px;">
+                <select multiple="multiple" id="kits_no_asignados[]" name="kits_no_asignados[]" class="SelectMultipleKitOrigen">
                 <?php
-                    for($i=0;$i<count($todos_perifericos);$i++) {
-                        $id_periferico = $todos_perifericos[$i];
-                        $per->cargaDatosPerifericoId($id_periferico);
-                        if(in_array($id_periferico,$perifericos_produccion)) {
-                            $id_option = "pre-per-".$id_periferico."-option";
+                    for($i=0;$i<count($todos_kits);$i++) {
+                        $id_kit = $todos_kits[$i];
+                        $kit->cargaDatosKitId($id_kit);
+                        if(in_array($id_kit,$kits_produccion)) {
+                            $id_option = "pre-kit-".$id_kit."-option";
                             $display = "display: block;";
                         }
                         else {
                             $id_option = "";
                             $display = "display: none;";
                         }
-                        echo '<option id="'.$id_option.'" style="'.$display.'" value="'.$per->id_componente.'">'.$per->periferico.'_v'.$per->version.'</option>';
+                        echo '<option id="'.$id_option.'" style="'.$display.'" value="'.$kit->id_componente.'">'.$kit->kit.'_v'.$kit->version.'</option>';
                     }
                 ?>
                 </select>
@@ -60,23 +55,23 @@ foreach($res_perifericos_produccion as $periferico_produccion) $perifericos_prod
             <td style="border:1px solid #fff; vertical-align:middle">
                 <table style="width:100%; border:1px solid #fff;">
                 <tr>
-                    <td style="border:1px solid #fff;"><input type="button" id="añadirPeriferico" name="añadirPeriferico" class="BotonEliminar" onclick="AddToSecondList()" value="AÑADIR" /></td>
+                    <td style="border:1px solid #fff;"><input type="button" id="añadirKit" name="añadirKit" class="BotonEliminar" onclick="AddKitsToSecondList()" value="AÑADIR" /></td>
                 </tr>
                 <tr>
                     <td style="border:1px solid #fff;"></td>
                 </tr>
                 <tr>
-                    <td style="border:1px solid #fff;"><input type="button" id="quitarPeriferico" name="quitarPeriferico" class="BotonEliminar" onclick="DeleteSecondListItem()" value="QUITAR" /></td>
+                    <td style="border:1px solid #fff;"><input type="button" id="quitarKit" name="quitarKit" class="BotonEliminar" onclick="DeleteKitsSecondListItem()" value="QUITAR" /></td>
                 </tr>
                 </table>
             </td>
-            <td id="lista_perº" style="width:250px; border:1px solid #fff;">
-                <select multiple="multiple" id="perifericos[]" name="perifericos[]" class="SelectMultiplePerDestino">
+            <td id="lista_kitº" style="width:250px; border:1px solid #fff;">
+                <select multiple="multiple" id="kits[]" name="kits[]" class="SelectMultipleKitDestino">
                 <?php
-                    for($i=0;$i<count($ids_perifericos);$i++){
-                        $id_componente = $ids_perifericos[$i];
-                        $per->cargaDatosPerifericoId($id_componente);
-                        echo '<option value="'.$per->id_componente.'">'.$per->periferico.'_v'.$per->version.'</option>';
+                    for($i=0;$i<count($ids_kits_libres);$i++){
+                        $id_componente = $ids_kits_libres[$i];
+                        $kit->cargaDatosKitId($id_componente);
+                        echo '<option value="'.$kit->id_componente.'">'.$kit->kit.'_v'.$kit->version.'</option>';
                     }
                 ?>
                 </select>

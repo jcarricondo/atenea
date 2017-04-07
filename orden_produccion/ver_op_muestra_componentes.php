@@ -177,7 +177,7 @@ for($i=0;$i<count($ids_produccion_componente);$i++){
 
         $siguiente_es_periferico = $id_tipo_siguiente == 2;
         $siguiente_es_kit_libre = $id_tipo_siguiente == 6;
-        $no_hay_mas_componentes = $id_componente_siguiente === NULL;
+        $no_hay_mas_componentes = $id_tipo_siguiente === NULL;
         $siguiente_es_principal = $siguiente_es_periferico || $siguiente_es_kit_libre || $no_hay_mas_componentes;
 
         if($siguiente_es_principal){
