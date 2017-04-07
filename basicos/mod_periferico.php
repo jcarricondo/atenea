@@ -410,17 +410,6 @@ echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 								echo '<option id="'.$id_option.'" style="'.$display.'" value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
 							}
 						?>
-						<?php
-							/*$listado_kits->prepararConsulta();
-							$listado_kits->realizarConsulta();
-							$resultado_kits = $listado_kits->kits;
-
-							for($i=0;$i<count($resultado_kits);$i++) {
-								$datoKit = $resultado_kits[$i];
-								$Kit->cargaDatosKitId($datoKit["id_componente"]);
-								echo '<option value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
-							}*/
-						?>
             			</select>
                     </td>
                     <td style="border:1px solid #fff; vertical-align:middle">
