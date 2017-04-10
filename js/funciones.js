@@ -159,7 +159,7 @@ function damePrecioComponenteConHeredadas(table){
 		var j=i-1;
 		var row = table.rows[i];
 		id_ref = row.cells[0].childNodes[0].nodeValue;
-		piezas = row.cells[5].childNodes[0].value;
+		piezas = document.getElementsByName("piezas[]")[j].value;
 
 		array_ids[j] = id_ref;
 		array_piezas[j] = piezas;
