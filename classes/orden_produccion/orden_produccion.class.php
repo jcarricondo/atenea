@@ -447,7 +447,10 @@ class Orden_Produccion extends MySQL {
 		$this->setConsulta($consultaSql);
 		$this->ejecutarConsulta();
 		$res = $this->getResultados();
-		if(!empty($res)) $ids_kits_libres = array_column($res,"id_componente");
+		if(!empty($res)) {
+			foreach($res as $kit_libre) $ids_kits_libres[] = intval($kit_libre["id_componente"]);
+			//$ids_kits_libres = array_column($res,"id_componente");
+		}
 		return $ids_kits_libres;
 	}
 

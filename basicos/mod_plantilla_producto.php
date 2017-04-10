@@ -40,7 +40,7 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
 
     $no_hay_perifericos = empty($ids_perifericos);
     $no_hay_kits = empty($ids_kits);
-    $plantilla_vacia = $no_hay_perifericos || $no_hay_kits;
+    $plantilla_vacia = $no_hay_perifericos && $no_hay_kits;
 
     if(!$plantilla_vacia){
         // Guardamos la plantilla del producto

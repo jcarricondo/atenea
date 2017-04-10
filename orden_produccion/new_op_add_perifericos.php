@@ -9,8 +9,9 @@ foreach($resultado_todos_perifericos as $res_periferico) $todos_perifericos[] = 
 $listado_per->prepararConsultaProduccion();
 $listado_per->realizarConsulta();
 $resultado_perifericos = $listado_per->perifericos;
-$res_perifericos_produccion = array_column($resultado_perifericos, "id_componente");
-foreach($res_perifericos_produccion as $periferico_produccion) $perifericos_produccion[] = intval($periferico_produccion);
+foreach($resultado_perifericos as $array_perifericos) $perifericos_produccion[] = intval($array_perifericos["id_componente"]);
+//$res_perifericos_produccion = array_column($resultado_perifericos, "id_componente");
+//foreach($res_perifericos_produccion as $periferico_produccion) $perifericos_produccion[] = intval($periferico_produccion);
 ?>
 
 <div class="ContenedorCamposCreacionBasico">

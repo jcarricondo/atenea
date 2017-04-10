@@ -62,8 +62,9 @@ if(isset($_GET["comp"])){
             // Obtenemos todas las referencias heredadas de la referencia añadida
             $res_heredadas_totales = $ref_heredada->dameTodasHeredadas($id_ref);
             if($res_heredadas_totales != NULL) {
-                $res_heredadas_totales = array_column($res_heredadas_totales,'id_ref_heredada');
-                $rht = array_merge($rht,$res_heredadas_totales);
+                foreach($res_heredadas_totales as $refs_heredadas) $heredadas_totales[] = intval($refs_heredadas["id_ref_heredada"]);
+                //$res_heredadas_totales = array_column($res_heredadas_totales,'id_ref_heredada');
+                $rht = array_merge($rht,$heredadas_totales);
             }
 
             $rht = array_unique($rht);

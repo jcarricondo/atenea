@@ -264,8 +264,10 @@ foreach($resultado_todos_kits as $res_kit) $todos_kits[] = intval($res_kit["id_c
 $listado_kits->prepararConsultaProduccion();
 $listado_kits->realizarConsulta();
 $resultado_kits = $listado_kits->kits;
-$res_kits_produccion = array_column($resultado_kits, "id_componente");
-foreach($res_kits_produccion as $kit_produccion) $kits_produccion[] = intval($kit_produccion);
+
+foreach($resultado_kits as $array_kits) $kits_produccion[] = intval($array_kits["id_componente"]);
+//$res_kits_produccion = array_column($resultado_kits, "id_componente");
+//foreach($res_kits_produccion as $kit_produccion) $kits_produccion[] = intval($kit_produccion);
 
 // Se cargan los datos buscando por el ID
 $perifericos->cargaDatosPerifericoId($_GET["id"]);

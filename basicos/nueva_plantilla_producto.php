@@ -29,7 +29,7 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
 
     $no_hay_perifericos = empty($ids_perifericos);
     $no_hay_kits = empty($ids_kits);
-    $plantilla_vacia = $no_hay_perifericos || $no_hay_kits;
+    $plantilla_vacia = $no_hay_perifericos && $no_hay_kits;
 
     // Comprobamos que la plantilla no este vacia
     if(!$plantilla_vacia) {
@@ -140,7 +140,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_plantilla_producto
         <div class="mensajeCamposObligatorios">
         	* Campos obligatorios
         </div>
-		<?php 
+		<?php
 			if($mensaje_error != "") {
 				echo '<div class="mensaje_error">'.$mensaje_error.'</div>'; 
 			}
