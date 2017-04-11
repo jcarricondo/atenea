@@ -283,7 +283,8 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 							$ref->cargaDatosReferenciaId($referencias_componente_her[$i]["id_referencia"]);
 							$pack_precio = $ref->pack_precio;
 							$uds_paquete = $ref->unidades;
-							$total_paquetes = $ref->calculaTotalPaquetes($uds_paquete,$referencias_componente_her[$i]["piezas"]);
+							$ref->calculaTotalPaquetes($uds_paquete,$referencias_componente_her[$i]["piezas"]);
+							$total_paquetes = $ref->total_paquetes;
 
 							$resultado = $orden_produccion->guardarReferenciasProduccion($id_produccion,0,0,0,$referencias_componente_her[$i]["id_referencia"],$uds_paquete,$referencias_componente_her[$i]["piezas"],$total_paquetes,$pack_precio);
 							if($resultado != 1) $error = true;

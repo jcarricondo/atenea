@@ -442,15 +442,14 @@ class Orden_Produccion extends MySQL {
 
 	// Función que devuelve los Kits Libres de una plantilla de una Orden de Producción
 	function dameIdsKitsLibres($id_produccion){
-		$consultaSql = sprintf("select distinct id_componente from orden_produccion_referencias where activo=1 and id_produccion=%s and id_tipo_componente=6",
+		$consultaSql = sprintf("select id_componente from orden_produccion_componentes where activo=1 and id_produccion_componente in
+									(select id_produccion_componente from orden_produccion_referencias where activo=1 and id_produccion=%s and id_tipo_componente=6)",
 				$this->makeValue($id_produccion, "int"));
 		$this->setConsulta($consultaSql);
 		$this->ejecutarConsulta();
 		$res = $this->getResultados();
-		if(!empty($res)) {
-			foreach($res as $kit_libre) $ids_kits_libres[] = intval($kit_libre["id_componente"]);
-			//$ids_kits_libres = array_column($res,"id_componente");
-		}
+		if(!empty($res)) foreach($res as $kit_libre) $ids_kits_libres[] = intval($kit_libre["id_componente"]);
+		//$ids_kits_libres = array_column($res,"id_componente");
 		return $ids_kits_libres;
 	}
 
