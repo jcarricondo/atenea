@@ -61,7 +61,7 @@ if(!empty($id_plantilla)){
 
     // Obtenemos los componentes de la plantilla
     $res_perifericos = $plant->damePerifericosPlantillaProducto($id_plantilla);
-	$res_kits_libres = $plant->dameKitsPlantillaProducto($id_plantilla);
+	$res_kits_libres = $plant->dameKitsLibresPlantillaProducto($id_plantilla);
 
     for($i=0;$i<count($res_perifericos);$i++) $perifericos[] = $res_perifericos[$i]["id_componente"];
 	for($i=0;$i<count($res_kits_libres);$i++) $kits_libres[] = $res_kits_libres[$i]["id_componente"];

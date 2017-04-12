@@ -13,7 +13,7 @@ $nombre_plantilla = strtoupper($plant->nombre);
 $version_plantilla = $plant->version;
 $nombre_final_plantilla = $funciones->quitarCaracteresNoPermitidosCarpeta($nombre_plantilla."_v".$version_plantilla);
 $res_perifericos = $plant->damePerifericosPlantillaProductoSinRepeticiones($id);
-$res_kits_libres = $plant->dameKitsPlantillaProductoSinRepeticiones($id);
+$res_kits_libres = $plant->dameKitsLibresPlantillaProductoSinRepeticiones($id);
 
 $dir_documentacion_plantilla = $dir_documentacion.$barra_directorio.$nombre_final_plantilla;
 $dir_perifericos = $dir_documentacion_plantilla.$barra_directorio."PERIFERICOS";

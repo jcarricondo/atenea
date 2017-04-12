@@ -43,18 +43,17 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
 
             // Preparamos los ids de los componentes de la plantilla de producto
             for($i=0;$i<count($ids_perifericos);$i++) {
-                $ids_componentes[] = $ids_perifericos[$i];
+                $ids_componentes[] = array("id_componente" => $ids_perifericos[$i], "id_tipo" => 2);
             }
             for($i=0;$i<count($ids_kits);$i++) {
-                $ids_componentes[] = $ids_kits[$i];
+                $ids_componentes[] = array("id_componente" => $ids_kits[$i], "id_tipo" => 6);
             }
 
             // Guardamos los componentes de la plantilla de producto
             $i=0;
             while($i<count($ids_componentes) && !$error_componentes) {
-                $id_componente = $ids_componentes[$i];
-                $id_tipo_componente = $plant->dameTipoComponente($id_componente);
-                $id_tipo_componente = $id_tipo_componente["id_tipo"];
+                $id_componente = $ids_componentes[$i]["id_componente"];
+                $id_tipo_componente = $ids_componentes[$i]["id_tipo"];
                 $resultado = $plant->guardarComponentePlantillaProducto($id_plantilla,$id_componente,$id_tipo_componente);
                 $error_componentes = $resultado != 1;
                 $i++;

@@ -397,6 +397,23 @@ class Referencia_Heredada extends Referencia {
 		return $referencias_componente_final;
 	}
 
+	// Función que obtiene el precio total de la suma de sus referencias heredadas
+	function damePrecioReferenciasHeredadas($referencias_componente){
+		$precio_componente = 0;
+		for($i=0;$i<count($referencias_componente);$i++){
+			$id_referencia = $referencias_componente[$i]["id_referencia"];
+			$piezas = $referencias_componente[$i]["piezas"];
+			$this->cargaDatosReferenciaId($id_referencia);
+			$uds_paquete = $this->unidades;
+			$pack_precio = $this->pack_precio;
+			if($pack_precio != 0 && $uds_paquete != 0) $precio_unidad = $pack_precio / $uds_paquete;
+			else $precio_unidad = 0;
+			$precio_referencia = $piezas * $precio_unidad;
+			$precio_componente = $precio_componente + $precio_referencia;
+		}
+		return $precio_componente;
+	}
+
 
 
 
