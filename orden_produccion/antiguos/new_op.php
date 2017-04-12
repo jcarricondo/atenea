@@ -51,7 +51,7 @@ $titulo_pagina = "Órdenes de Producción > Nueva Orden de Producción";
 $pagina = "new_orden_produccion";
 include ('../includes/header.php');
 echo '<script type="text/javascript" src="../js/funciones.js"></script>';
-echo '<script type="text/javascript" src="../js/orden_produccion/new_op_03042017_1230_her.js"></script>';
+echo '<script type="text/javascript" src="../js/orden_produccion/new_op_03042017_1230.js"></script>';
 ?>
 
 <div class="separador"></div>
@@ -61,7 +61,7 @@ echo '<script type="text/javascript" src="../js/orden_produccion/new_op_03042017
 	<div id="ContenedorSidebar"><?php include ("../includes/sidebar.php"); ?></div>
       
     <h3> Creación de una nueva orden de producción </h3>
-    <form id="FormularioCreacionBasico" name="crearOrdenProduccion" onsubmit="return validarFormulario()" action="confirm_new_op_her.php" method="post">
+    <form id="FormularioCreacionBasico" name="crearOrdenProduccion" onsubmit="return validarFormulario()" action="confirm_new_op.php" method="post">
 	<br />
     <h5> Rellene los siguientes campos para la creación de una nueva orden de producción </h5>
     <?php

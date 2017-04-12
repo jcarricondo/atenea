@@ -84,7 +84,7 @@ echo '<script type="text/javascript" src="../js/orden_produccion/mod_op_03042017
 	<div id="ContenedorSidebar"><?php include ("../includes/sidebar.php"); ?></div>
 
     <h3> Modificación de orden de producción </h3>
-    <form id="FormularioCreacionBasico" name="modificarOrdenProduccion" onsubmit="return validarFormulario()" action="confirm_mod_op_her.php?id_produccion=<?php echo $id_produccion;?>&id_producto=<?php echo $id_producto;?>" method="post">
+    <form id="FormularioCreacionBasico" name="modificarOrdenProduccion" onsubmit="return validarFormulario()" action="confirm_mod_op.php?id_produccion=<?php echo $id_produccion;?>&id_producto=<?php echo $id_producto;?>" method="post">
     <br />
     <h5> Modifique los datos en el siguiente formulario </h5>
     <?php

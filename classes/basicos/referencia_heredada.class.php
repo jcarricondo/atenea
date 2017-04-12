@@ -417,7 +417,6 @@ class Referencia_Heredada extends Referencia {
 
 
 
-
 	// Devuelve la cadena de un error según su identificador
 	function getErrorMessage($error_num) {
 		switch($error_num) {

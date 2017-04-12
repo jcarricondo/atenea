@@ -3,6 +3,7 @@ set_time_limit(10000);
 // Primer paso para la modificación de la Orden de Producción
 include("../includes/sesion.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
@@ -18,6 +19,7 @@ include("../classes/kint/Kint.class.php");
 permiso(10);
 
 $ref = new Referencia();
+$ref_heredada = new Referencia_Heredada();
 $per = new Periferico();
 $kit = new Kit();
 $client = new Cliente();

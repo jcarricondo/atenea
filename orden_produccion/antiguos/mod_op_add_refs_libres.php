@@ -25,14 +25,11 @@
 	            $precio_total = 0;
 				$fila = 0;
 
-                $hay_alguna_heredada = false;
                 $referencias_libres = $op->cargaDatosPorProduccionComponente($id_produccion,0);
 				// Hacemos la carga de la tabla referencias
 				for ($i=0;$i<count($referencias_libres);$i++){
                     $id_referencia_libre = $referencias_libres[$i]["id_referencia"];
                     $piezas = $referencias_libres[$i]["piezas"];
-
-                    $tienePadres = $ref_heredada->tienePadres($id_referencia_libre);
 
                     $ref->cargaDatosReferenciaId($id_referencia_libre);
                     if ($ref->pack_precio <> 0 and $ref->unidades <>0) $precio_unidad = $ref->pack_precio / $ref->unidades;
@@ -41,32 +38,30 @@
                     $ref->calculaTotalPaquetes($ref->unidades,$piezas);
                     $total_paquetes = $ref->total_paquetes;
                     $precio_referencia = $piezas * $precio_unidad;
-                    $precio_total = $precio_total + $precio_referencia;
-                    if(!$tienePadres) {
-                        $hay_alguna_heredada = true; ?>
-                        <tr>
-                            <td style="text-align:center"><?php echo $ref->id_referencia;?></td>
-                            <td id="enlaceComposites">
-                                <a href="../basicos/mod_referencia.php?id=<?php echo $ref->id_referencia; ?>"/><?php echo $ref->referencia; ?></a>
-                                <input type="hidden" name="REFS[]" id="REFS[]" value="<?php echo $ref->id_referencia; ?>"/>
-                            </td>
-                            <td><?php echo $ref->nombre_proveedor; ?></td>
-                            <td><?php echo $ref->vincularReferenciaProveedor();?></td>
-                            <td><?php echo $ref->part_nombre; ?></td>
-                            <td style="text-align:center">
-                                <input type="text" name="piezas[]" id="piezas[]" class="CampoPiezasInput" value="<?php echo $piezas; ?>" onblur="validarPiezasCorrectas(<?php echo $fila; ?>)"/>
-                            </td>
-                            <td style="text-align:center"><?php echo number_format($ref->pack_precio, 2, '.', ''); ?></td>
-                            <td style="text-align:center"><?php echo $ref->unidades; ?></td>
-                            <td style="text-align:center"><?php echo $total_paquetes; ?></td>
-                            <td style="text-align:center"><?php echo number_format($precio_unidad, 2, '.', ''); ?></td>
-                            <td style="text-align:center"><?php echo number_format($precio_referencia, 2, '.', ''); ?></td>
-                            <td style="text-align:center"><input type="checkbox" name="chkbox" value="<?php echo $id_referencia_libre; ?>"/></td>
-                        </tr>
-                        <?php $fila = $fila + 1; ?>
-                        <input type="hidden" name="fila" id="fila" value="<?php echo $fila;?>"/>
+                    $precio_total = $precio_total + $precio_referencia; ?>
+
+                    <tr>
+                        <td style="text-align:center"><?php echo $ref->id_referencia;?></td>
+                        <td id="enlaceComposites">
+                            <a href="../basicos/mod_referencia.php?id=<?php echo $ref->id_referencia; ?>"/><?php echo $ref->referencia; ?></a>
+                            <input type="hidden" name="REFS[]" id="REFS[]" value="<?php echo $ref->id_referencia; ?>"/>
+                        </td>
+                        <td><?php echo $ref->nombre_proveedor; ?></td>
+                        <td><?php echo $ref->vincularReferenciaProveedor();?></td>
+                        <td><?php echo $ref->part_nombre; ?></td>
+                        <td style="text-align:center">
+                            <input type="text" name="piezas[]" id="piezas[]" class="CampoPiezasInput" value="<?php echo $piezas; ?>" onblur="validarPiezasCorrectas(<?php echo $fila; ?>)"/>
+                        </td>
+                        <td style="text-align:center"><?php echo number_format($ref->pack_precio, 2, '.', ''); ?></td>
+                        <td style="text-align:center"><?php echo $ref->unidades; ?></td>
+                        <td style="text-align:center"><?php echo $total_paquetes; ?></td>
+                        <td style="text-align:center"><?php echo number_format($precio_unidad, 2, '.', ''); ?></td>
+                        <td style="text-align:center"><?php echo number_format($precio_referencia, 2, '.', ''); ?></td>
+                        <td style="text-align:center"><input type="checkbox" name="chkbox" value="<?php echo $id_referencia_libre; ?>"/></td>
+                    </tr>
+                    <?php $fila = $fila + 1; ?>
+                    <input type="hidden" name="fila" id="fila" value="<?php echo $fila;?>"/>
             <?php
-                    }
                 }
 			?>
             </table>
@@ -78,7 +73,7 @@
 <br/>
 <div class="ContenedorCamposCreacionBasico">
     <div class="LabelCreacionBasico">Coste Referencias Libres </div>
-    <label id="precio_refs_libres" class="LabelPrecio" <?php if ($hay_alguna_heredada) { ?> style="color: orange;" <?php } ?>><?php echo number_format($precio_total, 2, ',', '.').'€';?></label>
+    <label id="precio_refs_libres" class="LabelPrecio"><?php echo number_format($precio_total, 2, ',', '.').'€';?></label>
 </div>
 <br/>
 <br/>
