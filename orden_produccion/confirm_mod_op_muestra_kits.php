@@ -6,7 +6,18 @@ for ($k=0; $k<count($orden_produccion->ids_kit); $k++) {
 	$kit->cargaDatosKitId($orden_produccion->ids_kit[$k]["id_kit"]);
 	$ref_kits->setValores($kit->id_componente);
 	$ref_kits->realizarConsulta();
-	$resultadosReferenciasKit = $ref_kits->referencias_componentes; ?>
+	$resultadosReferenciasKit = $ref_kits->referencias_componentes;
+
+	// Obtenemos las referencias del componente para calcular el precio con sus heredadas
+	$referencias_componente = $comp->dameRefsYPiezasComponente($kit->id_componente);
+	$referencias_componente_her = $ref_heredada->obtenerHeredadas($referencias_componente);
+	$precio_kit = $ref_heredada->damePrecioReferenciasHeredadas($referencias_componente_her);
+	$hay_heredadas = count($referencias_componente) != count($referencias_componente_her);
+	if($hay_heredadas) {
+		$color_precio = ' style="color: orange"';
+		$hay_alguna_heredada = true;
+	}
+	else $color_precio = ' style="color: #2998cc;"';?>
 
 	<div class="ContenedorCamposCreacionBasico">
 		<div class="LabelCreacionBasico">Referencias Kit</div>
@@ -37,7 +48,7 @@ for ($k=0; $k<count($orden_produccion->ids_kit); $k++) {
 				</tr>
 
 				<?php
-					$precio_kit = 0;
+					$precio_kit_tabla = 0;
 					for ($j=0; $j<count($resultadosReferenciasKit); $j++) {
 						// Si el estado de la OP es BORRADOR o INICIADO obtenemos los datos de la tabla referencias
 						$datoRef_Kit = $resultadosReferenciasKit[$j];
@@ -68,7 +79,7 @@ for ($k=0; $k<count($orden_produccion->ids_kit); $k++) {
 							<td style="text-align:center"><?php echo number_format($precio_referencia, 2, ',', '.')?></td>
 						</tr>
 					<?php
-						$precio_kit = $precio_kit + $precio_referencia;
+						$precio_kit_tabla = $precio_kit_tabla + $precio_referencia;
 					}
 				?>
 				</table>
@@ -82,7 +93,7 @@ for ($k=0; $k<count($orden_produccion->ids_kit); $k++) {
 			<table id="tablaTituloPrototipo">
 			<tr>
 				<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
-					<span class="tituloComp"><?php echo number_format($precio_kit, 2, ',', '.').'€';?></span>
+					<span class="tituloComp" <?php echo $color_precio;?>><?php echo number_format($precio_kit, 2, ',', '.').'€';?></span>
 				</td>
 			</tr>
 			</table>

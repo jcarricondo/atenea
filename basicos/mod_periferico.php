@@ -560,8 +560,8 @@ echo '<script type="text/javascript" src="../js/funciones.js"></script>';
                     </div>
 			    </div>
 			    <?php if($modificar) { ?>	
-	            	<input type="button" id="mas" name="mas" class="BotonMas"  value="+" onclick="javascript:Abrir_ventana('buscador_referencias.php?componente=<?php echo $componente;?>')"/>
-	           		<input type="button" id="menos" name="menos" class="BotonMenos" value="-" onclick="javascript:removeRow(mitabla)"  />
+	            	<input type="button" id="mas" name="mas" class="BotonMas"  value="+" onclick="Abrir_ventana('buscador_referencias.php?componente=<?php echo $componente;?>')"/>
+	           		<input type="button" id="menos" name="menos" class="BotonMenos" value="-" onclick="removeRow(mitabla)"  />
 	           	<?php } ?>
         </div>
         <div class="ContenedorCamposCreacionBasico" id="capa_opciones" style="display:none;">
@@ -734,7 +734,7 @@ echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 	window.onload = function(){
 		// Obtenemos el precio del periférico con sus referencias heredadas
 		var mitabla = document.getElementById("mitabla");
-		var costePeriferico = damePrecioComponenteConHeredadas(mitabla);
+		var costePeriferico = damePrecioComponenteConHeredadas(mitabla,"piezas[]");
 
 		// Modificamos los precios de los kits para que añadan las referencias heredadas
 		var sl = document.getElementById('kit[]');

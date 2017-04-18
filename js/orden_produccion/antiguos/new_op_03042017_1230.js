@@ -165,8 +165,7 @@ function addRow(tableId,id_referencia){
 	cell_11.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '/>';
 
 	// Calculamos el coste de todas las referencias que haya en la tabla y actualizamos el coste total
-	// costeTotal = calculaCoste(table);
-	costeTotal = damePrecioComponenteConHeredadas(table);
+	costeTotal = calculaCoste(table);
 	actualizarCoste(costeTotal);
 }
 
@@ -189,8 +188,7 @@ function removeRow(tableID) {
 			}
 		}
 		// Calculamos el coste de todas las referencias que haya en la tabla y actualizamos el coste total
-		// costeTotal = calculaCoste(table);
-		costeTotal = damePrecioComponenteConHeredadas(table);
+		costeTotal = calculaCoste(table);
 		actualizarCoste(costeTotal);
 	}
 	catch(e) {
@@ -353,8 +351,7 @@ function validarPiezasCorrectas(fila) {
 	}
 	if (!error){
 		modificaPrecioReferencia(num_piezas,fila);
-		// costeTotal = calculaCoste(table);
-		costeTotal = damePrecioComponenteConHeredadas(table);
+		costeTotal = calculaCoste(table);
 		actualizarCoste(costeTotal);
 	}
 	else {

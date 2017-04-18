@@ -65,7 +65,7 @@ function Abrir_ventana(pagina) {
 
 		// Calculamos el coste de todas las referencias que hubiera en la tabla
 		// costeTotal = calculaCoste(table);
-		costeTotal = damePrecioComponenteConHeredadas(table);
+		costeTotal = damePrecioComponenteConHeredadas(table,"piezas[]");
 		actualizarCoste(costeTotal);
 	}
 	
@@ -101,7 +101,7 @@ function Abrir_ventana(pagina) {
 				}
 			}
 			// costeTotal = calculaCoste(table);
-			costeTotal = damePrecioComponenteConHeredadas(table);
+			costeTotal = damePrecioComponenteConHeredadas(table,"piezas[]");
 			actualizarCoste(costeTotal);
 		}
 		catch(e) {
@@ -171,7 +171,7 @@ function Abrir_ventana(pagina) {
 		if (!error){
 			modificaPrecioReferencia(num_piezas,fila);
 			// costeTotal = calculaCoste(table);
-			costeTotal = damePrecioComponenteConHeredadas(table);
+			costeTotal = damePrecioComponenteConHeredadas(table,"piezas[]");
 			actualizarCoste(costeTotal);
 		}
 		else {

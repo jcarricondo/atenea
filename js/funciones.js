@@ -146,7 +146,7 @@ function enviarFormulario(){
 }
 
 // Obtiene las referencias de una tabla y calcula el precio incluyendo las heredadas
-function damePrecioComponenteConHeredadas(table){
+function damePrecioComponenteConHeredadas(table,input_piezas){
 	var array_ids = new Array();
 	var array_piezas = new Array();
 
@@ -159,7 +159,7 @@ function damePrecioComponenteConHeredadas(table){
 		var j=i-1;
 		var row = table.rows[i];
 		id_ref = row.cells[0].childNodes[0].nodeValue;
-		piezas = document.getElementsByName("piezas[]")[j].value;
+		piezas = document.getElementsByName(input_piezas)[j].value;
 
 		array_ids[j] = id_ref;
 		array_piezas[j] = piezas;
@@ -183,6 +183,41 @@ function damePrecioComponenteConHeredadas(table){
 
 	var precio = respuesta;
 	return precio;
+}
+
+// Función que comprueba si una tabla tiene referencias heredadas
+function tieneHeredadasTabla(nombre_tabla){
+	var tabla = document.getElementById(nombre_tabla);
+	var num_filas = tabla.rows.length;
+	var i=0;
+	var encontrado = false;
+
+	while((i < num_filas) && (!encontrado)){
+		if(i != 0){
+			var row = tabla.rows[i];
+			var id_referencia = row.cells[0].childNodes[0].nodeValue;
+
+			// Llamada asincrona para obtener si la tabla tiene referencias heredadas
+			var respuesta = (function () {
+				var respuesta = null;
+				$.ajax({
+					dataType: "json",
+					url: "../ajax/basicos/referencias.php?comp=tieneHeredadas",
+					data: "id=" + id_referencia,
+					type: "GET",
+					async: false,
+					success: function (data) {
+						respuesta = data;
+					}
+				});
+				return respuesta;
+			})();
+			var encontrado = respuesta;
+		}
+		i++;
+	}
+	var tieneHeredadas = encontrado;
+	return tieneHeredadas;
 }
 
 // Obtiene las referencias de una tabla y calcula el precio incluyendo las heredadas

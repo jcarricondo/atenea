@@ -8,7 +8,7 @@ var cell = row.insertCell(0);
 div.appendChild(table);
 	
 // Funcion para añadir referencias al periferico
-function addRowPeriferico(tableId,id_referencia,perif){ 
+function addRowPeriferico(tableId,id_referencia,perif){
 	var table = document.getElementById(tableId); 
 	//Guardamos en una variable la cantidad de filas que tiene la tabla. 
 	//esta variable tambien nos servira para indicar que la fila se tiene 
@@ -56,7 +56,9 @@ function addRowPeriferico(tableId,id_referencia,perif){
 	cell_11.innerHTML = '<input type="checkbox" name="chkbox_per" value"' + id_ref + '/>';
 		
 	// Calculamos el coste de todas las referencias que haya en la tabla
-	costeTotal = calculaCostePeriferico(table,perif);
+	// costeTotal = calculaCostePeriferico(table,perif); alert(costeTotal);
+
+	costeTotal = damePrecioComponenteConHeredadas(table,"piezas_perifericos_" + perif + "[]");
 	actualizarCostePeriferico(costeTotal,perif);
 	actualizarCosteTotalPeriferico(costeTotal,perif);
 }
@@ -78,7 +80,8 @@ function removeRowPeriferico(tableID,n_periferico) {
 				}
 			}
 		}
-		costeTotal = calculaCostePeriferico(table,n_periferico);
+		// costeTotal = calculaCostePeriferico(table,n_periferico);
+		costeTotal = damePrecioComponenteConHeredadas(table,"piezas_perifericos_" + n_periferico + "[]");
 		actualizarCostePeriferico(costeTotal,n_periferico);
 		actualizarCosteTotalPeriferico(costeTotal,n_periferico);
 	}
@@ -146,7 +149,8 @@ function validarPiezasCorrectasPeriferico(fila,perif) {
 	}
 	if (!error){
 		modificaPrecioReferenciaPeriferico(num_piezas,fila,perif);
-		costeTotal = calculaCostePeriferico(table,perif);
+		// costeTotal = calculaCostePeriferico(table,perif);
+		costeTotal = damePrecioComponenteConHeredadas(table,"piezas_perifericos_" + perif + "[]");
 		actualizarCostePeriferico(costeTotal,perif);
 		actualizarCosteTotalPeriferico(costeTotal,perif);
 	}
@@ -260,8 +264,14 @@ function actualizarCostePeriferico(costeTotal,perif){
 		costeTotal = costeTotal * 100;
 		costeTotal = Math.round(costeTotal) / 100;
 		costeTotal = costeTotal.toFixed(2);
-		label_precio = document.getElementById('precio_periferico_' + perif);
-		label_precio.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span>';
+		//label_precio = document.getElementById('precio_periferico_' + perif);
+		//label_precio.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span>';
+
+		var span_precio = document.getElementById('span_precio_periferico_' + perif);
+		var tieneHeredadas = tieneHeredadasTabla("mitabla_" + perif);
+		if(tieneHeredadas) span_precio.setAttribute("style", "color: orange;");
+		else span_precio.setAttribute("style", "color: #2998cc");
+		span_precio.innerHTML = costeTotal + "€";
 	}
 	catch(e) {
 		alert(e);

@@ -56,7 +56,8 @@ function addRowRefLibre(tableId,id_referencia){
 	cell_11.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '/>';
 	
 	// Calculamos el coste de todas las referencias que haya en la tabla
-	costeTotal = calculaCosteRefLibres(table);
+	// costeTotal = calculaCosteRefLibres(table);
+	costeTotal = damePrecioComponenteConHeredadas(table,"piezas_ref_libres[]");
 	actualizarCosteRefLibres(costeTotal);
 }
 
@@ -78,7 +79,8 @@ function removeRowRefLibres(tableID) {
 				}
 			}
 		}
-		costeTotal = calculaCosteRefLibres(table);
+		// costeTotal = calculaCosteRefLibres(table);
+		costeTotal = damePrecioComponenteConHeredadas(table,"piezas_ref_libres[]");
 		actualizarCosteRefLibres(costeTotal);
 	}catch(e) {
 		alert(e);
@@ -113,7 +115,8 @@ function validarPiezasCorrectasRefsLibres(fila) {
 	}
 	if (!error){
 		modificaPrecioReferenciaRefLibres(num_piezas,fila);
-		costeTotal = calculaCosteRefLibres(table);
+		// costeTotal = calculaCosteRefLibres(table);
+		costeTotal = damePrecioComponenteConHeredadas(table,"piezas_ref_libres[]");
 		actualizarCosteRefLibres(costeTotal);
 	}
 	else {
@@ -330,9 +333,13 @@ function actualizarCosteTotalPeriferico(costeTotal,periferico){
 		costeTotal = costeTotal + coste_kits;
 		costeTotal = costeTotal.toFixed(2);
 			
-		precio_total_periferico.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeKitsPeriferico_' + periferico + '" name="costeKitsPeriferico_' + periferico + '" value="' + coste_kits + '"/><input type="hidden" id="precio_tot_periferico_' + periferico + '" name="precio_tot_periferico_' + periferico + '" value="' + costeTotal + '"/>';
-			
-		actualizarCosteTotalProducto();
+		precio_total_periferico.innerHTML = '<span id="span_precio_total_periferico_' + periferico +'" class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="costeKitsPeriferico_' + periferico + '" name="costeKitsPeriferico_' + periferico + '" value="' + coste_kits + '"/><input type="hidden" id="precio_tot_periferico_' + periferico + '" name="precio_tot_periferico_' + periferico + '" value="' + costeTotal + '"/>';
+		var span_precio = document.getElementById('span_precio_total_periferico_' + periferico);
+		var tieneHeredadas = tieneHeredadasTabla("mitabla_" + periferico);
+		if(tieneHeredadas) span_precio.setAttribute("style", "color: orange;");
+		else span_precio.setAttribute("style", "color: #2998cc");
+
+		actualizarCosteTotalProducto(tieneHeredadas);
 	}
 	catch(e) {
 		alert(e);
@@ -426,8 +433,13 @@ function actualizarCosteRefLibres(costeTotal){
 		costeTotal = Math.round(costeTotal) / 100;
 		costeTotal = costeTotal.toFixed(2);
 		label_precio = document.getElementById('coste_ref_libres');
-		label_precio.innerHTML = '<span class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="coste_total_refs_libres" name="coste_total_refs_libres" value="' + costeTotal + '"/>';
-		
+		label_precio.innerHTML = '<span id="span_precio_ref_libres" class="tituloComp">' + costeTotal + "€" + '</span><input type="hidden" id="coste_total_refs_libres" name="coste_total_refs_libres" value="' + costeTotal + '"/>';
+
+		var span_precio = document.getElementById('span_precio_ref_libres');
+		var tieneHeredadas = tieneHeredadasTabla("mitablaRefLibres");
+		if(tieneHeredadas) span_precio.setAttribute("style", "color: orange;");
+		else span_precio.setAttribute("style", "color: #2998cc");
+
 		actualizarCosteTotalProducto();
 	}
 	catch(e) {
@@ -443,7 +455,7 @@ function actualizarCosteTotalProducto(){
 
 	precio_producto = precio_final_todos_perifericos + precio_final_kits_libres + precio_final_refs_libres;
 	precio_producto_string = precio_producto.toFixed(2);
-				
+
 	// Obtenemos la celda de total producto
 	celda_total_producto = document.getElementById('celda_total_producto');
 	celda_total_producto.innerHTML = '<span class="tituloComp">' + precio_producto_string + '€' + '</span>';
@@ -466,5 +478,12 @@ function actualizarCosteTotalOrdenProduccion(precio_producto){
 
 	// Obtenemos la celda donde esta escrito el resultado 		
 	celda_coste_op = document.getElementById('celda_coste_op');
-	celda_coste_op.innerHTML = '<span class="tituloComp">' + coste_op + '€' + '</span>'; 
+	celda_coste_op.innerHTML = '<span class="tituloComp">' + coste_op + '€' + '</span>';
+}
+
+
+// Función que determina si hay alguna referencia heredada en algun componente
+function hayAlgunaHeredada(){
+	var hay_alguna_heredada = document.getElementById("hay_alguna_heredada").value;
+	return hay_alguna_heredada;
 }

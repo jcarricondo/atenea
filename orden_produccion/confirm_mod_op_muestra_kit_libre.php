@@ -6,6 +6,16 @@ $ref_kits->setValores($id_componente);
 $ref_kits->realizarConsulta();
 $resultadosBusqueda = $ref_kits->referencias_componentes;
 $precio_kit_libre = 0;
+// Obtenemos las referencias del componente para calcular el precio con sus heredadas
+$referencias_componente = $comp->dameRefsYPiezasComponente($id_componente);
+$referencias_componente_her = $ref_heredada->obtenerHeredadas($referencias_componente);
+$precio_kit_libre = $ref_heredada->damePrecioReferenciasHeredadas($referencias_componente_her);
+$hay_heredadas = count($referencias_componente) != count($referencias_componente_her);
+if($hay_heredadas) {
+	$color_precio = ' style="color: orange"';
+	$hay_alguna_heredada = true;
+}
+else $color_precio = ' style="color: #2998cc;"';
 ?>
 
 <div class="ContenedorCamposCreacionBasico">
@@ -56,7 +66,7 @@ $precio_kit_libre = 0;
 					else $precio_unidad = 00;
 
 					$precio_referencia = $ref_comp->piezas * $precio_unidad;
-					$precio_kit_libre = $precio_kit_libre + $precio_referencia; ?>
+					$precio_kit_libre_tabla = $precio_kit_libre_tabla + $precio_referencia; ?>
 
 					<tr>
 						<td style="text-align:center"><?php echo $ref_comp->id_referencia; ?></td>
@@ -101,7 +111,7 @@ $precio_kit_libre = 0;
 		<table id="tablaTituloPrototipo">
 		<tr>
 			<td id="precio_kit_libre_<?php echo $i;?>" style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
-				<span class="tituloComp"><?php echo number_format($precio_kit_libre, 2, ',', '.').'€';?></span>
+				<span class="tituloComp" <?php echo $color_precio;?>><?php echo number_format($precio_kit_libre, 2, ',', '.').'€';?></span>
 			</td>
 		</tr>
 		</table>

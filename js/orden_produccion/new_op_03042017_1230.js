@@ -165,7 +165,8 @@ function addRow(tableId,id_referencia){
 	cell_11.innerHTML = '<input type="checkbox" name="chkbox" value"' + id_ref + '/>';
 
 	// Calculamos el coste de todas las referencias que haya en la tabla y actualizamos el coste total
-	costeTotal = calculaCoste(table);
+	// costeTotal = calculaCoste(table);
+	costeTotal = damePrecioComponenteConHeredadas(table,"piezas[]");
 	actualizarCoste(costeTotal);
 }
 
@@ -188,7 +189,8 @@ function removeRow(tableID) {
 			}
 		}
 		// Calculamos el coste de todas las referencias que haya en la tabla y actualizamos el coste total
-		costeTotal = calculaCoste(table);
+		// costeTotal = calculaCoste(table);
+		costeTotal = damePrecioComponenteConHeredadas(table,"piezas[]");
 		actualizarCoste(costeTotal);
 	}
 	catch(e) {
@@ -316,6 +318,10 @@ function actualizarCoste(costeTotal){
 		costeTotal = Math.round(costeTotal) / 100;
 		costeTotal = costeTotal.toFixed(2);
 		label_precio = document.getElementById('precio_refs_libres');
+
+		var tieneHeredadas = tieneHeredadasTabla("mitablaRefsLibres");
+		if(tieneHeredadas) label_precio.setAttribute("style", "color: orange;");
+		else label_precio.setAttribute("style", "color: #2998cc");
 		label_precio.innerHTML = costeTotal + "€";
 	}
 	catch(e) {
@@ -351,7 +357,8 @@ function validarPiezasCorrectas(fila) {
 	}
 	if (!error){
 		modificaPrecioReferencia(num_piezas,fila);
-		costeTotal = calculaCoste(table);
+		// costeTotal = calculaCoste(table);
+		costeTotal = damePrecioComponenteConHeredadas(table,"piezas[]");
 		actualizarCoste(costeTotal);
 	}
 	else {

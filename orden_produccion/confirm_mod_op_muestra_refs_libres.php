@@ -1,3 +1,18 @@
+<?php
+unset($referencias_componente);
+for($i=0;$i<count($referencias_libres);$i++){
+$referencias_componente[$i]["id_referencia"] = $referencias_libres[$i];
+$referencias_componente[$i]["piezas"] = $piezas[$i];
+}
+$referencias_componente_her = $ref_heredada->obtenerHeredadas($referencias_componente);
+$precio_refs_libres = $ref_heredada->damePrecioReferenciasHeredadas($referencias_componente_her);
+$hay_heredadas = count($referencias_componente) != count($referencias_componente_her);
+if($hay_heredadas) {
+	$color_precio = ' style="color: orange"';
+	$hay_alguna_heredada = true;
+}
+else $color_precio = ' style="color: #2998cc;"'; ?>
+
 <div class="ContenedorCamposCreacionBasico">
 	<div class="LabelCreacionBasico">Referencias Libres</div>
 	<div class="CajaReferencias">
@@ -19,7 +34,7 @@
 			</tr>
 
 			<?php
-				$precio_refs_libres = 0;
+				$precio_refs_libres_tabla = 0;
 				$ref_libres = $referencias_libres;
 				for($i=0;$i<count($referencias_libres);$i++) {
 					// Se cargan los datos de las referencias según su identificador
@@ -32,7 +47,7 @@
 					$total_paquetes = $ref->total_paquetes;
 					$precio_unidad = ($ref->pack_precio / $ref->unidades);
 					$precio_referencia = $precio_unidad * $piezas[$i];
-					$precio_refs_libres = $precio_refs_libres + $precio_referencia;
+					$precio_refs_libres_tabla = $precio_refs_libres_tabla + $precio_referencia;
 					echo '<input type="hidden" id="tot_paquetes[]" name="tot_paquetes[]" value="'.$total_paquetes.'"/>'; ?>
 
 					<tr>
@@ -80,7 +95,7 @@
 			<td id="coste_ref_libres" style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
 			<?php
 				echo '<input type="hidden" id="coste_total_refs_libres" name="coste_total_refs_libres" value="'.$precio_refs_libres.'"/>';
-				echo '<span class="tituloComp">'.number_format($precio_refs_libres, 2, ',', '.').'€'.'</span>';
+				echo '<span id="span_precio_ref_libres" class="tituloComp" '.$color_precio.'>'.number_format($precio_refs_libres, 2, ',', '.').'€'.'</span>';
 			?>
 			</td>
 		</tr>

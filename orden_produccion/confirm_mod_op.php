@@ -2,6 +2,7 @@
 set_time_limit(10000);
 // Paso final para la modificación de la Orden de Producción
 include("../includes/sesion.php");
+include("../classes/basicos/componente.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/nombre_producto.class.php");
@@ -19,6 +20,7 @@ include("../classes/kint/Kint.class.php");
 permiso(10);
 
 $proveedor = new Proveedor();
+$comp = new Componente();
 $ref = new Referencia();
 $ref_comp = new Referencia_Componente();
 $ref_heredada = new Referencia_Heredada();

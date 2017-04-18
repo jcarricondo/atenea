@@ -27,12 +27,23 @@
 
                 $hay_alguna_heredada = false;
                 $referencias_libres = $op->cargaDatosPorProduccionComponente($id_produccion,0);
+                if(!empty($referencias_libres)) foreach($referencias_libres as $reg_ref_libre) $array_refs_libres[] = $reg_ref_libre["id_referencia"];
+
 				// Hacemos la carga de la tabla referencias
 				for ($i=0;$i<count($referencias_libres);$i++){
                     $id_referencia_libre = $referencias_libres[$i]["id_referencia"];
                     $piezas = $referencias_libres[$i]["piezas"];
 
-                    $tienePadres = $ref_heredada->tienePadres($id_referencia_libre);
+                    // Sólo mostraremos aquellas referencias que no tengan padres o que tengan como padre alguna de las referencias de la tabla
+                    $res_padres = $ref_heredada->dameTodosAntecesores($id_referencia_libre);
+                    $j=0;
+                    $encontrado = false;
+                    while(!$encontrado && $j < count($res_padres)){
+                        $id_ref_padre = $res_padres[$j]["id_referencia"];
+                        $encontrado = in_array($id_ref_padre,$array_refs_libres);
+                        $j++;
+                    }
+                    $tienePadres = $encontrado;
 
                     $ref->cargaDatosReferenciaId($id_referencia_libre);
                     if ($ref->pack_precio <> 0 and $ref->unidades <>0) $precio_unidad = $ref->pack_precio / $ref->unidades;
@@ -42,8 +53,7 @@
                     $total_paquetes = $ref->total_paquetes;
                     $precio_referencia = $piezas * $precio_unidad;
                     $precio_total = $precio_total + $precio_referencia;
-                    if(!$tienePadres) {
-                        $hay_alguna_heredada = true; ?>
+                    if(!$tienePadres) { ?>
                         <tr>
                             <td style="text-align:center"><?php echo $ref->id_referencia;?></td>
                             <td id="enlaceComposites">
@@ -67,6 +77,7 @@
                         <input type="hidden" name="fila" id="fila" value="<?php echo $fila;?>"/>
             <?php
                     }
+                    else $hay_alguna_heredada = true;
                 }
 			?>
             </table>

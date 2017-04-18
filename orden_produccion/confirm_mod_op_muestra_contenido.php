@@ -76,6 +76,7 @@
 	?>
 
 <?php
+	$hay_alguna_heredada = false;
 	include("confirm_mod_op_muestra_perifericos.php");
 	if($tieneKitsLibres)include("confirm_mod_op_muestra_kits_libres.php");
 	include("confirm_mod_op_muestra_refs_libres.php");
@@ -115,7 +116,7 @@
 	</div>
 	<br />
 	<div class="ContenedorBotonCreacionBasico">
-	   	<input type="button" id="volver" name="volver" value="Volver" onclick="location='mod_orden_produccion.php?id_produccion=<?php echo $id_produccion;?>&id_producto=<?php echo $id_producto;?>'"/>
+	   	<input type="button" id="volver" name="volver" value="Volver" onclick="location='mod_op.php?id_produccion=<?php echo $id_produccion;?>&id_producto=<?php echo $id_producto;?>'"/>
 	    <input type="hidden" id="guardandoOrdenProduccion" name="guardandoOrdenProduccion" value="1"/>
 	    <input type="submit" id="continuar" name="continuar" value="Continuar" />
 		<?php for ($i=0;$i<count($cliente);$i++) echo '<input type="hidden" id="ids_clientes[]" name="ids_clientes[]" value="'.$cliente[$i].'"/>';?>

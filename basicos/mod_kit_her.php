@@ -556,7 +556,7 @@ $componente = "kit";
 </div>
 <script type="text/javascript">
 	window.onload = function(){
-		costeTotal = damePrecioComponenteConHeredadas(mitabla);
+		costeTotal = damePrecioComponenteConHeredadas(mitabla,"piezas[]");
 		actualizarCoste(costeTotal);
 	}
 </script>

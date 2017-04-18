@@ -51,7 +51,7 @@ $titulo_pagina = "Órdenes de Producción > Nueva Orden de Producción";
 $pagina = "new_orden_produccion";
 include ('../includes/header.php');
 echo '<script type="text/javascript" src="../js/funciones.js"></script>';
-echo '<script type="text/javascript" src="../js/orden_produccion/new_op_03042017_1230_her.js"></script>';
+echo '<script type="text/javascript" src="../js/orden_produccion/new_op_03042017_1230.js"></script>';
 ?>
 
 <div class="separador"></div>
