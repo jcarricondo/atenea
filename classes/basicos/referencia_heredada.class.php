@@ -322,6 +322,13 @@ class Referencia_Heredada extends Referencia {
 		return $array_referencias;
 	}
 
+	// Función que determina si una referencia tiene padres
+	function tienePadres($id_referencia){
+		$res = $this->dameTodosAntecesores($id_referencia);
+		return !empty($res);
+	}
+
+
 	/*
 	// Función recursiva que devuelve un array con las referencias heredadas y sus piezas totales
 	function dameHerederasYCantidad($id_referencia,&$array_piezas,&$array_final){
@@ -343,6 +350,71 @@ class Referencia_Heredada extends Referencia {
 		return $array_piezas;
 	}
 	*/
+
+	// Función que devuelve un array con todas las referencias heredadas y sus piezas recalculadas de un componente
+	function obtenerHeredadas($referencias_componente){
+		// Preparamos el array final con el id_referencia y las piezas
+		$cont = 0;
+		if(!empty($referencias_componente)){
+			foreach($referencias_componente as $array_referencias_componente) {
+				$referencias_componente_final[$cont]["id_referencia"] = intval($array_referencias_componente["id_referencia"]);
+				$referencias_componente_final[$cont]["piezas"] = floatval($array_referencias_componente["piezas"]);
+				$cont++;
+			}
+
+			$referencias_componente_final_aux = $referencias_componente_final;
+
+			// Comprobamos si las referencias tienen heredadas y multiplicamos sus piezas
+			foreach($referencias_componente_final as $array_referencias_componente_final){
+				$raiz = $array_referencias_componente_final["id_referencia"];
+				$piezas = $array_referencias_componente_final["piezas"];
+
+				// Obtenemos el grafo ordenado por BFS (Anchura) y después todas las piezas necesarias de cada referencia
+				$heredadas_por_nivel = $this->dameTodasHeredadasNivel($raiz);
+				$referencias_heredadas_referencia = $this->dameTodasHeredadasPiezas($heredadas_por_nivel);
+
+				// Si tiene heredadas las agrupamos al array de referencias final con sus piezas correspondientes
+				if(!empty($referencias_heredadas_referencia)){
+					$cont = 0;
+					foreach($referencias_heredadas_referencia as $id_ref_heredada => $piezas_heredada){
+						$array_piezas_heredadas[$cont]["id_referencia"] = $id_ref_heredada;
+						$array_piezas_heredadas[$cont]["piezas"] = $piezas * $piezas_heredada;
+						$cont++;
+					}
+
+					// Agrupamos las referencias heredadas al array final
+					$referencias_componente_final_aux = $this->agruparReferenciasComponentes($array_piezas_heredadas,$referencias_componente_final_aux);
+					unset($array_piezas_heredadas);
+				}
+			}
+
+			$referencias_componente_final = $referencias_componente_final_aux;
+			if(!empty($referencias_componente_final)) {
+				// Ordenamos el array de referencias
+				array_multisort($referencias_componente_final);
+			}
+		}
+		return $referencias_componente_final;
+	}
+
+	// Función que obtiene el precio total de la suma de sus referencias heredadas
+	function damePrecioReferenciasHeredadas($referencias_componente){
+		$precio_componente = 0;
+		for($i=0;$i<count($referencias_componente);$i++){
+			$id_referencia = $referencias_componente[$i]["id_referencia"];
+			$piezas = $referencias_componente[$i]["piezas"];
+			$this->cargaDatosReferenciaId($id_referencia);
+			$uds_paquete = $this->unidades;
+			$pack_precio = $this->pack_precio;
+			if($pack_precio != 0 && $uds_paquete != 0) $precio_unidad = $pack_precio / $uds_paquete;
+			else $precio_unidad = 0;
+			$precio_referencia = $piezas * $precio_unidad;
+			$precio_componente = $precio_componente + $precio_referencia;
+		}
+		return $precio_componente;
+	}
+
+
 
 
 	// Devuelve la cadena de un error según su identificador

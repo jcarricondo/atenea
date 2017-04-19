@@ -73,8 +73,8 @@ class Plantilla_Producto extends MySql{
 	}
 
 	// Función que devuelve los kits libres de la plantilla de producto
-	function dameKitsPlantillaProducto($id_plantilla){
-		$consulta = sprintf("select id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=5 and id_plantilla=%s",
+	function dameKitsLibresPlantillaProducto($id_plantilla){
+		$consulta = sprintf("select id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=6 and id_plantilla=%s",
 				$this->makeValue($id_plantilla, "int"));
 		$this->setConsulta($consulta);
 		$this->ejecutarConsulta();
@@ -83,8 +83,8 @@ class Plantilla_Producto extends MySql{
 	}
 
 	// Función que devuelve los kits libres de la plantilla de producto sin repeticiones
-	function dameKitsPlantillaProductoSinRepeticiones($id_plantilla){
-		$consulta = sprintf("select distinct id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=5 and id_plantilla=%s order by id_componente",
+	function dameKitsLibresPlantillaProductoSinRepeticiones($id_plantilla){
+		$consulta = sprintf("select distinct id_componente from plantilla_producto_componentes where activo=1 and id_tipo_componente=6 and id_plantilla=%s order by id_componente",
 				$this->makeValue($id_plantilla, "int"));
 		$this->setConsulta($consulta);
 		$this->ejecutarConsulta();

@@ -3,7 +3,16 @@
 $listado_ref_comp->setValores($id_componente);
 $listado_ref_comp->realizarConsulta();
 $resultadosBusqueda = $listado_ref_comp->referencias_componentes;
-?>
+// Obtenemos las referencias del componente para calcular el precio con sus heredadas
+$referencias_componente = $comp->dameRefsYPiezasComponente($id_componente);
+$referencias_componente_her = $ref_heredada->obtenerHeredadas($referencias_componente);
+$precio_periferico = $ref_heredada->damePrecioReferenciasHeredadas($referencias_componente_her);
+$hay_heredadas = count($referencias_componente) != count($referencias_componente_her);
+if($hay_heredadas) {
+	$color_precio = ' style="color: orange"';
+	$hay_alguna_heredada = true;
+}
+else $color_precio = ' style="color: #2998cc;"'; ?>
 
 <div class="ContenedorCamposCreacionBasico">
 	<div class="LabelCreacionBasico">Referencias Perif&eacute;rico</div>
@@ -55,7 +64,7 @@ $resultadosBusqueda = $listado_ref_comp->referencias_componentes;
 					if($ref->pack_precio <> 0 and $ref->unidades <> 0) $precio_unidad = $ref->pack_precio / $ref->unidades;
 					else $precio_unidad = 00;
 					$precio_referencia = $ref_comp->piezas * $precio_unidad;
-					$precio_periferico = $precio_periferico + $precio_referencia; ?>
+					$precio_periferico_tabla = $precio_periferico_tabla + $precio_referencia; ?>
 
 					<tr>
 						<td style="text-align:center"><?php echo $ref_comp->id_referencia;?></td>
@@ -100,7 +109,9 @@ $resultadosBusqueda = $listado_ref_comp->referencias_componentes;
 		<table id="tablaTituloPrototipo">
 		<tr>
 			<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
-				<span class="tituloComp"><?php echo number_format($precio_periferico,2,',','.').'€'?></span>
+				<span class="tituloComp" <?php echo $color_precio;?>>
+					<?php echo number_format($precio_periferico,2,',','.').'€'?>
+				</span>
 			</td>
 		</tr>
 		</table>

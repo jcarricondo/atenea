@@ -1,6 +1,19 @@
 <?php
 // Este fichero muestra las referencias libres en la confirmación de la creación de una Orden de Producción
-?>
+unset($referencias_componente);
+for($i=0;$i<count($referencias_libres);$i++){
+    $referencias_componente[$i]["id_referencia"] = $referencias_libres[$i];
+    $referencias_componente[$i]["piezas"] = $piezas[$i];
+}
+$referencias_componente_her = $ref_heredada->obtenerHeredadas($referencias_componente);
+$precio_refs_libres = $ref_heredada->damePrecioReferenciasHeredadas($referencias_componente_her);
+$hay_heredadas = count($referencias_componente) != count($referencias_componente_her);
+if($hay_heredadas) {
+    $color_precio = ' style="color: orange"';
+    $hay_alguna_heredada = true;
+}
+else $color_precio = ' style="color: #2998cc;"'; ?>
+
 <div class="ContenedorCamposCreacionBasico">
     <div class="LabelCreacionBasico">Referencias Libres</div>
     <div class="CajaReferencias">
@@ -20,7 +33,7 @@
                 <th style="text-align:center">PRECIO</th>
             </tr>
             <?php
-                $precio_refs_libres = 0;
+                $precio_refs_libres_tabla = 0;
                 // Copiamos el array para el input hidden
                 $ref_libres = $referencias_libres;
                 for($i=0; $i<count($referencias_libres); $i++) {
@@ -38,7 +51,7 @@
                         if($ref_libre->pack_precio <> 0 and $ref_libre->cantidad <> 0) $precio_unidad = $ref_libre->pack_precio / $ref_libre->cantidad;
                         else $precio_unidad = 00;
                         $precio_referencia = $piezas[$i] * $precio_unidad;
-                        $precio_refs_libres = $precio_refs_libres + $precio_referencia; ?>
+                        $precio_refs_libres_tabla = $precio_refs_libres_tabla + $precio_referencia; ?>
 
                     <input type="hidden" id="Piezas[]" name="Piezas[]" value="<?php echo $piezas[$i];?>"/>
                     <input type="hidden" id="tot_paquetes[]" name="tot_paquetes[]" value="<?php echo $total_paquetes;?>"/>
@@ -85,7 +98,11 @@
     <div class="tituloComponente">
         <table id="tablaTituloPrototipo">
         <tr>
-            <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;"><span class="tituloComp"><?php echo number_format($precio_refs_libres, 2, ',', '.').'€';?></span></td>
+            <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
+				<span class="tituloComp" <?php echo $color_precio;?>>
+                    <?php echo number_format($precio_refs_libres, 2, ',', '.').'€';?>
+                </span>
+            </td>
         </tr>
         </table>
     </div>

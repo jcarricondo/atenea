@@ -55,7 +55,7 @@ var div = document.getElementById('CapaTablaIframe');
 		
 		// Calculamos el coste de todas las referencias que haya en la tabla
 		// costeTotal = calculaCoste(table);
-		costeTotal = damePrecioComponenteConHeredadas(table);
+		costeTotal = damePrecioComponenteConHeredadas(table,"piezas[]");
 		actualizarCoste(costeTotal);
 	}
 	
@@ -90,7 +90,7 @@ var div = document.getElementById('CapaTablaIframe');
 				}
 			}
 			// costeTotal = calculaCoste(table);
-			costeTotal = damePrecioComponenteConHeredadas(table);
+			costeTotal = damePrecioComponenteConHeredadas(table,"piezas[]");
 			actualizarCoste(costeTotal);
 		}
 		catch(e) {
@@ -217,7 +217,7 @@ var div = document.getElementById('CapaTablaIframe');
 		if (!error){
 			modificaPrecioReferencia(num_piezas,fila);
 			// costeTotal = calculaCoste(table);
-			costeTotal = damePrecioComponenteConHeredadas(table);
+			costeTotal = damePrecioComponenteConHeredadas(table,"piezas[]");
 			actualizarCoste(costeTotal);
 		}
 		else {

@@ -37,7 +37,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 	
 	// Convierte la fecha en formato HTML
 	if($fecha_desde != "") $fecha_desde = $funciones->cFechaNormal($fecha_desde);
-	if($fecha_desde != "") $fecha_hasta = $funciones->cFechaNormal($fecha_hasta);
+	if($fecha_hasta != "") $fecha_hasta = $funciones->cFechaNormal($fecha_hasta);
 	
 	// Guardar las variables del formulario en variable de sesion
 	$_SESSION["nombre_plantilla_producto"] = stripslashes(htmlspecialchars($nombre));

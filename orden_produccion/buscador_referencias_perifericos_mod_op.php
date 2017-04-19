@@ -387,8 +387,8 @@ function soloNumeros (e) {
                             <input type="hidden" name="cantidad_per-<?php echo $ref_per->id_referencia;?>" id="cantidad_per-<?php echo $ref_per->id_referencia;?>" value="<?php echo $ref_per->cantidad;?>" />                        </td>
                         <td style="text-align:center">
                             <input type="hidden" id="periferico_n" name="periferico_n" value="<?php echo $num_periferico;?>" />
-                            <form name="BuscadorReferenciaPeriferico" id="BuscadorReferenciaPeriferico" action="muestra_referencias_perifericos_mod_op.php?nombreref=<?php echo $ref_per->referencia;?>&id=<?php echo $ref_per->id_referencia;?>" method="post">                  
-                            	<input type="button" onclick="javascript:add_referencia_Periferico(<?php echo $ref_per->id_referencia;?>);" value="+" />
+                            <form name="BuscadorReferenciaPeriferico" id="BuscadorReferenciaPeriferico" action="confirm_mod_op_muestra_periferico.php?nombreref=<?php echo $ref_per->referencia;?>&id=<?php echo $ref_per->id_referencia;?>" method="post">
+                            	<input type="button" onclick="add_referencia_Periferico(<?php echo $ref_per->id_referencia;?>);" value="+" />
                                 <input type="hidden" id="guardandoReferenciaPeriferico" name="guardandoReferenciaPeriferico" />
                             </form>
                         </td>                        

@@ -2,7 +2,7 @@
 // Este fichero contiene el codigo HTML y PHP del contenedor central de la Confirmacion de la Modificacion de una Orden de Produccion	
 ?> 
 <h3> Confirmación de la nueva Orden de Producción </h3>
-<form id="FormularioCreacionBasico" name="confirmModOrdenProduccion" onsubmit="return validarFormulario()" action="confirm_mod_op.php?id_produccion=<?php echo $id_produccion;?>" method="post">
+<form id="FormularioCreacionBasico" name="confirmModOrdenProduccion" onsubmit="return validarFormulario()" action="confirm_mod_orden_produccion.php?id_produccion=<?php echo $id_produccion;?>" method="post">
 	<br />
 	<h5> Datos de la nueva Orden de Producción </h5>
 	 <?php 

@@ -26,7 +26,11 @@ for($i=0;$i<count($ids_produccion_componente);$i++){
             $es_prototipo = ($periferico->prototipo == 1);
             $coste_total_componente = 0;
             // Obtenemos los kits del periférico
-            if(!empty($comp->dameKitsComponente($id_componente))) $res_kits = array_column($comp->dameKitsComponente($id_componente), "id_kit");
+            $res_kits_periferico = $comp->dameKitsComponente($id_componente);
+            if(!empty($res_kits_periferico)){
+                foreach ($res_kits_periferico as $array_kits) $res_kits[] = $array_kits["id_kit"];
+                //$res_kits = array_column($comp->dameKitsComponente($id_componente), "id_kit");
+            }
         break;
         case '3':
             // Deja de existir en Septiembre de 2016
@@ -177,7 +181,7 @@ for($i=0;$i<count($ids_produccion_componente);$i++){
 
         $siguiente_es_periferico = $id_tipo_siguiente == 2;
         $siguiente_es_kit_libre = $id_tipo_siguiente == 6;
-        $no_hay_mas_componentes = $id_componente_siguiente === NULL;
+        $no_hay_mas_componentes = $id_tipo_siguiente === NULL;
         $siguiente_es_principal = $siguiente_es_periferico || $siguiente_es_kit_libre || $no_hay_mas_componentes;
 
         if($siguiente_es_principal){

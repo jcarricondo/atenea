@@ -179,6 +179,36 @@ class Funciones extends MySQL{
 		}
     }
 
+	// Recorre las referencias de un componente y lo añade al array principal de referencias
+	function agruparReferenciasComponentes($referencias_componente_secundario,$referencias_componente_final){
+		$referencias_aux = $referencias_componente_final;
+		for($i=0;$i<count($referencias_componente_secundario);$i++){
+			$id_referencia = $referencias_componente_secundario[$i]["id_referencia"];
+			$piezas = $referencias_componente_secundario[$i]["piezas"];
+			$encontrado = false;
+			$j=0;
+			while(($j<count($referencias_componente_final)) and (!$encontrado)){
+				// Si coinciden las referencias sumamos las piezas.
+				if ($id_referencia == $referencias_componente_final[$j]["id_referencia"]){
+					$referencias_aux[$j]["piezas"] = $referencias_aux[$j]["piezas"] + $piezas;
+					$encontrado = true;
+				}
+				$j++;
+			}
+			if(!$encontrado){
+				// Si no esta la referencia la insertamos al final
+				array_push($referencias_aux,$referencias_componente_secundario[$i]);
+			}
+			// Modificamos el array de referencias del componente por el array modificado con las referencias del kit
+			unset($referencias_componente_final);
+			$referencias_componente_final = $referencias_aux;
+		}
+		unset($referencias_aux);
+		return $referencias_componente_final;
+	}
+
+
+
     function comprobarArchivoConBOM($filename) {
         $bom = pack('CCC', 0xEF, 0xBB, 0xBF);
         $file = fopen($filename, "rb");

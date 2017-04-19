@@ -79,7 +79,14 @@ if(isset($_GET["comp"])){
             $json = $precio_total;
             echo json_encode($json, JSON_FORCE_OBJECT);
         break;
+        case "tieneHeredadas":
+            $id_referencia = $_GET["id"];
+            $res_heredadas = $ref_heredada->dameHeredadasPrincipales($id_referencia);
+            $tiene_heredadas = !empty($res_heredadas);
 
+            $json = $tiene_heredadas;
+            echo json_encode($json, JSON_FORCE_OBJECT);
+        break;
         default:
 
         break;

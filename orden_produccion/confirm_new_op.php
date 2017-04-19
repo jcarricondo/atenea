@@ -7,10 +7,12 @@ include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/periferico.class.php");
 include("../classes/basicos/kit.class.php");
 include("../classes/basicos/proveedor.class.php");
+include("../classes/basicos/componente.class.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_componente.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
 include("../classes/basicos/nombre_producto.class.php");
 include("../classes/basicos/plantilla_producto.class.php");
-include("../classes/basicos/referencia_componente.class.php");
 include("../classes/basicos/listado_referencias_componentes.class.php");
 include("../classes/orden_produccion/orden_produccion.class.php");
 include("../classes/orden_produccion/incluir_referencia_libre.class.php");
@@ -22,9 +24,11 @@ permiso(9);
 
 $control_usuario = new Control_Usuario();
 $funciones = new Funciones();
+$comp = new Componente();
 $ref = new Referencia();
 $ref_libre = new Referencia_Libre();
 $ref_comp = new Referencia_Componente();
+$ref_heredada = new Referencia_Heredada();
 $listado_ref_comp = new listadoReferenciasComponentes();
 $periferico = new Periferico();
 $kit = new Kit();
@@ -61,7 +65,7 @@ if(!empty($id_plantilla)){
 
     // Obtenemos los componentes de la plantilla
     $res_perifericos = $plant->damePerifericosPlantillaProducto($id_plantilla);
-	$res_kits_libres = $plant->dameKitsPlantillaProducto($id_plantilla);
+	$res_kits_libres = $plant->dameKitsLibresPlantillaProducto($id_plantilla);
 
     for($i=0;$i<count($res_perifericos);$i++) $perifericos[] = $res_perifericos[$i]["id_componente"];
 	for($i=0;$i<count($res_kits_libres);$i++) $kits_libres[] = $res_kits_libres[$i]["id_componente"];
@@ -189,21 +193,26 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 						// Guardamos las referencias de los componentes
 						$ref_comp->dameReferenciasPorIdComponente($ids_componentes[$i]["id_componente"]);
 						$referencias_componente = $ref_comp->referencias_componente;
-						for($j=0;$j<count($referencias_componente);$j++){
-							$id_referencia = $referencias_componente[$j]["id_referencia"];
-							$uds_paquete = $referencias_componente[$j]["uds_paquete"];
-							$piezas = $referencias_componente[$j]["piezas"];
+
+						// Obtenemos las referencias heredadas del componente
+						$referencias_componente_her = $ref_heredada->obtenerHeredadas($referencias_componente);
+
+						for($j=0;$j<count($referencias_componente_her);$j++){
+							$id_referencia = $referencias_componente_her[$j]["id_referencia"];
+							$piezas = $referencias_componente_her[$j]["piezas"];
+
+							// Obtenemos el pack_precio de la tabla referencias
+							$ref->cargaDatosReferenciaId($id_referencia);
+							$pack_precio = $ref->pack_precio;
+							$uds_paquete = $ref->unidades;
+
 							// Calculamos el total_paquetes para la referencia
 							$ref->calculaTotalPaquetes($uds_paquete,$piezas);
 							$total_paquetes = $ref->total_paquetes;
-							
-							// Obtenemos el pack_precio de la tabla referencias 
-							$ref->cargaDatosReferenciaId($id_referencia);
-							$pack_precio = $ref->pack_precio;
-	
+
 							$resultado = $orden_produccion->guardarReferenciasProduccion($id_produccion,$id_tipo,$id_produccion_componente,$ids_componentes[$i]["id_componente"],$id_referencia,$uds_paquete,$piezas,$total_paquetes,$pack_precio);
 							if($resultado != 1){
-								$j = count($referencias_componente);
+								$j = count($referencias_componente_her);
 								$error = true;
 							}	
 						}		
@@ -257,18 +266,30 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 						unset($Piezas);
 						unset($uds_paquete);
 						unset($tot_paquetes);
+						unset($referencias_componente);
 						$ref_libres = $referencias_final;
 						$Piezas = $piezas_final;
 						$uds_paquete = $uds_paquete_final;
 						$tot_paquetes = $total_paquetes_final;
 
+						for($num_ref=0; $num_ref<count($ref_libres);$num_ref++){
+							$referencias_componente[$num_ref]["id_referencia"] = $ref_libres[$num_ref];
+							$referencias_componente[$num_ref]["piezas"] = $Piezas[$num_ref];
+						}
+
+						// Obtenemos las referencias heredadas del componente
+						$referencias_componente_her = $ref_heredada->obtenerHeredadas($referencias_componente);
+
 						$i=0;
 						$error = false;
-						while($i<count($ref_libres) and !$error){
-							$ref->cargaDatosReferenciaId($ref_libres[$i]);
+						while($i<count($referencias_componente_her) and !$error){
+							$ref->cargaDatosReferenciaId($referencias_componente_her[$i]["id_referencia"]);
 							$pack_precio = $ref->pack_precio;
+							$uds_paquete = $ref->unidades;
+							$ref->calculaTotalPaquetes($uds_paquete,$referencias_componente_her[$i]["piezas"]);
+							$total_paquetes = $ref->total_paquetes;
 
-							$resultado = $orden_produccion->guardarReferenciasProduccion($id_produccion,0,0,0,$ref_libres[$i],$uds_paquete[$i],$Piezas[$i],$tot_paquetes[$i],$pack_precio);		
+							$resultado = $orden_produccion->guardarReferenciasProduccion($id_produccion,0,0,0,$referencias_componente_her[$i]["id_referencia"],$uds_paquete,$referencias_componente_her[$i]["piezas"],$total_paquetes,$pack_precio);
 							if($resultado != 1) $error = true;
 							$i++;
 						}
@@ -390,7 +411,7 @@ if(isset($_POST["guardandoOrdenProduccion"]) and $_POST["guardandoOrdenProduccio
 									$i++;
 								}	
 								if(!$fallo){
-									header("Location: ordenes_produccion.php?OProduccion=creado&sedes=".$id_sede);	
+									header("Location: ordenes_produccion.php?OProduccion=creado&sedes=".$id_sede);
 								} 
 								else{
 									// ERROR AL GUARDAR LAS REFERENCIAS DE LAS ORDENES DE COMPRA	 
@@ -532,6 +553,7 @@ include ('../includes/header.php');
 
     <?php
     	// Obtener el número de periféricos para generar las tablas de referencias correspondientes a ese periférico
+		$hay_alguna_heredada = false;
         $precio_todos_perifericos = 0;
         for($i=0;$i<count($perifericos);$i++){
         	$precio_periferico = 0;
@@ -547,10 +569,12 @@ include ('../includes/header.php');
 					<tr>
 						<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
 						<?php
+							if($hay_alguna_heredada) $color_precio = ' style="color: orange"';
+							else $color_precio = ' style="color: #2998cc;"';
 							$precio_total_periferico = $precio_periferico + $costeKits;
 							$precio_todos_perifericos = $precio_todos_perifericos + $precio_total_periferico;
 						?>
-						<span class="tituloComp"><?php echo number_format($precio_total_periferico,2,',','.').'€';?></span>
+						<span class="tituloComp" <?php echo $color_precio;?>><?php echo number_format($precio_total_periferico,2,',','.').'€';?></span>
 						</td>
 					</tr>
 					</table>
@@ -579,6 +603,10 @@ include ('../includes/header.php');
 	?>
 	<br />
 	<?php include("confirm_new_op_muestra_refs_libres.php");?>
+	<?php
+		if($hay_alguna_heredada) $color_precio = ' style="color: orange"';
+		else $color_precio = ' style="color: #2998cc;"';
+	?>
 
     <div class="ContenedorCamposCreacionBasico">
     	<div class="LabelCreacionBasico">Coste Total Producto</div>
@@ -588,9 +616,10 @@ include ('../includes/header.php');
             	<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
    				<?php
 					$precio_total_producto = 0;
-					$precio_total_producto = $precio_todos_perifericos + $precio_todos_kits_libres + $precio_refs_libres;
-					echo '<span class="tituloComp">'.number_format($precio_total_producto, 2, ',', '.').'€'.'</span>';
-				?>
+					$precio_total_producto = $precio_todos_perifericos + $precio_todos_kits_libres + $precio_refs_libres; ?>
+					<span class="tituloComp" <?php echo $color_precio;?>>
+						<?php echo number_format($precio_total_producto, 2, ',', '.').'€'?>
+					</span>
                 </td>
             </tr>
             </table>
@@ -605,9 +634,10 @@ include ('../includes/header.php');
             	<td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
    				<?php
 					$precio_total_op = 0;
-					$precio_total_op = $precio_total_producto * $unidades;
-					echo '<span class="tituloComp">'.number_format($precio_total_op, 2, ',', '.').'€'.'</span>';
-				?>
+					$precio_total_op = $precio_total_producto * $unidades; ?>
+					<span class="tituloComp" <?php echo $color_precio;?>>
+						<?php echo number_format($precio_total_op, 2, ',', '.').'€';?>
+					</span>
                 </td>
             </tr>
             </table>

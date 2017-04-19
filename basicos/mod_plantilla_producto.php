@@ -40,7 +40,7 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
 
     $no_hay_perifericos = empty($ids_perifericos);
     $no_hay_kits = empty($ids_kits);
-    $plantilla_vacia = $no_hay_perifericos || $no_hay_kits;
+    $plantilla_vacia = $no_hay_perifericos && $no_hay_kits;
 
     if(!$plantilla_vacia){
         // Guardamos la plantilla del producto
@@ -53,18 +53,17 @@ if(isset($_POST["guardandoPlantilla"]) and $_POST["guardandoPlantilla"] == 1){
                 $error_componentes = false;
                 // Preparamos los ids de los componentes de la plantilla de producto
                 for($i=0;$i<count($ids_perifericos);$i++) {
-                    $ids_componentes[] = $ids_perifericos[$i];
+                    $ids_componentes[] = array("id_componente" => $ids_perifericos[$i], "id_tipo" => 2);
                 }
                 for($i=0;$i<count($ids_kits);$i++) {
-                    $ids_componentes[] = $ids_kits[$i];
+                    $ids_componentes[] = array("id_componente" => $ids_kits[$i], "id_tipo" => 6);
                 }
 
                 // Guardamos los nuevos componentes de la plantilla de producto
                 $i=0;
                 while($i<count($ids_componentes) && !$error_componentes) {
-                    $id_componente = $ids_componentes[$i];
-                    $id_tipo_componente = $plant->dameTipoComponente($id_componente);
-                    $id_tipo_componente = $id_tipo_componente["id_tipo"];
+                    $id_componente = $ids_componentes[$i]["id_componente"];
+                    $id_tipo_componente = $ids_componentes[$i]["id_tipo"];
                     $resultado = $plant->guardarComponentePlantillaProducto($id_plantilla,$id_componente,$id_tipo_componente);
                     $error_componentes = $resultado != 1;
                     $i++;
@@ -98,7 +97,7 @@ $nombre = $plant->nombre;
 $version = $plant->version;
 $id_nombre_producto = $plant->id_nombre_producto;
 $ids_perifericos = $plant->damePerifericosPlantillaProducto($id_plantilla);
-$ids_kits = $plant->dameKitsPlantillaProducto($id_plantilla);
+$ids_kits = $plant->dameKitsLibresPlantillaProducto($id_plantilla);
 
 $titulo_pagina = "Básicos > Modifica plantilla de producto";
 $pagina = "mod_plantilla_producto";
