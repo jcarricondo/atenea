@@ -62,7 +62,7 @@ echo '<script type="text/javascript" src="../js/basicos/plantilla_de_productos_2
     </div>
     
    	<h3>Plantillas de productos</h3>
-    <h4>Buscar plantilla de producto</h4> 
+    <h4>Buscar plantilla de producto</h4>
     
     <form id="BuscadorPlantillaProducto" name="BuscadorPlantillaProducto" action="plantillas_de_productos.php" method="get" class="Buscador">
         <table style="border:0;">
