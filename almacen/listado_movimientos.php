@@ -30,7 +30,7 @@ $titulo_pagina = "Almacen > Listado Movimientos";
 $pagina = "listado_movimientos";
 include("../includes/header.php");
 echo '<script type="text/javascript" src="../js/almacen/almacen.js"></script>';
-echo '<script type="text/javascript" src="../js/funciones.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>';
 
 $id_tipo_usuario = $_SESSION["AT_id_tipo_usuario"];
 $id_almacen_usuario = $_SESSION["AT_id_almacen"];

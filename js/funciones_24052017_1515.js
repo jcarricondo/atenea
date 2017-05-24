@@ -283,7 +283,7 @@ function buscaPatronBusqueda(nombre_componente,palabra_busqueda,caracter_nombre)
 	var sigo_buscando = true;
 	var caracter_busqueda = 0;
 	while(sigo_buscando && caracter_busqueda<palabra_busqueda.length){
-		sigo_buscando = palabra_busqueda.charAt(caracter_busqueda) == nombre_componente.charAt(caracter_nombre);
+		sigo_buscando = palabra_busqueda.charAt(caracter_busqueda).toUpperCase() == nombre_componente.charAt(caracter_nombre).toUpperCase();
 		caracter_busqueda++;
 		caracter_nombre++;
 	}
@@ -309,7 +309,7 @@ function BuscadorDinamicoComponentes(opcion_busqueda,input_buscador,lista_no_asi
 				var encontrado = false;
 				while(!encontrado && caracter_nombre<nombre_componente.length){
 					// Entramos si coincide el carácter del nombre con la primera letra del patrón de búsqueda
-					if(nombre_componente.charAt(caracter_nombre) == palabra_busqueda.charAt(0)){
+					if(nombre_componente.charAt(caracter_nombre).toUpperCase() == palabra_busqueda.charAt(0).toUpperCase()){
 						encontrado = buscaPatronBusqueda(nombre_componente,palabra_busqueda,caracter_nombre);
 					}
 					caracter_nombre++;

@@ -102,7 +102,7 @@ $ids_kits = $plant->dameKitsLibresPlantillaProducto($id_plantilla);
 $titulo_pagina = "Básicos > Modifica plantilla de producto";
 $pagina = "mod_plantilla_producto";
 include("../includes/header.php");
-echo '<script type="text/javascript" src="../js/basicos/plantilla_de_productos_27032017_1313.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/plantilla_de_productos_24052017_1515.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/mod_plantilla_producto_27032017_1313.js"></script>';
 ?>
 

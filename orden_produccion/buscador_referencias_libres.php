@@ -73,7 +73,7 @@ if(isset($_POST["realizandoBusqueda"]) and $_POST["realizandoBusqueda"] == 1) {
 }
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="../css/style.css" />
-<script type="text/javascript" src="../js/funciones.js"></script>
+<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>
 
 <script type="text/javascript">
 function add_referencia(id_referencia)

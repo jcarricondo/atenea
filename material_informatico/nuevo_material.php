@@ -74,7 +74,7 @@ else {
 $titulo_pagina = "Material Informático > Nuevo material";
 $pagina = "nuevo_material";
 include ('../includes/header.php');
-echo '<script type="text/javascript" src="../js/funciones.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>';
 echo '<script type="text/javascript" src="../js/material_informatico/material_informatico.js"></script>'; 
 ?>
 

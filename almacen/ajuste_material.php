@@ -33,7 +33,7 @@ $control_usuario = new Control_Usuario();
 $titulo_pagina = "Almacen > Ajuste Material";
 $pagina = "ajuste_material";
 include("../includes/header.php");
-echo '<script type="text/javascript" src="../js/funciones.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>';
 echo '<script type="text/javascript" src="../js/almacen/almacen.js"></script>';
 
 $id_tipo_usuario = $_SESSION["AT_id_tipo_usuario"];
