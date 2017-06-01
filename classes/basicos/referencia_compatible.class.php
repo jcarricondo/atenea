@@ -44,7 +44,7 @@ class Referencia_Compatible extends MySQL {
 
 	// Función que devuelve la fecha del grupo
 	function dameFechaGrupo($id_grupo){
-		$consultaSql = sprintf("select fecha_creado from referencias_compatibles where activo=1 and id_grupo=%s",
+		$consultaSql = sprintf("select fecha_creado from referencias_compatibles where id_grupo=%s",
 							$this->makeValue($id_grupo, "int"));
 		$this->setConsulta($consultaSql);
 		$this->ejecutarConsulta();
@@ -52,10 +52,21 @@ class Referencia_Compatible extends MySQL {
 		return $res_fecha_grupo;
 	}
 
+	// Función que devuelve la fecha del grupo
+	function dameFechaGrupoActivo($id_grupo){
+		$consultaSql = sprintf("select fecha_creado from referencias_compatibles where id_grupo=%s and activo=1",
+				$this->makeValue($id_grupo, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_fecha_grupo = $this->getPrimerResultado();
+		return $res_fecha_grupo;
+	}
+
 	// Metodo para establecer la referencia principal y el array de referencias compatibles dentro de la clase
-	function setReferenciasCompatibles($id_referencia_principal,$referencias_compatibles){
+	function setReferenciasCompatibles($id_referencia_principal,$referencias_compatibles,$id_grupo){
 		$this->id_referencia_principal = $id_referencia_principal;
 		$this->referencias_compatibles = $referencias_compatibles;
+		$this->id_grupo = $id_grupo;
 	}
 
 	// Funcion que devuelve el último grupo creado
@@ -110,6 +121,27 @@ class Referencia_Compatible extends MySQL {
 		return $error;
 	}
 
+	// Función que guarda nuevas referencias en un grupo
+	function actualizaGrupoActivo($array_referencias,$id_grupo){
+		// Obtenemos la fecha del grupo existente
+		$res_fecha_grupo = $this->dameFechaGrupoActivo($id_grupo);
+		$fecha_grupo = $res_fecha_grupo["fecha_creado"];
+		// Guardamos las nuevas referencias compatibles en el grupo
+		for($i=0;$i<count($array_referencias);$i++) {
+			$id_referencia = $array_referencias[$i];
+			$insertSql = sprintf("insert into referencias_compatibles (id_grupo,id_referencia,activo,fecha_creado) values (%s,%s,1,%s)",
+					$this->makeValue($id_grupo, "int"),
+					$this->makeValue($id_referencia, "int"),
+					$this->makeValue($fecha_grupo, "date"));
+			$this->setConsulta($insertSql);
+			if(!$this->ejecutarSoloConsulta()) {
+				echo '<script>alert("Se ha producido un error al guardar la referencia en el grupo existente")</script>';
+				$error = true;
+			}
+		}
+		return $error;
+	}
+
 	// Función que desactiva un grupo
 	function desactivaGrupo($id_grupo){
 		$updateSql = sprintf("update referencias_compatibles set activo=0 where activo=1 and id_grupo=%s",
@@ -135,7 +167,7 @@ class Referencia_Compatible extends MySQL {
 			$res_grupo = $this->dameGrupoReferencia($array_referencias[$i]);
 			$id_grupo = $res_grupo["id_grupo"];
 
-			if($id_grupo != NULL) {
+			if(!empty($id_grupo)) {
 				if(is_null($id_grupo_mas_antiguo)) $id_grupo_mas_antiguo = $id_grupo;
 				// Añadimos el grupo al array de grupos y eliminamos los grupos duplicados
 				$array_id_grupo[] = $id_grupo;
@@ -146,7 +178,7 @@ class Referencia_Compatible extends MySQL {
 		}
 
 		// Si las referencias no pertenecen a ningún grupo
-		if($id_grupo_mas_antiguo == NULL){
+		if(empty($id_grupo_mas_antiguo)){
 			$array_referencias = array_unique($array_referencias);
 			sort($array_referencias);
 			// Creamos el grupo y  guardamos las referencias
@@ -154,41 +186,76 @@ class Referencia_Compatible extends MySQL {
 			if($error_crear_grupo) echo '<script>alert("Se produjo un error durante el proceso de guardado de la referencia en el grupo. Consulte con el administrador")</script>';
 		}
 		else {
-			// Obtenemos las referencias del grupo mas antiguo
-			$res_grupo_antiguo = $this->dameDatosGrupoId($id_grupo_mas_antiguo);
-			// Guardamos en un array las referencias del grupo mas antiguo
-			for($i=0;$i<count($res_grupo_antiguo);$i++) $array_refs_gr_antiguo[] = $res_grupo_antiguo[$i]["id_referencia"];
-			sort($array_refs_gr_antiguo);
-
-			// Obtenemos las referencias de todos los grupos menos el del grupo mas antiguo
-			for($i=0;$i<count($array_id_grupo);$i++){
-				$id_grupo = $array_id_grupo[$i];
-				if($id_grupo != $id_grupo_mas_antiguo){
-					// Añadimos al array las referencias de los grupos que vamos a desactivar
-					$res_grupo_eliminar = $this->dameDatosGrupoId($id_grupo);
-					for($j=0;$j<count($res_grupo_eliminar);$j++) $array_refs_grupo_eliminar[] = $res_grupo_eliminar[$j]["id_referencia"];
+			// Si sólo hay un grupo desactivamos todas las referencias y dejamos las que dejó el usuario en la tabla más la principal
+			$soloUnGrupo = (count($array_id_grupo) == 1 && $array_id_grupo[0] == $this->id_grupo);
+			if($soloUnGrupo){
+				// Desactivamos las referencias del grupo
+				$error_desactivar_grupo = $this->desactivaGrupo($id_grupo_mas_antiguo);
+				if($error_desactivar_grupo) echo '<script>alert("Se produjo un error durante el proceso de desactivación de un grupo. Consulte con el administrador")</script>';
+				else {
+					// Guardamos las referencias del grupo que no se han eliminado
+					$error_actualizar_grupo = $this->actualizaGrupo($array_referencias,$id_grupo_mas_antiguo);
+					if($error_actualizar_grupo) echo '<script>alert("Se produjo un error durante el proceso de guardado de la referencia en la actualización del grupo. Consulte con el administrador")</script>';
 				}
 			}
+			else {
+				// Obtenemos las referencias del grupo mas antiguo
+				$res_grupo_antiguo = $this->dameDatosGrupoId($id_grupo_mas_antiguo);
 
-			// Añadimos al array de referencias compatibles las referencias de los grupos a desactivar
-			if($array_refs_grupo_eliminar != NULL) $array_referencias = array_merge($array_referencias,$array_refs_grupo_eliminar);
-			$array_referencias = array_unique($array_referencias);
-			sort($array_referencias);
+				// Guardamos en un array las referencias del grupo mas antiguo
+				for($i=0;$i<count($res_grupo_antiguo);$i++) {
+					// Si el grupo mas antiguo es el de la referencia principal guardamos sólo las referencias seleccionadas del grupo
+					if($this->id_grupo == $id_grupo_mas_antiguo){
+						if(in_array($res_grupo_antiguo[$i]["id_referencia"],$array_referencias)){
+							$array_refs_gr_antiguo[] = $res_grupo_antiguo[$i]["id_referencia"];
+						}
+					}
+					else $array_refs_gr_antiguo[] = $res_grupo_antiguo[$i]["id_referencia"];
+				}
 
-			// Eliminamos del array las referencias que ya esten en el array del grupo mas antiguo
-			$array_referencias = array_diff($array_referencias,$array_refs_gr_antiguo);
-			sort($array_referencias);
+				sort($array_refs_gr_antiguo);
 
-			// Guardamos las referencias de los otros grupos en el grupo antiguo en la BBDD
-			$error_actualizar_grupo = $this->actualizaGrupo($array_referencias,$id_grupo_mas_antiguo);
-			if($error_actualizar_grupo) echo '<script>alert("Se produjo un error durante el proceso de guardado de la referencia en la actualización del grupo. Consulte con el administrador")</script>';
+				// Obtenemos las referencias de todos los grupos menos el del grupo mas antiguo
+				for($i=0;$i<count($array_id_grupo);$i++){
+					$id_grupo = $array_id_grupo[$i];
+					if($id_grupo != $id_grupo_mas_antiguo){
+						// Añadimos al array las referencias de los grupos que vamos a desactivar
+						$res_grupo_eliminar = $this->dameDatosGrupoId($id_grupo);
+						for($j=0;$j<count($res_grupo_eliminar);$j++) {
+							// Solo guardamos las referencias que esten seleccionadas en la tabla
+							if($this->id_grupo == $id_grupo){
+								if(in_array($res_grupo_eliminar[$i]["id_referencia"],$array_referencias)){
+									$array_refs_grupo_eliminar[] = $res_grupo_eliminar[$j]["id_referencia"];
+								}
+							}
+							else $array_refs_grupo_eliminar[] = $res_grupo_eliminar[$j]["id_referencia"];
+						}
+					}
+				}
 
-			// Desactivamos los grupos menos el grupo más antiguo
-			for($i=0;$i<count($array_id_grupo);$i++){
-				$id_grupo = $array_id_grupo[$i];
-				if($id_grupo != $id_grupo_mas_antiguo){
-					$error_desactivar_grupo = $this->desactivaGrupo($id_grupo);
-					if($error_desactivar_grupo) echo '<script>alert("Se produjo un error durante el proceso de desactivación de un grupo. Consulte con el administrador")</script>';
+				// Añadimos al array de referencias compatibles las referencias de los grupos a desactivar
+				if($array_refs_grupo_eliminar != NULL) $array_referencias = array_merge($array_referencias,$array_refs_grupo_eliminar);
+				$array_referencias = array_unique($array_referencias);
+				sort($array_referencias);
+
+				// Eliminamos del array las referencias que ya esten en el array del grupo mas antiguo
+				// $array_referencias = array_diff($array_referencias,$array_refs_gr_antiguo);
+				// sort($array_referencias); d($array_referencias);
+
+				$error_desactivar_grupo = $this->desactivaGrupo($id_grupo_mas_antiguo);
+				if($error_desactivar_grupo) echo '<script>alert("Se produjo un error durante el proceso de desactivación de un grupo. Consulte con el administrador")</script>';
+
+				// Guardamos las referencias de los otros grupos en el grupo antiguo en la BBDD
+				$error_actualizar_grupo = $this->actualizaGrupo($array_referencias,$id_grupo_mas_antiguo);
+				if($error_actualizar_grupo) echo '<script>alert("Se produjo un error durante el proceso de guardado de la referencia en la actualización del grupo. Consulte con el administrador")</script>';
+
+				// Desactivamos los grupos menos el grupo más antiguo
+				for($i=0;$i<count($array_id_grupo);$i++){
+					$id_grupo = $array_id_grupo[$i];
+					if($id_grupo != $id_grupo_mas_antiguo){
+						$error_desactivar_grupo = $this->desactivaGrupo($id_grupo);
+						if($error_desactivar_grupo) echo '<script>alert("Se produjo un error durante el proceso de desactivación de un grupo. Consulte con el administrador")</script>';
+					}
 				}
 			}
 		}
@@ -206,6 +273,73 @@ class Referencia_Compatible extends MySQL {
 			return true;
 		}
 		else return false;
+	}
+
+	// Función que devuelve los tipos de motivos de compatibilidad de una referencia
+	function dameTipoMotivosReferencia(){
+		$consultaSql = "select * from tipos_motivos_referencias where activo=1";
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_motivos = $this->getResultados();
+		return $res_motivos;
+	}
+
+	// Función que devuelve el nombre de la imagen del motivo de compatibilidad
+	function dameNombreImagenMotivoCompatibilidad($id_motivo_compatibilidad){
+		switch ($id_motivo_compatibilidad){
+			case "1":
+				$nombre_imagen = "global.jpg";
+			break;
+			case "2":
+				$nombre_imagen = "mexico.jpg";
+			break;
+			case "3";
+				$nombre_imagen = "brasil.jpg";
+			break;
+			case "4":
+				$nombre_imagen = "francia.jpg";
+			break;
+			case "5":
+				$nombre_imagen = "chile.jpg";
+			break;
+			default:
+				$nombre_imagen = "global.jpg";
+			break;
+		}
+		return $nombre_imagen;
+	}
+
+	// Función que devuelve el pais de la imagen del motivo de compatibilidad
+	function damePaisImagenMotivoCompatibilidad($id_motivo_compatibilidad){
+		switch ($id_motivo_compatibilidad){
+			case "1":
+				$nombre_pais = "GLOBAL";
+				break;
+			case "2":
+				$nombre_pais = "MEXICO";
+				break;
+			case "3";
+				$nombre_pais = "BRASIL";
+				break;
+			case "4":
+				$nombre_pais = "FRANCIA";
+				break;
+			case "5":
+				$nombre_pais = "CHILE";
+				break;
+			default:
+				$nombre_pais = "GLOBAL";
+				break;
+		}
+		return $nombre_pais;
+	}
+
+	// Función que nos devuelve si una referencia pertenece a un grupo de compatibilidad
+	function perteneceGrupoCompatibilidad($id_referencia){
+		$res_grupo = $this->dameGrupoReferencia($id_referencia);
+		$id_grupo = $res_grupo["id_grupo"];
+		$perteneceGrupo = !empty($id_grupo);
+		return $perteneceGrupo;
 	}
 
 

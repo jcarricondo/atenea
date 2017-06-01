@@ -262,8 +262,9 @@ $referencias = $kt->referencias;
 $titulo_pagina = "Básico > Modifica kit";
 $pagina = "mod_kit";
 include ('../includes/header.php');
-echo '<script type="text/javascript" src="../js/basicos/mod_kit.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/mod_kit_08032017_1050.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/mod_kit_adjuntos.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 $ref_kits->setValores($_GET["id"]);
 $ref_kits->realizarConsulta();
 $resultadosBusqueda = $ref_kits->referencias_componentes;
@@ -465,7 +466,7 @@ $componente = "kit";
         <br/>
         <div id="coste_componente" class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Coste Kit</div>
-            <div id="CosteTotalComponente"><span class="fuenteSimumakNegrita"><?php echo number_format($precio_total, 2, ',', '.'); ?> €</span></div>
+            <div id="CosteTotalComponente"><span class="fuenteSimumakNegrita"><?php // echo number_format($precio_total, 2, ',', '.'); ?> €</span></div>
         </div>
         <br/>
         <div class="ContenedorCamposCreacionBasico">
@@ -539,4 +540,10 @@ $componente = "kit";
         </div>
     </form>
 </div>
+<script type="text/javascript">
+	window.onload = function(){
+		costeTotal = damePrecioComponenteConHeredadas(mitabla,"piezas[]");
+		actualizarCoste(costeTotal);
+	}
+</script>
 <?php include ("../includes/footer.php"); ?>

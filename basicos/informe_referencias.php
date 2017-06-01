@@ -1,20 +1,24 @@
 <?php 
 // Este fichero genera un excel con las referencias de un componente de basicos
+set_time_limit(10000);
 include("../includes/sesion.php");
+include("../classes/basicos/componente.class.php");
 include("../classes/basicos/referencia.class.php");
 include("../classes/basicos/referencia_componente.class.php");
+include("../classes/basicos/referencia_heredada.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 include("../classes/basicos/listado_referencias_componentes.class.php");
 
 $db = new MySQL();
+$comp = new Componente();
 $referencia = new Referencia();
 $ref = new Referencia_Componente();
+$ref_heredada = new Referencia_Heredada();
+$ref_compatible = new Referencia_Compatible();
 // Devuelve el tipo de componente: periferico o kit
 $tipo = $_GET["tipo"]; 
 // Devuelve el id_componente
 $id	= $_GET["id"]; 
-
-// Tenemos que comprobar el tipo de componente. Si el componente es kit mostrará sus referencias.
-// Si el componente es un periferico hay que comprobar si tiene kits.
 
 $salida = "";
 
@@ -22,8 +26,8 @@ $salida = "";
 $ref->dameReferenciasPorIdComponente($id);
 $referencias_componente = $ref->referencias_componente;
 
-// Si el componente es un periferico tendremos que comprobar si tienen kits y añadir sus referencias a las referencias del componente
-if (/*($tipo == "cabina") or */($tipo == "periferico")){
+// Si el componente es un periférico tendremos que comprobar si tienen kits y añadir sus referencias
+if ($tipo == "periferico"){
 	// Creamos un array auxiliar de las referencias del componente
 	$referencias_aux = $referencias_componente;
 	
@@ -39,42 +43,81 @@ if (/*($tipo == "cabina") or */($tipo == "periferico")){
 	}
 }
 
+// Preparamos el array final con el id_referencia y las piezas
+for($i=0;$i<count($referencias_componente);$i++) {
+	$referencias_componente_final[$i]["id_referencia"] = $referencias_componente[$i]["id_referencia"];
+	$referencias_componente_final[$i]["piezas"] = floatval($referencias_componente[$i]["piezas"]);
+}
+
+$referencias_componente_final_aux = $referencias_componente_final;
+
+// Comprobamos si las referencias tienen heredadas y multiplicamos sus piezas
+for($i=0;$i<count($referencias_componente_final);$i++){
+	$raiz = $referencias_componente_final[$i]["id_referencia"];
+	$piezas = $referencias_componente_final[$i]["piezas"];
+
+	// Obtenemos el grafo ordenado por BFS (Anchura) y después todas las piezas necesarias de cada referencia
+	$heredadas_por_nivel = $ref_heredada->dameTodasHeredadasNivel($raiz);
+	$referencias_heredadas_referencia = $ref_heredada->dameTodasHeredadasPiezas($heredadas_por_nivel);
+
+	// Si tiene heredadas las agrupamos al array de referencias final con sus piezas correspondientes
+	if(!empty($referencias_heredadas_referencia)){
+		$cont = 0;
+		foreach($referencias_heredadas_referencia as $id_ref_heredada => $piezas_heredada){
+			$array_piezas_heredadas[$cont]["id_referencia"] = $id_ref_heredada;
+			$array_piezas_heredadas[$cont]["piezas"] = $piezas * $piezas_heredada;
+			$cont++;
+		}
+
+		// Agrupamos las referencias heredadas al array final
+		$referencias_componente_final_aux = $comp->agruparReferenciasComponentes($array_piezas_heredadas,$referencias_componente_final_aux);
+		unset($array_piezas_heredadas);
+	}
+}
+
+$referencias_componente_final = $referencias_componente_final_aux;
+if(!empty($referencias_componente_final)) {
+	// Ordenamos el array de referencias
+	array_multisort($referencias_componente_final);
+}
+
 // Generamos la tabla HTML 
 $table = '<table>
 	<tr>
-		<th>ID Ref.</th>
-    	<th>Nombre</th>
-        <th>Referencia Proveedor</th>
-        <th>Proveedor</th>   
-        <th>Piezas</th>
-        <th>Precio</th>
-		<th>Total Paquetes</th>  
-        <th>Tipo Pieza</th>
-        <th>Nombre Pieza</th> 
-        <th>Fabricante</th>  
-        <th>Referencia Fabricante</th>
-        <th>Descripci&oacute;n</th>
-        <th>Nombre</th>
-        <th>Valor</th>
-        <th>Nombre 2</th>
-        <th>Valor 2</th>
-        <th>Nombre 3</th>
-        <th>Valor 3</th>
-        <th>Nombre 4</th>
-        <th>Valor 4</th>
-        <th>Nombre 5</th>
-        <th>Valor 5</th>
-        <th>Precio Pack</th>
-        <th>Unidades Paquete</th>
-        <th>Comentarios</th>
+		<th style="text-align: center;">ID Ref.</th>
+    	<th style="text-align: left;">Nombre</th>
+        <th style="text-align: left;">Referencia Proveedor</th>
+        <th style="text-align: left;">Proveedor</th>
+        <th style="text-align: right;">Piezas</th>
+        <th style="text-align: right;">Precio</th>
+		<th style="text-align: right;">Total Paquetes</th>
+        <th style="text-align: left;">Tipo Pieza</th>
+        <th style="text-align: left;">Nombre Pieza</th>
+        <th style="text-align: left;">Fabricante</th>
+        <th style="text-align: left;">Referencia Fabricante</th>
+        <th style="text-align: left;">Descripci&oacute;n</th>
+        <th style="text-align: left;">Nombre</th>
+        <th style="text-align: left;">Valor</th>
+        <th style="text-align: left;">Nombre 2</th>
+        <th style="text-align: left;">Valor 2</th>
+        <th style="text-align: left;">Nombre 3</th>
+        <th style="text-align: left;">Valor 3</th>
+        <th style="text-align: left;">Nombre 4</th>
+        <th style="text-align: left;">Valor 4</th>
+        <th style="text-align: left;">Nombre 5</th>
+        <th style="text-align: left;">Valor 5</th>
+        <th style="text-align: right;">Precio Pack</th>
+        <th style="text-align: right;">Unidades Paquete</th>
+        <th style="text-align: left;">Comentarios</th>
+        <th style="text-align: center;">COMPATIBLE</th>
     </tr>';
 	
 	
 // Por cada referencia del componente generamos la fila y codificamos los campos
-for($i=0;$i<count($referencias_componente);$i++){
-	// De la tabla componentes_referencias solo nos interesa el campo piezas y el id_referencia. Los demas datos los obtenemos de la tabla referencias
-	$id_referencia = $referencias_componente[$i]["id_referencia"];
-	$total_piezas = $referencias_componente[$i]["piezas"];
+for($i=0;$i<count($referencias_componente_final);$i++){
+	// De la tabla componentes_referencias sólo nos interesa el campo piezas y el id_referencia. Los demas datos los obtenemos de la tabla referencias
+	$id_referencia = $referencias_componente_final[$i]["id_referencia"];
+	$total_piezas = $referencias_componente_final[$i]["piezas"];
 	$referencia->cargaDatosReferenciaId($id_referencia);
 	
 	// Tenemos que calcular el precio de la referencia 
@@ -211,42 +254,45 @@ for($i=0;$i<count($referencias_componente);$i++){
 			$coments .= $coments_codificada[$m]; 
 		}
 	}
+
+	$id_grupo = $ref_compatible->dameGrupoReferencia($id_referencia);
+	if(!empty($id_grupo)) $es_compatible = "SI";
+	else $es_compatible = "NO";
 		
 	// Generamos la fila HTML de la tabla correspondiente a una referencia
 	$salida .= '
 	<tr>
-		<td align="center">'.$referencia->id_referencia.'</td>
-		<td>'.$nombre_ref.'</td>
-		<td align="center">'.$ref_prov.'</td>
-		<td>'.utf8_decode($referencia->nombre_proveedor).'</td>
-		<td>'.number_format($total_piezas,2,',','.').'</td>
-		<td align="right">'.number_format($precio_referencia,2,',','.').'</td>
-		<td align="right">'.number_format($total_paquetes,2,',','.').'</td>
-		<td align="center">'.$tipo_pieza.'</td>
-		<td>'.utf8_decode($referencia->part_nombre).'</td>
-		<td>'.utf8_decode($referencia->nombre_fabricante).'</td>
-		<td align="center">'.$ref_fab.'</td>
-		<td>'.$descrip.'</td>
-		<td>'.$valor_nombre.'</td>
-		<td>'.utf8_decode($referencia->part_valor_cantidad).'</td>
-		<td>'.$valor_nombre2.'</td>
-		<td>'.utf8_decode($referencia->part_valor_cantidad_2).'</td>
-		<td>'.$valor_nombre3.'</td>
-		<td>'.utf8_decode($referencia->part_valor_cantidad_3).'</td>
-		<td>'.$valor_nombre4.'</td>
-		<td>'.utf8_decode($referencia->part_valor_cantidad_4).'</td>
-		<td>'.$valor_nombre5.'</td>
-		<td>'.utf8_decode($referencia->part_valor_cantidad_5).'</td>
-		<td align="right">'.number_format($referencia->pack_precio,2,',','.').'</td>
-		<td>'.utf8_decode($referencia->unidades).'</td>
-		<td>'.$coments.'</td>
+		<td style="text-align: center;">'.$referencia->id_referencia.'</td>
+		<td style="text-align: left;">'.$nombre_ref.'</td>
+		<td style="text-align: left;">'.$ref_prov.'</td>
+		<td style="text-align: left;">'.utf8_decode($referencia->nombre_proveedor).'</td>
+		<td style="text-align: right;">'.number_format($total_piezas,2,',','.').'</td>
+		<td style="text-align: right;">'.number_format($precio_referencia,2,',','.').'</td>
+		<td style="text-align: right;">'.number_format($total_paquetes,2,',','.').'</td>
+		<td style="text-align: left;">'.$tipo_pieza.'</td>
+		<td style="text-align: left;">'.utf8_decode($referencia->part_nombre).'</td>
+		<td style="text-align: left;">'.utf8_decode($referencia->nombre_fabricante).'</td>
+		<td style="text-align: left;">'.$ref_fab.'</td>
+		<td style="text-align: left;">'.$descrip.'</td>
+		<td style="text-align: left;">'.$valor_nombre.'</td>
+		<td style="text-align: left;">'.utf8_decode($referencia->part_valor_cantidad).'</td>
+		<td style="text-align: left;">'.$valor_nombre2.'</td>
+		<td style="text-align: left;">'.utf8_decode($referencia->part_valor_cantidad_2).'</td>
+		<td style="text-align: left;">'.$valor_nombre3.'</td>
+		<td style="text-align: left;">'.utf8_decode($referencia->part_valor_cantidad_3).'</td>
+		<td style="text-align: left;">'.$valor_nombre4.'</td>
+		<td style="text-align: left;">'.utf8_decode($referencia->part_valor_cantidad_4).'</td>
+		<td style="text-align: left;">'.$valor_nombre5.'</td>
+		<td style="text-align: left;">'.utf8_decode($referencia->part_valor_cantidad_5).'</td>
+		<td style="text-align: right;">'.number_format($referencia->pack_precio,2,',','.').'</td>
+		<td style="text-align: right;">'.utf8_decode($referencia->unidades).'</td>
+		<td style="text-align: left;">'.$coments.'</td>
+		<td style="text-align: center;">'.$es_compatible.'</td>
 	</tr>
 	';
 }
 $table_end = '</table>';
-
 header("Content-type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=informeReferencias.xls");
-
-echo $table.$salida.$table_end; 
+echo $table.$salida.$table_end;
 ?>

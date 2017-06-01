@@ -2542,7 +2542,7 @@ a {
 	background:#fff;
 }
 
-.LabelInfoOP{
+.LabelInfoOP, .LabelDescargaDocumentacion{
 	width:250px;
 	font: 13px Helvetica, Verdana, Arial;
 	color:#2998cc;
@@ -2984,11 +2984,50 @@ table td .botonAsignacion {
 	float: none;
 }
 
-.BotonQuitarCompatibilidad, .BotonQuitarHeredadas{
+.BotonQuitarCompatibilidad, .BotonQuitarHeredadas, .BotonQuitarAntecesores {
 	width:auto; /*auto;/*50px;*/
 	height:auto; /*auto;/*50px;*/
 	margin: 5px 20px 5px 200px;
 	vertical-align:top;
 	float:left;
 	font: 10px Helvetica, Tahoma, Verdana;
+}
+
+.CapaBuscadorDinamicoComponentes{
+	width:900px;
+	margin:5px 20px 5px 10px;
+	float:left;
+	border:0px solid #2998cc;
+	font: 12px Helvetica, Verdana, Arial;
+	color:#000;
+}
+
+.CapaBuscadorDinamicoComponentes #CapaBotonPerifericos, #CapaBotonKits{
+	float:left;
+}
+
+.CapaBuscadorDinamicoComponentes .BotonTodosComponentes{
+	width: 180px;
+	height: 20px;
+	margin: 0px 30px 0px 0px;
+	font: 10px Helvetica, Tahoma, Verdana;
+}
+
+
+.CapaBuscadorDinamicoComponentes .LabelBuscadorComponente{
+	width:178px;
+	padding: 5px 5px 5px 5px;
+	line-height:normal;
+	background:#fff;
+	color:#2998cc;
+	font: 11px Helvetica, Verdana, Arial;
+}
+
+.CapaBuscadorDinamicoComponentes .BuscadorComponente{
+	width:245px;
+	margin-left: 10px;
+	vertical-align: middle;
+	border:1px solid #2998cc;
+	color:#000;
+	font: 12px Helvetica, Verdana, Arial;
 }

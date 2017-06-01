@@ -43,9 +43,6 @@ $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
 
                     switch($id_tipo_componente) {
                         case '1':
-                            // CABINA
-                            // $tipo_componente = 'CABINA';
-                            // $res_kits = $comp->dameKitsComponente($id_componente);
                             // Se deja de utilizar en Septiembre de 2016
                             break;
                         case '2':
@@ -54,9 +51,11 @@ $res_componentes = $plant->dameComponentesPlantillaProducto($id_plantilla);
                             $res_kits = $comp->dameKitsComponente($id_componente);
                             break;
                         case '3':
-                            // SOFTWARE
-                            // $tipo_componente = 'SOFTWARE';
                             // Se deja de utilizar en Septiembre de 2016
+                            break;
+                        case '6':
+                            // KIT LIBRE
+                            $tipo_componente = 'KIT LIBRE';
                             break;
                         default:
                             // ERROR

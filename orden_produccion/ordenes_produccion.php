@@ -233,7 +233,7 @@ if(isset($_GET["realizandoBusqueda"]) and $_GET["realizandoBusqueda"] == 1 or $r
 $titulo_pagina = "Órdenes de Producción";
 $pagina = "ordenes_produccion";
 include("../includes/header.php");
-echo '<script type="text/javascript" src="../js/orden_produccion/ordenes_produccion.js"></script>';
+echo '<script type="text/javascript" src="../js/orden_produccion/ordenes_produccion_03042017_1230.js"></script>';
 ?>
 
 <div class="separador"></div> 

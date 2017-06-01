@@ -5,7 +5,7 @@
             &Oacute;RDENES DE PRODUCCI&Oacute;N
             <ul>
                 <?php if(permisoMenu(8)) { ?><li><a href="../orden_produccion/ordenes_produccion.php">Listado</a></li><?php } ?>
-                <?php if(permisoMenu(9)) { ?><li><a href="../orden_produccion/nueva_orden_produccion.php">Nueva</a></li><?php } ?>
+                <?php if(permisoMenu(9)) { ?><li><a href="../orden_produccion/new_op.php">Nueva</a></li><?php } ?>
                 <?php if(permisoMenu(12)) { ?><li><a href="../orden_produccion/gestionar_produccion_optimizado.php">Gestionar Producci&oacute;n</a></li><?php } ?>
             </ul>
         </li>

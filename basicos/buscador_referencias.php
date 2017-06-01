@@ -77,6 +77,7 @@ if(isset($_POST["realizandoBusqueda"]) and $_POST["realizandoBusqueda"] == 1) {
 $componente = $_GET["componente"];
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="../css/style.css" />
+<script type="text/javascript" src="../js/funciones.js"></script>
 
 <script type="text/javascript">
 // Llama a la funcion addRow para insertar la referencia en la tabla seleccionada
@@ -231,7 +232,7 @@ function soloNumeros (e) {
 		<h4> Buscar la referencia para añadir a <?php echo $componente;?> </h4>
    		<form name="BuscadorReferencias" id="BuscadorReferencias" action="buscador_referencias.php?componente=<?php echo $componente;?>" method="post">
     		<div class="ContenedorCamposBuscadorReferencias">
-				<div class="LabelReferencias">Referencia</div>
+				<div class="LabelReferencias">Nombre</div>
             	<input type="text" name="referencia" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($referencia));?>"/> 
                	<div class="LabelReferencias">Unidades paquete</div>
             	<input type="text" name="cantidad" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($cantidad));?>"/>
@@ -260,7 +261,7 @@ function soloNumeros (e) {
    				<div class="LabelReferencias">Part value qty</div>
             	<input type="text" name="part_value_qty" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($part_value_qty));?>"/>
             	<div class="LabelReferencias">ID Referencia</div>
-            	<input type="text" name="id_ref" class="BuscadorInputReferencias" value="<?php echo $id_ref;?>" onkeypress="return soloNumeros(event)"/>
+            	<input type="text" name="id_ref" class="BuscadorInputReferencias" value="<?php echo $id_ref;?>" onkeypress="return soloNumeros(event)" onkeyup="cargaReferenciaIntro(event);"/>
         	</div>
             <div class="ContenedorCamposBuscadorReferencias">
 
@@ -293,6 +294,7 @@ function soloNumeros (e) {
             	<input type="submit" id="" name="" class="" value="Buscar" />
         	</div>
         	</br>
+			<input type="hidden" id="nombreFormulario" name="nombreFormulario" value="BuscadorReferencias" />
     	</form>
     </div>
     

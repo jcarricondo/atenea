@@ -66,7 +66,8 @@ if(isset($_POST["importarReferencias"]) and $_POST["importarReferencias"] == 1) 
                 14: Valor_05
                 15: Pack_Precio
                 16: Unidades 
-                17: Comentarios 
+                17: Comentarios
+                18: ID Motivo de compatibilidad
                 */
 
                 // Comprobamos que se han rellenado los campos obligatorios de la BBDD
@@ -122,7 +123,7 @@ if(isset($_POST["importarReferencias"]) and $_POST["importarReferencias"] == 1) 
                         if(!$error){
                             // Se comprueba si la referencia ya existe en el proveedor indicado
                             $nuevaReferencia = new Referencia();
-                            $nuevaReferencia->datosNuevaReferencia(NULL,$datos[0],$fabricante,$proveedor,$datos[1],$datos[2],$datos[3],$datos[4],$datos[5],$datos[6],$datos[7],$datos[8],$datos[9],$datos[10],$datos[11],$datos[12],$datos[13],$datos[14],$datos[15],$datos[16],NULL,$datos[17]);
+                            $nuevaReferencia->datosNuevaReferencia(NULL,$datos[0],$fabricante,$proveedor,$datos[1],$datos[2],$datos[3],$datos[4],$datos[5],$datos[6],$datos[7],$datos[8],$datos[9],$datos[10],$datos[11],$datos[12],$datos[13],$datos[14],$datos[15],$datos[16],NULL,$datos[17],1);
                             if($nuevaReferencia->comprobarReferenciaProveedorDuplicada()) {
                                 $mensaje_error .= "<br/>No se ha podido importar la referencia: la referencia ".$datos[3]." ya existe para el proveedor indicado";
                                 $error_bbdd = "SI";
@@ -148,7 +149,7 @@ if(isset($_POST["importarReferencias"]) and $_POST["importarReferencias"] == 1) 
                 // Guardamos un log con los datos introducidos por el usuario 
                 if($fila != 0) {
                     $new_ref->datosNuevaReferencia(NULL,$datos[0],$fabricante,$proveedor,$datos[1],$datos[2],$datos[3],$datos[4],$datos[5],$datos[6],$datos[7],$datos[8],
-                                                            $datos[9],$datos[10],$datos[11],$datos[12],$datos[13],$datos[14],$pack_precio_log,$unidades_log,NULL,$datos[17]);
+                                                            $datos[9],$datos[10],$datos[11],$datos[12],$datos[13],$datos[14],$pack_precio_log,$unidades_log,NULL,$datos[17],1);
                     $res_importacion = $new_ref->guardarLogImportacionReferencia($id_usuario,$error_bbdd);
                     if($res_importacion == 1){
                         if(empty($datos[0])){

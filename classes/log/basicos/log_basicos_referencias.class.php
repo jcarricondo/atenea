@@ -32,6 +32,7 @@ class LogBasicosReferencias extends MySQL {
     var $referencia_creada;					// Campo que indica si se creó la referencia
 	var $referencia_heredada;				// Campo que indica si la referencia es heredada
 	var $referencia_compatible;				// Campo que indica si la referencia es compatible
+	var $id_motivo_compatibilidad;			// Campo que indica ID del motivo de compatibilidad
 	var $error;								// Indica si hubo error en el proceso
 	var $codigo_error; 						// Indica un mensaje del error producido
 
@@ -40,7 +41,7 @@ class LogBasicosReferencias extends MySQL {
 	function setValores($id_usuario,$proceso,$id_referencia,$referencia,$id_proveedor,$id_fabricante,$part_tipo,$part_nombre,$part_fabricante_referencia,$part_proveedor_referencia,$part_descripcion,
 						$part_valor_nombre,$part_valor_cantidad,$part_valor_nombre_2,$part_valor_cantidad_2,$part_valor_nombre_3,$part_valor_cantidad_3,$part_valor_nombre_4,$part_valor_cantidad_4,
 						$part_valor_nombre_5,$part_valor_cantidad_5,$pack_precio,$unidades,$part_precio_cantidad,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,$referencia_heredada,
-						$referencia_compatible,$error,$codigo_error) {
+						$referencia_compatible,$id_motivo_compatibilidad,$error,$codigo_error) {
 
 		$this->id_usuario = $id_usuario;
 		$this->proceso = $proceso;
@@ -72,6 +73,7 @@ class LogBasicosReferencias extends MySQL {
 		$this->referencia_creada = $referencia_creada;
 		$this->referencia_heredada = $referencia_heredada;
 		$this->referencia_compatible = $referencia_compatible;
+		$this->id_motivo_compatibilidad = $id_motivo_compatibilidad;
 		$this->error = $error;
 		$this->codigo_error = $codigo_error;
 	}
@@ -82,8 +84,8 @@ class LogBasicosReferencias extends MySQL {
 						part_fabricante_referencia,part_proveedor_referencia,part_descripcion,part_valor_nombre,part_valor_cantidad,part_valor_nombre_2,
 						part_valor_cantidad_2,part_valor_nombre_3,part_valor_cantidad_3,part_valor_nombre_4,part_valor_cantidad_4,part_valor_nombre_5,
 						part_valor_cantidad_5,pack_precio,unidades,part_precio_cantidad,comentarios,fecha_creado,fecha_modificacion,referencia_creada,
-						referencia_heredada,referencia_compatible,error,codigo_error) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-						%s,%s,%s,%s,%s,%s,%s,current_timestamp,%s,%s,%s,%s,%s)",
+						referencia_heredada,referencia_compatible,id_motivo_compatibilidad,error,codigo_error)
+						values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,current_timestamp,%s,%s,%s,%s,%s,%s)",
 
 						$this->makeValue($this->id_usuario, "int"),
 						$this->makeValue($this->proceso, "text"),
@@ -114,6 +116,7 @@ class LogBasicosReferencias extends MySQL {
 						$this->makeValue($this->referencia_creada, "text"),
 						$this->makeValue($this->referencia_heredada, "text"),
 						$this->makeValue($this->referencia_compatible, "text"),
+						$this->makeValue($this->id_motivo_compatibilidad, "int"),
 						$this->makeValue($this->error, "text"),
 						$this->makeValue($this->codigo_error, "text"));
 

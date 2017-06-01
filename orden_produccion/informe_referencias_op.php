@@ -16,44 +16,41 @@ $referencia = new Referencia();
 // Cargamos las referencias de orden_produccion_referencias
 $resultados = $op->dameOCReferenciasPorProduccion($id);
 
-$op->cargaDatosProduccionId($id);
-$num_simuladores = $op->unidades;
-
 $table = '<table>
 	<tr>
 		<th style="text-align: center;">ID Ref.</th>
-    	<th>Nombre</th>
-        <th>Referencia Proveedor</th>
-        <th>Proveedor</th>
-		<th>Unidades por paquete</th>
-		<th>Unidades por simulador</th>
-		<th>Paquetes por simulador</th>
-		<th>Precio por paquete</th>
-		<th>Precio por unidad</th>
-		<th>Precio por simulador (en base unidades)</th>
-		<th>Precio por simulador (en base paquetes)</th>
-        <th>Piezas Pedidas</th>
-        <th>Piezas Recibidas</th>
-        <th>Piezas Restantes</th>
-        <th>Piezas Usadas</th>
-        <th>Precio</th>
-		<th>Total Paquetes</th>
-        <th>Tipo Pieza</th>
-        <th>Nombre Pieza</th> 
-        <th>Fabricante</th>  
-        <th>Referencia Fabricante</th>
-        <th>Descripci&oacute;n</th>
-        <th>Nombre</th>
-        <th>Valor</th>
-        <th>Nombre 2</th>
-        <th>Valor 2</th>
-        <th>Nombre 3</th>
-        <th>Valor 3</th>
-        <th>Nombre 4</th>
-        <th>Valor 4</th>
-        <th>Nombre 5</th>
-        <th>Valor 5</th>
-        <th>Comentarios</th>
+    	<th style="text-align: left;">Nombre</th>
+        <th style="text-align: left;">Referencia Proveedor</th>
+        <th style="text-align: left;">Proveedor</th>
+		<th style="text-align: right;">Unidades por paquete</th>
+		<th style="text-align: right;">Unidades por simulador</th>
+		<th style="text-align: right;">Paquetes por simulador</th>
+		<th style="text-align: right;">Precio por paquete</th>
+		<th style="text-align: right;">Precio por unidad</th>
+		<th style="text-align: right;">Precio por simulador (en base unidades)</th>
+		<th style="text-align: right;">Precio por simulador (en base paquetes)</th>
+        <th style="text-align: right;">Piezas Pedidas</th>
+        <th style="text-align: right;">Piezas Recibidas</th>
+        <th style="text-align: right;">Piezas Restantes</th>
+        <th style="text-align: right;">Piezas Usadas</th>
+        <th style="text-align: right;">Precio</th>
+		<th style="text-align: right;">Total Paquetes</th>
+        <th style="text-align: left;">Tipo Pieza</th>
+        <th style="text-align: left;">Nombre Pieza</th>
+        <th style="text-align: left;">Fabricante</th>
+        <th style="text-align: left;">Referencia Fabricante</th>
+        <th style="text-align: left;">Descripci&oacute;n</th>
+        <th style="text-align: left;">Nombre</th>
+        <th style="text-align: left;">Valor</th>
+        <th style="text-align: left;">Nombre 2</th>
+        <th style="text-align: left;">Valor 2</th>
+        <th style="text-align: left;">Nombre 3</th>
+        <th style="text-align: left;">Valor 3</th>
+        <th style="text-align: left;">Nombre 4</th>
+        <th style="text-align: left;">Valor 4</th>
+        <th style="text-align: left;">Nombre 5</th>
+        <th style="text-align: left;">Valor 5</th>
+        <th style="text-align: left;">Comentarios</th>
     </tr>';
 
 $salida = "";
@@ -95,43 +92,43 @@ for($i=0;$i<count($resultados);$i++){
     $salida .= '
 		<table>
 		<tr>
-			<td align="center">'.$referencia->id_referencia.'</td>
-			<td>'.$referencia->referencia.'</td>
-			<td align="center">'.$referencia->part_proveedor_referencia.'</td>
-			<td>'.$referencia->nombre_proveedor.'</td>
-			<td>'.number_format($unidades_por_paquete,2,',','.').'</td>
-			<td>'.number_format($unidades_por_simulador,2,',','.').'</td>
-			<td>'.number_format($paquetes_por_simulador,2,',','.').'</td>
-			<td align="right">'.number_format($precio_por_paquete,2,',','.').'</td>
-			<td align="right">'.number_format($precio_por_unidad,2,',','.').'</td>
-			<td align="right">'.number_format($precio_por_simulador_unidades,2,',','.').'</td>
-			<td align="right">'.number_format($precio_por_simulador_paquetes,2,',','.').'</td>
-			<td>'.number_format($total_piezas,2,',','.').'</td>
-			<td>'.number_format($total_piezas_recibidas,2,',','.').'</td>
-			<td>'.number_format($total_piezas_restantes,2,',','.').'</td>
-			<td>'.number_format($total_piezas_usadas,2,',','.').'</td>
-			<td align="right">'.number_format($coste,2,',','.').'</td>
-			<td align="right">'.number_format($total_paquetes,2,',','.').'</td>
-			<td align="center">'.$referencia->part_tipo.'</td>
-			<td>'.$referencia->part_nombre.'</td>
-			<td>'.$referencia->nombre_fabricante.'</td>
-			<td align="center">'.$referencia->part_fabricante_referencia.'</td>
-			<td>'.$referencia->part_descripcion.'</td>
-			<td>'.$referencia->part_valor_nombre.'</td>
-			<td>'.$referencia->part_valor_cantidad.'</td>
-			<td>'.$referencia->part_valor_nombre_2.'</td>
-			<td>'.$referencia->part_valor_cantidad_2.'</td>
-			<td>'.$referencia->part_valor_nombre_3.'</td>
-			<td>'.$referencia->part_valor_cantidad_3.'</td>
-			<td>'.$referencia->part_valor_nombre_4.'</td>
-			<td>'.$referencia->part_valor_cantidad_4.'</td>
-			<td>'.$referencia->part_valor_nombre_5.'</td>
-			<td>'.$referencia->part_valor_cantidad_5.'</td>
-			<td>'.$referencia->comentarios.'</td>
+			<td style="text-align: center;">'.$referencia->id_referencia.'</td>
+			<td style="text-align: left;">'.$referencia->referencia.'</td>
+			<td style="text-align: left;">'.$referencia->part_proveedor_referencia.'</td>
+			<td style="text-align: left;">'.$referencia->nombre_proveedor.'</td>
+			<td style="text-align: right;">'.number_format($unidades_por_paquete,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($unidades_por_simulador,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($paquetes_por_simulador,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($precio_por_paquete,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($precio_por_unidad,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($precio_por_simulador_unidades,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($precio_por_simulador_paquetes,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($total_piezas,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($total_piezas_recibidas,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($total_piezas_restantes,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($total_piezas_usadas,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($coste,2,',','.').'</td>
+			<td style="text-align: right;">'.number_format($total_paquetes,2,',','.').'</td>
+			<td style="text-align: left;">'.$referencia->part_tipo.'</td>
+			<td style="text-align: left;">'.$referencia->part_nombre.'</td>
+			<td style="text-align: left;">'.$referencia->nombre_fabricante.'</td>
+			<td style="text-align: left;">'.$referencia->part_fabricante_referencia.'</td>
+			<td style="text-align: left;">'.$referencia->part_descripcion.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_nombre.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_cantidad.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_nombre_2.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_cantidad_2.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_nombre_3.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_cantidad_3.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_nombre_4.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_cantidad_4.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_nombre_5.'</td>
+			<td style="text-align: left;">'.$referencia->part_valor_cantidad_5.'</td>
+			<td style="text-align: left;">'.$referencia->comentarios.'</td>
 		</tr>';
 }
 $table_end = '</table>';
 header("Content-type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=informeReferencias.xls");
-echo $table.$salida.$table_end; 
+echo $table.$salida.$table_end;
 ?>

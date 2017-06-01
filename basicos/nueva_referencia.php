@@ -3,6 +3,7 @@
 include("../includes/sesion.php");
 include("../classes/funciones/funciones.class.php");
 include("../classes/basicos/referencia.class.php");
+include("../classes/basicos/referencia_compatible.class.php");
 include("../classes/basicos/fabricante.class.php");
 include("../classes/basicos/proveedor.class.php");
 include("../classes/basicos/listado_fabricantes.class.php");
@@ -13,6 +14,7 @@ permiso(2);
 $db = new MySQL();
 $bbdd = new MySQL;
 $referencias = new Referencia();
+$ref_compatible = new Referencia_Compatible();
 $validacion = new Funciones();
 $fab = new Fabricante();
 $prov = new Proveedor();
@@ -42,6 +44,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 	$pack_precio = $_POST["pack_precio"];
 	$unidades = $_POST["unidades"];
 	$comentarios = $_POST["comentarios"];
+	$id_motivo_compatibilidad = $_POST["id_motivo_compatibilidad"];
 	$error=false;
 
 	if (($ref_proveedor_pieza == '') or ($ref_fabricante_pieza == '') or ($pack_precio == '') or ($unidades == '') ){
@@ -80,7 +83,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 			}
 		}
 		if ((!$archivos_adjuntos) or (($subido) and ($error_archivo == 0))) {
-			$referencias->datosNuevaReferencia(NULL,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,$nombre_archivo,$comentarios);
+			$referencias->datosNuevaReferencia(NULL,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,$nombre_archivo,$comentarios,$id_motivo_compatibilidad);
 			$resultado = $referencias->guardarCambios();
 			if($resultado == 1) {
 				// Guardamos el log de la operación
@@ -100,7 +103,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 				$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fabricante_pieza,$ref_proveedor_pieza,
 								$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
 								$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
-								$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+								$referencia_heredada,$referencia_compatible,$id_motivo_compatibilidad,$error,$codigo_error);
 
 				$res_log = $log->guardarLog();
 				if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
@@ -126,7 +129,7 @@ if(isset($_POST["guardandoReferencia"]) and $_POST["guardandoReferencia"] == 1) 
 				$log->setValores($id_usuario,$proceso,$id_referencia,$nombre,$proveedor,$fabricante,$tipo_pieza,$nombre_pieza,$ref_fabricante_pieza,$ref_proveedor_pieza,
 						$descripcion,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,
 						$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,NULL,$comentarios,$fecha_creado,$fecha_modificacion,$referencia_creada,
-						$referencia_heredada,$referencia_compatible,$error,$codigo_error);
+						$referencia_heredada,$referencia_compatible,$id_motivo_compatibilidad,$error,$codigo_error);
 
 				$res_log = $log->guardarLog();
 				if ($res_log == 0) echo '<script>alert("Se ha producido un error al guardar el log de la operación")</script>';
@@ -224,7 +227,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre</div>
-        <input type="text" id="part_value_name" name="part_value_name" class="CreacionBasicoInput" value="<?php echo $part_value_name;?>"/>
+        	<input type="text" id="part_value_name" name="part_value_name" class="CreacionBasicoInput" value="<?php echo $part_value_name;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor</div>
@@ -232,7 +235,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre 2</div>
-        <input type="text" id="part_value_name_2" name="part_value_name_2" class="CreacionBasicoInput" value="<?php echo $part_value_name_2;?>"/>
+        	<input type="text" id="part_value_name_2" name="part_value_name_2" class="CreacionBasicoInput" value="<?php echo $part_value_name_2;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor 2</div>
@@ -240,7 +243,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre 3</div>
-        <input type="text" id="part_value_name_3" name="part_value_name_3" class="CreacionBasicoInput" value="<?php echo $part_value_name_3;?>"/>
+       		<input type="text" id="part_value_name_3" name="part_value_name_3" class="CreacionBasicoInput" value="<?php echo $part_value_name_3;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor 3 </div>
@@ -248,7 +251,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre 4</div>
-        <input type="text" id="part_value_name_4" name="part_value_name_4" class="CreacionBasicoInput" value="<?php echo $part_value_name_4;?>"/>
+        	<input type="text" id="part_value_name_4" name="part_value_name_4" class="CreacionBasicoInput" value="<?php echo $part_value_name_4;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor 4</div>
@@ -256,7 +259,7 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Nombre 5</div>
-        <input type="text" id="part_value_name_5" name="part_value_name_5" class="CreacionBasicoInput" value="<?php echo $part_value_name_5;?>"/>
+        	<input type="text" id="part_value_name_5" name="part_value_name_5" class="CreacionBasicoInput" value="<?php echo $part_value_name_5;?>"/>
         </div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Esp. Valor 5</div>
@@ -274,6 +277,19 @@ echo '<script type="text/javascript" src="../js/basicos/nueva_referencia.js"></s
            	<div class="LabelCreacionBasico">Comentarios</div>
           	<textarea type="text" id="comentarios" name="comentarios" rows="10" class="textareaInput"><?php echo $comentarios; ?></textarea>
         </div>
+		<div class="ContenedorCamposCreacionBasico">
+			<div class="LabelCreacionBasico">Motivo Compatibilidad *</div>
+			<select id="id_motivo_compatibilidad" name="id_motivo_compatibilidad"  class="CreacionBasicoInput">
+			<?php
+				$res_motivos = $ref_compatible->dameTipoMotivosReferencia();
+				for($i=0;$i<count($res_motivos);$i++) {
+					$id_motivo = $res_motivos[$i]["id_motivo"];
+					$nombre_motivo = $res_motivos[$i]["motivo"];
+					echo '<option value="'.$id_motivo.'">'.$nombre_motivo.'</option>';
+				}
+			?>
+			</select>
+		</div>
         <div class="ContenedorCamposCreacionBasico">
            	<div class="LabelCreacionBasico">Archivos adjuntos</div>
             <div id="AñadirMasArchivos"><a href="#" onClick="addCampo()">Subir otro archivo</a></div>

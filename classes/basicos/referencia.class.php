@@ -39,6 +39,7 @@ class Referencia extends MySQL {
 	var $total_paquetes;
     var $coste;
 	var $id_proceso;
+	var $id_motivo_compatibilidad;
 	var $activo;
 	var $fecha_creado;
 
@@ -257,7 +258,7 @@ class Referencia extends MySQL {
 	}
 
 	// Se hace la carga de datos de una nueva referencia
-	function datosNuevaReferencia($id_referencia = NULL,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,$nombre_archivo,$comentarios) {
+	function datosNuevaReferencia($id_referencia = NULL,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,$nombre_archivo,$comentarios,$id_motivo_compatibilidad) {
 		$this->id_referencia = $id_referencia;
 		$this->referencia = $nombre;
 		$this->fabricante = $fabricante;
@@ -280,6 +281,7 @@ class Referencia extends MySQL {
 		$this->unidades = $unidades;
 		$this->nombre_archivo = $nombre_archivo;
 		$this->comentarios = $comentarios;
+		$this->id_motivo_compatibilidad = $id_motivo_compatibilidad;
 	}
 
 	function datosReferencia($id_referencia,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$pack_precio,$unidades,$comentarios) {
@@ -306,7 +308,11 @@ class Referencia extends MySQL {
 			if(!$this->comprobarReferenciaDuplicada()) {
 				if(!$this->comprobarReferenciaProveedorDuplicada()){
 					if(!$this->comprobarReferenciaFabricanteDuplicada()){
-						$consulta = sprintf("insert into referencias (referencia, id_proveedor,id_fabricante,part_tipo,part_nombre,part_fabricante_referencia,part_proveedor_referencia,part_valor_nombre,part_valor_cantidad,part_valor_nombre_2,part_valor_cantidad_2,part_valor_nombre_3,part_valor_cantidad_3,part_valor_nombre_4,part_valor_cantidad_4,part_valor_nombre_5,part_valor_cantidad_5,pack_precio,unidades,comentarios,fecha_creado,activo) 																																																												value (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,current_timestamp,1)",
+						$consulta = sprintf("insert into referencias (referencia,id_proveedor,id_fabricante,part_tipo,part_nombre,part_fabricante_referencia,part_proveedor_referencia,
+																		part_valor_nombre,part_valor_cantidad,part_valor_nombre_2,part_valor_cantidad_2,part_valor_nombre_3,part_valor_cantidad_3,
+																		part_valor_nombre_4,part_valor_cantidad_4,part_valor_nombre_5,part_valor_cantidad_5,
+																		pack_precio,unidades,comentarios,id_motivo_compatibilidad,fecha_creado,activo)
+ 													value (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,current_timestamp,1)",
                     		$this->makeValue($this->referencia, "text"),
 							$this->makeValue($this->proveedor, "int"),
 							$this->makeValue($this->fabricante, "int"),
@@ -326,7 +332,8 @@ class Referencia extends MySQL {
 							$this->makeValue($this->part_valor_cantidad_5, "text"),
 							$this->makeValue($this->pack_precio, "float"),
 							$this->makeValue($this->unidades, "text"),
-							$this->makeValue($this->comentarios, "text"));
+							$this->makeValue($this->comentarios, "text"),
+							$this->makeValue($this->id_motivo_compatibilidad, "int"));
 						$this->setConsulta($consulta);
 						if($this->ejecutarSoloConsulta()) {
 							$this->id_referencia = $this->getUltimoID();
@@ -365,7 +372,8 @@ class Referencia extends MySQL {
 			if(!$this->comprobarReferenciaDuplicada()) {
 				if(!$this->comprobarReferenciaProveedorDuplicada()){
 					if(!$this->comprobarReferenciaFabricanteDuplicada()){
-						$consulta = sprintf("update referencias set referencia=%s, id_proveedor=%s, id_fabricante=%s, part_tipo=%s, part_nombre=%s, part_fabricante_referencia=%s, part_proveedor_referencia=%s, part_valor_nombre=%s, part_valor_cantidad=%s, part_valor_nombre_2=%s, part_valor_cantidad_2=%s, part_valor_nombre_3=%s, part_valor_cantidad_3=%s, part_valor_nombre_4=%s, part_valor_cantidad_4=%s, part_valor_nombre_5=%s, part_valor_cantidad_5=%s,pack_precio=%s, unidades=%s, comentarios=%s where id_referencia=%s",
+						$consulta = sprintf("update referencias set referencia=%s, id_proveedor=%s, id_fabricante=%s, part_tipo=%s, part_nombre=%s, part_fabricante_referencia=%s, part_proveedor_referencia=%s, part_valor_nombre=%s, part_valor_cantidad=%s, part_valor_nombre_2=%s, part_valor_cantidad_2=%s, part_valor_nombre_3=%s, part_valor_cantidad_3=%s, part_valor_nombre_4=%s, part_valor_cantidad_4=%s, part_valor_nombre_5=%s, part_valor_cantidad_5=%s,
+																	pack_precio=%s, unidades=%s, comentarios=%s, id_motivo_compatibilidad=%s where id_referencia=%s",
 							$this->makeValue($this->referencia, "text"),
 							$this->makeValue($this->proveedor, "int"),
 							$this->makeValue($this->fabricante, "int"),
@@ -386,6 +394,7 @@ class Referencia extends MySQL {
 							$this->makeValue($this->pack_precio, "float"),
 							$this->makeValue($this->unidades, "text"),
 							$this->makeValue($this->comentarios, "text"),
+							$this->makeValue($this->id_motivo_compatibilidad, "int"),
 							$this->makeValue($this->id_referencia, "int"));
 						$this->setConsulta($consulta);
 						if($this->ejecutarSoloConsulta()) {
@@ -471,60 +480,6 @@ class Referencia extends MySQL {
 		}
 	}
 
-	// Comprobar referencias por Part Proveedor
-	function comprobarReferenciaTORO() {
-		if($this->id_referencia == NULL) {
-			$consulta = sprintf("select id_referencia from referencias where referencias.part_proveedor_referencia=%s and referencia=%s and activo=1",
-				$this->makeValue($this->part_proveedor_referencia, "text"),
-				$this->makeValue($this->referencia, "text"));
-		} 
-		else {
-			$consulta = sprintf("select id_referencia from referencias where referencias.part_proveedor_referencia=%s and activo=1 and id_referencia=%s",				
-				$this->makeValue($this->part_proveedor_referencia, "text"),
-				$this->makeValue($this->id_referencia, "int"));
-		}
-		$this->setConsulta($consulta);
-		$this->ejecutarConsulta();
-
-		if($this->getNumeroFilas() == 0) {
-			return false;
-		} 
-		else {
-			return true;
-		}
-	}
-
-	
-	// Comprobar referencias por ID_REF
-	function comprobarId_RefTORO() {
-		$consulta = sprintf("select id_referencia from referencias where id_referencia=%s",
-			$this->makeValue($this->id_referencia, "int"));
-		$this->setConsulta($consulta);
-		// echo $consulta; echo "<br/>";
-		$this->ejecutarConsulta();
-		if($this->getNumeroFilas() == 0) {
-			return false;
-		} 
-		else {
-			return true;
-		}
-	}
-
-	// Comprobar referencias por ID_REF
-	function dameDatosId_RefTORO() {
-		$consulta = sprintf("select * from referencias where id_referencia=%s and activo=1",
-			$this->makeValue($this->id_referencia, "int"));
-		$this->setConsulta($consulta);
-		$this->ejecutarConsulta();
-		if($this->getNumeroFilas() == 0) {
-			return NULL;
-		} 
-		else {
-			return $this->getPrimerResultado();
-		}
-	}
-
-
 	function comprobarReferenciaFabricanteDuplicada() {
 		/*if($this->id_referencia == NULL) {
 			$consulta = sprintf("select id_referencia from referencias where id_fabricante=%s and referencias.part_fabricante_referencia=%s and activo=1",
@@ -608,7 +563,6 @@ class Referencia extends MySQL {
 			else $this->total_paquetes = $tot_paquetes + 1;
 		}
 	}
-
 
 	function eliminar(){
 		$consulta = sprintf("update referencias set activo=0 where id_referencia=%s",
@@ -746,7 +700,6 @@ class Referencia extends MySQL {
 		}
 		return $cadena;
 	}
-
 
 	// Devuelve las referencias activas
 	function dameReferenciasActivas(){
@@ -962,7 +915,7 @@ class Referencia extends MySQL {
                 $nombre_fabricante_aux .= $nombre_fabricante_cod[$i];
             }
         }
-        $this->nombre_fabricante = $nombre_pieza_aux;
+        $this->nombre_fabricante = $nombre_fabricante_aux;
 
         $part_fabricante_referencia_aux = '';
         $part_fabricante_referencia_cod = utf8_decode($this->part_fabricante_referencia);
@@ -1096,6 +1049,77 @@ class Referencia extends MySQL {
         }
         $this->comentarios = $comentarios_aux;
     }
+
+	// Función que determina si una referencia tiene documentación adjunta
+	function tieneDocumentacionAdjunta($id_referencia){
+		$consultaSql = sprintf("select id_archivo from referencias_archivos where activo=1 and id_referencia=%s order by id_referencia",
+						$this->makeValue($id_referencia, "int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_archivos = $this->getResultados();
+		$tiene_archivos = $res_archivos != NULL;
+		return $tiene_archivos;
+	}
+
+	// Función que determina si existe documentación en alguna de las referencias de un array
+	function tieneDocumentacionAdjuntaReferencias($array_referencias){
+		$i=0;
+		$encontrado = false;
+		while($i<count($array_referencias) && !$encontrado){
+			$id_referencia = $array_referencias[$i]["id_referencia"];
+			$encontrado = $this->tieneDocumentacionAdjunta($id_referencia);
+			$i++;
+		}
+		return $encontrado;
+	}
+
+	// Función que devuelve todos los archivos adjuntos de la referencia
+	function dameArchivosReferencia($id_referencia){
+		$consultaSql = sprintf("select * from referencias_archivos where activo=1 and id_referencia=%s",
+						$this->makeValue($id_referencia,"int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_archivos = $this->getResultados();
+		return $res_archivos;
+	}
+
+	// Función que devuelve el id_motivo_compatibilidad en función del id_referencia
+	function dameIdMotivoCompatibilidad($id_referencia){
+		$consultaSql = sprintf("select id_motivo_compatibilidad from referencias where activo=1 and id_referencia=%s",
+						$this->makeValue($id_referencia,"int"));
+		$this->setConsulta($consultaSql);
+		$this->ejecutarConsulta();
+		$res_id_motivo_compatibilidad = $this->getPrimerResultado();
+		return $res_id_motivo_compatibilidad["id_motivo_compatibilidad"];
+	}
+
+	// Recorre las referencias de un componente y lo añade al array principal de referencias
+	function agruparReferenciasComponentes($referencias_componente_secundario,$referencias_componente_final){
+		$referencias_aux = $referencias_componente_final;
+		for($i=0;$i<count($referencias_componente_secundario);$i++){
+			$id_referencia = $referencias_componente_secundario[$i]["id_referencia"];
+			$piezas = $referencias_componente_secundario[$i]["piezas"];
+			$encontrado = false;
+			$j=0;
+			while(($j<count($referencias_componente_final)) and (!$encontrado)){
+				// Si coinciden las referencias sumamos las piezas.
+				if ($id_referencia == $referencias_componente_final[$j]["id_referencia"]){
+					$referencias_aux[$j]["piezas"] = $referencias_aux[$j]["piezas"] + $piezas;
+					$encontrado = true;
+				}
+				$j++;
+			}
+			if(!$encontrado){
+				// Si no esta la referencia la insertamos al final
+				array_push($referencias_aux,$referencias_componente_secundario[$i]);
+			}
+			// Modificamos el array de referencias del componente por el array modificado con las referencias del kit
+			unset($referencias_componente_final);
+			$referencias_componente_final = $referencias_aux;
+		}
+		unset($referencias_aux);
+		return $referencias_componente_final;
+	}
 
 
 	// Devuelve la cadena de un error según su identificador

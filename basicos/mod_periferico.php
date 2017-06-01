@@ -254,6 +254,21 @@ if(isset($_POST["guardandoPeriferico"]) && $_POST["guardandoPeriferico"] == 1) {
 	}
 }
 
+// Obtenemos todos los kits existentes
+$listado_kits->prepararConsulta();
+$listado_kits->realizarConsulta();
+$resultado_todos_kits = $listado_kits->kits;
+foreach($resultado_todos_kits as $res_kit) $todos_kits[] = intval($res_kit["id_componente"]);
+
+// Obtenemos sólo los kits de producción
+$listado_kits->prepararConsultaProduccion();
+$listado_kits->realizarConsulta();
+$resultado_kits = $listado_kits->kits;
+
+foreach($resultado_kits as $array_kits) $kits_produccion[] = intval($array_kits["id_componente"]);
+//$res_kits_produccion = array_column($resultado_kits, "id_componente");
+//foreach($res_kits_produccion as $kit_produccion) $kits_produccion[] = intval($kit_produccion);
+
 // Se cargan los datos buscando por el ID
 $perifericos->cargaDatosPerifericoId($_GET["id"]);
 $id_componente = $perifericos->id_componente;
@@ -273,8 +288,9 @@ $ref_perifericos->setValores($_GET["id"]);
 $ref_perifericos->realizarConsulta();
 $resultadosBusqueda = $ref_perifericos->referencias_componentes;
 $componente = "periferico";
-echo '<script type="text/javascript" src="../js/basicos/mod_periferico.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/mod_periferico_27032017_1313.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones.js"></script>';
 ?>
 
 <div class="separador"></div>
@@ -357,22 +373,43 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
 				}
 			?>
         </div>
+		<br/>
+		<div class="ContenedorCamposCreacionBasico">
+			<div class="LabelCreacionBasico">Kits</div>
+			<div class="CapaBuscadorDinamicoComponentes">
+				<div id="CapaBotonKits">
+					<input type="button" id="BotonTodosKits" name="BotonTodosKits" class="BotonTodosComponentes" value="Mostrar todos los kits" onclick="MostrarTodosKits()"/>
+				</div>
+				<label class="LabelBuscadorComponente">Buscar</label>
+				<input type="text"
+					   id="BuscadorKitModPeriferico"
+					   name="BuscadorKitModPeriferico"
+					   class="BuscadorComponente"
+					   onkeyup="BuscadorDinamicoComponentes('produccion','BuscadorKitModPeriferico','kits_no_asignados[]');"
+					   placeholder="Buscar kit..." />
+			</div>
+		</div>
+
         <div class="ContenedorCamposCreacionBasico">
-        	<div class="LabelCreacionBasico">Kits</div>
+        	<div class="LabelCreacionBasico"></div>
             <div class="contenedorComponentes">
             	<table style="width:700px; height:208px; border:1px solid #fff; margin:5px 10px 0px 12px;">
                 <tr>
                    	<td id= "listas_kits_no_asignados" style="width:250px; border:1px solid #fff;">
             			<select multiple="multiple" id="kits_no_asignados[]" name="kits_no_asignados[]" class="SelectMultipleKitOrigen" >
-            			<?php
-							$listado_kits->prepararConsulta();
-							$listado_kits->realizarConsulta();
-							$resultado_kits = $listado_kits->kits;
-
-							for($i=0;$i<count($resultado_kits);$i++) {
-								$datoKit = $resultado_kits[$i];
-								$Kit->cargaDatosKitId($datoKit["id_componente"]);
-								echo '<option value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
+						<?php
+							for($i=0;$i<count($todos_kits);$i++) {
+								$id_kit = $todos_kits[$i];
+								$Kit->cargaDatosKitId($id_kit);
+								if(in_array($id_kit,$kits_produccion)) {
+									$id_option = "pre-kit-".$id_kit."-option";
+									$display = "display: block;";
+								}
+								else {
+									$id_option = "";
+									$display = "display: none;";
+								}
+								echo '<option id="'.$id_option.'" style="'.$display.'" value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
 							}
 						?>
             			</select>
@@ -400,13 +437,13 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
                     </td>
                     <td id="lista" style="width:250px; border:1px solid #fff;">
 	                	<select multiple="multiple" id="kit[]" name="kit[]" class="SelectMultipleKitDestino">
-                        	<?php
-								$Kit->dameIdsKits($id_componente);
-								for($j=0;$j<count($Kit->ids_kits);$j++){
-									$Kit->cargaDatosKitId($Kit->ids_kits[$j]["id_kit"]);
-									echo '<option value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
-								}
-							?>
+                        <?php
+							$Kit->dameIdsKits($id_componente);
+							for($j=0;$j<count($Kit->ids_kits);$j++){
+								$Kit->cargaDatosKitId($Kit->ids_kits[$j]["id_kit"]);
+								echo '<option value="'.$Kit->id_componente.'">'.$Kit->kit.'_v'.$Kit->version.'</option>';
+							}
+						?>
                         </select>
                     </td>
                     <td style="border:1px solid #fff; vertical-align:middle">
@@ -523,8 +560,8 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
                     </div>
 			    </div>
 			    <?php if($modificar) { ?>	
-	            	<input type="button" id="mas" name="mas" class="BotonMas"  value="+" onclick="javascript:Abrir_ventana('buscador_referencias.php?componente=<?php echo $componente;?>')"/>
-	           		<input type="button" id="menos" name="menos" class="BotonMenos" value="-" onclick="javascript:removeRow(mitabla)"  />
+	            	<input type="button" id="mas" name="mas" class="BotonMas"  value="+" onclick="Abrir_ventana('buscador_referencias.php?componente=<?php echo $componente;?>')"/>
+	           		<input type="button" id="menos" name="menos" class="BotonMenos" value="-" onclick="removeRow(mitabla)"  />
 	           	<?php } ?>
         </div>
         <div class="ContenedorCamposCreacionBasico" id="capa_opciones" style="display:none;">
@@ -566,7 +603,7 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
                         echo '<div id="'.$id_capa_kit.'" class="ContenedorCamposCreacionBasico"><div class="LabelCreacionBasico">Referencias Kit</div>';
                         $Kit->cargaDatosKitId($id_kit);
                         echo '<div class="tituloComponente">'.$Kit->kit.'_v'.$Kit->version.'</div>';
-                        echo '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitablakit'.$i.'">';
+                        echo '<div class="CajaReferencias"><div id="CapaTablaIframe"><table id="mitabla-kit-'.$i.'">';
                         echo '<tr><th style="text-align:center;">ID REF</th><th>NOMBRE</th><th>PROVEEDOR</th><th>REF PROV</th><th>NOMBRE PIEZA</th><th style="text-align:center">PIEZAS</th><th style="text-align:center">PACK PRECIO</th><th style="text-align:center">UDS/P</th><th style="text-align:center">PRECIO UNIDAD</th><th style="text-align:center">PRECIO</th></tr>';
 
                         $ref_kits->setValores($id_kit);
@@ -598,7 +635,7 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
                                 <table id="tablaTituloPrototipo">
                                 <tr>
                                     <td style="text-align:left; background:#fff; vertical-align:top; padding:5px 5px 0px 0px;">
-                                        <span class="tituloComp">'.number_format($coste_kit, 2, ',', '.').'€'.'</span>'.'
+                                        <span id="coste-kit-'.$i.'" class="tituloComp">'.number_format($coste_kit, 2, ',', '.').'€'.'</span>'.'
                                     </td>
                                 </tr>
                                 </table>
@@ -693,4 +730,31 @@ echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.
         </div>
     </form>
 </div>
+<script type="text/javascript">
+	window.onload = function(){
+		// Obtenemos el precio del periférico con sus referencias heredadas
+		var mitabla = document.getElementById("mitabla");
+		var costePeriferico = damePrecioComponenteConHeredadas(mitabla,"piezas[]");
+
+		// Modificamos los precios de los kits para que añadan las referencias heredadas
+		var sl = document.getElementById('kit[]');
+		var contador_kits = 0;
+		// Formateamos el valor guardado de la suma de los kits
+		document.getElementById('costeKits').setAttribute('value',0);
+
+		for(i=0;i<sl.options.length;i++) {
+			var id_capa_kit = 'kit-' + contador_kits;
+			var coste_input_kit = 'coste_kit-' + contador_kits;
+
+			// Una vez se ha añadido el kit calculamos el coste con sus referencias heredadas
+			var mitabla = document.getElementById("mitabla-" + id_capa_kit);
+			var span_coste_kit = "coste-" + id_capa_kit;
+			var precio_kit = damePrecioKitConHeredadas(mitabla);
+			actualizarPrecioKit(span_coste_kit,coste_input_kit,precio_kit);
+
+			contador_kits++;
+		}
+		actualizarCoste(costePeriferico);
+	}
+</script>
 <?php include ("../includes/footer.php"); ?>

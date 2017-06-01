@@ -40,7 +40,7 @@
       	<td style="text-align:center"><?php echo $orden_produccion->id_produccion;?></td>
         <td style="text-align:center"><input type="checkbox" id="chkbox[]" name="chkbox[]" value="<?php echo $orden_produccion->id_produccion;?>" /></td>
         <td>
-			<a href="ver_orden_produccion.php?id=<?php echo $id_produccion;?>&nombre=<?php echo $nombre_producto->nombre;?>&id_producto=<?php echo $id_producto; ?>">
+			<a href="ver_op.php?id=<?php echo $id_produccion;?>&nombre=<?php echo $nombre_producto->nombre;?>&id_producto=<?php echo $id_producto; ?>">
 				<?php 
 					// Si tiene alias mostramos el alias. Si no mostramos la OP
 					if (($orden_produccion->alias_op != NULL) && ($orden_produccion->alias_op != $orden_produccion->codigo)){

@@ -33,8 +33,9 @@ $precio_pack_qty = $referencias->part_precio_cantidad;
 $nombre_proveedor = $referencias->nombre_proveedor;
 $comentarios = $referencias->comentarios;
 $fecha_creado = $referencias->fecha_creado;
+$id_motivo_compatibilidad = $referencias->id_motivo_compatibilidad;
 
-$referencias->datosNuevaReferencia($id_referencia,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,$nombre_archivo,$comentarios);
+$referencias->datosNuevaReferencia($id_referencia,$nombre,$fabricante,$proveedor,$nombre_pieza,$tipo_pieza,$ref_proveedor_pieza,$ref_fabricante_pieza,$part_value_name,$part_value_qty,$part_value_name_2,$part_value_qty_2,$part_value_name_3,$part_value_qty_3,$part_value_name_4,$part_value_qty_4,$part_value_name_5,$part_value_qty_5,$pack_precio,$unidades,$nombre_archivo,$comentarios,$id_motivo_compatibilidad);
 $resultado = $referencias->eliminar();
 if($resultado == 6) {
 	// Obtenemos las referencias del buscador de referencias 

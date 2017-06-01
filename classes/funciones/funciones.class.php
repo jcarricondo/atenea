@@ -33,6 +33,14 @@ class Funciones extends MySQL{
 			return false;	
 		}
 	}
+
+	// Función para truncar los decimales
+	function truncateFloat($number, $digitos){
+		$raiz = 10;
+		$multiplicador = pow ($raiz,$digitos);
+		$resultado = ((int)($number * $multiplicador)) / $multiplicador;
+		return number_format($resultado, $digitos,",",".");
+	}
 	
 	// Funcion para validar fechas
 	function validarFecha ($fecha) {
@@ -171,6 +179,36 @@ class Funciones extends MySQL{
 		}
     }
 
+	// Recorre las referencias de un componente y lo añade al array principal de referencias
+	function agruparReferenciasComponentes($referencias_componente_secundario,$referencias_componente_final){
+		$referencias_aux = $referencias_componente_final;
+		for($i=0;$i<count($referencias_componente_secundario);$i++){
+			$id_referencia = $referencias_componente_secundario[$i]["id_referencia"];
+			$piezas = $referencias_componente_secundario[$i]["piezas"];
+			$encontrado = false;
+			$j=0;
+			while(($j<count($referencias_componente_final)) and (!$encontrado)){
+				// Si coinciden las referencias sumamos las piezas.
+				if ($id_referencia == $referencias_componente_final[$j]["id_referencia"]){
+					$referencias_aux[$j]["piezas"] = $referencias_aux[$j]["piezas"] + $piezas;
+					$encontrado = true;
+				}
+				$j++;
+			}
+			if(!$encontrado){
+				// Si no esta la referencia la insertamos al final
+				array_push($referencias_aux,$referencias_componente_secundario[$i]);
+			}
+			// Modificamos el array de referencias del componente por el array modificado con las referencias del kit
+			unset($referencias_componente_final);
+			$referencias_componente_final = $referencias_aux;
+		}
+		unset($referencias_aux);
+		return $referencias_componente_final;
+	}
+
+
+
     function comprobarArchivoConBOM($filename) {
         $bom = pack('CCC', 0xEF, 0xBB, 0xBF);
         $file = fopen($filename, "rb");
@@ -183,5 +221,77 @@ class Funciones extends MySQL{
         }
         return $hasBOM;
     }
+
+	// Función que deja un string sólo con letras y numeros
+	function soloLetrasYNumerosString($cadena){
+		$cadena_limpia = preg_replace('([^A-Za-z0-9])', '', $cadena);
+		return $cadena_limpia;
+	}
+
+	// Función que adapta un string para que se pueda utilizar como nombre de directorio
+	function quitarCaracteresNoPermitidosCarpeta($string_carpeta){
+		$reemplazo = "_";
+		$caracteres_no_permitidos = array("\\","/",":","*","\"","<",">"," ");
+		$cadena_final = str_replace($caracteres_no_permitidos, $reemplazo, $string_carpeta);
+		return $cadena_final;
+	}
+
+	// Función que obtiene la barra de directorio en función del entorno
+	function dameBarraDirectorio(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_barra = '\\';
+				break;
+			default:
+				$dir_barra = '/';
+				break;
+		}
+		return $dir_barra;
+	}
+
+	// Función que obtiene el directorio actual de documentación en función del entorno
+	function dameRutaDocumentacionBasicos(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_documentacion = 'C:\xampp\htdocs\proyectos\git\atenea\basicos\documentacion';
+				break;
+			case '/var/www/vhosts/ateneadev.simumak.com/httpdocs':  // DESARROLLO
+				$dir_documentacion = '/var/www/vhosts/ateneadev.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
+				$dir_documentacion = '/var/www/vhosts/ateneapre.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
+				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+			default:
+				$dir_documentacion = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/basicos/documentacion';
+				break;
+		}
+		return $dir_documentacion;
+	}
+
+	// Función que obtiene el directorio de imágenes en función del entorno
+	function dameRutaImagenes(){
+		switch (realpath($_SERVER["DOCUMENT_ROOT"])) {
+			case 'C:\xampp\htdocs\proyectos\git\atenea':            // LOCAL OFICINA
+				$dir_imagenes = 'C:\xampp\htdocs\proyectos\git\atenea\images';
+				break;
+			case '/var/www/vhosts/ateneadev.simumak.com/httpdocs':  // DESARROLLO
+				$dir_imagenes = '/var/www/vhosts/ateneadev.simumak.com/httpdocs/atenea/images';
+				break;
+			case '/var/www/vhosts/ateneapre.simumak.com/httpdocs':  // PREPRODUCCION
+				$dir_imagenes = '/var/www/vhosts/ateneapre.simumak.com/httpdocs/atenea/images';
+				break;
+			case '/var/www/vhosts/atenea.simumak.com/httpdocs':     // PRODUCCION
+				$dir_imagenes = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/images';
+				break;
+			default:
+				$dir_imagenes = '/var/www/vhosts/atenea.simumak.com/httpdocs/atenea/images';
+				break;
+		}
+		return $dir_imagenes;
+	}
+
 }
 ?>

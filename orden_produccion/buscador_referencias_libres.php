@@ -73,6 +73,8 @@ if(isset($_POST["realizandoBusqueda"]) and $_POST["realizandoBusqueda"] == 1) {
 }
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="../css/style.css" />
+<script type="text/javascript" src="../js/funciones.js"></script>
+
 <script type="text/javascript">
 function add_referencia(id_referencia)
 {
@@ -241,7 +243,7 @@ function soloNumeros (e) {
 		<h4> Buscar la referencia para añadir a la nueva Orden de Produccion </h4>
    		<form name="BuscadorReferencias" id="BuscadorReferencias" action="buscador_referencias_libres.php" method="post">
     		<div class="ContenedorCamposBuscadorReferencias">
-				<div class="LabelReferencias">Referencia</div>
+				<div class="LabelReferencias">Nombre</div>
             	<input type="text" name="referencia" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($referencia));?>"/> 
                	<div class="LabelReferencias">Unidades paquete</div>
             	<input type="text" name="cantidad" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($cantidad));?>"/>
@@ -270,7 +272,7 @@ function soloNumeros (e) {
    				<div class="LabelReferencias">Part value qty</div>
             	<input type="text" name="part_value_qty" class="BuscadorInputReferencias" value="<?php echo stripslashes(htmlspecialchars($part_value_qty));?>"/>
             	<div class="LabelReferencias">ID Referencia</div>
-            	<input type="text" name="id_ref" class="BuscadorInputReferencias" value="<?php echo $id_ref;?>" onkeypress="return soloNumeros(event)"/>
+            	<input type="text" name="id_ref" class="BuscadorInputReferencias" value="<?php echo $id_ref;?>" onkeypress="return soloNumeros(event)" onkeyup="cargaReferenciaIntro(event);"/>
         	</div>
                      
             <div class="ContenedorCamposBuscadorReferencias">
@@ -300,6 +302,7 @@ function soloNumeros (e) {
             	<input type="submit" id="" name="" class="" value="Buscar" />
         	</div>
         	</br>
+			<input type="hidden" id="nombreFormulario" name="nombreFormulario" value="BuscadorReferencias" />
     	</form>
     </div>
     
@@ -390,7 +393,8 @@ function soloNumeros (e) {
                             <input type="hidden" name="cantidad-<?php echo $ref->id_referencia;?>" id="cantidad-<?php echo $ref->id_referencia;?>" value="<?php echo $ref->cantidad;?>" />                            
                         </td>
                         <td style="text-align:center">
-                            <form name="BuscadorReferenciaLibre" id="BuscadorReferenciaLibre" action="nueva_orden_produccion.php?nombreref=<?php echo $ref->referencia;?>&id=<?php echo $ref->id_referencia;?>" method="post">                           		<input type="button" onclick="javascript:add_referencia(<?php echo $ref->id_referencia;?>);" value="+" />
+                            <form name="BuscadorReferenciaLibre" id="BuscadorReferenciaLibre" action="new_op.php?nombreref=<?php echo $ref->referencia;?>&id=<?php echo $ref->id_referencia;?>" method="post">
+								<input type="button" onclick="add_referencia(<?php echo $ref->id_referencia;?>);" value="+" />
                                 <input type="hidden" id="guardandoReferenciaLibre" name="guardandoReferenciaLibre" />
                             </form>
                                 
