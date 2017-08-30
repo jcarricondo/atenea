@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Este fichero prepara la documentación adjunta de referencias para descargar
 $id_referencia = $_GET["id_referencia"];
 $id_referencia_principal = $id_referencia;

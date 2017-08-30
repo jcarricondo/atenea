@@ -5,6 +5,7 @@ for($mec=0;$mec<count($res_documentacion_mecanica);$mec++){
     $dir_actual = $dir_documentos_componente;
     $dir_pdf = $dir_actual.$barra_directorio."PDF";
     $dir_dwg = $dir_actual.$barra_directorio."DWG";
+    $dir_stp = $dir_actual.$barra_directorio."STP";
     $dir_otros = $dir_actual.$barra_directorio."OTROS";
 
     $nombre_archivo = $res_documentacion_mecanica[$mec]["nombre_archivo"];
@@ -19,6 +20,10 @@ for($mec=0;$mec<count($res_documentacion_mecanica);$mec++){
     else if ($extension_archivo == "dwg" || $extension_archivo == "DWG"){
         if(!file_exists($dir_dwg)) mkdir($dir_dwg, 0700);
         $dir_actual = $dir_dwg;
+    }
+    else if ($extension_archivo == "stp" || $extension_archivo == "STP"){
+        if(!file_exists($dir_stp)) mkdir($dir_stp, 0700);
+        $dir_actual = $dir_stp;
     }
     else {
         if(!file_exists($dir_otros)) mkdir($dir_otros, 0700);
