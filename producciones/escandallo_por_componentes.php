@@ -277,7 +277,7 @@ for($i=0;$i<count($id_componentes);$i++){
 $titulo_pagina = "Producción > Ordenar Producción";
 $pagina = "producciones";
 include ('../includes/header.php');
-echo '<script type="text/javascript" src="../js/funciones.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>';
 echo '<script type="text/javascript" src="../js/producciones/producciones.js"></script>';
 ?>
 

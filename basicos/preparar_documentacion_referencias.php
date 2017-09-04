@@ -12,6 +12,7 @@ if($ref_tiene_documentacion){
     $dir_actual = $dir_documentacion_referencia;
     $dir_pdf = $dir_actual.$barra_directorio."PDF";
     $dir_dwg = $dir_actual.$barra_directorio."DWG";
+    $dir_stp = $dir_actual.$barra_directorio."STP";
     $dir_otros = $dir_actual.$barra_directorio."OTROS";
 
     for($doc=0;$doc<count($res_documentacion_adjunta);$doc++) {
@@ -27,6 +28,10 @@ if($ref_tiene_documentacion){
         else if($extension_archivo == "dwg" || $extension_archivo == "DWG") {
             if(!file_exists($dir_dwg)) mkdir($dir_dwg, 0700);
             $dir_actual = $dir_dwg;
+        }
+        else if($extension_archivo == "stp" || $extension_archivo == "STP") {
+            if(!file_exists($dir_stp)) mkdir($dir_stp, 0700);
+            $dir_actual = $dir_stp;
         }
         else {
             if (!file_exists($dir_otros)) mkdir($dir_otros, 0700);

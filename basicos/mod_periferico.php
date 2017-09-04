@@ -290,7 +290,7 @@ $resultadosBusqueda = $ref_perifericos->referencias_componentes;
 $componente = "periferico";
 echo '<script type="text/javascript" src="../js/basicos/mod_periferico_27032017_1313.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/mod_periferico_adjuntos.js"></script>';
-echo '<script type="text/javascript" src="../js/funciones.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>';
 ?>
 
 <div class="separador"></div>

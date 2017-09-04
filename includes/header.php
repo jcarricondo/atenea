@@ -29,7 +29,7 @@ function Abrir_ventana(pagina) {
 
 <script type="text/javascript" src="../js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="../js/jquery-ui-1.8.21.custom.min.js"></script>
-<script type="text/javascript" src="../js/funciones.js"></script>
+<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>
 <script type="text/javascript" src="../js/tinybox/tinybox.js"></script>
 <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>

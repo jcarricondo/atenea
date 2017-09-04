@@ -177,7 +177,7 @@ $pagina = "new_periferico";
 include ('../includes/header.php');
 echo '<script type="text/javascript" src="../js/basicos/nuevo_periferico_27032017_1313.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/nuevo_periferico_adjuntos.js"></script>';
-echo '<script type="text/javascript" src="../js/funciones.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>';
 ?>	
 
 <div class="separador"></div> 

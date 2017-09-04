@@ -365,7 +365,7 @@ else {
 $titulo_pagina = "Órdenes de Producción > Gestionar Producción";
 $pagina = "gestionar_produccion";
 include ('../includes/header.php');
-echo '<script type="text/javascript" src="../js/funciones.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>';
 echo '<script type="text/javascript" src="../js/orden_produccion/gestionar_produccion.js"></script>';
 ?>
 

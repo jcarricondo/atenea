@@ -144,7 +144,7 @@ $titulo_pagina = "Básicos > Referencias";
 $pagina = "referencias";
 include("../includes/header.php");
 echo '<script type="text/javascript" src="../js/basicos/referencias_08032017_1050.js"></script>';
-echo '<script type="text/javascript" src="../js/funciones.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>';
 ?>
 
 <div class="separador"></div> 

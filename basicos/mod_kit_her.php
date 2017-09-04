@@ -278,7 +278,7 @@ $pagina = "mod_kit";
 include ('../includes/header.php');
 echo '<script type="text/javascript" src="../js/basicos/mod_kit_08032017_1050.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/mod_kit_adjuntos.js"></script>';
-echo '<script type="text/javascript" src="../js/funciones.js"></script>';
+echo '<script type="text/javascript" src="../js/funciones_24052017_1515.js"></script>';
 $ref_kits->setValores($_GET["id"]);
 $ref_kits->realizarConsulta();
 $resultadosBusqueda = $ref_kits->referencias_componentes;

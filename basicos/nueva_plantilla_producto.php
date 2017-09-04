@@ -84,7 +84,7 @@ else {
 $titulo_pagina = "Básicos > Nueva plantilla de producto";
 $pagina = "new_plantilla_producto";
 include("../includes/header.php");
-echo '<script type="text/javascript" src="../js/basicos/plantilla_de_productos_27032017_1313.js"></script>';
+echo '<script type="text/javascript" src="../js/basicos/plantilla_de_productos_24052017_1515.js"></script>';
 echo '<script type="text/javascript" src="../js/basicos/nueva_plantilla_producto_27032017_1313.js"></script>';
 ?>
 
